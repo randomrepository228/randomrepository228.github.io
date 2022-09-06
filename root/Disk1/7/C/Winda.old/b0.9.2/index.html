@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Выберите систему для загрузки</title>
+    <style>
+        p{
+            margin-left: 20px;
+        }
+        body{
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            font-size: 20px;
+            margin: 5px 20px;
+        }
+        cntr{
+            background-color: rgb(200,200,200);
+            text-align: center;
+            position: absolute;
+            width: calc(100% - 40px);
+            margin-bottom: 30px;
+            color: black
+        }
+        cntr *{
+            color: inherit;
+        }
+        grey{
+            color: rgb(150,150,150)
+        }
+        .first{
+            margin-top: 30px;
+        }
+        option{
+            margin-left: 30px;
+        }
+        .selected{
+            background-color: rgb(200,200,200);
+            color: black;
+        }
+        .bottom{
+            position: absolute;
+            bottom: -15px;
+            display: flex;
+            justify-content: space-between;
+            color: black;
+        }
+        left, right{
+            margin: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <cntr style="color: black">Windows Boot Manager</cntr><br>
+    Выберите операционную систему для запуска<br>
+    <grey>(Выбирать можно стрелочками)</grey><br>
+    <option class="first selected">Winda7</option>
+    <option>Другая система</option>
+    <cntr class="bottom"  style="color: black">
+        <left>ENTER - Выбрать</left>
+        <right>^ V - Изменить выбор</right>
+    </cntr>
+    <script>
+        optionlist = document.getElementsByTagName("option")
+        function keyPressHandler(e){
+            if (e.key == "ArrowUp"){
+                optionlist[0].className = "first selected"
+                optionlist[1].className = ""
+            }
+            if (e.key == "ArrowDown"){
+                optionlist[0].className = "first"
+                optionlist[1].className = "selected"
+            }
+            if (e.key == "Enter"){
+                const selectedhtml = document.getElementsByClassName("selected")[0].innerHTML
+                if(selectedhtml == "Winda7"){
+                    window.location.href = "./simulator.html"
+                }
+                else{
+                    window.location.href = "./custom/index.html"
+                }
+            }
+        }
+        document.addEventListener("keydown", (e) => keyPressHandler(e))
+    </script>
+</body>
+</html>

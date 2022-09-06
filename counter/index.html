@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+    <title>CPS Counter</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="center">
+        <div class="box">
+            Click!
+        </div>
+        <div class="inline">
+            <div class="left">
+                <h1 class="cps">
+                    CPS - 0
+                </h1>
+                <h1 class="clicks">Clicks - 0</h1>
+            </div>
+            <div class="right">
+                <div><input type="checkbox" id="checkclick" checked>Clicks</div>
+                <div><input type="checkbox" id="checkcps" checked>CPS</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var catfetch = new XMLHttpRequest();
+        var url = "https://api.thecatapi.com/v1/images/search";
+        catfetch.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementsByTagName("body")[0].style.backgroundImage = `url(${JSON.parse(this.responseText)[0].url})`;
+            }
+        };
+        catfetch.open("GET", url, true);
+        catfetch.send();
+        const counter = document.getElementsByClassName("cps")[0]
+        const clicks = document.getElementsByClassName("clicks")[0]
+        const cpscheckbox = document.getElementById("checkcps")
+        cpscheckbox.addEventListener('change', () => {
+            if(cpscheckbox.checked){
+                counter.style.color = "black";
+            }
+            else{
+                counter.style.color = "rgba(0,0,0,0)";
+            }
+        });
+        const clickcheckbox = document.getElementById("checkclick")
+        clickcheckbox.addEventListener('change', () => {
+            if(clickcheckbox.checked){
+                clicks.style.color = "black";
+            }
+            else{
+                clicks.style.color = "rgba(0,0,0,0)";
+            }
+        });
+        let cps = 0
+        let clickk = 0
+        function clickhandler(){
+            cps += 1
+        }
+        function click2handler(){
+            clickk += 1
+            clicks.innerHTML = `Clicks - ${clickk}`
+        }
+        function update(){
+            counter.innerHTML = `CPS - ${cps}`
+            cps = 0
+        }
+        setInterval(update, 1000)
+        document.addEventListener("click", clickhandler)
+        document.addEventListener("click", click2handler)
+    </script>
+</body>

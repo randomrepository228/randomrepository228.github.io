@@ -1,0 +1,200 @@
+* {
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: visible;
+}
+
+html,
+body {
+    background-color: rgb(51, 0, 94);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.page {
+    margin: 0 5%;
+    padding: 20px;
+    padding-top: 30px;
+    background-color: rgb(49, 49, 49);
+    box-shadow: 0px 0px 50px 32px rgb(0, 0, 0);
+}
+
+@font-face {
+    font-family: 'Comfortaa';
+    src: url('./font/Comfortaa.woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+h1,
+h2,
+warning {
+    font-family: 'Comfortaa';
+}
+
+.header a {
+    text-decoration: none;
+    background-color: black;
+    padding: 10px;
+    transition: 0.30s ease-in-out;
+    border-radius: 5px;
+    height: 41px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.header a:hover {
+    background-color: red;
+}
+
+.header {
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 3px solid white;
+    position: fixed;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+
+.description {
+    margin-left: 50px;
+}
+
+.description a {
+    color: #6e6eff;
+}
+
+warning {
+    color: red;
+}
+
+.commands,
+.syntax,
+.changelog,
+.main {
+    margin-top: 70px;
+}
+
+.changelog h2 {
+    margin-left: 50px;
+}
+
+.changelog div {
+    margin-left: 100px;
+}
+
+.footer {
+    border-top: 3px solid white;
+    background-color: black;
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.links button {
+    width: 50px;
+    height: 50px;
+}
+
+button {
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+button:hover {
+    background-color: red;
+    cursor: pointer;
+}
+
+button img {
+    width: 40px;
+    height: auto;
+}
+
+.links {
+    display: flex;
+    width: 300px;
+    justify-content: space-around;
+}
+
+.copyright {
+    padding-top: 20px;
+}
+
+sl {
+    font-size: 0px;
+}
+
+yellow {
+    color: yellow;
+}
+
+red {
+    color: red;
+}
+
+h1 {
+    text-align: center;
+}
+
+.link {
+    color: cornflowerblue;
+}
+
+h1 {
+    border: 3px solid white;
+    border-radius: 20px;
+}
+
+.no-border {
+    border: none;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+::-webkit-scrollbar {
+    width: 15px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(49, 49, 49);
+    transition: ease-in-out;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 0, 0);
+}
+::-webkit-scrollbar-track {
+    background-color: rgb(29, 29, 29);
+}
+@media(max-width: 720px) {
+    .header{
+        overflow-x: scroll;
+    }
+    .header a {
+        margin: 0 10px;
+    }
+    .header .left, .header .right{
+        display: none;
+    }
+    .changelog h2 {
+        margin-left: 20px;
+    }
+    .changelog .description {
+        margin-left: 40px;
+    }
+    .commands .description {
+        margin-left: 25px;
+    }
+}

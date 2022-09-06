@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	    <style>
+            body {
+                margin: 0;
+                background-image: url(1.png);
+                background-repeat: no-repeat;
+            }
+            html, body{
+                width: 130px;
+                height: 130px;
+                overflow: hidden;
+            }
+            .clock {
+                display: inline-block;
+                font-size: 250px;
+                height: 1em;
+                width: 1em;
+            }
+            .clock2, .clock__stroke {
+                margin-left: -0.5em;
+                margin-top: -0.5em;
+                position: absolute;
+                display: block;
+                height: 1em;
+                width: 1em;
+                left: 50%;
+                top: 50%;
+            }
+            
+            .hour::after {
+                height: 0.25em;
+            }
+            .minute::after {
+                height: 0.4em;
+            }
+            .minute::after, .hour::after{
+                content: "";
+                background-color: #000;
+                font-size: inherit;
+                position: absolute;
+                margin-bottom: -0.02em;
+                margin-left: 0.005em;
+                width: 0.01em;
+                bottom: 50%;
+                left: 50%;
+            }
+            .second::after {
+                content: "";
+                background-color: #000;
+                margin-bottom: -0.02em;
+                margin-left: -0.005em;
+                font-size: inherit;
+                position: absolute;
+                height: 0.5em;
+                width: 0.01em;
+                bottom: 40%;
+                left: 50%;
+            }
+        </style>
+	<script>
+        seconds = new Date().getSeconds()*6;
+        minutes = new Date().getMinutes()*6+(seconds/60);
+        hours = new Date().getHours()*30+(minutes/12);
+        if (hours > 12) {hours -= 12}
+        document.querySelector("style").innerHTML += `
+        @keyframes rotate-hour {
+            from {transform: rotate(${hours}deg)}
+            to {transform: rotate(${hours + 360}deg)}
+        }
+        @keyframes rotate-minute {
+            from {transform: rotate(${minutes}deg)}
+            to {transform: rotate(${minutes + 360}deg)}
+        }
+        @keyframes rotate-second {
+            from {transform: rotate(${seconds}deg)}
+            to {transform: rotate(${seconds + 360}deg)}
+        }
+        .hour{animation: rotate-hour 43200s linear infinite;}
+        .minute{animation: rotate-minute 3600s linear infinite;}
+        .second{animation: rotate-second 60s linear infinite;}
+        `
+    </script>
+    </head>	
+    <body>
+        <time class="clock" style="transform:scale(0.5); transform-origin:left top">
+            <span class="clock2 hour"></span>
+            <span class="clock2 minute"></span>
+            <span class="clock2 second"></span>
+        </time>
+        <img src="2.png" style="position: fixed; top:0;left:0; z-index:1000">
+    </body>
+</html>

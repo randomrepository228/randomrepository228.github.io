@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Please select boot device:</title>
+    <style>
+        body{
+            background-color: black;
+        }
+        div{
+            background-color: blue;
+            width: fit-content;
+            height: fit-content;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+        .selected{
+            background-color: white;
+            color: blue;
+        }
+        @font-face {
+            font-family: 'System';
+            src: url("./ROM/system2.ttf");
+        }
+        *{
+            font-family: System
+        }
+    </style>
+</head>
+<body>
+    <div>
+        ╔═════════════════════════════════╗<br>
+        ║&nbsp;&nbsp;&nbsp;&nbsp;Please select boot device:&nbsp;&nbsp;&nbsp;║<br>
+        ╠═════════════════════════════════╣<br>
+        ║<v link="./Disk1" class="selected"> Winda Boot Manager&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </v>║<br>
+        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
+        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
+        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
+        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
+        ╠═════════════════════════════════╣<br>
+        ║&nbsp;&nbsp;&nbsp;&nbsp;↑ and ↓ to move selection&nbsp;&nbsp;&nbsp;&nbsp;║<br>
+        ║&nbsp;&nbsp;&nbsp;ENTER to select boot device&nbsp;&nbsp;&nbsp;║<br>
+        ╚═════════════════════════════════╝<br>
+    </div>
+<script>
+    optionlist = document.getElementsByTagName("v")
+    // selected = 0
+    function keyPressHandler(e){
+        // if (e.key == "ArrowUp"){
+        //     if(selected > 0){
+        //         optionlist[selected].className = undefined
+        //         selected -= 1
+        //         optionlist[selected].className = "selected"
+        //     }
+        // }
+        // if (e.key == "ArrowDown"){
+        //     if(selected < optionlist.length-1){
+        //         optionlist[selected].className = undefined
+        //         selected++
+        //         optionlist[selected].className = "selected"
+        //     }
+        // }
+        if (e.key == "Enter"){
+            window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+        }
+    }
+    document.addEventListener("keydown", (e) => keyPressHandler(e))
+</script>
+</body>
+</html>

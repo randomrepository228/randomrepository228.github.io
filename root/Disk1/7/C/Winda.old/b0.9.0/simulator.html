@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Windows simulator</title>
+        <style>
+            body{
+                margin: 0;
+                background-color: black;
+                background-image: url("img/wallpaper.jpg");
+                background-size: 100% 100%;
+                overflow: hidden;
+            }
+        </style>
+        <meta name="title" content="Okna7">
+        <meta property="og:title" content="Okna7">
+        <meta name="description" content="Okna7 is lightweight windows 7 simulator written in html, css, and js">
+        <meta property="og:description" content="Okna7 is lightweight windows 7 simulator written in html, css, and js">
+        <link rel="stylesheet" href="aero.css">
+        <script>
+            did = false;
+        </script>
+    </head>
+    <body onmousemove="move(event);">
+        <div class="explorer">
+            <div class="icons"></div>
+            <bottomright>Okna7<br>Version 0.9.0 Beta</bottomright>
+            <div class="taskbar"></div>
+            <script src="explorer.js"></script>
+        </div>
+        <script src="ntoskrnl.js" class="kernel"></script>
+    </body>
+</html>
