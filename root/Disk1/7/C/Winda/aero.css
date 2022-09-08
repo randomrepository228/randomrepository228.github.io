@@ -35,6 +35,9 @@ html, body{
     justify-content: space-around;
     padding-top: 0;
 }
+.window *{
+    font-size: 14px;
+}
 .topbar{
     display: flex;
     justify-content: space-between;
@@ -179,9 +182,17 @@ bottomright{
     bottom: 2px;
     width: 58px;
     height: 100%;
-    border: 1px solid black;
+    border: 1px solid rgba(255,255,255,0.5);;
     border-radius: 3px;
     margin-right: 2px;
+    background-color: rgba(255,255,255,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.window-tray img{
+    height: 30px;
+    width: 30px;
 }
 .time{
     color: white;
@@ -279,4 +290,15 @@ bottomright{
 }
 .winapi_shadow{
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
+}
+left{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+left img{
+    width: 15px !important;
+    height: 15px !important;
+    margin: 3px;
+    margin-left: 0;
 }
