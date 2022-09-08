@@ -154,6 +154,7 @@ bottomright{
     position: fixed;
     bottom: 0px;
     width: 100%;
+    backdrop-filter: blur(5px);
 }
 .taskbar-btn{
     object-fit: cover;
@@ -283,10 +284,12 @@ bottomright{
     padding: 5px;
     background-color: rgba(61, 57, 117, 0.3);
     border: 1px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(5px);
 }
 .winapi_transparent_nomargin{
     background-color: rgba(61, 57, 117, 0.3);
     border: 1px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(5px);
 }
 .winapi_shadow{
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
