@@ -1,6 +1,6 @@
 /* Fonts, cursor, and disable scale */
 *{
-    font-family: system-ui;
+    font-family: system-ui, 'sans-serif', 'Segoe ui';
     touch-action: manipulation;
     cursor: default;
 }
