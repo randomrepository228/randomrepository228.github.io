@@ -22,6 +22,7 @@ body{
     background-size: cover;
     background-color: black;
     color:black;
+    margin:0;
 }
 .center{
     display: flex;
