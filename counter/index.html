@@ -23,6 +23,8 @@
         </div>
     </div>
     <script>
+        document.body.style.height = `${window.innerHeight}px`;
+        addEventListener('resize', (event) => { document.body.style.height = `${window.innerHeight}px` });
         var catfetch = new XMLHttpRequest();
         var url = "https://api.thecatapi.com/v1/images/search";
         catfetch.onreadystatechange = function() {
