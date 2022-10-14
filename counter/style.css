@@ -22,7 +22,7 @@ body{
     background-size: cover;
     background-color: black;
     color:black;
-    margin:0;
+    margin:0px;
 }
 .center{
     display: flex;
