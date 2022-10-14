@@ -1,61 +1,110 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Рандомный репозиторий</title>
-        <style>
-            body{
-                margin: 0;
-                background-color: rgb(50,50,50);
-                font-family: "Segoe UI", "sans-serif";
-            }
-            .header{
-                display: flex;
-                background-color: rgb(99, 99, 99);
-                justify-content: space-around;
-                align-items: center;
-                height: 50px;
-            }
-            .header a{
-                height: 50px;
-                background-color: black;
-                width: 25%;
-                border-right: 1px solid gray;
-                border-left: 1px solid gray;
-                transition: 0.2s;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 20px;
-                text-decoration: none;
-                color: white;
-                font-weight: 500;
-            }
-            .header a:hover{
-                background-color: darkblue;
-            }
-            h1{
-                text-align: center;
-                color: white;
-                width: fit-content;
-                transition: 0.1s ease-in-out;
-                margin: auto;
-                margin-top: 20px;
-            }
-            h1:hover{
-                color: transparent;
-                border: 2px dashed white;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <a href="./bot/">Бот</a>
-            <a href="./root/">Winda</a>
-            <a href="./snake/">Змейка</a>
-            <a href="./counter/">CPS счетчик</a>
+
+<head>
+    <title>Рандомный репозиторий</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: rgb(50, 50, 50);
+            font-family: "Segoe UI", "sans-serif";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0px 0px 50px 23px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            width: 80vw;
+        }
+
+        .list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 0px 50px 23px rgba(120, 120, 120, 1), inset 0px 0px 22px 5px rgba(120, 120, 120, 1);
+        }
+        .header a {
+            height: 300px;
+            width: 300px;
+            background-color: black;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            border-radius: 25px;
+            text-shadow: grey 0 0 5px,grey 0 0 5px,grey 0 0 5px;
+        }
+        .header a:hover{
+            height: 290px;
+            width: 290px;
+            border: 5px solid rgb(50, 50, 50);
+        }
+        #n1:hover {
+            background-color: rgb(0, 0, 77);
+            box-shadow: 0px 0px 79px 48px rgba(0, 30, 255, 1);
+        }
+
+        #n2:hover {
+            background-color: rgb(0, 61, 0);
+            box-shadow: 0px 0px 79px 48px rgb(0, 255, 42);
+        }
+
+        #n3:hover {
+            background-color: rgb(63, 0, 0);
+            box-shadow: 0px 0px 79px 48px rgb(255, 0, 0);
+        }
+
+        #n4:hover {
+            background-color: rgb(77, 62, 0);
+            box-shadow: 0px 0px 79px 48px rgb(255, 251, 0);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            width: fit-content;
+            transition: 0.1s ease-in-out;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        h1:hover {
+            color: transparent;
+            border: 2px dashed white;
+        }
+        .list div{
+            height: 300px;
+            width: 300px;
+            margin: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="list">
+            <div><a id="n1" href="./bot/">Бот</a></div>
+            <div><a id="n2" href="./root/">Winda</a></div>
+            <div><a id="n3" href="./snake/">Змейка</a></div>
+            <div><a id="n4" href="./counter/">CPS счетчик</a></div>
         </div>
-        <h1>
-            Тут пока ничего нет
-        </h1>
-    </body>
+    </div>
+    <script>
+        document.body.style.height = `${window.innerHeight}px`
+        addEventListener('resize', (event) => { document.body.style.height = `${window.innerHeight}px` });
+    </script>
+</body>
+
 </html>
