@@ -12,8 +12,11 @@
             justify-content: center;
             align-items: center;
             box-shadow: inset 0px 0px 50px 23px rgba(0, 0, 0, 0.5);
+            background-color: transparent;
         }
-
+        html{
+            background-color: rgb(50,50,50);
+        }
         .header {
             display: flex;
             justify-content: center;
@@ -26,7 +29,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0px 0px 50px 23px rgba(120, 120, 120, 1), inset 0px 0px 22px 5px rgba(120, 120, 120, 1);
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
         }
 
         .header a {
@@ -71,20 +75,6 @@
             box-shadow: 0px 0px 79px 48px rgb(255, 251, 0);
         }
 
-        h1 {
-            text-align: center;
-            color: white;
-            width: fit-content;
-            transition: 0.1s ease-in-out;
-            margin: auto;
-            margin-top: 20px;
-        }
-
-        h1:hover {
-            color: transparent;
-            border: 2px dashed white;
-        }
-
         .list div {
             height: 300px;
             width: 300px;
@@ -103,14 +93,24 @@
                 justify-content: center;
                 align-items: center;
             }
-            .header a{
+
+            .header a {
                 height: 150px;
                 width: 150px;
             }
+
             .header a:hover {
                 height: 140px;
                 width: 140px;
             }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -999;
         }
     </style>
 </head>
@@ -124,9 +124,30 @@
             <div><a id="n4" href="./counter/">CPS счетчик</a></div>
         </div>
     </div>
+    <canvas class="bg" id="canvas"></canvas>
     <script>
+        var pos;
         document.body.style.height = `${window.innerHeight}px`
-        addEventListener('resize', (event) => { document.body.style.height = `${window.innerHeight}px` });
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight
+        addEventListener('resize', (event) => { document.body.style.height = `${window.innerHeight}px`; canvas.width = window.innerWidth; canvas.height = window.innerHeight });
+        let ctx = canvas.getContext("2d")
+        function render() {
+            ctx.beginPath();
+            // ctx.clearRect(0, 0, canvas.width, canvas.height)
+            ctx.closePath();
+            ctx.beginPath();
+            const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
+            gradient.addColorStop(0, "green");
+            gradient.addColorStop(1, "transparent");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.closePath();
+        }
+        document.body.onmousemove = (e) => {
+            pos = { "x": event.clientX, "y": event.clientY };
+            render()
+        }
     </script>
 </body>
 
