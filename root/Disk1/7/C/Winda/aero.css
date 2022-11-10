@@ -3,6 +3,7 @@
     font-family: system-ui, 'sans-serif', 'Segoe ui';
     touch-action: manipulation;
     cursor: default;
+    color: black
 }
 html, body{
     height: 100%;
@@ -13,18 +14,28 @@ html, body{
 .dash{
     border-bottom-left-radius: 5px;
     background: -webkit-linear-gradient(90deg, rgba(0,161,255,1) 0, rgba(255,255,255,0.2) 51%, rgba(102,168,255,1) 51%, rgba(201,233,255,0.8) 100%), #3b3be5;
-    opacity: 0.9;
     font-weight: 900;
 }
 .x{
     border-bottom-right-radius: 5px;
     background: linear-gradient(0deg, rgba(255,0,0,1) 0, rgba(255,255,255,0.2) 51%, rgba(255,100,100,1) 51%, rgba(255,200,200,0.8) 100%), #e74c3c;
-    opacity: 0.9;
     width: 47% !important;
 }
 .square{
     background: -webkit-linear-gradient(90deg, rgba(0,161,255,1) 0, rgba(255,255,255,0.2) 51%, rgba(102,168,255,1) 51%, rgba(201,233,255,0.8) 100%), #3b3be5;
+}
+.dash, .x, .square{
     opacity: 0.9;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0px 0px 13px 4px transparent;
+}
+.dash:hover, .square:hover{
+    box-shadow: 0px 0px 13px 4px rgba(96, 186, 255, 1);
+    z-index: 999;
+}
+.x:hover{
+    box-shadow: 0px 0px 13px 4px rgb(255, 75, 75);
+    z-index: 999;
 }
 .window{
     border-radius: 10px;
