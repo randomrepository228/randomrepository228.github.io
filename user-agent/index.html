@@ -58,10 +58,11 @@
             return d;
         }
         function c(a){
+            a = a.toLowerCase()
             if(a.indexOf("x64") === -1){
                 return "32 бита"
             }
-            else if(a.indexOf("Android") !== -1){
+            else if(a.indexOf("android") !== -1){
                 return "64 бит"
             }
             else{
