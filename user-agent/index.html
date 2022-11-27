@@ -1,73 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Системная информация</title>
+    <title>Рандомный репозиторий</title>
     <style>
-        body{
+        *{
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background-color: rgb(50, 50, 50);
+            font-family: "Segoe UI", "sans-serif";
+            background-color: transparent;
+        }
+        #bodybg{
+            position: fixed;
+            width: 100%;
+            box-shadow: inset 0px 0px 50px 23px rgba(0, 0, 0, 0.5);
+        }
+        html {
+            background-color: rgb(50, 50, 50);
+        }
+
+        .list {
+            border-radius: 5px;
+            width: 80vw;
             text-align: center;
-            margin-top: 10vh;
-            font-size: 30px;
-            line-height: 50px;
-            height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(blue, cyan);
+        }
+        .main{
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 50px;
+        }
+        .list a {
+            height: 200px;
+            width: 300px;
+            background-color: black;
+            transition: 0.2s;
+            font-size: 20px;
+            text-decoration: none;
             color: white;
-            font-family: sans-serif;
+            font-weight: 500;
+            border-radius: 25px;
+            text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
+            cursor: default;
+            display: inline-block;
+            margin: 2%;
+            padding-top: 90px;
         }
-        @keyframes kitten{
-            to {
-                opacity: 1;
-                transform: none;
-            }
+
+        #n1:hover {
+            background-color: rgb(0, 0, 77);
+            box-shadow: 0px 0px 79px 48px rgba(0, 30, 255, 1);
         }
-        div{
-            transform: translateY(calc(-10vh - 100px));
-            opacity: 0;
-            animation: kitten 1s forwards;
+
+        #n2:hover {
+            background-color: rgb(0, 61, 0);
+            box-shadow: 0px 0px 79px 48px rgb(0, 255, 42);
         }
+
+        #n3:hover {
+            background-color: rgb(63, 0, 0);
+            box-shadow: 0px 0px 79px 48px rgb(255, 0, 0);
+        }
+
+        #n4:hover {
+            background-color: rgb(77, 62, 0);
+            box-shadow: 0px 0px 79px 48px rgb(255, 251, 0);
+        }
+        #n5:hover {
+            background-color: rgb(104, 0, 95);
+            box-shadow: 0px 0px 79px 48px rgb(255, 0, 212);
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -999;
+        }
+        #bodybg{
+            position: fixed;
+        }
+        .title{
+            text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
+            color: white;
+            text-align: center;
+        }
+        
     </style>
 </head>
+
 <body>
+    <div id="bodybg"></div>
+    <div class="main">
+        <h1 class="title">
+            Какой-то сайт, я хз
+        </h1>
+        <div class="list">
+            <a id="n1" href="./bot/">Бот</a>
+            <a id="n2" href="./root/">Winda</a>
+            <a id="n3" href="./snake/">Змейка</a>
+            <a id="n4" href="./counter/">CPS счетчик</a>
+            <a id="n5" href="./user-agent/">Системная информация</a>
+        </div>
+    </div>
+    <canvas class="bg" id="canvas"></canvas>
     <script>
-        function a(b){
-            b = b.toLowerCase();
-            let c = "Не найдено";
-            const d = ["windows nt 10", "windows nt 6.3", "windows nt 6.2", "windows nt 6.1", "windows nt 6.0", "windows nt 5.2", "windows nt 5.1", "windows xp", "windows nt 5.0", "windows me", "win98", "win95", "win16", "macintosh", "mac os x", "mac_powerpc", "android", "linux", "ubuntu", "iphone", "ipod", "ipad", "blackberry", "webos"]
-            const e = ["Windows 10/Windows 11", "Windows 8.1", "Windows 8", "Windows 7", "Windows Vista", "Windows XP", "Windows XP", "Windows XP", "Windows 2000", "Windows ME", "Windows 98", "Windows 95", "Windows 3.11", "Mac OS X", "Mac OS X", "Mac OS 9", "Android", "Linux", "Ubuntu", "iPhone", "iPod", "iPad", "BlackBerry", "Mobile"]
-            for (let i = 0; i < d.length; i++) {
-                if (b.indexOf(d[i]) !== -1) {
-                    c = e[i];
-                    break;
-                }
-            }
-            return c;
+        var pos;
+        bodybg.style.height = `${window.innerHeight}px`
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight
+        addEventListener('resize', (event) => { bodybg.style.height = `${window.innerHeight}px`; canvas.width = window.innerWidth; canvas.height = window.innerHeight });
+        let ctx = canvas.getContext("2d")
+        function render() {
+                ctx.beginPath();
+                ctx.closePath();
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
+                gradient.addColorStop(0, "lime");
+                gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.closePath();
         }
-        function b(a){
-            a = a.toLowerCase()
-            const b = ["brave", "trident", "msie", "opera", "chromium", "edge", "chrome", "firefox", "version"]
-            const c = ["Brave", "Internet Explorer", "Internet Explorer", "Opera", "Google Chromium", "Microsoft Edge", "Google Chrome", "Mozilla Firefox", "Apple Safari"]
-            let d = "Не найдено"
-            for (let i = 0; i < b.length; i++) {
-                if (a.indexOf(b[i]) !== -1) {
-                    d = c[i];
-                    break;
-                }
-            }
-            return d;
+        document.body.onmousemove = (e) => {
+            pos = { "x": event.clientX, "y": event.clientY };
+            render()
         }
-        function c(a){
-            if(a.indexOf("x64") === -1){
-                return "32 бита"
-            }
-            else{
-                return "64 бит"
-            }
-        }
-        document.body.innerHTML = 
-        `<div>Система: ${a(navigator.userAgent)} ${c(navigator.userAgent)}<br>` +
-        `Браузер: ${b(navigator.userAgent)}<br></div>`
     </script>
 </body>
+
 </html>
