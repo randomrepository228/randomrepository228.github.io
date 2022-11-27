@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Системная информация</title>
     <style>
         body{
@@ -59,6 +59,7 @@
         }
         function c(a){
             if(a.indexOf("Android") !== -1){
+                document.body.style.fontSize = "15px"
                 return "Неизвестно бит"
             }
             if(a.indexOf("x64") === -1){
