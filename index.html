@@ -4,55 +4,51 @@
 <head>
     <title>Рандомный репозиторий</title>
     <style>
+        *{
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
             background-color: rgb(50, 50, 50);
             font-family: "Segoe UI", "sans-serif";
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 0px 0px 50px 23px rgba(0, 0, 0, 0.5);
             background-color: transparent;
         }
-        html{
-            background-color: rgb(50,50,50);
+        #bodybg{
+            position: fixed;
+            width: 100%;
+            box-shadow: inset 0px 0px 50px 23px rgba(0, 0, 0, 0.5);
         }
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-            width: 80vw;
+        html {
+            background-color: rgb(50, 50, 50);
         }
 
         .list {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.5);
             border-radius: 5px;
+            width: 80vw;
+            text-align: center;
         }
-
-        .header a {
-            height: 300px;
+        .main{
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 50px;
+        }
+        .list a {
+            height: 200px;
             width: 300px;
             background-color: black;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 20px;
             text-decoration: none;
             color: white;
             font-weight: 500;
             border-radius: 25px;
             text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
-        }
-
-        .header a:hover {
-            height: 290px;
-            width: 290px;
-            border: 5px solid rgb(50, 50, 50);
+            cursor: default;
+            display: inline-block;
+            margin: 2%;
+            padding-top: 90px;
         }
 
         #n1:hover {
@@ -74,37 +70,10 @@
             background-color: rgb(77, 62, 0);
             box-shadow: 0px 0px 79px 48px rgb(255, 251, 0);
         }
-
-        .list div {
-            height: 300px;
-            width: 300px;
-            margin: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        #n5:hover {
+            background-color: rgb(104, 0, 95);
+            box-shadow: 0px 0px 79px 48px rgb(255, 0, 212);
         }
-
-        @media (max-width: 1366px) {
-            .list div {
-                height: 150px;
-                width: 150px;
-                margin: 30px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .header a {
-                height: 150px;
-                width: 150px;
-            }
-
-            .header a:hover {
-                height: 140px;
-                width: 140px;
-            }
-        }
-
         canvas {
             position: fixed;
             top: 0;
@@ -112,37 +81,50 @@
             pointer-events: none;
             z-index: -999;
         }
+        #bodybg{
+            position: fixed;
+        }
+        .title{
+            text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
+            color: white;
+            text-align: center;
+        }
+        
     </style>
 </head>
 
 <body>
-    <div class="header">
+    <div id="bodybg"></div>
+    <div class="main">
+        <h1 class="title">
+            Какой-то сайт, я хз
+        </h1>
         <div class="list">
-            <div><a id="n1" href="./bot/">Бот</a></div>
-            <div><a id="n2" href="./root/">Winda</a></div>
-            <div><a id="n3" href="./snake/">Змейка</a></div>
-            <div><a id="n4" href="./counter/">CPS счетчик</a></div>
+            <a id="n1" href="./bot/">Бот</a>
+            <a id="n2" href="./root/">Winda</a>
+            <a id="n3" href="./snake/">Змейка</a>
+            <a id="n4" href="./counter/">CPS счетчик</a>
+            <a id="n5" href="./user-agent/">Системная информация</a>
         </div>
     </div>
     <canvas class="bg" id="canvas"></canvas>
     <script>
         var pos;
-        document.body.style.height = `${window.innerHeight}px`
+        bodybg.style.height = `${window.innerHeight}px`
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight
-        addEventListener('resize', (event) => { document.body.style.height = `${window.innerHeight}px`; canvas.width = window.innerWidth; canvas.height = window.innerHeight });
+        addEventListener('resize', (event) => { bodybg.style.height = `${window.innerHeight}px`; canvas.width = window.innerWidth; canvas.height = window.innerHeight });
         let ctx = canvas.getContext("2d")
         function render() {
-            ctx.beginPath();
-            // ctx.clearRect(0, 0, canvas.width, canvas.height)
-            ctx.closePath();
-            ctx.beginPath();
-            const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
-            gradient.addColorStop(0, "lime");
-            gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.closePath();
+                ctx.beginPath();
+                ctx.closePath();
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
+                gradient.addColorStop(0, "lime");
+                gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.closePath();
         }
         document.body.onmousemove = (e) => {
             pos = { "x": event.clientX, "y": event.clientY };

@@ -1,9 +1,86 @@
 <!DOCTYPE html>
+
 <head>
     <title>CPS Counter</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        *:hover {
+            cursor: default;
+        }
+
+        * {
+            touch-action: manipulation;
+            font-family: sans-serif;
+        }
+
+        .box {
+            width: 300px;
+            height: 300px;
+            border: 3px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-color: black;
+            color: black;
+            margin: 0px;
+        }
+
+        .center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid gray;
+            padding: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 450px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 1081px) {
+            .center {
+                transform: scale(1.5);
+            }
+        }
+
+        ::selection {
+            background: none;
+        }
+
+        .inline {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin-left: 10px;
+        }
+
+        .left {
+            text-align: center;
+        }
+
+        .right div input {
+            transform: scale(1.8);
+            margin: 10px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="center">
         <div class="box">
@@ -27,7 +104,7 @@
         addEventListener('resize', (event) => { document.body.style.height = `${window.innerHeight}px` });
         var catfetch = new XMLHttpRequest();
         var url = "https://api.thecatapi.com/v1/images/search";
-        catfetch.onreadystatechange = function() {
+        catfetch.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementsByTagName("body")[0].style.backgroundImage = `url(${JSON.parse(this.responseText)[0].url})`;
             }
@@ -38,32 +115,32 @@
         const clicks = document.getElementsByClassName("clicks")[0]
         const cpscheckbox = document.getElementById("checkcps")
         cpscheckbox.addEventListener('change', () => {
-            if(cpscheckbox.checked){
+            if (cpscheckbox.checked) {
                 counter.style.color = "black";
             }
-            else{
+            else {
                 counter.style.color = "rgba(0,0,0,0)";
             }
         });
         const clickcheckbox = document.getElementById("checkclick")
         clickcheckbox.addEventListener('change', () => {
-            if(clickcheckbox.checked){
+            if (clickcheckbox.checked) {
                 clicks.style.color = "black";
             }
-            else{
+            else {
                 clicks.style.color = "rgba(0,0,0,0)";
             }
         });
         let cps = 0
         let clickk = 0
-        function clickhandler(){
+        function clickhandler() {
             cps += 1
         }
-        function click2handler(){
+        function click2handler() {
             clickk += 1
             clicks.innerHTML = `Clicks - ${clickk}`
         }
-        function update(){
+        function update() {
             counter.innerHTML = `CPS - ${cps}`
             cps = 0
         }

@@ -16,8 +16,14 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
+            white-space: pre;
+            line-height: 16px;
         }
-        .selected{
+        /* [a=s]{
+            background-color: white;
+            color: blue;
+        } */
+        o{
             background-color: white;
             color: blue;
         }
@@ -31,28 +37,38 @@
     </style>
 </head>
 <body>
-    <div>
-        ╔═════════════════════════════════╗<br>
-        ║&nbsp;&nbsp;&nbsp;&nbsp;Please select boot device:&nbsp;&nbsp;&nbsp;║<br>
-        ╠═════════════════════════════════╣<br>
-        ║<v link="./Disk1" class="selected"> Winda Boot Manager&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </v>║<br>
-        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
-        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
-        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
-        ║ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
-        ╠═════════════════════════════════╣<br>
-        ║&nbsp;&nbsp;&nbsp;&nbsp;↑ and ↓ to move selection&nbsp;&nbsp;&nbsp;&nbsp;║<br>
-        ║&nbsp;&nbsp;&nbsp;ENTER to select boot device&nbsp;&nbsp;&nbsp;║<br>
-        ╚═════════════════════════════════╝<br>
-    </div>
+    <!-- <div>╔═════════════════════════════════╗
+║    Please select boot device:   ║
+╠═════════════════════════════════╣
+║<o l="./Disk1"a="s"> Winda Boot Manager              </o>║
+║                                 ║
+║                                 ║
+║                                 ║
+║                                 ║
+╠═════════════════════════════════╣
+║    ↑ and ↓ to move selection    ║
+║   ENTER to select boot device   ║
+╚═════════════════════════════════╝</div> -->
+<div>╔═════════════════════════════════╗
+║    Please select boot device:   ║
+╠═════════════════════════════════╣
+║<o> Winda Boot Manager              </o>║
+║                                 ║
+║                                 ║
+║                                 ║
+║                                 ║
+╠═════════════════════════════════╣
+║    ↑ and ↓ to move selection    ║
+║   ENTER to select boot device   ║
+╚═════════════════════════════════╝</div>
 <script>
-    optionlist = document.getElementsByTagName("v")
+    // optionlist = document.getElementsByTagName("v")
     // selected = 0
     function keyPressHandler(e){
         // if (e.key == "ArrowUp"){
         //     if(selected > 0){
         //         optionlist[selected].className = undefined
-        //         selected -= 1
+        //         selected--
         //         optionlist[selected].className = "selected"
         //     }
         // }
@@ -64,10 +80,11 @@
         //     }
         // }
         if (e.key == "Enter"){
-            window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+            // window.location.href = s.getAttribute("l")
+            window.location.href = "./Disk1"
         }
     }
-    document.addEventListener("keydown", (e) => keyPressHandler(e))
+    document.addEventListener("keydown", keyPressHandler)
 </script>
 </body>
 </html>

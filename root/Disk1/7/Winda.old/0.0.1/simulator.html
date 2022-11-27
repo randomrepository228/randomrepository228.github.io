@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Windows simulator</title>
+        <style>
+            .window{
+                border: 2px solid;
+                width: 300px;
+                height: 300px;
+                position: absolute;
+                user-select: none;
+                padding: 5px;
+                display: flex;
+                flex-direction: column;
+            }
+            .topbar{
+                text-align: right;
+            }
+            .window:hover{
+                cursor: default;
+            }
+            .content{
+                border: 2px solid;
+                width: 300px;
+                height: 280px;
+                content: "test";
+                min-height: 280px;
+            }
+            body{
+                margin: 0;
+                background-image: url("wallpaper.jpg");
+                background-size: 100% 100%;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body onmousemove="move(event)">
+        <div class="explorer">
+            <script src="explorer.js"></script>
+        </div>
+        <div class="window">
+            <div class="topbar" id="main" onmousedown="loop = true;prevx=event.clientX-window2.getBoundingClientRect().x;prevy=event.clientY-window2.getBoundingClientRect().y" onmouseup="loop = false;">
+                - [] X
+            </div>
+            <div class="content">This is version 0.0.1</div>
+        </div>
+        <script>
+            loop = false;
+            prevx = 150;
+            prevy = 150;
+            const topbar = document.getElementById("main");
+            const window2 = document.querySelector(".window");
+            function move(e){
+                if(loop){
+                    window2.style.left = `${e.clientX - prevx}px`
+                    window2.style.top = `${e.clientY - prevy}px`
+                }
+            }
+        </script>
+    </body>
+</html>

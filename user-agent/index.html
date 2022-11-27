@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Системная информация</title>
+    <style>
+        body{
+            text-align: center;
+            margin-top: 10vh;
+            font-size: 30px;
+            line-height: 50px;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(blue, cyan);
+            color: white;
+            font-family: sans-serif;
+        }
+        @keyframes kitten{
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        div{
+            transform: translateY(calc(-10vh - 100px));
+            opacity: 0;
+            animation: kitten 1s forwards;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function a(b){
+            b = b.toLowerCase();
+            let c = "Не найдено";
+            const d = ["windows nt 10", "windows nt 6.3", "windows nt 6.2", "windows nt 6.1", "windows nt 6.0", "windows nt 5.2", "windows nt 5.1", "windows xp", "windows nt 5.0", "windows me", "win98", "win95", "win16", "macintosh", "mac os x", "mac_powerpc", "android", "linux", "ubuntu", "iphone", "ipod", "ipad", "blackberry", "webos"]
+            const e = ["Windows 10/Windows 11", "Windows 8.1", "Windows 8", "Windows 7", "Windows Vista", "Windows XP", "Windows XP", "Windows XP", "Windows 2000", "Windows ME", "Windows 98", "Windows 95", "Windows 3.11", "Mac OS X", "Mac OS X", "Mac OS 9", "Android", "Linux", "Ubuntu", "iPhone", "iPod", "iPad", "BlackBerry", "Mobile"]
+            for (let i = 0; i < d.length; i++) {
+                if (b.indexOf(d[i]) !== -1) {
+                    c = e[i];
+                    break;
+                }
+            }
+            return c;
+        }
+        function b(a){
+            a = a.toLowerCase()
+            const b = ["brave", "trident", "msie", "opera", "chromium", "edge", "chrome", "firefox", "version"]
+            const c = ["Brave", "Internet Explorer", "Internet Explorer", "Opera", "Google Chromium", "Microsoft Edge", "Google Chrome", "Mozilla Firefox", "Apple Safari"]
+            let d = "Не найдено"
+            for (let i = 0; i < b.length; i++) {
+                if (a.indexOf(b[i]) !== -1) {
+                    d = c[i];
+                    break;
+                }
+            }
+            return d;
+        }
+        function c(a){
+            if(a.indexOf("x64") === -1){
+                return "32 бита"
+            }
+            else{
+                return "64 бит"
+            }
+        }
+        document.body.innerHTML = 
+        `<div>Система: ${a(navigator.userAgent)} ${c(navigator.userAgent)}<br>` +
+        `Браузер: ${b(navigator.userAgent)}<br></div>`
+    </script>
+</body>
+</html>

@@ -55,32 +55,31 @@
     <cntr style="color: black">Windows Boot Manager</cntr><br>
     Выберите операционную систему для запуска<br>
     <grey>(Выбирать можно стрелочками)</grey><br>
-    <option link="./7/Winda" class="selected first">Winda7</option>
-    <!-- <option link="../">Другая система</option> -->
+    <option class="first selected">Winda7</option>
+    <option>Другая система</option>
     <cntr class="bottom"  style="color: black">
         <left>ENTER - Выбрать</left>
-        <right>↑ ↓ - Изменить выбор</right>
+        <right>^ V - Изменить выбор</right>
     </cntr>
     <script>
         optionlist = document.getElementsByTagName("option")
-        selected = 0
         function keyPressHandler(e){
             if (e.key == "ArrowUp"){
-                if(selected > 0){
-                    optionlist[selected].className = undefined
-                    selected -= 1
-                    optionlist[selected].className = "selected"
-                }
+                optionlist[0].className = "first selected"
+                optionlist[1].className = ""
             }
             if (e.key == "ArrowDown"){
-                if(selected < optionlist.length-1){
-                    optionlist[selected].className = undefined
-                    selected++
-                    optionlist[selected].className = "selected"
-                }
+                optionlist[0].className = "first"
+                optionlist[1].className = "selected"
             }
             if (e.key == "Enter"){
-                window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+                const selectedhtml = document.getElementsByClassName("selected")[0].innerHTML
+                if(selectedhtml == "Winda7"){
+                    window.location.href = "./simulator.html"
+                }
+                else{
+                    window.location.href = "./custom/index.html"
+                }
             }
         }
         document.addEventListener("keydown", (e) => keyPressHandler(e))

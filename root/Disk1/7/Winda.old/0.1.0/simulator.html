@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>Windows simulator</title>
+        <style>
+            body{
+                margin: 0;
+                background-color: black;
+                background-image: url("img/wallpaper.jpg");
+                background-size: 100% 100%;
+                overflow: hidden;
+            }
+        </style>
+        <link rel="stylesheet" href="aero.css">
+    </head>
+    <body onmousemove="move(event)">
+        <div class="window">
+            <div class="topbar" id="main" onmousedown="loop = true;prevx=event.clientX-window2.getBoundingClientRect().x;prevy=event.clientY-window2.getBoundingClientRect().y" onmouseup="loop = false;">
+                Welcome
+                <div class="buttons">
+                    <div class="dash">-</div>
+                    <div class="square">&#9723;</div>
+                    <div class="x" onclick="closeWindow(window2)">✖</div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="text">Welcome to Windows Alpha!</div>
+                <div class="footer">
+                    <button class="windowbtn" onclick="closeWindow(window2)">OK</button>
+                </div>
+            </div>
+        </div>
+        <div class="explorer">
+            <script src="explorer.js"></script>
+        </div>
+        <script src="ntoskrnl.js"></script>
+    </body>
+</html>
