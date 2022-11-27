@@ -58,15 +58,14 @@
             return d;
         }
         function c(a){
-            a = a.toLowerCase()
+            if(a.indexOf("Android") !== -1){
+                return "Неизвестно бит"
+            }
             if(a.indexOf("x64") === -1){
                 return "32 бита"
             }
-            else if(a.indexOf("android") !== -1){
-                return "64 бит"
-            }
             else{
-                return "Неизвестно бит"
+                return "64 бит"
             }
         }
         document.body.innerHTML = 
