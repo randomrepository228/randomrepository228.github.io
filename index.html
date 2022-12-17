@@ -50,7 +50,9 @@
             margin: 2%;
             padding-top: 90px;
         }
-
+        .list a:hover{
+            cursor: pointer;
+        }
         #n1:hover {
             background-color: rgb(0, 0, 77);
             box-shadow: 0px 0px 79px 48px rgba(0, 30, 255, 1);
@@ -120,8 +122,9 @@
                 ctx.closePath();
                 ctx.beginPath();
                 const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
-                gradient.addColorStop(0, "lime");
-                gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
+                let rand = parseInt(Math.random() * 360)
+                gradient.addColorStop(0, `hsl(${rand}deg, 100%, 50%)`);
+                gradient.addColorStop(1, `hsla(${rand}deg, 100%, 50%, 0)`);
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.closePath();
