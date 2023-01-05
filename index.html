@@ -117,17 +117,17 @@
         canvas.height = window.innerHeight
         addEventListener('resize', (event) => { bodybg.style.height = `${window.innerHeight}px`; canvas.width = window.innerWidth; canvas.height = window.innerHeight });
         let ctx = canvas.getContext("2d")
+        let deg = 0;
         function render() {
-                ctx.beginPath();
-                ctx.closePath();
-                ctx.beginPath();
-                const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
-                let rand = parseInt(Math.random() * 360)
-                gradient.addColorStop(0, `hsl(${rand}deg, 100%, 50%)`);
-                gradient.addColorStop(1, `hsla(${rand}deg, 100%, 50%, 0)`);
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.closePath();
+            ctx.beginPath();
+            const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 50);
+            gradient.addColorStop(0, `hsl(${deg}deg, 100%, 50%)`);
+            gradient.addColorStop(1, `hsla(${deg}deg, 100%, 50%, 0)`);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.closePath();
+            deg += 5;
+            if(deg > 360) deg = 0;
         }
         document.body.onmousemove = (e) => {
             pos = { "x": event.clientX, "y": event.clientY };
