@@ -85,6 +85,7 @@
         }
         #bodybg{
             position: fixed;
+            pointer-events: none;
         }
         .title{
             text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
@@ -129,7 +130,7 @@
             deg += 5;
             if(deg > 360) deg = 0;
         }
-        document.body.onmousemove = (e) => {
+        onmousemove = (e) => {
             pos = { "x": event.clientX, "y": event.clientY };
             render()
         }
