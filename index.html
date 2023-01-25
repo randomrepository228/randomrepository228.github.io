@@ -27,12 +27,17 @@
             width: 80vw;
             text-align: center;
         }
+        @keyframes down{
+            from{transform: translate(-50%, calc(-100% - 50px))}
+            to{transform: translate(-50%, 0)}
+        }
         .main{
             background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, calc(-100% - 50px));
             margin-top: 50px;
+            animation: down 0.5s ease-out forwards;
         }
         .list a {
             height: 200px;
@@ -92,8 +97,8 @@
             color: white;
             text-align: center;
         }
-        
     </style>
+    <style id="hover"></style>
 </head>
 
 <body>
@@ -103,11 +108,11 @@
             Какой-то сайт, я хз
         </h1>
         <div class="list">
-            <a id="n1" href="./bot/">Бот</a>
-            <a id="n2" href="./root/">Winda</a>
-            <a id="n3" href="./snake/">Змейка</a>
-            <a id="n4" href="./counter/">CPS счетчик</a>
-            <a id="n5" href="./user-agent/">Системная информация</a>
+            <a href="./bot/">Бот</a>
+            <a href="./root/">Winda</a>
+            <a href="./snake/">Змейка</a>
+            <a href="./counter/">CPS счетчик</a>
+            <a href="./user-agent/">Системная информация</a>
         </div>
     </div>
     <canvas class="bg" id="canvas"></canvas>
@@ -132,7 +137,19 @@
         }
         onmousemove = (e) => {
             pos = { "x": event.clientX, "y": event.clientY };
-            render()
+            render();
+        }
+        setInterval(changeColor, 500)
+        function changeColor(){
+            let i = 1;
+            hover.innerHTML = ""
+            for(a of document.querySelectorAll(".list > a")){
+                randHSL = Math.round(Math.random() * 360)
+                hover.innerHTML += `.list > a:nth-child(${i}):hover{ background-color: hsl(${randHSL}deg, 100%, 25%); box-shadow: 0px 0px 79px 48px hsl(${randHSL}deg, 100%, 50%) }`
+                a.style.backgroundColor = ``
+                a.style.boxShadow = ``
+                i++
+            }
         }
     </script>
 </body>
