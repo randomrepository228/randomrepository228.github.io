@@ -6,9 +6,9 @@ class Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
         this.width = width;
-        this.title = title;
         this.x = x;
         this.y = y;
+        this.title = title;
         this.innerhtml = innerhtml;
         this.icon = icon
     }
@@ -23,19 +23,19 @@ function AddPopupWindow(window){
     openedwindows.push(gg)
     document.body.innerHTML =
     `
-    <div class="n${gg} window opening winapi_shadow winapi_transparent_nomargin" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}; height: ${window.height}">
+    <div class="n${gg} window opening winapi_shadow winapi_transparent_nomargin" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px">
         <div class="topbar" onmousedown="activewindow = this.parentElement;loop = true;prevx=event.clientX-this.getBoundingClientRect().x;prevy=event.clientY-this.getBoundingClientRect().y" onmouseup="loop = false;">
             <left>
-                <img src="${window.icon}" onerror="this.style.opacity = '0'">
+                <img src="${window.icon}" onerror="this.remove()">
                 ${window.title}
             </left>
             <div class="buttons">
-                <div class="dash" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'">&ndash;</div>
-                <div class="square">&#9723;</div>
-                <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)">&#9747;</div>
+                <div class="dash" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'"><img src="./Resources/minimise_icon.png"></div>
+                <div class="square"><img src="./Resources/maximise_icon.png"></div>
+                <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/x_icon.png"></div>
             </div>
         </div>
-        <div class="content" style="width: ${window.width-3}; height: ${window.height-3}">
+        <div class="content" style="width: ${window.width-3}px; height: ${window.height-3}px">
             <div class="text">${window.innerhtml}</div>
             <div class="footer"><button class="windowbtn" onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>
         </div>
@@ -63,4 +63,4 @@ function move(e){
         activewindow.style.top = `${e.clientY - prevy}px`
     }
 }
-AddPopupWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 300, 300, "Welcome", "Welcome to Windows Beta!", "./img/icon.jpg"))
+AddPopupWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./img/icon.jpg"))

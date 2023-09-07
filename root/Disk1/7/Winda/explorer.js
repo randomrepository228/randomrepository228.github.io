@@ -60,8 +60,9 @@ createIcon(new Icon("Version 0.0.1", "./Resources/icon.jpg", "window.location.hr
 createIcon(new Icon("Version 0.0.2", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.0.2/simulator.html'"))
 createIcon(new Icon("Version 0.1.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'"))
 createIcon(new Icon("Version 0.9.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.0/simulator.html'"))
+createIcon(new Icon("Version 0.9.2", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.2/simulator.html'"))
 createIcon(new Icon("test window", "./Resources/icon.jpg", 'AddPopupWindow(new Window(Math.random()*window.innerWidth, Math.random()*window.innerHeight, 200, 300, "test window", "hihihi"))'))
 addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddPopupWindow(
-    new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 300, 300, 
+    new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 
     'Welcome to Windows Beta!'))`)

@@ -12,31 +12,25 @@ html, body{
     background-color: transparent;
 }
 .dash{
-    border-bottom-left-radius: 5px;
-    background: -webkit-linear-gradient(90deg, rgba(0,161,255,1) 0, rgba(255,255,255,0.2) 51%, rgba(102,168,255,1) 51%, rgba(201,233,255,0.8) 100%), #3b3be5;
-    font-weight: 900;
+    background-image: url("./Resources/minimise.png");
+    width: 29px;
 }
 .x{
-    border-bottom-right-radius: 5px;
-    background: linear-gradient(0deg, rgba(255,0,0,1) 0, rgba(255,255,255,0.2) 51%, rgba(255,100,100,1) 51%, rgba(255,200,200,0.8) 100%), #e74c3c;
-    width: 47% !important;
+    background-image: url("./Resources/x.png");
+    width: 49px;
 }
 .square{
-    background: -webkit-linear-gradient(90deg, rgba(0,161,255,1) 0, rgba(255,255,255,0.2) 51%, rgba(102,168,255,1) 51%, rgba(201,233,255,0.8) 100%), #3b3be5;
+    background-image: url("./Resources/maximise.png");
+    width: 29px;
 }
-.dash, .x, .square{
-    opacity: 0.9;
-    transition: 0.3s ease-in-out;
-    box-shadow: 0px 0px 13px 4px transparent;
-}
-.dash:hover, .square:hover{
+/* .dash:hover, .square:hover{
     box-shadow: 0px 0px 13px 4px rgba(96, 186, 255, 1);
     z-index: 999;
 }
 .x:hover{
     box-shadow: 0px 0px 13px 4px rgb(255, 75, 75);
     z-index: 999;
-}
+} */
 .window{
     border-radius: 10px;
     position: absolute;
@@ -45,6 +39,9 @@ html, body{
     flex-direction: column;
     justify-content: space-around;
     padding-top: 0;
+    background-image: url("./Resources/window_aura.png"), url("./Resources/window_aura_mirror.png");
+    background-position: left -1px top -1px, right -1px top -1px;
+    background-repeat: no-repeat, no-repeat;
 }
 .window *{
     font-size: 14px;
@@ -53,35 +50,30 @@ html, body{
     display: flex;
     justify-content: space-between;
     height: 20px;
-    margin: 2.5px;
-    margin-top: 0px;
+    margin-top: -1px;
+    margin-bottom: 7px;
 }
 .topbar .buttons{
-    width: 102px;
     display: flex;
 }
-.topbar .buttons *{
-    border: 1px solid rgba(0,0,0,0.5);
-    width: 30px;
-    line-height: 15px;
-    text-align: center;
+.topbar > .buttons > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.topbar > .buttons > * > img{
+    margin-bottom: 2px;
 }
 .content{
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 3px;
+    border-radius: 2px;
     background-color: white;
-    width: 296px;
-    height: 276px;
-    min-height: 276px;
-    max-width: 296px;
+    min-height: 50px;
+    min-width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-.topbar *{
-    width: 30px;
-    line-height: 15px;
-    text-align: center;
+    border: 1px solid rgb(29, 55, 81);
+    outline: 1px solid rgba(255,255,255,0.7);
 }
 .window:hover{
     cursor: default;
@@ -299,8 +291,9 @@ bottomright{
 }
 .winapi_transparent_nomargin{
     background-color: rgba(61, 57, 117, 0.3);
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid rgb(255,255,255);
     backdrop-filter: blur(5px);
+    outline: 1px solid black;
 }
 .winapi_shadow{
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.65);

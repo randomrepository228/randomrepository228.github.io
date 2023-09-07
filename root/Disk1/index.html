@@ -58,32 +58,32 @@
     <option link="./7/Winda" class="selected first">Winda7</option>
     <!-- <option link="../">Другая система</option> -->
     <cntr class="bottom"  style="color: black">
-        <left>ENTER - Выбрать</left>
+        <left>TAP - Выбрать</left>
         <right>↑ ↓ - Изменить выбор</right>
     </cntr>
     <script>
         optionlist = document.getElementsByTagName("option")
         selected = 0
-        function keyPressHandler(e){
-            if (e.key == "ArrowUp"){
-                if(selected > 0){
-                    optionlist[selected].className = undefined
-                    selected -= 1
-                    optionlist[selected].className = "selected"
-                }
-            }
-            if (e.key == "ArrowDown"){
-                if(selected < optionlist.length-1){
-                    optionlist[selected].className = undefined
-                    selected++
-                    optionlist[selected].className = "selected"
-                }
-            }
-            if (e.key == "Enter"){
+        function tapHandler(e){
+            // if (e.key == "ArrowUp"){
+            //     if(selected > 0){
+            //         optionlist[selected].className = undefined
+            //         selected -= 1
+            //         optionlist[selected].className = "selected"
+            //     }
+            // }
+            // if (e.key == "ArrowDown"){
+            //     if(selected < optionlist.length-1){
+            //         optionlist[selected].className = undefined
+            //         selected++
+            //         optionlist[selected].className = "selected"
+            //     }
+            // }
+            // if (e.key == "Enter"){
                 window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
-            }
+            // }
         }
-        document.addEventListener("keydown", (e) => keyPressHandler(e))
+        document.addEventListener("mousedown", (e) => tapHandler(e))
     </script>
 </body>
 </html>

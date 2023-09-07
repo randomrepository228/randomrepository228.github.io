@@ -59,12 +59,12 @@
 ║                                 ║
 ╠═════════════════════════════════╣
 ║    ↑ and ↓ to move selection    ║
-║   ENTER to select boot device   ║
+║    TAP to select boot device    ║
 ╚═════════════════════════════════╝</div>
 <script>
     // optionlist = document.getElementsByTagName("v")
     // selected = 0
-    function keyPressHandler(e){
+    function tapHandler(e){
         // if (e.key == "ArrowUp"){
         //     if(selected > 0){
         //         optionlist[selected].className = undefined
@@ -79,12 +79,12 @@
         //         optionlist[selected].className = "selected"
         //     }
         // }
-        if (e.key == "Enter"){
+        // if (e.key == "Enter"){
             // window.location.href = s.getAttribute("l")
             window.location.href = "./Disk1"
-        }
+        // }
     }
-    document.addEventListener("keydown", keyPressHandler)
+    document.addEventListener("mousedown", tapHandler)
 </script>
 </body>
 </html>
