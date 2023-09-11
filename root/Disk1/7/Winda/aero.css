@@ -7,6 +7,10 @@
 }
 html, body{
     height: 100%;
+    width: 100%;
+}
+body{
+    position: fixed;
 }
 ::selection {
     background-color: transparent;
@@ -32,7 +36,7 @@ html, body{
     z-index: 999;
 } */
 .window{
-    border-radius: 10px;
+    border-radius: 8px;
     position: absolute;
     padding: 5px;
     display: flex;
@@ -42,6 +46,7 @@ html, body{
     background-image: url("./Resources/window_aura.png"), url("./Resources/window_aura_mirror.png");
     background-position: left -1px top -1px, right -1px top -1px;
     background-repeat: no-repeat, no-repeat;
+    touch-action: none;
 }
 .window *{
     font-size: 14px;
@@ -49,12 +54,12 @@ html, body{
 .topbar{
     display: flex;
     justify-content: space-between;
-    height: 20px;
+    height: 27px;
     margin-top: -1px;
-    margin-bottom: 7px;
 }
 .topbar .buttons{
     display: flex;
+    height: 20px;
 }
 .topbar > .buttons > *{
     display: flex;
@@ -302,6 +307,11 @@ left{
     display: flex;
     align-items: center;
     white-space: nowrap;
+    text-shadow: 0 0 10px rgba(255,255,255), 
+    0 0 10px rgb(255,255,255), 
+    0 0 10px rgb(255,255,255), 
+    0 0 10px rgb(255,255,255), 
+    0 0 10px rgb(255,255,255);
 }
 left img{
     width: 15px !important;
