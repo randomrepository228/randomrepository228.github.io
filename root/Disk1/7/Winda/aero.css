@@ -9,6 +9,9 @@ html, body{
     height: 100%;
     width: 100%;
 }
+.window:focus{
+    opacity: 0.5;
+}
 body{
     position: fixed;
 }
@@ -43,19 +46,23 @@ body{
     flex-direction: column;
     justify-content: space-around;
     padding-top: 0;
-    background-image: url("./Resources/window_aura.png"), url("./Resources/window_aura_mirror.png");
-    background-position: left -1px top -1px, right -1px top -1px;
-    background-repeat: no-repeat, no-repeat;
     touch-action: none;
 }
 .window *{
-    font-size: 14px;
+    font-size: 12px;
+}
+.maximised{
+    border-radius: 0px;
+    position: absolute;
+    padding: 0px;
+    border: none !important;
 }
 .topbar{
     display: flex;
     justify-content: space-between;
     height: 27px;
     margin-top: -1px;
+    margin-left: 3px;
 }
 .topbar .buttons{
     display: flex;
@@ -79,14 +86,28 @@ body{
     justify-content: space-between;
     border: 1px solid rgb(29, 55, 81);
     outline: 1px solid rgba(255,255,255,0.7);
+    width: calc(100% - 3px) calc(100% - 3px);
+    flex-grow: 1;
+}
+.maximised{
+    top: 0px !important;
+    left: 0px !important;
+    width: 100% !important;
+    height: calc(100% - 40px) !important;
+    position: fixed;
+    box-shadow: none !important;
+}
+.maximised .content{
+    border-radius: 0px;
+    border: none !important;
+    outline: none !important;
 }
 .window:hover{
     cursor: default;
 }
 @keyframes close {
     25% {transform: perspective(400px) rotateX(20deg);}
-    50% {transform: perspective(400px) rotateX(45deg);opacity: 0;}
-    100% {opacity: 0;}
+    100% {transform: perspective(400px) rotateX(45deg);opacity: 0;}
 }
 @keyframes open {
     0% {transform: perspective(400px) rotateX(20deg);opacity: 0;}
@@ -94,12 +115,9 @@ body{
 }
 .closing{
     animation-name: close;
-    animation-duration: 0.6s; /*= 0.3s*/
-    pointer-events: none;
-}
-.opening{
-    animation-name: open;
     animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    pointer-events: none;
 }
 .footer{
     height: 40px;
@@ -107,16 +125,16 @@ body{
     display: flex;
     justify-content: end;
     background-color: rgb(224, 224, 224);
+    box-sizing: border-box;
+    padding: 8px;
 }
 .windowbtn{
-    border-radius: 5px;
+    background-image: url("./Resources/button.png");
     width: 75px;
-    height: 25px;
-    margin: 8px;
-    background: linear-gradient(0deg, rgba(200,200,200,1) 47%, rgba(255,255,255,1) 53%);
-    border: 2px solid;
-    color: black;
-    border: 1px solid rgb(51, 51, 51);
+    height: 23px;
+    border: none;
+    background-color: transparent;
+    background-size: 100% 100%;
 }
 .explorer{
     width: 100%;
@@ -132,18 +150,31 @@ body{
 .icon{
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 75px;
     text-align: center;
     color: white;
-    padding: 10px;
-    height: 120px;
-    border: 3px solid transparent;
-    border-radius: 5px;
+    padding: 3px;
+    padding-bottom: 28px;
+    height: fit-content;
+    border: 1px solid transparent;
+    outline: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 12px;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7);
+}
+.icon img{
+    height: 48px;
+    width: 48px;
 }
 .icon:hover{
-    background-color: rgba(0,255,255,0.5);
-    border: 3px solid rgba(128,255,255,0.5);
-    width: 75px;
+    background-color: rgba(230,230,255,0.5);
+    border: 1px solid rgba(230,230,255,0.8);
+    outline: 1px solid rgba(100,205,205,0.8);
+}
+.icon:active{
+    background-color: rgba(200,230,255, 0.7);
 }
 bottomright{
     position: absolute; 
@@ -151,13 +182,14 @@ bottomright{
     right: 0px; 
     text-align: right; 
     color: white;
+    z-index: -1;
 }
 .taskbar{
     height: 38px;
     border-top: 1px solid rgba(255,255,255,0.5);
     outline: 1px solid black;
     z-index: 9999;
-    background-color: rgba(61, 57, 117, 0.3);
+    background-color: rgba(255, 255, 255, 0.07);
     display: flex;
     position: fixed;
     bottom: 0px;
@@ -166,14 +198,25 @@ bottomright{
 }
 .taskbar-btn{
     object-fit: cover;
-    object-position: 0 -10px;
+    object-position: 0 -8px;
     position: fixed;
+    width: 54px;
+    height: 40px;
+    margin-top: -1px;
+}
+.taskbar-btn-orb{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    margin-left: 8px;
+    margin-top: -1px;
 }
 .taskbar-btn:hover{
-    object-position: 0 -64px;
+    object-position: 0 -62px;
 }
 .taskbar-btn:active{
-    object-position: 0 -118px;
+    object-position: 0 -116px;
 }
 .left-bar, .right-bar{
     height: 100%;
@@ -189,15 +232,14 @@ bottomright{
 .window-tray{
     position: relative;
     bottom: 2px;
-    width: 58px;
-    height: 100%;
-    border: 1px solid rgba(255,255,255,0.5);;
+    width: 60px;
+    height: 40px;
     border-radius: 3px;
     margin-right: 2px;
-    background-color: rgba(255,255,255,0.2);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url("./Resources/taskbar_btn.png");
 }
 .window-tray img{
     height: 30px;
@@ -212,12 +254,17 @@ bottomright{
 .show-desktop{
     position: relative;
     bottom: 1px;
-    width: 11px;
-    height: calc(100% - 2px);
-    border: 1px solid rgba(255,255,255,0.5);
-    outline: 1px solid rgba(0, 0, 126, 0.5);
-    margin-left: 10px;
-    margin-right: 1px;
+    width: 15px;
+    height: 40px;
+    margin-left: 11px;
+    background-image: url("./Resources/hide_windows.png");
+    background-size: 100% 100%; 
+}
+.show-desktop:hover{
+    background-image: url("./Resources/hide_windows_hover.png");
+}
+.show-desktop:active{
+    background-image: url("./Resources/hide_windows_pressed.png");
 }
 .start-menu{
     position: absolute;
@@ -293,12 +340,19 @@ bottomright{
     background-color: rgba(61, 57, 117, 0.3);
     border: 1px solid rgba(255,255,255,0.5);
     backdrop-filter: blur(5px);
+    outline: 1px solid black;
+    background-image: url("./Resources/window_aura.png"), url("./Resources/window_aura_mirror.png");
+    background-position: left -1px top -1px, right -1px top -1px;
+    background-repeat: no-repeat, no-repeat;
 }
 .winapi_transparent_nomargin{
     background-color: rgba(61, 57, 117, 0.3);
     border: 1px solid rgb(255,255,255);
     backdrop-filter: blur(5px);
     outline: 1px solid black;
+    background-image: url("./Resources/window_aura.png"), url("./Resources/window_aura_mirror.png");
+    background-position: left -1px top -1px, right -1px top -1px;
+    background-repeat: no-repeat, no-repeat;
 }
 .winapi_shadow{
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
@@ -317,5 +371,20 @@ left img{
     width: 15px !important;
     height: 15px !important;
     margin: 3px;
-    margin-left: 0;
+}
+.context-menu{
+    font-size: 12px;
+    background-color: white;
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    width: max-content;
+    padding: 2px;
+}
+.context-menu-option{
+    width: 100%;
+}
+.context-menu-option:hover{
+    background-color: rgba(0,255,255,0.3);
+    background: linear-gradient(180deg, rgba(0,142,255,0.3) 0%, rgba(0,151,255,0.5) 100%);
 }
