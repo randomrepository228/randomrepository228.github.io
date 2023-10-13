@@ -1,7 +1,7 @@
-loop = false;
+loop = {drag: false, top: false, left: false, right: false, bottom: false};
 prevx = 150;
 prevy = 150;
-activewindow;
+let activewindow;
 class Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
@@ -14,11 +14,14 @@ class Window {
     }
 }
 function AddWindowDefault(icon, num){
-    document.querySelector(".left-bar").innerHTML = `<div class="n${num} window-tray" onclick="wnd = document.querySelector('.n${num}');if (wnd.style.display == 'none'){wnd.style.display = 'flex'} else{wnd.style.display = 'none'}"><img src=${icon} onerror="this.remove()"></div>` + document.querySelector(".left-bar").innerHTML
+    document.querySelector(".left-bar").innerHTML += `
+    <div class="n${num} window-tray" windowid="${num}" onclick="minimizeWindow(document.querySelector('.n${num}'))">
+        <img src=${icon} onerror="this.remove()">
+    </div>`
     document.querySelector(`.n${num}`).animate(
         [
-            {transform: "perspective(400px) rotateX(20deg)", opacity: 0},
-            {transform: "perspective(400px) rotateX(0deg)", opacity: 1}
+            {transform: "perspective(400px) rotateX(-5deg)", opacity: 0, scale: 0.9},
+            {transform: "perspective(400px) rotateX(0deg)", opacity: 1, scale: 1}
         ],
         {
             duration: 300,
@@ -28,9 +31,11 @@ function AddWindowDefault(icon, num){
 }
 let openedwindows = []
 function windowMouseDown(event, elem){
+    if(elem.parentElement.classList.contains("maximised")) return;
     let touch = false;
     activewindow = elem.parentElement
-    loop = true;
+    loop.drag = true;
+    iframeignore.innerHTML = "ignore{display:block !important}"
     if (event.touches) {
         event = event.touches[0];
         touch = true;
@@ -39,20 +44,20 @@ function windowMouseDown(event, elem){
     prevx=event.clientX-elem.getBoundingClientRect().x
     prevy=event.clientY-elem.getBoundingClientRect().y
     if (!touch)
-        document.addEventListener("mouseup", () => {loop = false}, {once: true});
+        document.addEventListener("mouseup", () => {loop.drag = false, iframeignore.innerHTML = ""}, {once: true});
     else
-        document.addEventListener("touchend", () => {loop = false}, {once: true});
+        document.addEventListener("touchend", () => {loop.drag = false, iframeignore.innerHTML = ""}, {once: true});
 }
 function AddPopupWindow(window){
-    for(var gg = 0; gg<=openedwindows.length; gg++){}
+    gg = openedwindows.length
     openedwindows.push(gg)
     document.body.innerHTML =
     `
-    <div class="n${gg} window winapi_shadow winapi_transparent_nomargin" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px">
+    <div class="n${gg} window winapi_shadow winapi_transparent" windowid="${gg}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px">
         <div class="topbar" ondblclick="maximise(this.parentElement)" onmousedown="windowMouseDown(event, this)" ontouchstart="windowMouseDown(event, this)">
             <left>
                 <img src="${window.icon}" onerror="this.remove()">
-                ${window.title}
+                <p>${window.title}</p>
             </left>
             <div class="buttons">
                 <div class="dash" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'"><img src="./Resources/minimise_icon.png"></div>
@@ -60,9 +65,18 @@ function AddPopupWindow(window){
                 <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/x_icon.png"></div>
             </div>
         </div>
+        <div class="topleft"></div>
+        <div class="topright"></div>
+        <div class="bottomleft"></div>
+        <div class="bottomright"></div>
+        <div class="top"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="bottom"></div>
         <div class="content">
-            <div class="text">${window.innerhtml}</div>
-            <div class="footer"><button class="windowbtn" onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>
+            <ignore></ignore>
+            <text>${window.innerhtml}</text>
+            <footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>
         </div>
     </div>
     ` + document.body.innerHTML
@@ -73,14 +87,17 @@ function AddPopupWindow(window){
 // }
 function closeWindow(window){
     function timeout(){
-        window.remove()
+        for (a of document.querySelectorAll(".n" + window.attributes.windowid.value)) a.remove()
+        openedwindows = openedwindows.splice(openedwindows.indexOf(window.attributes.windowid.value), 1);
     }
     window.className += " closing"
-    document.getElementsByClassName(window.className.split(" ")[0])[1].remove()
     setTimeout(timeout, 300);
 }
 function minimizeWindow(window){
-    window.style.display = "none";
+    if (window.style.display == 'none')
+        window.style.display = 'flex'
+    else 
+        window.style.display = 'none'
 }
 function maximise(window){
     if (window.className.search("maximised") == -1)
@@ -90,11 +107,13 @@ function maximise(window){
 }
 function move(e){
     if (e.touches) e = e.touches[0]
-    if(loop){
+    if(loop.drag){
         activewindow.style.left = `${e.clientX - prevx}px`
         activewindow.style.top = `${e.clientY - prevy}px`
+        console.log(e.data)
     }
 }
+addEventListener("message", move)
 function contextMenu(e){
     e.preventDefault();
     contextMenuElement.style.display = "flex";
@@ -104,4 +123,4 @@ function contextMenu(e){
 function contextMenuOff(e){
     contextMenuElement.style.display = "none";
 }
-AddPopupWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./img/icon.jpg"))
+AddPopupWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./Resources/icon.jpg"))

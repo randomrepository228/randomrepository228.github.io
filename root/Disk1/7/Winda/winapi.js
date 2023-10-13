@@ -1,16 +1,3 @@
-function WINAPI_BUTTON(content, action){
-    if (content){
-        if (!action){
-            return `<button class="windowbtn">${content}</button>`
-        }
-        else{
-            return `<button class="windowbtn" onclick="${action}">${content}</button>`
-        }
-    }
-    else{
-        return `<button class="windowbtn"></button>`
-    }
-}
 function WINAPI_FOOTER(content){
     if (content){
         return `<div class="footer">${content}</div>`
