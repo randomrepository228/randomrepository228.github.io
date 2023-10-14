@@ -32,6 +32,7 @@ function AddWindowDefault(icon, num){
 let openedwindows = []
 function windowMouseDown(event, elem){
     if(elem.parentElement.classList.contains("maximised")) return;
+    if(elem.children[1].matches(":hover")) return;
     let touch = false;
     activewindow = elem.parentElement
     loop.drag = true;
@@ -60,9 +61,9 @@ function AddPopupWindow(window){
                 <p>${window.title}</p>
             </left>
             <div class="buttons">
-                <div class="dash" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'"><img src="./Resources/minimise_icon.png"></div>
-                <div class="square" onclick="maximise(this.parentElement.parentElement.parentElement)"><img src="./Resources/maximise_icon.png"></div>
-                <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/x_icon.png"></div>
+                <div class="dash" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'"><img src="./Resources/buttons/min/icon.png"></div>
+                <div class="square" onclick="maximise(this.parentElement.parentElement.parentElement)"><img src="./Resources/buttons/max/icon.png"></div>
+                <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/buttons/close/icon.png"></div>
             </div>
         </div>
         <div class="topleft"></div>
@@ -110,7 +111,6 @@ function move(e){
     if(loop.drag){
         activewindow.style.left = `${e.clientX - prevx}px`
         activewindow.style.top = `${e.clientY - prevy}px`
-        console.log(e.data)
     }
 }
 addEventListener("message", move)

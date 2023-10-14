@@ -49,10 +49,22 @@ input[type="checkbox"]{
     display: none;
 }
 input[type="checkbox"] + label{
-    background-image: url("./Resources/checkbox.png");
+    background-image: url("./Resources/checkbox/unchecked/normal.png");
+}
+input[type="checkbox"]:hover + label{
+    background-image: url("./Resources/checkbox/unchecked/hover.png");
+}
+input[type="checkbox"]:active + label{
+    background-image: url("./Resources/checkbox/unchecked/pressed.png");
 }
 input[type="checkbox"]:checked + label{
-    background-image: url("./Resources/checkbox_checked.png");
+    background-image: url("./Resources/checkbox/checked/normal.png");
+}
+input[type="checkbox"]:checked:hover + label{
+    background-image: url("./Resources/checkbox/checked/hover.png");
+}
+input[type="checkbox"]:checked:active + label{
+    background-image: url("./Resources/checkbox/checked/pressed.png");
 }
 label{
     padding-left: 13px;
@@ -72,16 +84,67 @@ body{
     background-color: transparent;
 }
 .dash{
-    background-image: url("./Resources/minimise.png");
+    background-image: url("./Resources/buttons/min/normal.png");
     width: 29px;
 }
 .x{
-    background-image: url("./Resources/x.png");
+    background-image: url("./Resources/buttons/close/normal.png");
     width: 49px;
+    border-bottom-right-radius: 3px;
+    z-index: 5;
+}
+.x:hover::after, .x:active::after{
+    margin-left: -1px;
+    width: 69px;
+    height: 37px;
+    box-sizing: content-box;
+    background-image: url("./Resources/buttons/close/glow.png");
+    background-size: 100% 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    z-index: 99999;
+    pointer-events: none;
+}
+.square:hover::after, .square:active::after, .dash:hover::after,
+.dash:active::after{
+    margin-left: 1px;
+    width: 52px;
+    height: 37px;
+    box-sizing: content-box;
+    background-image: url("./Resources/buttons/glow.png");
+    background-size: 100% 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    z-index: 99999;
+    pointer-events: none;
+}
+.square:hover::after, .square:active::after{
+    margin-left: -1px;
+    width: 52px;
+}
+.x:hover{
+    background-image: url("./Resources/buttons/close/hover.png");
+}
+.x:active{
+    background-image: url("./Resources/buttons/close/pressed.png");
 }
 .square{
-    background-image: url("./Resources/maximise.png");
+    background-image: url("./Resources/buttons/max/normal.png");
     width: 29px;
+}
+.square:hover{
+    background-image: url("./Resources/buttons/max/hover.png");
+}
+.square:active{
+    background-image: url("./Resources/buttons/max/pressed.png");
+}
+.dash:hover{
+    background-image: url("./Resources/buttons/min/hover.png");
+}
+.dash:active{
+    background-image: url("./Resources/buttons/min/pressed.png");
 }
 .dash:hover, .square:hover{
     z-index: 999;
@@ -186,12 +249,20 @@ footer{
     padding: 8px;
 }
 button{
-    background-image: url("./Resources/button.png");
+    background-image: url("./Resources/button/normal/left.png"), url("./Resources/button/normal/right.png"), url("./Resources/button/normal/center.png");
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
     height: 23px;
     border: none;
     background-color: transparent;
-    background-size: 100% 100%;
     min-width: 75px;
+}
+button:hover{
+    background-image: url("./Resources/button/hover/left.png"), url("./Resources/button/hover/right.png"), url("./Resources/button/hover/center.png");
+}
+button:active{
+    background-image: url("./Resources/button/pressed/left.png"), url("./Resources/button/pressed/right.png"), url("./Resources/button/pressed/center.png");
 }
 .explorer{
     width: 100%;
@@ -282,9 +353,21 @@ bottomright{
 .right-bar{
     margin-left: auto; 
     margin-right: 0;
+    padding-left: 50px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), linear-gradient(to right, transparent, rgba(0,0,0,0.25));
+    background-position: right 0, left 0;
+    background-size: calc(100% - 50px), 50px;
 }
 .wrapper{
     width: 59px;
+    background: rgba(0,0,0,0.25);
+}
+.left-bar{
+    background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+    background-repeat: no-repeat;
+    background-size: 50px 59px;
+    min-width: 50px;
 }
 .window-tray{
     position: relative;
