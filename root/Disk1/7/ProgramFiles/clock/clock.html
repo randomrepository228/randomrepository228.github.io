@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	    <style>
+            body {
+                margin: 0;
+                background-image: url(1.png);
+                background-repeat: no-repeat;
+            }
+            html, body{
+                width: 130px;
+                height: 130px;
+                overflow: hidden;
+            }
+            .clock {
+                display: inline-block;
+                font-size: 250px;
+                height: 1em;
+                width: 1em;
+            }
+            .clock2, .clock__stroke {
+                margin-left: -0.5em;
+                margin-top: -0.5em;
+                position: absolute;
+                
+                height: 1em;
+                width: 1em;
+                left: 50%;
+                top: 50%;
+            }
+            
+            .hour::after {
+                height: 0.25em;
+            }
+            .minute::after {
+                height: 0.4em;
+            }
+            .minute::after, .hour::after{
+                content: "";
+                background-color: #000;
+                font-size: inherit;
+                position: absolute;
+                margin-bottom: -0.02em;
+                margin-left: 0.005em;
+                width: 0.01em;
+                bottom: 50%;
+                left: 50%;
+            }
+            .second::after {
+                content: "";
+                background-color: #000;
+                margin-bottom: -0.02em;
+                margin-left: -0.005em;
+                font-size: inherit;
+                position: absolute;
+                height: 0.5em;
+                width: 0.01em;
+                bottom: 40%;
+                left: 50%;
+            }
+        </style>
+	    <script>
+            function a(){
+                seconds = new Date().getSeconds()*6;
+                minutes = new Date().getMinutes()*6;
+                hours = new Date().getHours()*30+(minutes/10);
+                if (hours > 360) hours -= 360
+                hour.style.transform = `rotate(${hours}deg)`
+                minute.style.transform = `rotate(${minutes}deg)`
+                second.style.transform = `rotate(${seconds}deg)`
+            }
+            setInterval(a, 1000);
+        </script>
+    </head>	
+    <body>
+        <time class="clock" style="transform:scale(0.5); transform-origin:left top">
+            <span id="hour" class="clock2 hour"></span>
+            <span id="minute" class="clock2 minute"></span>
+            <span id="second" class="clock2 second"></span>
+        </time>
+        <img src="2.png" style="position: fixed; top:0;left:0; z-index:1000">
+    </body>
+</html>
