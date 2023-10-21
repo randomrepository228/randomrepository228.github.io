@@ -51,7 +51,6 @@ function formatMonth(date){
 function changeTime(){
     const time = new Date()
     document.querySelector(".time").innerHTML = `${formatTime(time)}<br>${formatDate(time)}`
-    document.querySelector(".datetime").innerHTML = `${time.getDate()} ${formatMonth(time)} ${time.getFullYear()} г.`
 }
 changeTime()
 setInterval(changeTime, 1000)
@@ -60,9 +59,9 @@ addStartMenuEntryLeft("Version 0.0.2", "./Resources/icon.jpg", "window.location.
 addStartMenuEntryLeft("Version 0.1.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'")
 addStartMenuEntryLeft("Version 0.9.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.0/simulator.html'")
 addStartMenuEntryLeft("Version 0.9.2", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.2/simulator.html'")
-createIcon(new Icon("test window", "./Resources/icon.jpg", 'AddPopupWindow(new Window(Math.random()*(innerWidth-200), Math.random()*(innerHeight-300), 200, 300, "test window", "hihihi"))'))
-createIcon(new Icon("Example App", "./Resources/ExampleApp.png", 'AddPopupWindow(new Window(50, 50, 500, 500, "Example App", \'<iframe src="../ProgramFiles/ExampleApp/index.html" frameborder="0"></iframe>\'))'))
-addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddPopupWindow(
+createIcon(new Icon("test window", "./Resources/icon.jpg", 'AddWindow(new Window(Math.random()*(innerWidth-200), Math.random()*(innerHeight-300), 200, 300, "test window", "hihihi"), true)'))
+createIcon(new Icon("Example App", "./Resources/ExampleApp.png", 'AddWindow(new Window(50, 50, 500, 500, "Example App", \'<iframe src="../ProgramFiles/ExampleApp/index.html" frameborder="0"></iframe>\'))'))
+addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
     new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 
-    'Welcome to Windows Beta!'))`)
+    'Welcome to Windows Beta!'), true)`)

@@ -1,0 +1,1 @@
+if (!localStorage.appList) localStorage.appList = JSON.stringify(["clock", "ExampleApp"])
