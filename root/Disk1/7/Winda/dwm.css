@@ -1,6 +1,6 @@
 /* Fonts, cursor, and disable scale */
 *{
-    font-family: system-ui, 'sans-serif', 'Segoe ui';
+    font-family: 'segoeui', 'sans-serif', system-ui;
     touch-action: manipulation;
     cursor: default;
     color: black;
@@ -75,6 +75,7 @@ body{
     justify-content: space-around;
     touch-action: none;
     z-index: 4;
+    margin-top: 0;
 }
 .maximised{
     width: 100% !important;
@@ -105,4 +106,35 @@ body{
 }
 ::selection{
     background-color: transparent;
+}
+.select{
+    display: flex;
+}
+button, select{
+    height: 23px;
+    min-width: 75px;
+    border: 0;
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
+    background-color: transparent;
+}
+.start-option{
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
+    background-color: transparent;
+}
+select{
+    appearance: none;
+    padding-right: 20px;
+}
+.time-2{
+    width: 322px; 
+    height: 280px;
+    position: absolute;
+    right: 0;
+    bottom: 40px;
+    margin: 8px;
+    padding-top: 5px;
 }

@@ -5,15 +5,20 @@ class Icon {
         this.title = title;
     }
 }
+function closeAllElements(){
+    timeMenu(false)
+    startMenu(false)
+}
 const taskbar = document.querySelector(".taskbar");
 function createIcon(icon){
     let a = document.createElement("div")
     a.className = "icon"
     a.innerHTML = `<img src="${icon.image}">${icon.title}`
-    a.setAttribute("onclick", icon.action)
+    a.setAttribute("ondblclick", icon.action)
     document.querySelector(".icons").appendChild(a)
 }
 function startMenu(open){
+    if (open === true) timeMenu(false)
     if(open){
         document.querySelector(".start-menu").style.display = "flex";
         document.querySelector(".wrapper").setAttribute("onclick", "startMenu(false)");
@@ -24,6 +29,7 @@ function startMenu(open){
     }
 }
 function timeMenu(open){
+    if (open === true) startMenu(false)
     if(open){
         document.querySelector(".time-2").style.display = "flex";
         document.querySelector(".time").setAttribute("onclick", "timeMenu(false)");
@@ -43,7 +49,7 @@ function formatDate(date) {
     return [padTo2Digits(date.getDate()), padTo2Digits(date.getMonth() + 1), date.getFullYear(),].join('.');
 }
 function formatTime(date) {
-    return [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(':');
+    return [date.getHours(), padTo2Digits(date.getMinutes())].join(':');
 }
 function formatMonth(date){
     return ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][date.getMonth()]

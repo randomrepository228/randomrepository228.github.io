@@ -164,22 +164,6 @@ footer{
     box-sizing: border-box;
     padding: 8px;
 }
-.select{
-    display: flex;
-}
-button, select{
-    background-image: url("../button/normal/left.png"), url("../button/normal/right.png"), url("../button/normal/center.png");
-    background-position: left, right, 4px;
-    background-repeat: no-repeat;
-    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
-    height: 23px;
-    border: none;
-    background-color: transparent;
-    min-width: 75px;
-}
-select{
-    appearance: none;
-}
 selecticon{
     height: 19px;
     width: 10px;
@@ -188,6 +172,9 @@ selecticon{
     margin-left: -15px;
     margin-top: 2px;
     pointer-events: none;
+}
+button, select{
+    background-image: url("../button/normal/left.png"), url("../button/normal/right.png"), url("../button/normal/center.png");
 }
 button:hover, select:hover{
     background-image: url("../button/hover/left.png"), url("../button/hover/right.png"), url("../button/hover/center.png");
@@ -210,15 +197,6 @@ ignore{
 }
 .winapi_shadow{
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
-}
-.time-2{
-    width: 322px; 
-    height: 280px;
-    position: absolute;
-    right: 0;
-    bottom: 40px;
-    margin: 8px;
-    padding-top: 5px;
 }
 left{
     display: flex;
@@ -262,7 +240,8 @@ left img{
     width: 505px;
     height: max-content;
     display: none;
-    border-top-right-radius: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
     background-image: url("../start_menu.png");
     background-size: 100% 100%;
 }

@@ -115,6 +115,19 @@ bottomright{
     align-items: center;
     background-image: url("./Resources/taskbar_btn.png");
 }
+.window-tray[focus]{
+    /* background-image: url("./Resources/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
+    /* background-position: left 0, center;
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat; */
+    background-image: url("./Resources/taskbar_btn_focus.png");
+}
+.window-tray:hover{
+    /* background-image: url("./Resources/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
+    background-position: left 0, center;
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat;
+}
 .window-tray img{
     height: 30px;
     width: 30px;

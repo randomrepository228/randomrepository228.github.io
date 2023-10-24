@@ -7,8 +7,13 @@ let origx;
 let origy;
 let activewindow;
 let id = 0;
-if (localStorage.theme == "basic") theme.href = "./Resources/basic/style.css"
 if (!localStorage.theme) localStorage.theme = "aero"
+theme.href = "./Resources/" + localStorage.theme + "/style.css"
+function connectScript(path) {
+    let script = document.createElement('script')
+    script.src = path
+    document.head.append(script)
+}
 class Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
@@ -20,12 +25,32 @@ class Window {
         this.icon = icon
     }
 }
+function changeTheme(a){
+    localStorage.theme = a
+    theme.href = "./Resources/" + a + "/style.css"
+}
+function setActive(window){
+    for(element of document.querySelectorAll(".window"))
+        element.style.zIndex = 0;
+    activewindow = window;
+    activewindow.style.zIndex = 1;
+    for(element of document.querySelector(".left-bar").children)
+        element.removeAttribute("focus")
+    document.querySelector(`.n${activewindow.getAttribute("windowid")}.window-tray`).setAttribute("focus", "")
+}
+function setInactive(){
+    for(element of document.querySelectorAll(".window"))
+        element.style.zIndex = 0;
+    activewindow = undefined;
+    for(element of document.querySelector(".left-bar").children)
+        element.removeAttribute("focus")
+}
 function AddWindowDefault(icon, num){
     document.querySelector(".left-bar").innerHTML += `
-    <div class="n${num} window-tray" windowid="${num}" onclick="minimizeWindow(document.querySelector('.n${num}'))">
+    <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelector('.n${num}'))">
         <img src=${icon} onerror="this.remove()">
     </div>`
-    if(localStorage.theme == "aero")
+    if(localStorage.theme == "aero"){
         document.querySelector(`.n${num}`).animate(
             [
                 {transform: "perspective(400px) rotateX(-5deg)", opacity: 0, scale: 0.9},
@@ -36,13 +61,23 @@ function AddWindowDefault(icon, num){
                 iterations: 1,
             }
         )
+        document.querySelector(`.n${num}.window-tray`).animate(
+            [{opacity: 0}, {opacity: 1}],
+            {
+                duration: 300,
+                iterations: 1,
+                easing: "ease-in-out"
+            }
+        )
+    }
+    setActive(document.querySelector(`.n${num}`))
 }
 let openedwindows = []
 function windowMouseDown(event, elem){
     if(elem.children[1].matches(":hover")) return;
     let touch = false;
     let evName;
-    activewindow = elem.parentElement
+    setActive(elem.parentElement);
     loop.drag = true;
     iframeignore.innerHTML = "ignore{display:block !important}"
     if (event.touches) {
@@ -93,11 +128,11 @@ function windowResize(event, elem, ...actions){
     else
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
-function AddWindow(window, ispopup){
+function AddWindow(window, ispopup, noResize){
     openedwindows.push(id)
     document.body.innerHTML =
     `
-    <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px">
+    <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px; opacity: 1">
         <div class="topbar" ondblclick="maximise(this.parentElement)" onmousedown="windowMouseDown(event, this, 'drag')" ontouchstart="windowMouseDown(event, this, 'drag')">
             <left>
                 <img src="${window.icon}" onerror="this.remove()">
@@ -109,14 +144,14 @@ function AddWindow(window, ispopup){
                 <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
             </div>
         </div>
-        <div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+        ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
         <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
         <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
         <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
         <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
         <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
         <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
-        <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>
+        <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
         <div class="content">
             <ignore></ignore>
             <text>${window.innerhtml}</text>
@@ -124,6 +159,30 @@ function AddWindow(window, ispopup){
         </div>
     </div>
     ` + document.body.innerHTML
+    connectScript()
+    AddWindowDefault(window.icon, id);
+    id++
+}
+function AddWindowNoGUI(window, noResize){
+    openedwindows.push(id)
+    document.body.innerHTML =
+    `
+    <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px; opacity: 1"
+        ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+        <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
+        <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
+        <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
+        <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
+        <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
+        <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
+        <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+        <div class="custom-content">
+            <ignore></ignore>
+            <text>${window.innerhtml}</text>
+        </div>
+    </div>
+    ` + document.body.innerHTML
+    connectScript()
     AddWindowDefault(window.icon, id);
     id++
 }
@@ -134,6 +193,15 @@ function closeWindow(window){
     }
     openedwindows = openedwindows.splice(openedwindows.indexOf(window.attributes.windowid.value), 1);
     window.className += " closing"
+    document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).style.opacity = 0
+    document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).animate(
+        [{opacity: 1}, {opacity: 0}],
+        {
+            duration: 300,
+            iterations: 1,
+            easing: "ease-in-out"
+        }
+    )
     setTimeout(timeout, 300);
 }
 function minimizeWindow(window){
@@ -144,7 +212,8 @@ function minimizeWindow(window){
     if (window.style.opacity === '0'){
         window.style.opacity = '1'
         window.style.pointerEvents = 'auto'
-        window.animate([
+        setActive(window)
+        if (localStorage.theme != "basic") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(2deg)",
                 opacity: 0,
@@ -159,9 +228,10 @@ function minimizeWindow(window){
             }
         ], animtime)
     } else {
+        setInactive()
         window.style.opacity = '0'
         window.style.pointerEvents = 'none'
-        window.animate([
+        if (localStorage.theme != "basic") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(0deg)", 
                 opacity: 1,
@@ -176,6 +246,39 @@ function minimizeWindow(window){
             }
         ], animtime)
     }
+}
+function restoreWindow(window){
+    const animtime = {
+        duration: 300,
+        iterations: 1,
+    };
+    if (window.style.opacity == '0'){
+        window.style.opacity = '1'
+        window.style.pointerEvents = 'auto'
+        setActive(window)
+        if (localStorage.theme != "basic") window.animate([
+            {
+                transform: "perspective(400px) rotateY(2deg) rotateX(2deg)",
+                opacity: 0,
+                scale: 0.2,
+                left: document.querySelector("." + window.classList[0] + ".window-tray").getBoundingClientRect().x - (window.getBoundingClientRect().width / 2) + "px",
+                top: `${document.querySelector("." + window.classList[0] + ".window-tray").getBoundingClientRect().y - 100}px`
+            },
+            {
+                transform: "perspective(400px) rotateY(2deg) rotateX(0deg)", 
+                opacity: 1,
+                scale: 1
+            }
+        ], animtime)
+    }
+}
+function windowSelectHandler(window){
+    if(activewindow !== window){
+        setActive(window)
+        restoreWindow(window)
+        return
+    }
+    minimizeWindow(window)
 }
 function maximise(window){
     if (window.className.search("maximised") == -1){
@@ -232,6 +335,7 @@ function minimiseAll(){
         wnd.style.opacity = '0'
         wnd.style.pointerEvents = 'none'
     }
+    setInactive()
 }
 function snapLeft(window){
     window.className = window.className.replace("", "snap-left ")
