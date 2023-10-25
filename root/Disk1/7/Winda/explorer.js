@@ -31,11 +31,11 @@ function startMenu(open){
 function timeMenu(open){
     if (open === true) startMenu(false)
     if(open){
-        document.querySelector(".time-2").style.display = "flex";
+        timepanel.style.display = "flex";
         document.querySelector(".time").setAttribute("onclick", "timeMenu(false)");
     }
     else{
-        document.querySelector(".time-2").style.display = "none";
+        timepanel.style.display = "none";
         document.querySelector(".time").setAttribute("onclick", "timeMenu(true)");
     }
 }
@@ -66,7 +66,8 @@ addStartMenuEntryLeft("Version 0.1.0", "./Resources/icon.jpg", "window.location.
 addStartMenuEntryLeft("Version 0.9.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.0/simulator.html'")
 addStartMenuEntryLeft("Version 0.9.2", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.2/simulator.html'")
 createIcon(new Icon("test window", "./Resources/icon.jpg", 'AddWindow(new Window(Math.random()*(innerWidth-200), Math.random()*(innerHeight-300), 200, 300, "test window", "hihihi"), true)'))
-createIcon(new Icon("Example App", "./Resources/ExampleApp.png", 'AddWindow(new Window(50, 50, 500, 500, "Example App", \'<iframe src="../ProgramFiles/ExampleApp/index.html" frameborder="0"></iframe>\'))'))
+createIcon(new Icon("Example App", "../ProgramFiles/ExampleApp/icon.png", "loadApp('ExampleApp')"))
+createIcon(new Icon("Registry Editor", "../ProgramFiles/regedit/icon.png", "loadApp('regedit')"))
 addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
     new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 
