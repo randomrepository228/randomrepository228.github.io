@@ -7,13 +7,6 @@ let origx;
 let origy;
 let activewindow;
 let id = 0;
-if (!localStorage.theme) localStorage.theme = "aero"
-theme.href = "./Resources/" + localStorage.theme + "/style.css"
-function connectScript(path) {
-    let script = document.createElement('script')
-    script.src = path
-    document.head.append(script)
-}
 class Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
@@ -24,6 +17,13 @@ class Window {
         this.innerhtml = innerhtml;
         this.icon = icon
     }
+}
+if (!localStorage.theme) localStorage.theme = "aero"
+theme.href = "./Resources/" + localStorage.theme + "/style.css"
+function connectScript(path) {
+    let script = document.createElement('script')
+    script.src = path
+    document.head.append(script)
 }
 function changeTheme(a){
     localStorage.theme = a
@@ -48,10 +48,11 @@ function setInactive(){
 function AddWindowDefault(icon, num){
     document.querySelector(".left-bar").innerHTML += `
     <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelector('.n${num}'))">
-        <img src=${icon} onerror="this.remove()">
+        <img src="${icon}" onerror="this.remove()">
     </div>`
     if(localStorage.theme == "aero"){
-        document.querySelector(`.n${num}`).animate(
+        let window = document.querySelectorAll(`.n${num}`)
+        window[window.length-1].animate(
             [
                 {transform: "perspective(400px) rotateX(-5deg)", opacity: 0, scale: 0.9},
                 {transform: "perspective(400px) rotateX(0deg)", opacity: 1, scale: 1}
@@ -130,7 +131,7 @@ function windowResize(event, elem, ...actions){
 }
 function AddWindow(window, ispopup, noResize){
     openedwindows.push(id)
-    document.body.innerHTML =
+    document.body.innerHTML +=
     `
     <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px; opacity: 1">
         <div class="topbar" ondblclick="maximise(this.parentElement)" onmousedown="windowMouseDown(event, this, 'drag')" ontouchstart="windowMouseDown(event, this, 'drag')">
@@ -158,14 +159,13 @@ function AddWindow(window, ispopup, noResize){
             ${ispopup ? '<footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>' : ''}
         </div>
     </div>
-    ` + document.body.innerHTML
-    connectScript()
+    `
     AddWindowDefault(window.icon, id);
     id++
 }
 function AddWindowNoGUI(window, noResize){
     openedwindows.push(id)
-    document.body.innerHTML =
+    document.body.innerHTML +=
     `
     <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px; opacity: 1"
         ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
@@ -178,13 +178,26 @@ function AddWindowNoGUI(window, noResize){
         <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
         <div class="custom-content">
             <ignore></ignore>
-            <text>${window.innerhtml}</text>
+            <text>${window.innerHTML}</text>
         </div>
     </div>
-    ` + document.body.innerHTML
-    connectScript()
+    `
     AddWindowDefault(window.icon, id);
     id++
+}
+async function loadApp(packageName){
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4){
+            console.log(request.responseText)
+            const info = JSON.parse(request.responseText)
+            AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
+                `<iframe src="../ProgramFiles/${packageName}/index.html" frameborder="0">`, 
+                `../ProgramFiles/${packageName}/${info.icon}`), true)
+        }
+    }
+    request.open("GET", `../ProgramFiles/${packageName}/init.json`, true);
+    request.send();
 }
 function closeWindow(window){
     if (localStorage.theme != "aero") timeout()

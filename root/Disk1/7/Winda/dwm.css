@@ -129,12 +129,31 @@ select{
     appearance: none;
     padding-right: 20px;
 }
-.time-2{
-    width: 322px; 
-    height: 280px;
+.dock-br{
     position: absolute;
     right: 0;
     bottom: 40px;
     margin: 8px;
     padding-top: 5px;
+}
+table{
+    border-collapse: collapse;
+}
+th{
+    background-image: url(./Resources/table-top.png);
+    background-size: 100% 100%;
+    border-bottom: 1px solid rgb(200,200,200);
+    border-right: 1px solid rgb(200,200,200);
+    padding: 5px;
+}
+text{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+input[type=text]{
+    cursor: text;
+}
+input:focus{
+    outline: none;
 }
