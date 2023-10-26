@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .time-container{
+                background-color: white;
+                width: 100%;
+                height: 100%;
+                font-size: 12px;
+            }
+            #datetime{
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: rgb(0, 102, 204);
+            }
+            .bottom-time{
+                display: flex;
+                justify-content: space-between;
+                margin: 0 12px;
+            }
+            .bottom-time > div > div{
+                text-align: center;
+                width: 130px;
+            }
+            .calendar{
+                width: 150px;
+                margin-right: 20px;
+            }
+            html, body{
+                height: 100%;
+                width: 100%;
+                font-family: system-ui, 'sans-serif', 'Segoe ui';
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #weekday{
+                margin-top: 10px;
+                color: gray;
+            }
+        </style>
+        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
+    </head>	
+    <body>
+        <div class="time-container">
+            <div id="datetime"></div>
+            <div class="bottom-time">
+                <iframe class="calendar" src="./calendar.html" frameborder="0"></iframe>
+                <div>
+                    <iframe src="clock.html" frameborder="0" style="height: 130px"></iframe>
+                    <div id="exactTime"></div>
+                    <div id="weekday"></div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function formatMonth(date){
+                return ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][date.getMonth()]
+            }
+            function formatWeekday(date){
+                return ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"][date.getDay()]
+            }
+            function padTo2Digits(num) {
+                return num.toString().padStart(2, '0');
+            }
+            function formatTime(date) {
+                return [date.getHours(), padTo2Digits(date.getMinutes()), padTo2Digits(date.getSeconds())].join(':');
+            }
+            function a(){
+                const time = new Date()
+                datetime.innerHTML = `${time.getDate()} ${formatMonth(time)} ${time.getFullYear()} г.`
+                weekday.innerHTML = formatWeekday(time)
+                exactTime.innerHTML = formatTime(time)
+            }
+            setInterval(a, 1000);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,139 @@
+@keyframes showani {
+    0% {
+        left: -200px;
+        opacity: 0;
+    }
+    100% {
+        left: 60px;
+        opacity: 1;
+    }
+}
+
+@keyframes logsshowani {
+    0% {
+        left: -200px;
+        opacity: 0;
+    }
+    100% {
+        left: 0px;
+        opacity: 1;
+    }
+}
+
+@keyframes opacityani {
+    0%   {opacity: 0}
+    100% {opacity: 1}
+}
+
+.backbtn {
+    opacity: 0;
+    animation: opacityani 0.5s 1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards
+}
+
+h1 {
+    position: fixed;
+    left: -200px;
+    opacity: 0;
+    animation: showani 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    font-weight: 100;
+    color: black;
+    font-size: 72px;
+    padding-left: 40px;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    z-index: 99;
+    background-color: rgb(235,235,235);
+    width: calc(100vw - 100px);
+}
+
+.logs {
+    position: fixed;
+    animation: logsshowani 0.4s 0.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    opacity: 0;
+    width:100vw;
+    height: 100vh;
+    top:0;left:0;
+    padding-left: 100px;
+    padding-right: 100px;
+    overflow: auto
+}
+
+.latest {
+    position: fixed;
+    animation: logsshowani 0.4s 0.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    opacity: 0;
+    width:100vw;
+    height: 100vh;
+    top:0;left:0;
+    padding-left: 100px;
+    padding-right: 100px;
+    overflow: auto
+}
+
+h2 {
+    margin-top: 40px;
+    font-weight: 100;
+    font-size: 30px;
+    color: black;
+}
+
+h3 {
+    padding-right: 100px;
+    font-weight: 400;
+    font-size: 24px;
+    color: black;
+}
+
+.leftpanel {
+    width:300px;
+    height:100vh;
+    background-color: rgb(16,16,16);
+    z-index: 4;
+    position:fixed;
+    top:0;
+    left:0;
+    transform: translateX(-240px);
+    transition: cubic-bezier(0.1, 0.9, 0.2, 1) 0.1s;
+}
+
+.leftpanel:hover {
+    transform: translateX(0);
+    transition: cubic-bezier(0.1, 0.9, 0.2, 1) 0.2s;
+}
+
+.leftpanel_element {
+    height:60px;
+    width:300px;
+    background-color: black;
+}
+
+.cb_panel_personalize {
+    width:356px;
+    height:100vh;
+    background-color: white;
+    z-index: 99995;
+    position:fixed;
+    right:0;
+    top:0;
+    transform: translateX(356px);
+    transition: cubic-bezier(0.1, 0.9, 0.2, 1) 0.3s;
+}
+
+.cb_panel_personalize_show {
+    width:356px;
+    height:100vh;
+    background-color: white;
+    z-index: 99995;
+    position:fixed;
+    right:0;
+    top:0;
+    transform: translateX(0px);
+    transition: cubic-bezier(0.1, 0.9, 0.2, 1) 0.5s;
+
+  }
+
+.cb_panel_personalize_header {
+    height: 80px;
+    width: 356px;
+    background-color: rgb(31,0,104);
+}

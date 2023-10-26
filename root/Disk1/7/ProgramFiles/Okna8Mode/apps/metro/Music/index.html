@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../../style/bootstrap.min.css">
+        <link rel="stylesheet" href="../../../style/main.css">
+        <link rel="stylesheet" href="music.css">
+        <link rel="stylesheet" href="../../../style/metroui.css">
+        <div class="metrosplash" style="background-color: rgb(210,71,38);"><img src="AppSplash.png" alt=""></div>
+        <script src="../../../script/jquery.js"></script>
+        <script>
+            function addScript(src){
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = false; 
+                document.head.appendChild(script);
+            }
+
+            addScript('../../../localization/' + localStorage.getItem('OKNA8_locale') + '/apps/music.js')
+            addScript('localization.js')
+        </script>
+        <script src="id3-minimized.js"></script>
+        <script src="gui.js"></script>
+        <script src="musicLibrary.js"></script>
+    </head>
+    <body style="background-color: rgb(235,235,235)">
+        <div class="leftpanel">
+            <div class="leftpanelContent">
+                <h1 style="font-weight: 400; color: white; font-size: 20px; margin-top: 54px; margin-left: 34px;">Music</h1>
+                <img src="menu.png" style="position: absolute; top: 60px; left:242px;" alt="">
+                <input type="text" placeholder="Поиск" id="SearchMusicInput">
+                <div id="SearchMusicButton"></div>
+                <div class="SelectView">
+                    <div id="SelectViewItemCollection" onclick="SelectView('Collection')" class="item active"><p><span class="segxmvr" style="font-size: 16px; margin-right: 6px;"></span>Коллекция</p></div>
+                    <div id="SelectViewItemNowPlaying" onclick="SelectView('NowPlaying')" class="item"><p><span class="segxmvr" style="font-size: 16px; margin-right: 6px;"></span>Сейчас играет</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="ViewCollection View">
+            <h1>Коллекция</h1>
+            <div class="SelectArtAlbTrk">
+                <div class="Item active">Альбомы</div>
+                <div class="Item">Исполнители</div>
+                <div class="Item">Песни</div>
+            </div>
+        </div>
+        <div class="ViewNowPlaying View">
+            <div class="nowplaying">
+                <p>Test song</p>
+                <p>Group · Album</p>
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="segxmvr"></td>
+                        <td class="segxmvr"></td>
+                        <td>Nemo</td>
+                        <td>Nightwish</td>
+                        <td>Once</td>
+                        <td>4:33</td>
+                        <td>2004 г.</td>
+                    </tr>
+                    <tr>
+                        <td class="segxmvr"></td>
+                        <td class="segxmvr"></td>
+                        <td>Song name</td>
+                        <td>Group name</td>
+                        <td>Album name</td>
+                        <td>6:24</td>
+                        <td>2010 г.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="PlayerBottom"></div>
+    </body>
+</html>

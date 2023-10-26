@@ -1,0 +1,15 @@
+var LOCALE_preparingtext = [
+    '',
+    'Hi',
+    'We’re setting things up for you',
+    'Let’s start',
+    'Now we’ll set up your apps',
+    'You can get new apps from the Store',
+    'Getting your apps ready',
+    'Taking care of a few things',
+    'Almost ready',
+    'Installing your apps',
+    'Don’t turn off your PC',
+    'This might take a while',
+    'We’re still working',
+]

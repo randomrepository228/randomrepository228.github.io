@@ -1,0 +1,212 @@
+body {
+    background-color: rgb(29,29,29);
+    color: white;
+}
+
+#ImagesLibrary {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left:0; top:0; 
+}
+
+#ImagesLibrary > h1 {
+    font-size: 56px;
+    font-weight: 100;
+    margin: 40px 120px;
+}
+
+#ImagesLibrary > h1 > span {
+    font-size: 28px;
+    font-weight: 100;
+    margin-left: 60px;
+}
+
+#ImagesLibrary > h1 > span:hover {
+    text-decoration: underline;
+}
+
+#ImagesLibrary > h1 > span:active {
+    color: rgb(200,200,200);
+}
+
+.ImagesContainer {
+    opacity: 0;
+    padding-left: 120px;
+    padding-right: 120px;
+    max-width: 100vw;
+    flex-direction: column;
+    height: calc(100vh - 154px);
+    overflow-x: auto;
+    flex-wrap: wrap; 
+    align-content: flex-start;
+    animation: Metro_ShowAni2 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.ImagesContainer .Element {
+    width: 190px;
+    height: 130px;
+    background-color: rgb(43,43,43);
+    margin: 5px;
+}
+
+.ImagesContainer .Element:hover {
+    border: 3px solid rgb(97,97,97);
+    margin: 2px;
+}
+
+.ImagesContainer .Element:active {
+    scale: 0.98;
+}
+
+.ImagesContainer .Element img {
+    width: 190px;
+    height: 130px;
+    object-fit: cover;
+}
+
+.ImagesContainer .Element video {
+    width: 190px;
+    height: 130px;
+    object-fit: cover;
+}
+
+::-webkit-scrollbar {
+    width: 24px;
+    height: 17px;
+    background-color: rgba(134, 134, 134, 0.4);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: rgb(96, 96, 96);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(205, 205, 205);
+    border: 1px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-button:horizontal:start:decrement {
+    background:url(scrollbar/h_l.png);
+    width: 33px;
+}
+
+::-webkit-scrollbar-button:horizontal:end:increment {
+    background:url(scrollbar/h_r.png);
+    width: 33px;
+}
+
+::-webkit-scrollbar-button:horizontal:start:decrement:active {
+    background:url(scrollbar/h_l_a.png);
+}
+
+::-webkit-scrollbar-button:horizontal:end:increment:active {
+    background:url(scrollbar/h_r_a.png);
+}
+
+::-webkit-scrollbar-button:horizontal:start:decrement:hover {
+    background:url(scrollbar/h_l_h.png);
+}
+
+::-webkit-scrollbar-button:horizontal:end:increment:hover {
+    background:url(scrollbar/h_r_h.png);
+}
+
+#ImagesView {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left:0;top:0;
+    z-index: 1;
+    display: none;
+    animation: Metro_ShowAni2 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+#ImagesView .Images .Image {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: -150%; top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#ImagesView .Images .Image img {
+    position: fixed;
+    left: 50%; top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    max-width: 100vw;
+    max-height: 100vh;
+    background-color: rgb(43,43,43);
+}
+
+#ImagesView .Images .Image video {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: rgb(43,43,43);
+}
+
+#ImagesView .prev, #ImagesView .next {
+    width: 70px;
+    height: 40px;
+    position: absolute;
+    top: calc(50% - 20px);
+    background-color: rgba(240,240,240,0.5);
+    z-index: 2;
+    transition: 0.1s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+#ImagesView .prev:hover, #ImagesView .next:hover {
+    background-color: rgba(240,240,240,0.7);
+}
+
+#ImagesView .prev:active, #ImagesView .next:active {
+    background-color: rgba(240,240,240,1);
+}
+
+#ImagesView .prev {
+    left: 0;
+}
+
+#ImagesView .next {
+    right: 0;
+}
+
+#ImagesView .next p, #ImagesView .prev p {
+    margin: 6px 26px;
+    font-size: 20px;
+    color: rgb(20,20,20);
+}
+
+#ImagesView > .backbtn {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    scale: 1.4;
+    z-index: 9;
+}
+
+@keyframes ImageCenterRightAni {
+    0% {left: 50%;}
+    100% {left: 150%;}
+}
+
+@keyframes ImageLeftCenterAni {
+    0% {left: -150%;}
+    100% {left: 50%;}
+}
+
+@keyframes ImageRightCenterAni {
+    0% {left: 150%;}
+    100% {left: 50%;}
+}
+
+@keyframes ImageCenterLeftAni {
+    0% {left: 50%;}
+    100% {left: -150%;}
+}
+
+.metrodialog {
+    background-color: rgb(43,43,43);
+}

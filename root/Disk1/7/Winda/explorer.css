@@ -1,0 +1,186 @@
+.explorer{
+    width: 100%;
+    height: 100%;
+}
+.icons{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: calc(100% - 38px);
+    align-content: flex-start;
+}
+.icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75px;
+    text-align: center;
+    color: white;
+    padding: 3px;
+    padding-bottom: 28px;
+    height: fit-content;
+    border: 1px solid transparent;
+    outline: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 12px;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7);
+}
+.icon img{
+    height: 48px;
+    width: 48px;
+}
+.icon:hover{
+    background-color: rgba(230,230,255,0.5);
+    border: 1px solid rgba(230,230,255,0.8);
+    outline: 1px solid rgba(100,205,205,0.8);
+}
+.icon:active{
+    background-color: rgba(200,230,255, 0.7);
+}
+bottomright{
+    position: absolute; 
+    bottom: 40px; 
+    right: 0px; 
+    text-align: right; 
+    color: white;
+    z-index: -1;
+}
+.taskbar{
+    height: 38px;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    outline: 1px solid black;
+    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.07);
+    display: flex;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+.taskbar-btn{
+    object-fit: cover;
+    object-position: 0 -8px;
+    position: fixed;
+    width: 54px;
+    height: 40px;
+    margin-top: -1px;
+}
+.taskbar-btn-orb{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    margin-left: 8px;
+    margin-top: -1px;
+}
+.taskbar-btn:hover{
+    object-position: 0 -62px;
+}
+.taskbar-btn:active{
+    object-position: 0 -116px;
+}
+.left-bar, .right-bar{
+    height: 100%;
+    display: flex;
+}
+.right-bar{
+    margin-left: auto; 
+    margin-right: 0;
+    padding-left: 50px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), linear-gradient(to right, transparent, rgba(0,0,0,0.25));
+    background-position: right 0, left 0;
+    background-size: calc(100% - 50px), 50px;
+}
+.wrapper{
+    width: 59px;
+    background: rgba(0,0,0,0.25);
+}
+.left-bar{
+    background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+    background-repeat: no-repeat;
+    background-size: 50px 59px;
+    min-width: 50px;
+}
+.window-tray{
+    position: relative;
+    bottom: 2px;
+    width: 60px;
+    height: 40px;
+    border-radius: 3px;
+    margin-right: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("./Resources/taskbar_btn.png");
+}
+.window-tray[focus]{
+    /* background-image: url("./Resources/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
+    /* background-position: left 0, center;
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat; */
+    background-image: url("./Resources/taskbar_btn_focus.png");
+}
+.window-tray:hover{
+    /* background-image: url("./Resources/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
+    background-position: left 0, center;
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat;
+}
+.window-tray img{
+    height: 30px;
+    width: 30px;
+}
+.time{
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    padding-top: 2px;
+}
+.show-desktop{
+    position: relative;
+    bottom: 1px;
+    width: 15px;
+    height: 40px;
+    margin-left: 11px;
+    background-image: url("./Resources/hide_windows.png");
+    background-size: 100% 100%; 
+}
+.show-desktop:hover{
+    background-image: url("./Resources/hide_windows_hover.png");
+}
+.show-desktop:active{
+    background-image: url("./Resources/hide_windows_pressed.png");
+}
+.start-menu{
+    position: absolute;
+    left: 0;
+    bottom: 40px;
+    width: 505px;
+    height: max-content;
+    display: none;
+    border-top-right-radius: 10px;
+    background-image: url("./Resources/start_menu.png");
+    background-size: 100% 100%;
+}
+.left-start{
+    background-color: white;
+    border: 1px solid black;
+    outline: 1px solid rgba(255,255,255,0.5);
+    border-radius: 3px;
+    width: 60%;
+    padding: 3px;
+}
+.start-option{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 2px;
+    border-radius: 3px;
+}
+.start-option img{
+    width: 32px;
+    height: 32px;
+}

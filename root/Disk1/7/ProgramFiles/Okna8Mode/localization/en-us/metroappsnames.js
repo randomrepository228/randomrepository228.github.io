@@ -1,0 +1,21 @@
+var LOCALE_appsnames = [
+    "",
+    "PC settings",
+    "Mail",
+    "Calculator",
+    "Music",
+    "Internet Explorer",
+    "Desktop",
+    "Changelog",
+    "Registry editor",
+    "Store",
+    "People",
+    "Weather",
+    "Calendar",
+    "Skype",
+    "Sports",
+    "Money",
+    "Photos",
+    "Run",
+    "Explorer"
+]

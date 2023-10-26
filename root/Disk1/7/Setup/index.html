@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Windows simulator</title>
+        <style>
+            body{
+                margin: 0;
+                background-color: black;
+                background-image: url("../Winda/Resources/login.jpg");
+                background-size: 100% 100%;
+                overflow: hidden;
+                font-family: system-ui, 'sans-serif', 'Segoe ui' !important;
+            }
+            html, body{
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+        <link rel="stylesheet" href="style.css">
+        <meta name="title" content="Winda7">
+        <meta charset="utf-8">
+        <meta property="og:title" content="Winda7">
+        <meta name="description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
+        <meta property="og:description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+    </head>
+    <body>
+        <div class="window" style="width: 620px; height: 459px">
+            <div class="title-bar">
+              <div class="title-bar-text">
+                Windows Setup
+              </div>
+              <div class="title-bar-controls">
+                <button disabled aria-label="Minimize"></button>
+                <button disabled aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div>
+                <div class="logo">
+                  <img src="./img/411.png">
+                </div>
+                <div>
+                  Language to install:
+                  <select name="locale" id="locale">
+                      <option value="en">English</option>
+                      <option value="ru">Русский</option>
+                  </select>
+                </div>
+              </div>
+              <div class="bottom">
+                <div class="bottomtext">
+                  Enter your language and other preferences and click "Next" to continue.
+                </div>
+                <div class="end">
+                  <div class="copyright"></div>
+                  <button class="next">Next</button>
+                </div>
+              </div>
+            </div>
+        </div>
+    </body>
+</html>

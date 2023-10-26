@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Windows simulator</title>
+        <style>
+            body{
+                margin: 0;
+                background-color: black;
+                background-image: url("img/wallpaper.jpg");
+                background-size: 100% 100%;
+                overflow: hidden;
+            }
+        </style>
+        <meta name="title" content="Winda7">
+        <meta charset="utf-8">
+        <meta property="og:title" content="Winda7">
+        <meta name="description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
+        <meta property="og:description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
+        <link rel="stylesheet" href="aero.css">
+        <script>
+            did = false;
+        </script>
+    </head>
+    <body onmousemove="move(event);">
+        <div class="explorer">
+            <div class="icons"></div>
+            <div class="start-menu overlay">
+                <img src="./Resources/startmenu.png">
+                <div class="start-menu2">
+                    <div class="start-menu-option">
+                        Новая игра
+                    </div>
+                </div>
+            </div>
+            <bottomright>Progressbar95 Parody</bottomright>
+            <div class="taskbar">
+                <div class="wrapper" onclick="startMenu(true)">
+                    <img class="taskbar-btn" src="./Resources/start.png"></img>
+                </div>
+                <div class="left-bar"></div>
+                <div class="right-bar">
+                    <div class="overlay">
+                        <img src="./Resources/clockback.png" class = "timebg">
+                        <div class="time"></div>
+                    </div>
+                </div>
+            </div>
+            <script src="explorer.js"></script>
+        </div>
+        <script src="ntoskrnl.js"></script>
+    </body>
+</html>
