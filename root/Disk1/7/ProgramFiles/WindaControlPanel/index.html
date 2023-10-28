@@ -17,19 +17,18 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
-        Example Text<br>
-        <button>short</button><br>
-        <button>This is a very long button</button><br>
-        <input type="checkbox" name="exampleCheckbox" id="exampleCheckbox">
-        <label for="exampleCheckbox">Example Checkbox</label>
         <div class="select">
-            <select name="a" id="a">
-                <option value="a">a</option>
-                <option value="dsfdsfdsfdsfdsfdsfds">dsfdsfdsfdsfdsfdsfds</option>
-                <option value="d">d</option>
-                <option value="utyuyt">utyuyt</option>
+            Current theme:&nbsp;
+            <select name="themeSelect" onchange="top.changeTheme(this.value)">
+                <option value="aero">Aero</option>
+                <option value="basic">Basic</option>
             </select>
             <selecticon></selecticon>
         </div>
+        <input type="checkbox" name="exampleCheckbox" id="exampleCheckbox" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
+        <label for="exampleCheckbox">Verbose boot</label>
+        <script>
+            exampleCheckbox.checked = localStorage.verboseBoot == "true" ? true : false
+        </script>
     </body>
 </html>

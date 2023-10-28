@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <!-- <script>
             if(!localStorage.locale) window.location.href = "../Setup/"
             if(!localStorage.user) window.location.href = "../Setup/registeruser"
         </script> -->
-        <div id="winload" style="width: 100vw; height: 100vh; background-color: black; z-index: 999999999; position: relative; text-align: center; font-family: sans-serif;">
+        <div id="winload" style="width: 100vw; height: 100vh; overflow: hidden; background-color: black; z-index: 999999999; position: relative; text-align: center; font-family: sans-serif;">
             <p style="font-size: 20px; color: white; margin: 0; padding-top: 70vh;">Loading Winda</p><br>
             <p style="font-size: 20px; color: gray">By kitaes</p>
         </div>
+        <script>
+            if (localStorage.verboseBoot == "true"){
+                winload.innerHTML = '<p style="font-size: 15px; color: white; margin: 0; text-align: left"></p>'
+            }
+            function log(path){
+                if (localStorage.verboseBoot == "true"){
+                    winload.children[0].innerText += path + "\n"
+                    winload.scrollTo(0, document.body.scrollHeight);
+                }
+            }
+        </script>
         <title>Windows simulator</title>
         <style>
             body{
@@ -22,7 +34,6 @@
         <style id="iframeignore"></style>
         <script src="applist.js"></script>
         <meta name="title" content="Winda7">
-        <meta charset="utf-8">
         <meta property="og:title" content="Winda7">
         <meta name="description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
         <meta property="og:description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
@@ -37,67 +48,67 @@
         <link as="image" rel="stylesheet" href="explorer.css">
         <link as="image" rel="stylesheet" href="./Resources/aero/style.css" id="theme">
         <!-- Why does it have to be like this -->
-        <link as="image" rel="preload" href="./Resources/basic/style.css">
-        <link as="image" rel="preload" href="./Resources/dropdown.png">
-        <link as="image" rel="preload" href="./Resources/hide_windows.png">
-        <link as="image" rel="preload" href="./Resources/hide_windows_hover.png">
-        <link as="image" rel="preload" href="./Resources/hide_windows_pressed.png">
-        <link as="image" rel="preload" href="./Resources/icon.jpg">
-        <link as="image" rel="preload" href="./Resources/login.jpg">
-        <link as="image" rel="preload" href="./Resources/scrollbars">
-        <link as="image" rel="preload" href="./Resources/start_menu.png">
-        <link as="image" rel="preload" href="./Resources/table-top.png">
-        <link as="image" rel="preload" href="./Resources/taskbar-btn.png">
-        <link as="image" rel="preload" href="./Resources/taskbar_btn.png">
-        <link as="image" rel="preload" href="./Resources/taskbar_btn_focus.png">
-        <link as="image" rel="preload" href="./Resources/wallpaper.jpg">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/close/hover.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/close/normal.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/close/pressed.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/close/icon.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/close/glow.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/close/hover.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/min/normal.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/min/hover.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/min/pressed.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/min/icon.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/max/hover.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/max/normal.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/max/pressed.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/max/icon.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/min/hover.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/min/normal.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/min/pressed.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/min/icon.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/max/icon.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/close/hover.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/close/normal.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/close/pressed.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons/close/icon.png">
-        <link as="image" rel="preload" href="./Resources/aero/buttons/glow.png">
-        <link as="image" rel="preload" href="./Resources/aero/style.css">
-        <link as="image" rel="preload" href="./Resources/aero/window_aura.png">
-        <link as="image" rel="preload" href="./Resources/aero/window_aura_mirror.png">
-        <link as="image" rel="preload" href="./Resources/aero/window_side.png">
-        <link as="image" rel="preload" href="./Resources/basic/buttons">
-        <link as="image" rel="preload" href="./Resources/basic/style.css">
-        <link as="image" rel="preload" href="./Resources/basic/titlebar.png">
-        <link as="image" rel="preload" href="./Resources/basic/window_side.png">
-        <link as="image" rel="preload" href="./Resources/button/hover/left.png">
-        <link as="image" rel="preload" href="./Resources/button/hover/center.png">
-        <link as="image" rel="preload" href="./Resources/button/hover/right.png">
-        <link as="image" rel="preload" href="./Resources/button/normal/left.png">
-        <link as="image" rel="preload" href="./Resources/button/normal/center.png">
-        <link as="image" rel="preload" href="./Resources/button/normal/right.png">
-        <link as="image" rel="preload" href="./Resources/button/pressed/left.png">
-        <link as="image" rel="preload" href="./Resources/button/pressed/center.png">
-        <link as="image" rel="preload" href="./Resources/button/pressed/right.png">
-        <link as="image" rel="preload" href="./Resources/checkbox/unchecked/hover.png">
-        <link as="image" rel="preload" href="./Resources/checkbox/unchecked/normal.png">
-        <link as="image" rel="preload" href="./Resources/checkbox/unchecked/pressed.png">
-        <link as="image" rel="preload" href="./Resources/checkbox/checked/hover.png">
-        <link as="image" rel="preload" href="./Resources/checkbox/checked/normal.png">
-        <link as="image" rel="preload" href="./Resources/checkbox/checked/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/style.css">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/dropdown.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/hide_windows.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/hide_windows_hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/hide_windows_pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/icon.jpg">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/login.jpg">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/scrollbars">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/start_menu.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/table-top.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/taskbar-btn.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/taskbar_btn.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/taskbar_btn_focus.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/wallpaper.jpg">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/close/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/close/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/close/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/close/icon.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/close/glow.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/close/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/min/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/min/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/min/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/min/icon.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/max/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/max/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/max/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/max/icon.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/min/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/min/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/min/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/min/icon.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/max/icon.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/close/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/close/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/close/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons/close/icon.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/buttons/glow.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/style.css">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/window_aura.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/window_aura_mirror.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/aero/window_side.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/buttons">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/style.css">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/titlebar.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/basic/window_side.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/hover/left.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/hover/center.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/hover/right.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/normal/left.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/normal/center.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/normal/right.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/pressed/left.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/pressed/center.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/button/pressed/right.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/checkbox/unchecked/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/checkbox/unchecked/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/checkbox/unchecked/pressed.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/checkbox/checked/hover.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/checkbox/checked/normal.png">
+        <link onload="log(this.href)" as="image" rel="preload" href="./Resources/checkbox/checked/pressed.png">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
     </head>
     <body onmousemove="move(event);" ontouchmove="move(event);">

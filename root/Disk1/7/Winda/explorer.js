@@ -65,10 +65,10 @@ addStartMenuEntryLeft("Version 0.0.2", "./Resources/icon.jpg", "window.location.
 addStartMenuEntryLeft("Version 0.1.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'")
 addStartMenuEntryLeft("Version 0.9.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.0/simulator.html'")
 addStartMenuEntryLeft("Version 0.9.2", "./Resources/icon.jpg", "window.location.href = '../Winda.old/b0.9.2/simulator.html'")
-createIcon(new Icon("test window", "./Resources/icon.jpg", 'AddWindow(new Window(Math.random()*(innerWidth-200), Math.random()*(innerHeight-300), 200, 300, "test window", "hihihi"), true)'))
 createIcon(new Icon("Example App", "../ProgramFiles/ExampleApp/icon.png", "loadApp('ExampleApp')"))
 createIcon(new Icon("Registry Editor", "../ProgramFiles/regedit/icon.png", "loadApp('regedit')"))
 createIcon(new Icon("Okna 8 Mode", "../ProgramFiles/Okna8Mode/icon.png", "loadApp('Okna8Mode')"))
+createIcon(new Icon("Winda Control Panel", "../ProgramFiles/WindaControlPanel/icon.png", "loadApp('WindaControlPanel')"))
 addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
     new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 
