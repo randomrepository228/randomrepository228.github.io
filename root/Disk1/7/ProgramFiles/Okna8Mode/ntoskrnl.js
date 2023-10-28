@@ -399,6 +399,3 @@ if (!localStorage.OKNA8_locale){
     localStorage.OKNA8_user_user0_username = "Okna 8 Mode User"
     localStorage.OKNA8_users = "user0"
 }
-document.onreadystatechange = () => {
-    if (document.readyState == "complete") winload.remove()
-}
