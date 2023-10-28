@@ -47,7 +47,7 @@ function setInactive(){
 }
 function AddWindowDefault(icon, num){
     document.querySelector(".left-bar").innerHTML += `
-    <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelector('.n${num}'))">
+    <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelectorAll('.n${num}')[1])">
         <img src="${icon}" onerror="this.remove()">
     </div>`
     if(localStorage.theme == "aero"){
@@ -131,43 +131,57 @@ function windowResize(event, elem, ...actions){
 }
 function AddWindow(window, ispopup, noResize){
     openedwindows.push(id)
-    document.body.innerHTML +=
+    newWindow = document.createElement("div")
+    newWindow.className = `n${id} window winapi_shadow winapi_transparent`
+    newWindow.setAttribute("windowid", id)
+    newWindow.style.left = window.x + "px"
+    newWindow.style.top = window.y + "px"
+    newWindow.style.width = window.width + "px"
+    newWindow.style.height = window.height + "px"
+    newWindow.style.opacity = 1
+    newWindow.innerHTML =
     `
-    <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px; opacity: 1">
-        <div class="topbar" ondblclick="maximise(this.parentElement)" onmousedown="windowMouseDown(event, this, 'drag')" ontouchstart="windowMouseDown(event, this, 'drag')">
-            <left>
-                <img src="${window.icon}" onerror="this.remove()">
-                <p>${window.title}</p>
-            </left>
-            <div class="buttons">
-                <div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
-                <div class="square" onclick="maximise(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/max/icon.png"></div>
-                <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
-            </div>
-        </div>
-        ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-        <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-        <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-        <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-        <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
-        <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
-        <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
-        <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
-        <div class="content">
-            <ignore></ignore>
-            <text>${window.innerhtml}</text>
-            ${ispopup ? '<footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>' : ''}
+    <div class="topbar" ondblclick="maximise(this.parentElement)" onmousedown="windowMouseDown(event, this, 'drag')" ontouchstart="windowMouseDown(event, this, 'drag')">
+        <left>
+            <img src="${window.icon}" onerror="this.remove()">
+            <p>${window.title}</p>
+        </left>
+        <div class="buttons">
+            <div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
+            <div class="square" onclick="maximise(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/max/icon.png"></div>
+            <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
         </div>
     </div>
+    ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+    <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
+    <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
+    <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
+    <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
+    <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
+    <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
+    <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+    <div class="content">
+        <ignore></ignore>
+        <text>${window.innerhtml}</text>
+        ${ispopup ? '<footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>' : ''}
+    </div>
     `
+    windows.append(newWindow)
     AddWindowDefault(window.icon, id);
     id++
 }
 function AddWindowNoGUI(window, noResize){
     openedwindows.push(id)
-    document.body.innerHTML +=
+    newWindow = document.createElement("div")
+    newWindow.className = `n${id} window winapi_shadow winapi_transparent`
+    newWindow.setAttribute("windowid", id)
+    newWindow.style.left = window.x + "px"
+    newWindow.style.top = window.y + "px"
+    newWindow.style.width = window.width + "px"
+    newWindow.style.height = window.height + "px"
+    newWindow.style.opacity = 1
+    newWindow.innerHTML =
     `
-    <div class="n${id} window winapi_shadow winapi_transparent" windowid="${id}" style="left: ${window.x}px;top: ${window.y}px; width: ${window.width}px; height: ${window.height}px; opacity: 1"
         ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
         <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
         <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
@@ -180,8 +194,8 @@ function AddWindowNoGUI(window, noResize){
             <ignore></ignore>
             <text>${window.innerHTML}</text>
         </div>
-    </div>
     `
+    windows.append(newWindow)
     AddWindowDefault(window.icon, id);
     id++
 }
