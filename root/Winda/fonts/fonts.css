@@ -62,9 +62,3 @@
     font-family: 'segoesymbol';
     src: url(./seguisym.ttf);
 }
-
-* {
-    font-family: 'segoeui', 'segoesymbol';
-    font-weight: 400;
-    user-select: none;
-}
