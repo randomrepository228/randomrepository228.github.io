@@ -28,6 +28,7 @@
         <input type="checkbox" name="exampleCheckbox" id="exampleCheckbox" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
         <label for="exampleCheckbox">Verbose boot</label>
         <script>
+            document.querySelector("select").value = localStorage.theme
             exampleCheckbox.checked = localStorage.verboseBoot == "true" ? true : false
         </script>
     </body>

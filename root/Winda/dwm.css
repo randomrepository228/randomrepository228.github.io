@@ -1,5 +1,5 @@
 /* Fonts, cursor, and disable scale */
-*{
+html{
     font-family: 'segoeui', 'sans-serif', system-ui;
     touch-action: manipulation;
     cursor: default;

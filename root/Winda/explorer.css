@@ -16,9 +16,10 @@
     width: 75px;
     text-align: center;
     color: white;
-    padding: 3px;
+    line-clamp: 3; 
+    overflow: hidden;
     padding-bottom: 28px;
-    height: fit-content;
+    height: 100px;
     border: 1px solid transparent;
     outline: 1px solid transparent;
     border-radius: 3px;

@@ -1,11 +1,4 @@
-/* Fonts, cursor, and disable scale */
-*{
-    font-family: system-ui, 'sans-serif', 'Segoe ui';
-    touch-action: manipulation;
-    cursor: default;
-    color: black;
-    font-size: 12px;
-}
+
 .topleft, .topright, .bottomleft, .bottomright, .top, .left, .right, .bottom{
     position: absolute;
 }

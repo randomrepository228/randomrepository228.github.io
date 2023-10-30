@@ -1,90 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Please select boot device:</title>
+    <title>Выберите систему для загрузки</title>
     <style>
+        p{
+            margin-left: 20px;
+        }
         body{
+            margin: 0;
             background-color: black;
-        }
-        div{
-            background-color: blue;
-            width: fit-content;
-            height: fit-content;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             color: white;
-            white-space: pre;
-            line-height: 16px;
+            font-family: monospace;
+            font-size: 20px;
+            margin: 5px 20px;
         }
-        /* [a=s]{
-            background-color: white;
-            color: blue;
-        } */
-        o{
-            background-color: white;
-            color: blue;
+        cntr{
+            background-color: rgb(200,200,200);
+            text-align: center;
+            position: absolute;
+            width: calc(100% - 40px);
+            margin-bottom: 30px;
+            color: black
         }
-        @font-face {
-            font-family: 'System';
-            src: url("./ROM/system2.ttf");
+        cntr *{
+            color: inherit;
         }
-        *{
-            font-family: System
+        grey{
+            color: rgb(150,150,150)
+        }
+        .first{
+            margin-top: 30px;
+        }
+        option{
+            margin-left: 30px;
+        }
+        .selected{
+            background-color: rgb(200,200,200);
+            color: black;
+        }
+        .bottom{
+            position: absolute;
+            bottom: -15px;
+            display: flex;
+            justify-content: space-between;
+            color: black;
+        }
+        left, right{
+            margin: 0 20px;
         }
     </style>
 </head>
 <body>
-    <!-- <div>╔═════════════════════════════════╗
-║    Please select boot device:   ║
-╠═════════════════════════════════╣
-║<o l="./Disk1"a="s"> Winda Boot Manager              </o>║
-║                                 ║
-║                                 ║
-║                                 ║
-║                                 ║
-╠═════════════════════════════════╣
-║    ↑ and ↓ to move selection    ║
-║   ENTER to select boot device   ║
-╚═════════════════════════════════╝</div> -->
-<div>╔═════════════════════════════════╗
-║    Please select boot device:   ║
-╠═════════════════════════════════╣
-║<o> Winda Boot Manager              </o>║
-║                                 ║
-║                                 ║
-║                                 ║
-║                                 ║
-╠═════════════════════════════════╣
-║    ↑ and ↓ to move selection    ║
-║    TAP to select boot device    ║
-╚═════════════════════════════════╝</div>
-<script>
-    // optionlist = document.getElementsByTagName("v")
-    // selected = 0
-    function tapHandler(e){
-        // if (e.key == "ArrowUp"){
-        //     if(selected > 0){
-        //         optionlist[selected].className = undefined
-        //         selected--
-        //         optionlist[selected].className = "selected"
-        //     }
-        // }
-        // if (e.key == "ArrowDown"){
-        //     if(selected < optionlist.length-1){
-        //         optionlist[selected].className = undefined
-        //         selected++
-        //         optionlist[selected].className = "selected"
-        //     }
-        // }
-        // if (e.key == "Enter"){
-            // window.location.href = s.getAttribute("l")
-            window.location.href = "./Disk1"
-        // }
-    }
-    document.addEventListener("mousedown", tapHandler)
-</script>
+    <cntr style="color: black">Windows Boot Manager</cntr><br>
+    Выберите операционную систему для запуска<br>
+    <grey>(Выбирать можно стрелочками)</grey><br>
+    <option link="./Winda" class="selected first">Winda7</option>
+    <!-- <option link="../">Другая система</option> -->
+    <cntr class="bottom"  style="color: black">
+        <left>TAP или ENTER - Выбрать</left>
+        <right>↑ ↓ - Изменить выбор</right>
+    </cntr>
+    <script>
+        optionlist = document.getElementsByTagName("option")
+        selected = 0
+        function tapHandler(e){
+            // if (e.key == "ArrowUp"){
+            //     if(selected > 0){
+            //         optionlist[selected].className = undefined
+            //         selected--
+            //         optionlist[selected].className = "selected"
+            //     }
+            // }
+            // if (e.key == "ArrowDown"){
+            //     if(selected < optionlist.length-1){
+            //         optionlist[selected].className = undefined
+            //         selected++
+            //         optionlist[selected].className = "selected"
+            //     }
+            // }
+            // if (e.key == "Enter"){
+                window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+            // }
+        }
+        document.addEventListener("mousedown", (e) => tapHandler(e))
+        document.addEventListener("keydown", (e) => {if (e.keyCode === 13) tapHandler(e)})
+        if (!localStorage.showBootMenu)
+            window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+    </script>
 </body>
 </html>

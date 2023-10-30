@@ -88,7 +88,7 @@ function windowMouseDown(event, elem){
     prevx=event.clientX-elem.getBoundingClientRect().x
     prevy=event.clientY-elem.getBoundingClientRect().y
     prevheight=activewindow.getBoundingClientRect().height
-    prevwidth=activewindow.getBoundingClientRect().width
+    prevwidth=activewindow.getBoundingClientRect().width - 7
     if (!touch) evName = "mouseup"
     else evName = "touchend"
     document.addEventListener(evName, e => {
@@ -362,7 +362,6 @@ function contextMenu(e){
 function contextMenuOff(e){
     contextMenuElement.style.display = "none";
 }
-AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./Resources/icon.jpg"), true)
 function minimiseAll(){
     for (id of openedwindows){
         let wnd = document.querySelector(".n" + id)
@@ -378,27 +377,11 @@ function snapRight(window){
     window.className = window.className.replace("", "snap-right ")
 }
 
-// OKNA 8 MODE ONLY
-
-if (!localStorage.OKNA8_locale){
-    localStorage.OKNA8_NetworkDetecting = "true"
-    localStorage.OKNA8_locale = "en-us"
-    localStorage.OKNA8_lockscreenWallpaper = "img104"
-    localStorage.OKNA8_pcname = "Okna 8 Runtime"
-    localStorage.OKNA8_setupState = "1"
-    localStorage.OKNA8_soundlevel = "50"
-    localStorage.OKNA8_user_user0_StartScreenBackground = "22000"
-    localStorage.OKNA8_user_user0_color_background = "0,60,0"
-    localStorage.OKNA8_user_user0_color_foreground = "22,153,0"
-    localStorage.OKNA8_user_user0_desktopWallpaper = "img0"
-    localStorage.OKNA8_user_user0_eosnotify_skip = "true"
-    localStorage.OKNA8_user_user0_password = ""
-    localStorage["OKNA8_user_user0_startScreen-layout"] = "92metrotile, wide, 2, rgb(1,111,193), rgb(0,141,211), Mail, rgb(1,111,193), ../../metro/Mail, |metrotile, wide, 14, rgb(81,51,171), rgb(100,62,191), Sports, rgb(81,51,171), ../../metro/Sports, |metrotile, standart, 10, rgb(210,71,38), rgb(220,87,46), People, rgb(210,71,38), ../../metro/People, |metrotile, standart, 13, rgb(0,175,240), rgb(26,200,243), Skype, rgb(0,175,240), ../../metro/Skype, |desktoptile, wide, 6|metrotile, wide, 12, rgb(81,51,171), rgb(100,62,191), Calendar, rgb(81,51,171), ../../metro/Calendar, |metrotile, wide, 15, rgb(0,138,0), rgb(0,166,0), Money, rgb(0,138,0), ../../metro/Money, |metrotile, large, 11, rgb(38,114,236), rgb(46,141,239), Weather, rgb(38,114,236), ../../metro/Weather, |metrotile, standart, 5, rgb(38,114,236), rgb(46,141,239), InternetExplorer, rgb(38,114,236), ../../metro/InternetExplorer, |metrotile, standart, 4, rgb(210,71,38), rgb(220,86,46), Music, rgb(210,71,38), ../../metro/Music, |metrotile, wide, 16, rgb(0,130,153), rgb(0,160,177), Photos, rgb(0,130,153), ../../metro/Photos, "
-    localStorage.OKNA8_user_user0_theme_color = "42,81,67"
-    localStorage.OKNA8_user_user0_userPrepared = "true"
-    localStorage.OKNA8_user_user0_username = "Okna 8 Mode User"
-    localStorage.OKNA8_users = "user0"
-}
 document.onreadystatechange = () => {
-    if (document.readyState == "complete") winload.remove()
+    if (document.readyState == "complete") {
+        winload.remove()
+        document.body.setAttribute("onmousemove", "move(event);"); 
+        document.body.setAttribute("ontouchmove", "move(event);");
+        AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./Resources/icon.jpg"), true)
+    }
 }

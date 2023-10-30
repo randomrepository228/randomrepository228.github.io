@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Please select boot device:</title>
+    <style>
+        body{
+            background-color: black;
+        }
+        div{
+            background-color: blue;
+            width: fit-content;
+            height: fit-content;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            white-space: pre;
+            line-height: 16px;
+        }
+        /* [a=s]{
+            background-color: white;
+            color: blue;
+        } */
+        o{
+            background-color: white;
+            color: blue;
+        }
+        @font-face {
+            font-family: 'System';
+            src: url("./ROM/system2.ttf");
+        }
+        *{
+            font-family: System
+        }
+    </style>
+</head>
+<body>
+    <!-- <div>╔═════════════════════════════════╗
+║    Please select boot device:   ║
+╠═════════════════════════════════╣
+║<o l="./Disk1"a="s"> Winda Boot Manager              </o>║
+║                                 ║
+║                                 ║
+║                                 ║
+║                                 ║
+╠═════════════════════════════════╣
+║    ↑ and ↓ to move selection    ║
+║   ENTER to select boot device   ║
+╚═════════════════════════════════╝</div> -->
+<div>╔═════════════════════════════════╗
+║    Please select boot device:   ║
+╠═════════════════════════════════╣
+║<o> Winda Boot Manager              </o>║
+║                                 ║
+║                                 ║
+║                                 ║
+║                                 ║
+╠═════════════════════════════════╣
+║    ↑ and ↓ to move selection    ║
+║    TAP to select boot device    ║
+╚═════════════════════════════════╝</div>
+<script>
+    // optionlist = document.getElementsByTagName("v")
+    // selected = 0
+    function tapHandler(e){
+        // if (e.key == "ArrowUp"){
+        //     if(selected > 0){
+        //         optionlist[selected].className = undefined
+        //         selected--
+        //         optionlist[selected].className = "selected"
+        //     }
+        // }
+        // if (e.key == "ArrowDown"){
+        //     if(selected < optionlist.length-1){
+        //         optionlist[selected].className = undefined
+        //         selected++
+        //         optionlist[selected].className = "selected"
+        //     }
+        // }
+        // if (e.key == "Enter"){
+            // window.location.href = s.getAttribute("l")
+            window.location.href = "./Disk1"
+        // }
+    }
+    document.addEventListener("mousedown", tapHandler)
+</script>
+</body>
+</html>
