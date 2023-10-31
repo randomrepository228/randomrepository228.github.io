@@ -6,7 +6,6 @@ let prevheight;
 let origx;
 let origy;
 let activewindow;
-let id = 0;
 class Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
@@ -73,7 +72,6 @@ function AddWindowDefault(icon, num){
     }
     setActive(document.querySelector(`.n${num}`))
 }
-let openedwindows = []
 function windowMouseDown(event, elem){
     if(elem.children[1].matches(":hover")) return;
     let touch = false;
@@ -130,8 +128,18 @@ function windowResize(event, elem, ...actions){
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function AddWindow(window, ispopup, noResize){
-    openedwindows.push(id)
     newWindow = document.createElement("div")
+    const randNum = Math.round(Math.random() * 99999)
+    let id;
+    for(let i = randNum;;i++){
+        let idCollision = false
+        for(const a of windows.children)
+            if(a.getAttribute("windowid") == i.toString())
+                idCollision = true
+        if (!idCollision)
+            id = i
+            break
+    }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
     newWindow.style.left = window.x + "px"
@@ -168,10 +176,14 @@ function AddWindow(window, ispopup, noResize){
     `
     windows.append(newWindow)
     AddWindowDefault(window.icon, id);
-    id++
+}
+function getAllWindows(){
+    let openedwindows = [];
+    for (a of windows.children)
+        openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
+    return openedwindows
 }
 function AddWindowNoGUI(window, noResize){
-    openedwindows.push(id)
     newWindow = document.createElement("div")
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
@@ -221,11 +233,10 @@ async function loadAppNoInfo(packageName, path, args){
     AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, packageName, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true))
 }
 function closeWindow(window){
-    if (localStorage.theme != "aero") timeout()
     function timeout(){
         for (a of document.querySelectorAll(".n" + window.attributes.windowid.value)) a.remove()
     }
-    openedwindows = openedwindows.splice(openedwindows.indexOf(window.attributes.windowid.value), 1);
+    if (localStorage.theme != "aero") timeout()
     window.className += " closing"
     document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).style.opacity = 0
     document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).animate(
@@ -323,6 +334,9 @@ function maximise(window){
     else
         window.className = window.className.replace("maximised ", "")
 }
+function idToWindow(id){
+    return document.querySelectorAll(`.n${id}`)[1]
+}
 function move(e){
     if (e.touches) e = e.touches[0]
     if(loop.drag){
@@ -363,8 +377,8 @@ function contextMenuOff(e){
     contextMenuElement.style.display = "none";
 }
 function minimiseAll(){
-    for (id of openedwindows){
-        let wnd = document.querySelector(".n" + id)
+    for (const id of getAllWindows()){
+        let wnd = document.querySelectorAll(".n" + id.id)[1]
         wnd.style.opacity = '0'
         wnd.style.pointerEvents = 'none'
     }
@@ -384,4 +398,18 @@ document.onreadystatechange = () => {
         document.body.setAttribute("ontouchmove", "move(event);");
         AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./Resources/icon.jpg"), true)
     }
+}
+// OKNA 8 COMPATIBILITY MODE
+function closemetroapp(appName){
+    getAllWindows().forEach(val => {
+        if (val.title == appName || val.title == `Message from ${appName}`)
+            closeWindow(idToWindow(val.id))
+    })
+}
+function CloseMetroDialog(a){}
+onmessage = (e) => {
+    const commands = e.data.split("|")
+    if (commands[0] == "ModalMetroDialog" && commands.length == 2)
+        AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true))
+    'ModalMetroDialog|<h1>Приложение не доступно</h1><p></p><div class="buttons"><button onclick="closemetroapp(\'Calendar\');CloseMetroDialog(\'__ID__\')">Выход</button></div>'
 }

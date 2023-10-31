@@ -129,7 +129,7 @@ body{
     touch-action: none;
     resize: both;
     z-index: 4;
-    min-width: fit-content;
+    min-width: 100px;
     min-height: 84px;
     padding: 7px;
     padding-top: 0;

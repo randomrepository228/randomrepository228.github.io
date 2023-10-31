@@ -101,7 +101,7 @@ input[type="checkbox"]:checked:active + label{
 } */
 .window{
     padding-top: 0;
-    min-width: fit-content;
+    min-width: 100px;
     min-height: 84px;
 }
 .topbar{

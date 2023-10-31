@@ -69,6 +69,7 @@ createIcon(new Icon("Example App", "../ProgramFiles/ExampleApp/icon.png", "loadA
 createIcon(new Icon("Registry Editor", "../ProgramFiles/regedit/icon.png", "loadApp('regedit')"))
 createIcon(new Icon("Okna 8 Mode", "../ProgramFiles/Okna8Mode/icon.png", "loadApp('Okna8Mode')"))
 createIcon(new Icon("Winda Control Panel", "../ProgramFiles/WindaControlPanel/icon.png", "loadApp('WindaControlPanel')"))
+createIcon(new Icon("Task Manager", "../ProgramFiles/taskmgr/icon.png", "loadApp('taskmgr')"))
 addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
     new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 

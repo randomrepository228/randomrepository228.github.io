@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css">
+        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
+        <link rel="stylesheet" href="../../Winda/dwm.css">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            html { 
+                overflow: auto; 
+            } 
+            body {
+                overflow: none; 
+                display: flex;
+                align-items: flex-start;
+                background-color: rgb(200,200,200);
+                padding-top: 2px;
+            }
+            .left, .right{
+                border: 1px solid gray;
+                background-color: white;
+                overflow: auto;
+                height: calc(100% - 4px);
+                cursor: default;
+            }
+            .right{
+                width: 100%;
+            }
+            table{
+                table-layout: fixed;
+                min-width: 100%;
+            }
+            th{
+                resize: horizontal;
+                text-align: left;
+            }
+            td{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            tr:last-child{
+                width: fit-content;
+            }
+            .left{
+                width: 200px;
+                display: none;
+                margin-right: 5px;
+            }
+            .left, .right{
+                position: relative;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    </head>
+    <body>
+        <div class="left">
+
+        </div>
+        <div class="right"> 
+            <table>
+                <tr>
+                    <th width="200px">Name</th>
+                    <th>PID</th>
+                </tr>
+                <tbody id="table"></tbody>
+            </table>
+        </div>
+        <script>
+            class Window {
+                constructor(x, y, width, height, title, innerhtml, icon) {
+                    this.height = height;
+                    this.width = width;
+                    this.x = x;
+                    this.y = y;
+                    this.title = title;
+                    this.innerhtml = innerhtml;
+                    this.icon = icon
+                }
+            }
+            function refresh(){
+                let temptable = "";
+                const allWindows = top.getAllWindows()
+                for (let i = 0; i < allWindows.length; i++){
+                    let col = document.createElement("tr")
+                    entryInfo = [allWindows[i].title, allWindows[i].id]
+                    for(const info of entryInfo){
+                        let row = document.createElement("td")
+                        row.innerHTML = info
+                        const editvalue = `
+<div>
+    <div style="margin: 10px">End task "${allWindows[i].title}" with PID ${allWindows[i].id}?</div><br>
+</div>
+<footer>
+    <button onclick="closeWindow(idToWindow(${allWindows[i].id}))">Yes</button>
+</footer>`
+                        col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 150, 'End Task', \`${editvalue}\`, ''), false, true)`)
+                        col.appendChild(row)
+                    }
+                    temptable += col.outerHTML;
+                }
+                if (temptable !== table.innerHTML)
+                    table.innerHTML = temptable
+            }
+            refresh()
+            setInterval(refresh, 1000)
+        </script>
+    </body>
+</html>
