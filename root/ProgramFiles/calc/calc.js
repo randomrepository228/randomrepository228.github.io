@@ -15,6 +15,9 @@ function AddSym(symbol) {
             CalcString = CalcString.toString() + symbol
         }
     } else if (symbol == '+' || symbol == '-' || symbol == '/' || symbol == '*') {
+        if (IsWrittenByUser)
+            CalcStringSmall += ' ' + CalcString + ' ' + symbol
+        else
         CalcStringSmall = CalcString + ' ' + symbol
         IsWrittenByUser = 0
     } else if (symbol == 'd') {

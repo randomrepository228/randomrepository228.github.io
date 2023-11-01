@@ -363,19 +363,37 @@ function move(e){
         }
         activewindow.style.left = `${e.clientX - prevx}px`
     }
-    if(loop.right){
-        activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
+    if(localStorage.theme == "aero"){
+        if(loop.right){
+            activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
+        }
+        if(loop.bottom){
+            activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
+        }
+        if(loop.top){
+            activewindow.style.top = `${e.clientY - prevy}px`
+            activewindow.style.height = `${prevheight + origy - e.pageY}px`
+        }
+        if(loop.left){
+            activewindow.style.left = `${e.clientX - prevx}px`
+            activewindow.style.width = `${prevwidth + origx - e.pageX}px`
+        }
     }
-    if(loop.bottom){
-        activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
-    }
-    if(loop.top){
-        activewindow.style.top = `${e.clientY - prevy}px`
-        activewindow.style.height = `${prevheight + origy - e.pageY}px`
-    }
-    if(loop.left){
-        activewindow.style.left = `${e.clientX - prevx}px`
-        activewindow.style.width = `${prevwidth + origx - e.pageX}px`
+    else{
+        if(loop.right){
+            activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 11}px`
+        }
+        if(loop.bottom){
+            activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
+        }
+        if(loop.top){
+            activewindow.style.top = `${e.clientY - prevy}px`
+            activewindow.style.height = `${prevheight + origy - e.pageY - 2}px`
+        }
+        if(loop.left){
+            activewindow.style.left = `${e.clientX - prevx}px`
+            activewindow.style.width = `${prevwidth + origx - e.pageX - 4}px`
+        }
     }
 } 
 function contextMenu(e){

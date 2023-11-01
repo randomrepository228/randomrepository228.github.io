@@ -172,4 +172,7 @@ body {
     text-align: right;
     width: calc(100% - 6px);
     padding-right: 6px;
+    text-overflow: "»";
+    overflow: hidden;
+    white-space: nowrap;
 }
