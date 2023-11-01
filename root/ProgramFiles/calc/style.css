@@ -17,9 +17,6 @@ body {
     position: absolute;
     left: 11px;
     top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
 }
 
 #CalcPageStandart > .row1 {
@@ -162,6 +159,7 @@ body {
     position: absolute;
     bottom: 0;
     text-align: right;
+    width: calc(100% - 8px);
     padding-right: 8px;
 }
 
