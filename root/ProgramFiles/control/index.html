@@ -25,11 +25,11 @@
             </select>
             <selecticon></selecticon>
         </div>
-        <input type="checkbox" name="exampleCheckbox" id="exampleCheckbox" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
-        <label for="exampleCheckbox">Verbose boot</label>
+        <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
+        <label for="verboseBoot">Verbose boot</label>
         <script>
             document.querySelector("select").value = localStorage.theme
-            exampleCheckbox.checked = localStorage.verboseBoot == "true" ? true : false
+            verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
         </script>
         <script>
             top.showWindow("../ProgramFiles/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));

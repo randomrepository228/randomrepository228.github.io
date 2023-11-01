@@ -11,7 +11,8 @@ function AddSym(symbol) {
             CalcString = symbol
             IsWrittenByUser = 1
         } else {
-            CalcString = CalcString + symbol
+            if (CalcString.length > 15) return
+            CalcString = CalcString.toString() + symbol
         }
     } else if (symbol == '+' || symbol == '-' || symbol == '/' || symbol == '*') {
         CalcStringSmall = CalcStringSmall + ' ' + CalcString + ' ' + symbol
@@ -40,7 +41,14 @@ function AddSym(symbol) {
         CalcString = CalcString + ','
     }
     document.querySelector('.output .stringSmall').innerText = CalcStringSmall
-    document.querySelector('.output .string').innerText = CalcString
+    let output = document.querySelector('.output .string')
+    output.innerText = CalcString
+    if (CalcString.length > 16)
+        output.style.fontSize = "12px"
+    else if (CalcString.length > 12) 
+        output.style.fontSize = "18px"
+    else 
+        output.style.fontSize = ""
 }
 
 document.onkeydown = (e) => {

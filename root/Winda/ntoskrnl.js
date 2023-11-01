@@ -224,6 +224,7 @@ async function loadApp(packageName, path, args){
     request.onreadystatechange = function() {
         if (request.readyState == 4){
             if(request.status == 200){
+                console.log(request.responseText)
                 const info = JSON.parse(request.responseText)
                 AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
                     `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
