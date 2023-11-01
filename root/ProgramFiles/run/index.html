@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css">
+        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
+        <link rel="stylesheet" href="../../Winda/dwm.css">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            body{
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+            }
+            .top-run, .center-run{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 15px;
+            }
+            img{
+                height: 32px;
+                height: 32px;
+                margin-right: 15px;
+            }
+            .center-run{
+                margin: 0 15px;
+            }
+            .center-run > div{
+                margin-right: 15px;
+            }
+            input{
+                width: 100%;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    </head>
+    <body>
+        <script>
+            frameElement.parentElement.parentElement.parentElement.style.top = (top.innerHeight - 195 - 40 - 14).toString() + "px"
+        </script>
+        <div class="top-run">
+            <div class="left-run">
+                <img src="icon.png">
+            </div>
+            <div class="right-run">
+                Type the name of a program, and Winda will open it for you.
+            </div>
+        </div>
+        <div class="center-run">
+            <div>
+                Open:
+            </div>
+            <input type="text" id="program" placeholder="">
+        </div>
+        <footer>
+            <button onclick="top.loadApp(program.value)">OK</button>
+            <button onclick="top.closeWindow(frameElement.parentElement.parentElement.parentElement)">Cancel</button>
+        </footer>
+        <script>
+            top.showWindow("../ProgramFiles/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

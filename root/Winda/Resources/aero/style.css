@@ -20,11 +20,6 @@ input[type="checkbox"]:checked:active + label{
     background-image: url("./buttons/min/normal.png");
     width: 29px;
 }
-.x{
-    background-image: url("./buttons/close/normal.png");
-    width: 49px;
-    z-index: 5;
-}
 .x:hover::after, .x:active::after{
     margin-left: -1px;
     width: 69px;
@@ -52,15 +47,32 @@ input[type="checkbox"]:checked:active + label{
     z-index: 99999;
     pointer-events: none;
 }
+.square[disabled]::after, .dash[disabled]::after, .x[disabled]::after{
+    display: none;
+}
 .square:hover::after, .square:active::after{
     margin-left: -1px;
     width: 52px;
+}
+.x{
+    background-image: url("./buttons/close/normal.png");
+    width: 49px;
+    z-index: 5;
 }
 .x:hover{
     background-image: url("./buttons/close/hover.png");
 }
 .x:active{
     background-image: url("./buttons/close/pressed.png");
+}
+.x:only-child{
+    background-image: url("./buttons/close/lonenormal.png");
+}
+.x:only-child:hover{
+    background-image: url("./buttons/close/lonehover.png");
+}
+.x:only-child:active{
+    background-image: url("./buttons/close/lonepressed.png");
 }
 .square{
     background-image: url("./buttons/max/normal.png");
@@ -71,6 +83,12 @@ input[type="checkbox"]:checked:active + label{
 }
 .square:active{
     background-image: url("./buttons/max/pressed.png");
+}
+.square[disabled]:hover{
+    background-image: url("./buttons/max/normal.png");
+}
+.square[disabled]:active{
+    background-image: url("./buttons/max/normal.png");
 }
 .dash:hover{
     background-image: url("./buttons/min/hover.png");
@@ -85,7 +103,7 @@ input[type="checkbox"]:checked:active + label{
     backdrop-filter: blur(3px);
     outline: 1px solid black;
     background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png");
-    background-position: left -1px top -1px, right -1px top -1px, left 0 top 20%;
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px;
     background-size: auto, auto, 100% 30%;
     background-repeat: no-repeat, no-repeat;
     border-radius: 8px;

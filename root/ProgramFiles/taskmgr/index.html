@@ -95,7 +95,7 @@
 <footer>
     <button onclick="closeWindow(idToWindow(${allWindows[i].id}))">Yes</button>
 </footer>`
-                        col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 150, 'End Task', \`${editvalue}\`, ''), false, true)`)
+                        col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 150, 'End Task', \`${editvalue}\`, ''), false, true, true, true)`)
                         col.appendChild(row)
                     }
                     temptable += col.outerHTML;
@@ -105,6 +105,7 @@
             }
             refresh()
             setInterval(refresh, 1000)
+            top.showWindow("../ProgramFiles/taskmgr/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
         </script>
     </body>
 </html>

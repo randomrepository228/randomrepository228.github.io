@@ -1,0 +1,9 @@
+{
+    "x": 50, 
+    "y": 50, 
+    "width": 212, 
+    "height": 310, 
+    "title": "Calculator",
+    "icon": "icon.png",
+    "noResize": true
+}

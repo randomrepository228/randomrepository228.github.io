@@ -68,8 +68,11 @@ addStartMenuEntryLeft("Version 0.9.2", "./Resources/icon.jpg", "window.location.
 createIcon(new Icon("Example App", "../ProgramFiles/ExampleApp/icon.png", "loadApp('ExampleApp')"))
 createIcon(new Icon("Registry Editor", "../ProgramFiles/regedit/icon.png", "loadApp('regedit')"))
 createIcon(new Icon("Okna 8 Mode", "../ProgramFiles/Okna8Mode/icon.png", "loadApp('Okna8Mode')"))
-createIcon(new Icon("Winda Control Panel", "../ProgramFiles/WindaControlPanel/icon.png", "loadApp('WindaControlPanel')"))
+createIcon(new Icon("Winda Control Panel", "../ProgramFiles/control/icon.png", "loadApp('control')"))
 createIcon(new Icon("Task Manager", "../ProgramFiles/taskmgr/icon.png", "loadApp('taskmgr')"))
+createIcon(new Icon("Calculator", "../ProgramFiles/calc/icon.png", "loadApp('calc')"))
+createIcon(new Icon("Run", "../ProgramFiles/run/icon.png", "loadApp('run')"))
+createIcon(new Icon("Changelog", "../ProgramFiles/changelog/icon.png", "loadApp('changelog')"))
 addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
     new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 

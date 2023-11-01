@@ -161,10 +161,26 @@
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/checkbox/checked/hover.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/checkbox/checked/normal.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/checkbox/checked/pressed.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/buttons/close/lonenormal.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/buttons/close/lonepressed.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/buttons/close/lonehover.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionBig/hover/left.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionBig/hover/center.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionBig/hover/right.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/left.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/center.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/right.png">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            @media (max-aspect-ratio: 1/1) {
+                #verboseBoot{
+                    font-size: 13px !important;
+                }
+            }
+        </style>
     </head>
     <body>
-        <div id="winload" style="width: 100vw; height: 100vh; overflow: hidden; background-color: black; z-index: 999999999; position: relative;">
+        <div id="winload" style="width: 100%; height: 100%; overflow: hidden; background-color: black; z-index: 999999999; position: relative;">
             <div style="display: none">
                 <cntr style="color: black">Loading Winda Files</cntr><br>
                 <div id="verboseBoot"></div>

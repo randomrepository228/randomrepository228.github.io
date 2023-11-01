@@ -44,7 +44,7 @@ function setInactive(){
     for(element of document.querySelector(".left-bar").children)
         element.removeAttribute("focus")
 }
-function AddWindowDefault(icon, num){
+function showWindow(icon, num){
     document.querySelector(".left-bar").innerHTML += `
     <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelectorAll('.n${num}')[1])">
         <img src="${icon}" onerror="this.remove()">
@@ -70,9 +70,10 @@ function AddWindowDefault(icon, num){
             }
         )
     }
-    setActive(document.querySelector(`.n${num}`))
+    setActive(document.querySelectorAll(`.n${num}`)[1])
+    document.querySelectorAll(`.n${num}`)[1].style.display = ""
 }
-function windowMouseDown(event, elem){
+function windowMouseDown(event, elem, a, noResize){
     if(elem.children[1].matches(":hover")) return;
     let touch = false;
     let evName;
@@ -93,9 +94,11 @@ function windowMouseDown(event, elem){
         loop.drag = false; 
         iframeignore.innerHTML = "";
         console.log(e.clientX, e.clientY)
-        if (e.clientX < 1) {snapLeft(activewindow); return}
-        if (e.clientX > innerWidth - 2) {snapRight(activewindow); return}
-        if (e.clientY < 1) maximise(activewindow)
+        if (!noResize){
+            if (e.clientX < 1) {snapLeft(activewindow); return}
+            if (e.clientX > innerWidth - 2) {snapRight(activewindow); return}
+            if (e.clientY < 1) maximise(activewindow)
+        }
     }, {once: true});
 }
 function windowResize(event, elem, ...actions){
@@ -127,7 +130,7 @@ function windowResize(event, elem, ...actions){
     else
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
-function AddWindow(window, ispopup, noResize){
+function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
     newWindow = document.createElement("div")
     const randNum = Math.round(Math.random() * 99999)
     let id;
@@ -147,16 +150,17 @@ function AddWindow(window, ispopup, noResize){
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
     newWindow.style.opacity = 1
+    newWindow.style.display = "none"
     newWindow.innerHTML =
     `
-    <div class="topbar" ondblclick="maximise(this.parentElement)" onmousedown="windowMouseDown(event, this, 'drag')" ontouchstart="windowMouseDown(event, this, 'drag')">
+    <div class="topbar" ${noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${noResize})">
         <left>
             <img src="${window.icon}" onerror="this.remove()">
             <p>${window.title}</p>
         </left>
         <div class="buttons">
-            <div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
-            <div class="square" onclick="maximise(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/max/icon.png"></div>
+            ${xOnly? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
+            <div class="square" ${noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
             <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
         </div>
     </div>
@@ -175,7 +179,9 @@ function AddWindow(window, ispopup, noResize){
     </div>
     `
     windows.append(newWindow)
-    AddWindowDefault(window.icon, id);
+    if(ispopup || noSelfOpen){
+        showWindow(window.icon, id)
+    }
 }
 function getAllWindows(){
     let openedwindows = [];
@@ -217,11 +223,15 @@ async function loadApp(packageName, path, args){
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
         if (request.readyState == 4){
-            console.log(request.responseText)
-            const info = JSON.parse(request.responseText)
-            AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
-                `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
-                path + info.icon, true))
+            if(request.status == 200){
+                const info = JSON.parse(request.responseText)
+                AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
+                    `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
+                    path + info.icon, true), undefined, info.noResize, info.xOnly)
+            }
+            else{
+                displayError(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`)
+            }
         }
     }
     request.open("GET", path + "init.json", true);
@@ -230,7 +240,7 @@ async function loadApp(packageName, path, args){
 async function loadAppNoInfo(packageName, path, args){
     if (!path) path = "../ProgramFiles/"
     path += packageName + "/"
-    AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, packageName, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true))
+    AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, packageName, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, undefined, undefined, true)
 }
 function closeWindow(window){
     function timeout(){
@@ -390,6 +400,10 @@ function snapLeft(window){
 function snapRight(window){
     window.className = window.className.replace("", "snap-right ")
 }
+function displayError(title, content){
+    content = `<div style="margin: 20px;">${content}</div>`
+    AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 200, title, content, ""), true, true, true)
+}
 
 document.onreadystatechange = () => {
     if (document.readyState == "complete") {
@@ -411,5 +425,4 @@ onmessage = (e) => {
     const commands = e.data.split("|")
     if (commands[0] == "ModalMetroDialog" && commands.length == 2)
         AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true))
-    'ModalMetroDialog|<h1>Приложение не доступно</h1><p></p><div class="buttons"><button onclick="closemetroapp(\'Calendar\');CloseMetroDialog(\'__ID__\')">Выход</button></div>'
 }
