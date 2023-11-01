@@ -17,22 +17,25 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
-        <div class="select">
-            Current theme:&nbsp;
-            <select name="themeSelect" onchange="top.changeTheme(this.value)">
-                <option value="aero">Aero</option>
-                <option value="basic">Basic</option>
-            </select>
-            <selecticon></selecticon>
+        <h1>TEST</h1>
+        <div class="content">
+            <div class="select">
+                Current theme:&nbsp;
+                <select name="themeSelect" onchange="top.changeTheme(this.value)">
+                    <option value="aero">Aero</option>
+                    <option value="basic">Basic</option>
+                </select>
+                <selecticon></selecticon>
+            </div>
+            <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
+            <label for="verboseBoot">Verbose boot</label>
+            <script>
+                document.querySelector("select").value = localStorage.theme
+                verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
+            </script>
+            <script>
+                top.showWindow("../ProgramFiles/control/icon.png", frameElement.parentElement.parentElement.getAttribute("windowid"));
+            </script>
         </div>
-        <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
-        <label for="verboseBoot">Verbose boot</label>
-        <script>
-            document.querySelector("select").value = localStorage.theme
-            verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
-        </script>
-        <script>
-            top.showWindow("../ProgramFiles/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
-        </script>
     </body>
 </html>

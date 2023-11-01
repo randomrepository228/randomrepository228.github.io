@@ -183,14 +183,19 @@ function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
         showWindow(window.icon, id)
     }
 }
-function getAllWindows(){
-    let openedwindows = [];
-    for (a of windows.children)
-        openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
-    return openedwindows
-}
-function AddWindowNoGUI(window, noResize){
+function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     newWindow = document.createElement("div")
+    const randNum = Math.round(Math.random() * 99999)
+    let id;
+    for(let i = randNum;;i++){
+        let idCollision = false
+        for(const a of windows.children)
+            if(a.getAttribute("windowid") == i.toString())
+                idCollision = true
+        if (!idCollision)
+            id = i
+            break
+    }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
     newWindow.style.left = window.x + "px"
@@ -198,24 +203,39 @@ function AddWindowNoGUI(window, noResize){
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
     newWindow.style.opacity = 1
+    newWindow.style.display = "none"
     newWindow.innerHTML =
     `
-        ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-        <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-        <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-        <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-        <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
-        <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
-        <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
-        <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
-        <div class="custom-content">
-            <ignore></ignore>
-            <text>${window.innerHTML}</text>
+    <div class="topbar" ${noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${noResize})">
+        <left></left>
+        <div class="buttons">
+            ${xOnly? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
+            <div class="square" ${noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
+            <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
         </div>
+    </div>
+    ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+    <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
+    <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
+    <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
+    <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
+    <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
+    <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
+    <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+    <ignore></ignore>
+    <text>${window.innerhtml}</text>
+    ${ispopup ? '<footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>' : ''}
     `
     windows.append(newWindow)
-    AddWindowDefault(window.icon, id);
-    id++
+    if(ispopup || noSelfOpen){
+        showWindow(window.icon, id)
+    }
+}
+function getAllWindows(){
+    let openedwindows = [];
+    for (a of windows.children)
+        openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
+    return openedwindows
 }
 async function loadApp(packageName, path, args){
     if (!path) path = "../ProgramFiles/"
@@ -226,9 +246,14 @@ async function loadApp(packageName, path, args){
             if(request.status == 200){
                 console.log(request.responseText)
                 const info = JSON.parse(request.responseText)
-                AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
-                    `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
-                    path + info.icon, true), undefined, info.noResize, info.xOnly)
+                if (info.noGUI)
+                    AddWindowNoGUI(new Window(info.x, info.y, info.width, info.height, info.title, 
+                        `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
+                        path + info.icon, true), undefined, info.noResize, info.xOnly)
+                else
+                    AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
+                        `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
+                        path + info.icon, true), undefined, info.noResize, info.xOnly)
             }
             else{
                 displayError(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`)

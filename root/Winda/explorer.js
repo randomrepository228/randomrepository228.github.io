@@ -73,6 +73,7 @@ createIcon(new Icon("Task Manager", "../ProgramFiles/taskmgr/icon.png", "loadApp
 createIcon(new Icon("Calculator", "../ProgramFiles/calc/icon.png", "loadApp('calc')"))
 createIcon(new Icon("Run", "../ProgramFiles/run/icon.png", "loadApp('run')"))
 createIcon(new Icon("Changelog", "../ProgramFiles/changelog/icon.png", "loadApp('changelog')"))
+createIcon(new Icon("OBS Studio (Fleen5177)", "../ProgramFiles/fleen5177-obs/icon.png", "loadApp('fleen5177-obs')"))
 addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
     new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
     'Welcome', 
