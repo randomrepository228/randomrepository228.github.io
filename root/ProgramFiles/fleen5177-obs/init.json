@@ -4,5 +4,6 @@
     "width": 900, 
     "height": 610, 
     "title": "OBS 00.0.1 (WEB, Okna8) - Профиль: Безымянный - Сцены: Безымянный",
-    "icon": "icon.png"
+    "icon": "icon.png",
+    "noResize": true
 }
