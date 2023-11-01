@@ -84,7 +84,7 @@ function windowMouseDown(event, elem, a, noResize){
         event = event.touches[0];
         touch = true;
     }
-    prevx=event.clientX-elem.getBoundingClientRect().x
+    prevx=event.clientX-elem.getBoundingClientRect().x + 8
     prevy=event.clientY-elem.getBoundingClientRect().y
     prevheight=activewindow.getBoundingClientRect().height
     prevwidth=activewindow.getBoundingClientRect().width - 7
@@ -113,8 +113,8 @@ function windowResize(event, elem, ...actions){
     }
     prevx=event.clientX-elem.getBoundingClientRect().x
     prevy=event.clientY-elem.getBoundingClientRect().y
-    origx=event.clientX-elem.getBoundingClientRect().width
-    origy=event.clientY-elem.getBoundingClientRect().height
+    origx=event.clientX-elem.getBoundingClientRect().width - 6
+    origy=event.clientY-elem.getBoundingClientRect().height - 1
     prevheight=activewindow.getBoundingClientRect().height
     prevwidth=activewindow.getBoundingClientRect().width
     if (activewindow.classList.contains("snap-left") || activewindow.classList.contains("snap-right")){
