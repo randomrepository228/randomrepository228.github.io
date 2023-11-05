@@ -2,22 +2,41 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
         <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
         <link rel="stylesheet" href="../../Winda/dwm.css">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
-            html { 
-                overflow: auto; 
-            } 
-            body {
-                overflow: auto; 
+            .content{
+                height: calc(100% -  40px);
+                width: calc(100% - 4px);
+                margin-top: 1px;
+                margin-left: 1px;
+                display: block;
+            }
+            .navbar{
+                height: 36px;
+                display: flex;
             }
         </style>
+        <script>
+            function changeTheme(a){
+                theme.href = "../../Winda/Resources/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split(":")
+                console.log(e.data)
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
-        <h1>TEST</h1>
+        <div class="navbar">
+
+        </div>
         <div class="content">
             <div class="select">
                 Current theme:&nbsp;

@@ -27,6 +27,9 @@ function connectScript(path) {
 function changeTheme(a){
     localStorage.theme = a
     theme.href = "./Resources/" + a + "/style.css"
+    for (let i = 0; i < frames.length; i++) {
+        frames[i].postMessage("theme:" + a)
+    }
 }
 function setActive(window){
     for(element of document.querySelectorAll(".window"))
@@ -145,8 +148,23 @@ function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
     }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
-    newWindow.style.left = window.x + "px"
-    newWindow.style.top = window.y + "px"
+    if (ispopup){
+        newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
+        newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
+    }
+    else{
+        const openedwindows = getAllWindows().length
+        let openedwindowsx = openedwindows
+        let openedwindowsy = openedwindows
+        if (openedwindows * 25 + 50 > innerHeight - window.height){
+            openedwindowsy = -2
+        }
+        if (openedwindows * 25 + 50 > innerWidth - window.width){
+            openedwindowsx = -2
+        }
+        newWindow.style.left = openedwindowsx * 25 + 50 + "px"
+        newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+    }
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
     newWindow.style.opacity = 1
@@ -198,8 +216,23 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
-    newWindow.style.left = window.x + "px"
-    newWindow.style.top = window.y + "px"
+    if (ispopup){
+        newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
+        newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
+    }
+    else{
+        const openedwindows = getAllWindows().length
+        let openedwindowsx = openedwindows
+        let openedwindowsy = openedwindows
+        if (openedwindows * 25 + 50 > innerHeight - window.height){
+            openedwindowsy = -2
+        }
+        if (openedwindows * 25 + 50 > innerWidth - window.width){
+            openedwindowsx = -2
+        }
+        newWindow.style.left = openedwindowsx * 25 + 50 + "px"
+        newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+    }
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
     newWindow.style.opacity = 1
@@ -207,7 +240,9 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     newWindow.innerHTML =
     `
     <div class="topbar" ${noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${noResize})">
-        <left></left>
+        <left>
+            <p style="display: none;">${window.title}</p>
+        </left>
         <div class="buttons">
             ${xOnly? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
             <div class="square" ${noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
@@ -468,5 +503,5 @@ function CloseMetroDialog(a){}
 onmessage = (e) => {
     const commands = e.data.split("|")
     if (commands[0] == "ModalMetroDialog" && commands.length == 2)
-        AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true))
+        AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true), false, false, false, true)
 }

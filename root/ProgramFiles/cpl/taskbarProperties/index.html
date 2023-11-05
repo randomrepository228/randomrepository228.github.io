@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="../../../../style/shellstyle.css">
+        <link rel="stylesheet" href="../../../../style/fonts.css">
+        <link rel="stylesheet" href="../../../../style/windowProperties.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="../../../../script/ConnectScript.js"></script>
+        <script src="../../../../script/WindowsCommunication.js"></script>
+        <script src="../../../../script/jquery.js"></script>
+        <script src="../../../../script/Windows/WindowProperties.js"></script>
+    </head>
+    <body>
+        <div class="properties-tabs">
+            <div class="tab activetab" id="properties_tab_taskbar"><span></span></div>
+            <div class="tab" id="properties_tab_nav"><span></span></div>
+            <div class="tab" id="properties_tab_jumplists"><span></span></div>
+            <div class="tab" id="properties_tab_toolboxes"><span></span></div>
+        </div>
+        <div class="properties-content" id="properties-content_taskbar" style="display: block;">
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" checked id="PinTaskbarCheckbox">
+            <label for="PinTaskbarCheckbox"></label><br>
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" id="AutoHideTaskbarCheckbox">
+            <label for="AutoHideTaskbarCheckbox"></label><br>
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" id="SmallTaskbarCheckbox">
+            <label for="SmallTaskbarCheckbox"></label><br>
+            <select name="" id="TaskbarLocationSelect" onchange="$('#ApplyButton').prop('disabled', false)">
+                <option value="bottom"></option>
+                <option value="left"></option>
+                <option value="right"></option>
+                <option value="top"></option>
+            </select>
+            <label for="TaskbarLocationSelect"></label>
+            <select name="" id="GroupTaskIconsSelect" onchange="$('#ApplyButton').prop('disabled', false)">
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+            </select>
+            <label for="GroupTaskIconsSelect"></label>
+            <button id="NotificationSetupButton"></button>
+            <label for="NotificationSetupButton" style="top: 134px; left: 14px;"></label>
+            <br><br><br><br>
+            <input type="checkbox" name="" checked onchange="$('#ApplyButton').prop('disabled', false)" id="ShowStoreAppsOnTaskbarCheckbox">
+            <label for="ShowStoreAppsOnTaskbarCheckbox"></label><br>
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" id="ShowDesktopWhenIHoverMouseToRightBottomCornerCheckbox">
+            <label for="ShowDesktopWhenIHoverMouseToRightBottomCorner"></label><br>
+            <br><br><br><br><br><br><br><br>
+            <a href="" id="HowToSettingTaskbarLink"></a>
+        </div>
+        <div class="properties-content" id="properties-content_nav">
+            <!--
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" checked id="RightTopCorner">
+            <label for="RightTopCorner">При наведении на правый верхний угол показывать чудо-кнопки</label><br>
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" checked id="LeftTopCorner">
+            <label for="LeftTopCorner">Когда я щёлкаю в левом верхнем углу, переключаться между последними приложениями</label><br>
+            <input type="checkbox" name="" onchange="$('#ApplyButton').prop('disabled', false)" id="UsePowerShellInsteadOfCmd">
+            <label for="UsePowerShellInsteadOfCmd">Заменить командную строку оболочкой PowerShell в меню, которое появляется при щелчке правой кнопкой мыши левого нижнего угла или нажатии клавиш Windows+X</label><br>
+            -->
+        </div>
+        <div class="properties-content" id="properties-content_jumplists">
+            
+        </div>
+        <div class="properties-content" id="properties-content_toolboxes">
+            
+        </div>
+        <button style="position: absolute; right: 7px; bottom: 8px; min-width: 73px;" disabled id="ApplyButton" onclick="Apply();$('#ApplyButton').prop('disabled', true)">Применить</button>
+        <button style="position: absolute; right: 88px; bottom: 8px; min-width: 73px;" onclick="killWindow()">Отмена</button>
+        <button style="position: absolute; right: 169px; bottom: 8px; min-width: 73px;" onclick="Apply();killWindow()">ОК</button>
+        <script src="script.js"></script>
+    </body>
+</html>

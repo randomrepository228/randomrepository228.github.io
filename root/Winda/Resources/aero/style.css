@@ -143,16 +143,15 @@ input[type="checkbox"]:checked:active + label{
     margin-bottom: 2px;
 }
 .content{
-    border-radius: 2px;
-    background-color: white;
     min-height: 50px;
     min-width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: white;
     border: 1px solid rgb(29, 55, 81);
     outline: 1px solid rgba(255,255,255,0.7);
-    width: calc(100% - 3px) calc(100% - 3px);
+    border-radius: 2px;
     flex-grow: 1;
 }
 .maximised .content{
@@ -191,7 +190,7 @@ selecticon{
     margin-top: 2px;
     pointer-events: none;
 }
-button, select{
+button, select, button:disabled:hover, button:disabled:active{
     background-image: url("../button/normal/left.png"), url("../button/normal/right.png"), url("../button/normal/center.png");
 }
 button:hover, select:hover{

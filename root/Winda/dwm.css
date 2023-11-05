@@ -190,3 +190,17 @@ input:focus{
 .menubar .element:hover {
     background-image: url("./Resources/selectionSmall/hover/left.png"), url("./Resources/selectionSmall/hover/right.png"), url("./Resources/selectionSmall/hover/center.png");
 }
+.details{
+    background-color: rgb(230,230,230);
+    border-top: 1px solid rgb(100,100,100);
+    border-right: 1px solid rgb(150,150,150);
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+}
+.detail{
+    width: fit-content;
+}
+button:disabled{
+    opacity: 0.5;
+}

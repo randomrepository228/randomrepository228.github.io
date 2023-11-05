@@ -1,0 +1,235 @@
+.controlContent#ControlContentPersonalize > .cont > .themesContainer {
+    width: calc(100% - 18px);
+    height: calc(100% - 174px);
+    border: 1px solid rgb(100,100,100);
+    padding: 0px 8px;
+    display: flex;
+    flex-direction: row;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .category {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(204,204,204);
+    position: relative;
+    margin: 14px 0;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .category > p {
+    background-color: white;
+    color: rgb(0,51,153);
+    width: fit-content;
+    margin: 0;
+    position: relative;
+    top: -10px;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme {
+    width: 136px;
+    height: 126px;
+    box-sizing: border-box;
+    border: 1px transparent solid;
+    position: relative;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme:hover {
+    border: 1px rgb(112,192,231) solid;
+    background-color: rgba(112,192,231,0.2);
+    cursor: pointer;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme.activeTheme {
+    border: 1px rgb(112,192,231) solid;
+    background-color: rgba(112,192,231,0.2);
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme > p {
+    position: absolute;
+    margin: 0;
+    bottom: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+.wallpaperpreview {
+    width: 92px;
+    height: 60px;
+    position: absolute;
+    top: 10px; right: 10px;
+}
+
+.wallpaperpreview > img {
+    width: 92px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.slideshowpreview {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0px; right: 0px;
+    scale: 0.8;
+}
+
+.slideshowpreview > img {
+    width: 92px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.slideshowpreview > img:nth-child(1) {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    transform: skewY(2deg);
+    border: 1px solid grey;
+    z-index: 2;
+}
+
+.slideshowpreview > img:nth-child(2) {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    transform: skewY(6deg);
+    border: 1px solid grey;
+    z-index: 4;
+}
+
+.slideshowpreview > img:nth-child(3) {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    transform: skewY(5deg);
+    border: 1px solid grey;
+    z-index: 3;
+}
+
+.slideshowpreview > img:nth-child(4) {
+    position: absolute;
+    right: 2px;
+    top: -10px;
+    width: 100px;
+    height: 100px;
+    z-index: 1;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme > .colorpreview {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    left: 4px;bottom: 26px;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme > .colorpreview.auto {
+    background-image: url(../img/Personalize_AutoColor.png);
+    background-size: 64px 64px;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme > .colorpreview > div {
+    width: 63px;
+    height: 63px;
+}
+
+.controlContent#ControlContentPersonalize > .cont > .themesContainer > .theme > .colorpreview > div > div {
+    width: 61px;
+    height: 61px;
+    border: 1px solid rgba(153,153,153, 0.7);
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.3);
+}
+
+#ControlContentPersonalization_Table {
+    width: 100%;
+}
+
+#ControlContentPersonalization_Table td {
+    width: 25%;
+    text-align: center;
+    position: relative;
+}
+
+#ControlContentPersonalization_Table td p {
+    margin: 2px 0;
+    color: grey;
+}
+
+#ControlContentPersonalization_Table > tbody > tr:nth-child(1) > td:nth-child(1) > .slideshowpreview {
+    right: calc(50% - 64px);
+    scale: 0.6;
+    top: -6px;
+}
+
+#ControlContentPersonalization_Table > tbody > tr:nth-child(1) > td:nth-child(1) > .wallpaperpreview {
+    position: absolute;
+    right: calc(50% - 46px);
+    scale: 0.8;
+    top: 10px;
+}
+
+#ControlContentPersonalization_Table > tbody > tr:nth-child(1) > td:nth-child(2) > div {
+    right: calc(50% - 28px);
+    width: 56px;
+    height: 56px;
+    top: 10px;
+    position: absolute;
+}
+
+#ControlContentPersonalization_Table > tbody > tr:nth-child(1) > td:nth-child(2) > div > div {
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgb(153,153,153);
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5);
+}
+
+#ControlContentPersonalization_Table > tbody > tr:nth-child(1) > td:nth-child(3) > img,
+#ControlContentPersonalization_Table > tbody > tr:nth-child(1) > td:nth-child(4) > img {
+    right: calc(50% - 24px);
+    width: 48px;
+    height: 48px;
+    top: 10px;
+    position: absolute;
+}
+
+
+
+/*  WindowColors  */
+
+#ControlContentWindowColors > .cont > .colorsContainer {
+    width: calc(100% - 16px);
+    margin: 8px;
+    display: flex;
+    flex-direction: row;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+#ControlContentWindowColors > .cont > .colorsContainer > div {
+    width: 72px;
+    height: 72px;
+    box-sizing: border-box;
+    border: 1px transparent solid;
+    position: relative;
+}
+
+#ControlContentWindowColors > .cont > .colorsContainer > div:hover {
+    border: 1px rgb(112,192,231) solid;
+    background-color: rgba(112,192,231,0.2);
+}
+
+#ControlContentWindowColors > .cont > .colorsContainer > div.auto {
+    background-image: url(../img/WindowColors_AutoColor.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#ControlContentWindowColors > .cont > .colorsContainer > div > div {
+    width: 54px;
+    height: 54px;
+    margin: 7px;
+    border: 1px solid rgb(153,153,153);
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5);
+}

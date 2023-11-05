@@ -1,0 +1,40 @@
+.properties-content {
+    padding: 10px 12px;
+}
+
+select {
+    width: 237px;
+}
+
+#TaskbarLocationSelect {
+    position: absolute;
+    top: 82px;
+    left: 137px;
+}
+
+#GroupTaskIconsSelect {
+    position: absolute;
+    top: 108px;
+    left: 137px;
+}
+
+label[for="TaskbarLocationSelect"] {
+    position: absolute;
+    top: 82px;
+    left: 14px;
+    width: 120px;
+    line-height: 12px;
+}
+
+label[for="GroupTaskIconsSelect"] {
+    position: absolute;
+    top: 108px;
+    left: 14px;
+}
+
+#NotificationSetupButton {
+    position: absolute;
+    top: 134px;
+    left: 137px;
+    padding: 0.5px 2px;
+}

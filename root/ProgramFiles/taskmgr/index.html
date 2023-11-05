@@ -12,20 +12,14 @@
             } 
             body {
                 overflow: none; 
-                display: flex;
-                align-items: flex-start;
-                background-color: rgb(200,200,200);
-                padding-top: 2px;
             }
-            .left, .right{
-                border: 1px solid gray;
+            .main{
+                border: 1px solid black;
+                margin: 15px;
                 background-color: white;
                 overflow: auto;
-                height: calc(100% - 4px);
                 cursor: default;
-            }
-            .right{
-                width: 100%;
+                height: calc(100% - 90px);
             }
             table{
                 table-layout: fixed;
@@ -34,6 +28,7 @@
             th{
                 resize: horizontal;
                 text-align: left;
+                font-weight: 300;
             }
             td{
                 overflow: hidden;
@@ -43,29 +38,45 @@
             tr:last-child{
                 width: fit-content;
             }
-            .left{
-                width: 200px;
-                display: none;
-                margin-right: 5px;
+            .buttons{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                margin-top: -10px;
             }
-            .left, .right{
-                position: relative;
+            button{
+                margin-right: 15px;
+            }
+            tr:hover{
+                background-color: rgba(0, 174, 255, 0.5);
+            }
+            tr[selected]{
+                background-color: rgba(0, 174, 255, 0.7);
             }
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
-        <div class="left">
-
+        <div class="menubar">
+            <div class="element">File</div>
         </div>
-        <div class="right"> 
+        <div class="main"> 
             <table>
                 <tr>
-                    <th width="200px">Name</th>
-                    <th>PID</th>
+                    <th>Name</th>
+                    <th width="50px">PID</th>
                 </tr>
                 <tbody id="table"></tbody>
             </table>
+        </div>
+        <div class="buttons">
+            <div></div>
+            <button onclick="top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 150, 'End Task', `${editvalue}`, ''), false, true, true, true)" disabled>
+                End process
+            </button>
+        </div>
+        <div class="details">
+            <div class="detail" id="processes"></div>
         </div>
         <script>
             class Window {
@@ -95,13 +106,15 @@
 <footer>
     <button onclick="closeWindow(idToWindow(${allWindows[i].id}))">Yes</button>
 </footer>`
-                        col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 150, 'End Task', \`${editvalue}\`, ''), false, true, true, true)`)
+                        // col.setAttribute("onclick",)
                         col.appendChild(row)
                     }
                     temptable += col.outerHTML;
                 }
-                if (temptable !== table.innerHTML)
+                if (temptable !== table.innerHTML){
+                    processes.innerText = "Processes: " + allWindows.length
                     table.innerHTML = temptable
+                }
             }
             refresh()
             setInterval(refresh, 1000)

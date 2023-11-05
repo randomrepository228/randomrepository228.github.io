@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css">
+        <link rel="stylesheet" href="../../Winda/dwm.css">
+        <link rel="stylesheet" href="style.css">
+        <script>
+            var currentUser = sessionStorage.getItem('OKNA8_sessionUser')
+        </script>
+        <script src="script/jquery.js"></script>
+        <script src="ver.js"></script>
+        <script src="ServersConfig.js"></script>
+        <script src="ConfigPC.js"></script>
+        <script src="script/ConnectScript.js"></script>
+        <script src="script/WindowsCommunication.js"></script>
+        <script src="script/AppearanceThemes.js"></script>
+        <script src="additionalScripts/Personalize.js"></script>
+        <title>Панель управления</title>
+        <script>
+            var WindowID
+            var LOCALE_control = []
+            ConnectScript('./localization/' + localStorage.getItem('locale') + '/cpl/control.js')
+            ConnectScript('script.js')
+        </script>
+    </head>
+    <body>
+        <div class="nav"><div class="backnext"><button disabled class="back"></button><button disabled class="next"></button></div></div>
+        <div class="adressbar"><div>Панель управления</div></div>
+        <input type="text" id="searchbox" placeholder="Поиск в панели управления">
+        <div class="controlContent" id="ControlContentMainPage">
+            <div class="categories">
+                <h1>Настройка параметров компьютера</h1>
+                <div class="leftrow row">
+                    <div>
+                        <img onclick="OpenControlContentPage('SystemNSecurity')" src="imageres/195.ico" alt="">
+                        <h2 onclick="OpenControlContentPage('SystemNSecurity')">Система и безопасность</h2>
+                        <h3>
+                            <span>Проверка состояния компьютера</span><br>
+                            <span>Сохранение резервных копий файлов с помощью истории файлов</span><br>
+                            <span>Поиск и исправление проблем</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <img src="imageres/120.ico" alt="">
+                        <h2>Сеть и Интернет</h2>
+                        <h3>
+                            <span>Просмотр состояния сети и задач</span><br>
+                            <span>Выбор параметров домашней группы и общего доступа к данным</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <img src="imageres/196.ico" alt="">
+                        <h2>Оборудывание и звук</h2>
+                        <h3>
+                            <span>Просмотр устройств и принтеров</span><br>
+                            <span>Добавление устройства</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <img src="imageres/161.ico" alt="">
+                        <h2>Программы</h2>
+                        <h3>
+                            <span>Удаление программы</span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="rightrow row">
+                    <div>
+                        <img src="imageres/88.ico" alt="">
+                        <h2>Учётные записи и Семейная безопасность</h2>
+                        <h3>
+                            <span>Изменение типа учётной записи</span><br>
+                            <span>Установка Семейной безопасности для всех пользователей</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <img onclick="OpenControlContentPage('AppearanceNPersonalize')" src="imageres/197.ico" alt="">
+                        <h2 onclick="OpenControlContentPage('AppearanceNPersonalize')">Оформление и персонализация</h2>
+                        <h3>
+                            <span onclick="OpenControlContentPage('Personalize')">Изменение темы</span><br>
+                            <span>Изменение фона рабочего стола</span><br>
+                            <span>Настройка разрешения экрана</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <img src="imageres/144.ico" alt="">
+                        <h2>Часы, язык и регион</h2>
+                        <h3>
+                            <span>Добавление языка</span><br>
+                            <span>Изменение способа ввода</span><br>
+                            <span>Изменение форматов даты, времени и чисел</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <img src="imageres/86.ico" alt="">
+                        <h2>Специальные возможности</h2>
+                        <h3>
+                            <span>Рекомендуемые Windows параметры</span><br>
+                            <span>Оптимизация изображения на экране</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="controlContent" id="ControlContentSystemInfo">
+            <div class="leftPage">
+                <p style="margin-bottom: 16px; margin-top: 14px" onclick="OpenControlContentPage('MainPage')">Панель управления – домашняя страница</p>
+                <p><img src="imageres/78.ico">Диспетчер устройств</p>
+                <p><img src="imageres/78.ico">Настройка удалённого доступа</p>
+                <p><img src="imageres/78.ico">Защита системы</p>
+                <p><img src="imageres/78.ico">Дополнительные параметры системы</p>
+            </div>
+            <div class="cont">
+                <h1>Просмотр основных сведений о вашем компьютере</h1>
+                <div class="line" style="margin-top:20px"><p>Выпуск Windows&nbsp;</p></div>
+                <p style="margin-left: 20px">Windows 8.1 Профессиональная</p>
+                <p style="margin-left: 20px">© Корпорация Майкрософт (Microsoft Corporation), 2013. Все права защищены.</p>
+                <img src="../../../img/branding/1050.bmp" alt="" style="position: relative; top: -50px; float: right;">
+                <div class="line" style="margin-top:30px"><p>Система&nbsp;</p></div>
+                <table style="margin-left: 20px; position: relative; top: -20px;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Процессор:
+                            </td>
+                            <td id="CONTROLPANEL_SystemInfo_CPU">
+                                Нет данных
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Установленная память (ОЗУ):
+                            </td>
+                            <td id="CONTROLPANEL_SystemInfo_RAM">
+                                Нет данных
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Тип системы:
+                            </td>
+                            <td>
+                                64-разрядная операционная система, процессор x64
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Перо и сенсорный ввод:
+                            </td>
+                            <td>
+                                Перо и сенсорный ввод недоступны для этого экрана
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="line" style="margin-top: 0; margin-bottom: 30px;"><p>Имя компьютера, имя домена и параметры рабочей группы&nbsp;</p></div>
+                <table style="margin-left: 20px; position: relative; top: -20px;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Компьютер:
+                            </td>
+                            <td id="CONTROLPANEL_SystemInfo_PcName">
+                                Нет данных
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Полное имя:
+                            </td>
+                            <td id="CONTROLPANEL_SystemInfo_FullPcName">
+                                Нет данных
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Описание:
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Рабочая группа:
+                            </td>
+                            <td>
+                                WORKGROUP
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="line" style="margin-top: 0; margin-bottom: 30px;"><p>Активация Windows&nbsp;</p></div>
+                <table style="margin-left: 20px; position: relative; top: -20px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 220px">
+                                Активация Windows выполнена
+                            </td>
+                            <td>
+                                <a onclick="sendToTop('eval>Exec(\'license\')')">
+                                    Условия лицензионного соглашения на использование программного обеспечения корпорации Майкрософт
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 220px">
+                                Код продукта: 00631-13000-26770-EI624
+                            </td>
+                            <td style="float: right">
+                                <a>Изменить ключ продукта</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> -->
+        <div class="controlContent" id="ControlContentSystemNSecurity">
+            <div class="leftPage">
+                <p style="margin-bottom: 16px; margin-top: 14px" onclick="OpenControlContentPage('MainPage')">Панель управления – домашняя страница</p>
+                <p style="font-weight: 800;">Система и безопасность</p>
+                <p>Сеть и Интернет</p>
+                <p>Оборудование и звук</p>
+                <p>Программы</p>
+                <p>Учётные записи и Семейная безопасность</p>
+                <p onclick="OpenControlContentPage('AppearanceNPersonalize')">Оформление и персонализация</p>
+                <p>Часы, язык и регион</p>
+                <p>Специальные возможности</p>
+            </div>
+            <div class="cont">
+                <div class="CplList">
+                    <div>
+                        <img onclick="OpenControlContentPage('SystemInfo')" src="../../../img/shell/shell32/16778.ico" alt="">
+                        <h2 onclick="OpenControlContentPage('SystemInfo')">Система</h2>
+                        <h3>
+                            <span onclick="OpenControlContentPage('SystemInfo')">Просмотр объёма ОЗУ и скорости процессора</span><br>
+                            <span>Настройка удалённого доступа</span><br>
+                            <span>Запуск удалённого помощника</span><br>
+                            <span onclick="OpenControlContentPage('SystemInfo')">Просмотр имени этого компьютера</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="controlContent" id="ControlContentAppearanceNPersonalize">
+            <div class="leftPage">
+                <p style="margin-bottom: 16px; margin-top: 14px" onclick="OpenControlContentPage('MainPage')">Панель управления – домашняя страница</p>
+                <p onclick="OpenControlContentPage('SystemNSecurity')">Система и безопасность</p>
+                <p>Сеть и Интернет</p>
+                <p>Оборудывание и звук</p>
+                <p>Программы</p>
+                <p>Учётные записи и Семейная безопасность</p>
+                <p style="font-weight: 800;">Оформление и персонализация</p>
+                <p>Часы, язык и регион</p>
+                <p>Специальные возможности</p>
+            </div>
+            <div class="cont">
+                <div class="CplList">
+                    <div>
+                        <img onclick="OpenControlContentPage('Personalize')" src="../../../img/shell/shell32/16778.ico" alt="">
+                        <h2 onclick="OpenControlContentPage('Personalize')">Персонализация</h2>
+                        <h3>
+                            <span onclick="OpenControlContentPage('Personalize')">Изменение темы</span><br>
+                            <span>Изменение фона рабочего стола</span><br>
+                            <span onclick="OpenControlContentPage('WindowColors')">Изменение цветов панели задач и границ окон</span><br>
+                            <span>Изменение звуковых эффектов</span><br>
+                            <span>Изменение заставки</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="controlContent" id="ControlContentPersonalize">
+            <link rel="stylesheet" href="additionalStyles/Personalize.css">
+            <div class="leftPage">
+                <p style="margin-bottom: 16px; margin-top: 14px" onclick="OpenControlContentPage('MainPage')">Панель управления – домашняя страница</p>
+                <p>Изменение значков рабочего стола</p>
+                <p>Изменение указателей мыши</p>
+            </div>
+            <div class="cont" style="padding-bottom: 0; height: calc(100vh - 56px)">
+                <h1>Изменение изображения и звука на компьютере</h1>
+                <p>Выберите тему, чтобы одновременно изменить фон рабочего стола, цвет, звуки и заставку.</p>
+                <div class="themesContainer">
+                </div>
+                <table style="width: 100%;" id="ControlContentPersonalization_Table">
+                    <tbody>
+                        <tr style="height: 70px">
+                            <td></td>
+                            <td><div><div></div></div></td>
+                            <td><img src="img/Personalize_Sound.png" alt=""></td>
+                            <td><img src="img/Personalize_NoScreensaver.png" alt=""></td>
+                        </tr>
+                        <tr>
+                            <td><a>Фон рабочего стола</a></td>
+                            <td><a onclick="OpenControlContentPage('WindowColors')">Цвет</a></td>
+                            <td><a>Звуки</a></td>
+                            <td><a>Заставка</a></td>
+                        </tr>
+                        <tr>
+                            <td><p>img0</p></td>
+                            <td><p>Автоматически</p></td>
+                            <td><p>По умолчанию</p></td>
+                            <td><p>Отсутствует</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="controlContent" id="ControlContentWindowColors">
+            <div class="cont" style="width: calc(100vw - 48px); max-width: 600px; left: 50%; transform: translateX(-50%)">
+                <h1>Изменение цвета границ окон и панели задач</h1>
+                <div class="colorsContainer">
+                    <div onclick="WindowColors_SetColor('auto')" class="auto"></div>
+                    <div onclick="WindowColors_SetColor('171,171,171')"><div style="background-color: rgb(171,171,171)"></div></div>
+                    <div onclick="WindowColors_SetColor('138,207,255')"><div style="background-color: rgb(138,207,255)"></div></div>
+                    <div onclick="WindowColors_SetColor('245,152,214')"><div style="background-color: rgb(245,152,214)"></div></div>
+                    <div onclick="WindowColors_SetColor('230,204,62')"><div style="background-color: rgb(230,204,62)"></div></div>
+                    <div onclick="WindowColors_SetColor('173,216,95')"><div style="background-color: rgb(173,216,95)"></div></div>
+                    <div onclick="WindowColors_SetColor('120,217,217')"><div style="background-color: rgb(120,217,217)"></div></div>
+                    <div onclick="WindowColors_SetColor('255,175,81')"><div style="background-color: rgb(255,175,81)"></div></div>
+                    <div onclick="WindowColors_SetColor('255,111,111')"><div style="background-color: rgb(255,111,111)"></div></div>
+                    <div onclick="WindowColors_SetColor('248,89,168')"><div style="background-color: rgb(248,89,168)"></div></div>
+                    <div onclick="WindowColors_SetColor('71,207,116')"><div style="background-color: rgb(71,207,116)"></div></div>
+                    <div onclick="WindowColors_SetColor('196,138,255')"><div style="background-color: rgb(196,138,255)"></div></div>
+                    <div onclick="WindowColors_SetColor('88,177,252')"><div style="background-color: rgb(88,177,252)"></div></div>
+                    <div onclick="WindowColors_SetColor('152,152,255')"><div style="background-color: rgb(152,152,255)"></div></div>
+                    <div onclick="WindowColors_SetColor('195,181,168')"><div style="background-color: rgb(195,181,168)"></div></div>
+                    <div onclick="WindowColors_SetColor('255,255,255')"><div style="background-color: rgb(255,255,255)"></div></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

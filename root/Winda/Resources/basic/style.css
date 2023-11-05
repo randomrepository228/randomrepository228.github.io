@@ -175,7 +175,6 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: calc(100% - 3px) calc(100% - 3px);
     flex-grow: 1;
 }
 .maximised{

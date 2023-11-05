@@ -40,7 +40,7 @@ function timeMenu(open){
     }
 }
 function addStartMenuEntryLeft(name, icon, action){
-    document.querySelector(".left-start").innerHTML += `<div class="start-option" onclick="${action}"><img src="${icon}"></img>${name}</div>`
+    document.querySelector(".left-start").innerHTML += `<div class="start-option blue" onclick="${action}"><img src="${icon}"></img>${name}</div>`
 }
 function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
