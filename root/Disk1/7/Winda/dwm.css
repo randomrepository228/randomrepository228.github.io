@@ -1,5 +1,5 @@
 /* Fonts, cursor, and disable scale */
-*{
+html{
     font-family: 'segoeui', 'sans-serif', system-ui;
     touch-action: manipulation;
     cursor: default;
@@ -119,11 +119,22 @@ button, select{
     background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
     background-color: transparent;
 }
-.start-option{
-    background-position: left, right, 4px;
+.menubar .element{
+    height: 20px;
+    box-sizing: border-box;
+    background-position: left, right, 2px;
     background-repeat: no-repeat;
-    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
+    background-size: auto 100%, auto 100%, calc(100% - 4px) 100%;
     background-color: transparent;
+}
+.start-option{
+    background-position: left, right, 3px;
+    background-repeat: no-repeat;
+    background-size: 3px 100%, 3px 100%, calc(100% - 6px) 100%;
+    background-color: transparent;
+}
+.start-option:hover{
+    background-image: url("./Resources/selectionBig/hover/left.png"), url("./Resources/selectionBig/hover/right.png"), url("./Resources/selectionBig/hover/center.png");
 }
 select{
     appearance: none;
@@ -156,4 +167,43 @@ input[type=text]{
 }
 input:focus{
     outline: none;
+}
+#windows{
+    width: 100%;
+    height: 100%;
+}
+.menubar {
+    width: 100vw;
+    height: 19px;
+    background-image: url("./Resources/table-top.png");
+    border-bottom: 1px solid rgb(232,232,232);
+    font-size: 0;
+}
+
+.menubar .element {
+    display: inline-block;
+    font-size: 12px;
+    border: 1px transparent solid;
+    padding: 1px 7px;
+}
+
+.menubar .element:hover {
+    background-image: url("./Resources/selectionSmall/hover/left.png"), url("./Resources/selectionSmall/hover/right.png"), url("./Resources/selectionSmall/hover/center.png");
+}
+.details{
+    background-color: rgb(230,230,230);
+    border-top: 1px solid rgb(100,100,100);
+    border-right: 1px solid rgb(150,150,150);
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+}
+.detail{
+    width: fit-content;
+}
+button:disabled{
+    opacity: 0.5;
+}
+iframe{
+    -webkit-transform: scale(0.99);
 }
