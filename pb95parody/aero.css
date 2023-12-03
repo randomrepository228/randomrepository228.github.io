@@ -16,9 +16,6 @@ html, body{
 }
 .overlay{display: grid;}
 .overlay *{grid-area: 1 / 1}
-::selection {
-    background-color: transparent;
-}
 .dash{
     border-bottom-left-radius: 5px;
     background: -webkit-linear-gradient(90deg, rgba(0,161,255,1) 0, rgba(255,255,255,0.2) 51%, rgba(102,168,255,1) 51%, rgba(201,233,255,0.8) 100%), #3b3be5;

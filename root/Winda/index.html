@@ -8,7 +8,7 @@
         </script> -->
         <script>
             function log(path){
-                if(localStorage.verboseBoot == "true"){
+                if(localStorage.verboseBoot == "true") if(verboseBoot){
                     verboseBoot.innerHTML += "Loaded: " + path + "<br>"
                     verboseBoot.scrollTo(0, verboseBoot.scrollHeight);
                 }
@@ -112,14 +112,13 @@
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/hide_windows_pressed.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/icon.jpg">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/login.jpg">
-        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/scrollbars">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/start_menu.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/table-top.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/taskbar-btn.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/taskbar_btn.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/taskbar_btn_focus.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img0.jpg">
-        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img1.jpg">
+        <!-- <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img1.jpg">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img2.jpg">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img3.jpg">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img4.jpg">
@@ -148,7 +147,7 @@
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img27.jpg">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img28.jpg">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img29.jpg">
-        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img30.jpg">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Web/img30.jpg"> -->
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/buttons/close/hover.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/buttons/close/normal.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/buttons/close/pressed.png">
@@ -177,7 +176,6 @@
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/window_aura.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/window_aura_mirror.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/aero/window_side.png">
-        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/basic/buttons">
         <link onload="log(this.getAttribute('href'))" as="style" rel="preload" href="./Resources/basic/style.css">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/basic/titlebar.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/basic/window_side.png">
@@ -202,9 +200,9 @@
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionBig/hover/left.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionBig/hover/center.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionBig/hover/right.png">
-        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/left.png">
+        <!-- <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/left.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/center.png">
-        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/right.png">
+        <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/right.png"> -->
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             @media (max-aspect-ratio: 1/1) {
@@ -215,7 +213,7 @@
         </style>
     </head>
     <body>
-        <div id="winload" style="width: 100%; height: 100%; overflow: hidden; background-color: black; z-index: 999999999; position: relative;">
+        <div id="winload" style="width: 100%; height: 100%; overflow: hidden; background-color: black; position: relative;">
             <div style="display: none">
                 <cntr style="color: black">Loading Winda Files</cntr><br>
                 <div id="verboseBoot"></div>
@@ -255,8 +253,11 @@
                 if (!localStorage.showBootMenu)
                     window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
             </script> -->
-            <div style="display: none; text-align: center; font-family: sans-serif !important;">
-                <p style="font-size: 20px; color: white; margin: 0; padding-top: 70vh;">Loading Winda</p><br>
+            <div style="display: none; text-align: center; font-family: sans-serif !important; position: absolute; bottom: 20vh; left: 50vw; transform: translateX(-50%);">
+                <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
+                    <source src="../boot.webm" type="video/webm">
+                </video>
+                <p style="font-size: 20px; color: white; margin: 0;">Loading Winda</p><br>
                 <p style="font-size: 20px; color: gray; margin-left: 0;">By kitaes</p>
             </div>
             <script>
@@ -269,7 +270,7 @@
         <div class="context-menu" id="contextMenuElement">
             <div class="context-menu-option">(No options available)</div>
         </div>
-        <div class="explorer">
+        <div class="explorer" style="display: none;">
             <div class="icons" oncontextmenu="contextMenu(event);" onclick="contextMenuOff();"></div>
             <div class="start-menu winapi_transparent">
                 <div class="left-start"></div>
@@ -280,7 +281,7 @@
                     <iframe onload="log(this.getAttribute('src'))" src="../ProgramFiles/clock/index.html" frameborder="0" class="clock"></iframe>
                 </div>
             </div>
-            <bottomright>Winda7<br>Beta</bottomright>
+            <bottomright>Winda7<br>Build 20231201</bottomright>
             <div class="taskbar">
                 <div class="wrapper" onclick="startMenu(true)">
                     <img onload="log(this.getAttribute('src'))" class="taskbar-btn" src="./Resources/taskbar-btn.png"></img>

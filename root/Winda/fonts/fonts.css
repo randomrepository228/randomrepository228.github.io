@@ -23,6 +23,11 @@
 }
 
 @font-face {
+    font-family: 'segoeuii';
+    src: url(./segoeuii.ttf);
+}
+
+@font-face {
     font-family: 'segoeui';
     src: url(./segoeui.ttf);
     font-weight: 500;
@@ -52,13 +57,8 @@
     font-weight: 900;
 }
 
-@font-face {
-    font-family: 'msss';
-    src: url(./micross.ttf);
-    font-weight: 900;
-}
-
-@font-face {
-    font-family: 'segoesymbol';
-    src: url(./seguisym.ttf);
+* {
+    font-family: 'segoeui', 'segoesymbol';
+    font-weight: 400;
+    user-select: none;
 }

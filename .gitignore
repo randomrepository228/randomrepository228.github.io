@@ -1,2 +1,7 @@
-node_modules
-Winda.app
+node_modules/
+Winda.app/
+Okna8Mode/
+Resources/imageres
+Resources/shell32
+fonts/
+Web/

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
         <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
         <link rel="stylesheet" href="../../Winda/dwm.css">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
@@ -53,6 +53,18 @@
             }
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            function changeTheme(a){
+                theme.href = "../../Winda/Resources/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                console.log(e.data)
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
     </head>
     <body>
         <div class="left">

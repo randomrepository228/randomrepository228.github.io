@@ -6,6 +6,8 @@ let prevheight;
 let origx;
 let origy;
 let activewindow;
+let isLoaded = false;
+let bootAnimationEnded = false;
 class Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
@@ -28,7 +30,7 @@ function changeTheme(a){
     localStorage.theme = a
     theme.href = "./Resources/" + a + "/style.css"
     for (let i = 0; i < frames.length; i++) {
-        frames[i].postMessage("theme:" + a)
+        frames[i].postMessage("theme|" + a)
     }
 }
 function setActive(window){
@@ -283,11 +285,11 @@ async function loadApp(packageName, path, args){
                 const info = JSON.parse(request.responseText)
                 if (info.noGUI)
                     AddWindowNoGUI(new Window(info.x, info.y, info.width, info.height, info.title, 
-                        `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
+                        `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
                         path + info.icon, true), undefined, info.noResize, info.xOnly)
                 else
                     AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
-                        `<iframe src="${path}index.html" args="${args}" frameborder="0">`, 
+                        `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
                         path + info.icon, true), undefined, info.noResize, info.xOnly)
             }
             else{
@@ -298,6 +300,9 @@ async function loadApp(packageName, path, args){
     request.open("GET", path + "init.json", true);
     request.send();
 }
+function sendInfo(element){
+    element.contentWindow.postMessage("id|" + element.parentElement.parentElement.parentElement.getAttribute("windowid"))
+}
 async function loadAppNoInfo(packageName, path, args){
     if (!path) path = "../ProgramFiles/"
     path += packageName + "/"
@@ -307,7 +312,7 @@ function closeWindow(window){
     function timeout(){
         for (a of document.querySelectorAll(".n" + window.attributes.windowid.value)) a.remove()
     }
-    if (localStorage.theme != "aero") timeout()
+    if (localStorage.theme != "aero") {timeout(); return}
     window.className += " closing"
     document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).style.opacity = 0
     document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).animate(
@@ -320,7 +325,11 @@ function closeWindow(window){
     )
     setTimeout(timeout, 300);
 }
-function minimizeWindow(window){
+function getWnd(id){
+    const wnd = document.querySelectorAll(".n" + id)
+    return wnd[wnd.length - 1]
+}
+function minimiseWindow(window){
     const animtime = {
         duration: 300,
         iterations: 1,
@@ -329,7 +338,7 @@ function minimizeWindow(window){
         window.style.opacity = '1'
         window.style.pointerEvents = 'auto'
         setActive(window)
-        if (localStorage.theme != "basic") window.animate([
+        if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(2deg)",
                 opacity: 0,
@@ -347,7 +356,7 @@ function minimizeWindow(window){
         setInactive()
         window.style.opacity = '0'
         window.style.pointerEvents = 'none'
-        if (localStorage.theme != "basic") window.animate([
+        if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(0deg)", 
                 opacity: 1,
@@ -363,6 +372,7 @@ function minimizeWindow(window){
         ], animtime)
     }
 }
+minimizeWindow = minimiseWindow
 function restoreWindow(window){
     const animtime = {
         duration: 300,
@@ -372,7 +382,7 @@ function restoreWindow(window){
         window.style.opacity = '1'
         window.style.pointerEvents = 'auto'
         setActive(window)
-        if (localStorage.theme != "basic") window.animate([
+        if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(2deg)",
                 opacity: 0,
@@ -396,7 +406,7 @@ function windowSelectHandler(window){
     }
     minimizeWindow(window)
 }
-function maximise(window){
+function maximiseWindow(window){
     if (window.className.search("maximised") == -1){
         window.className = window.className.replace("", "maximised ")
         window.className = window.className.replace("snap-right ", "")
@@ -405,13 +415,14 @@ function maximise(window){
     else
         window.className = window.className.replace("maximised ", "")
 }
+maximise = maximiseWindow
 function idToWindow(id){
     return document.querySelectorAll(`.n${id}`)[1]
 }
 function move(e){
     if (e.touches) e = e.touches[0]
     if(loop.drag){
-        activewindow.style.top = `${e.clientY - prevy}px`
+        activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
         if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
             activewindow.className = activewindow.className.replace("maximised ", "");
             activewindow.className = activewindow.className.replace("snap-right ", "")
@@ -421,7 +432,7 @@ function move(e){
             prevy += 10
             return
         }
-        activewindow.style.left = `${e.clientX - prevx}px`
+        activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
     }
     if(localStorage.theme == "aero"){
         if(loop.right){
@@ -431,15 +442,15 @@ function move(e){
             activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
         }
         if(loop.top){
-            activewindow.style.top = `${e.clientY - prevy}px`
+            activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
             activewindow.style.height = `${prevheight + origy - e.pageY}px`
         }
         if(loop.left){
-            activewindow.style.left = `${e.clientX - prevx}px`
+            activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
             activewindow.style.width = `${prevwidth + origx - e.pageX}px`
         }
     }
-    else{
+    else if (localStorage.theme == "basic"){
         if(loop.right){
             activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 11}px`
         }
@@ -447,12 +458,28 @@ function move(e){
             activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
         }
         if(loop.top){
-            activewindow.style.top = `${e.clientY - prevy}px`
+            activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
             activewindow.style.height = `${prevheight + origy - e.pageY - 2}px`
         }
         if(loop.left){
-            activewindow.style.left = `${e.clientX - prevx}px`
+            activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
             activewindow.style.width = `${prevwidth + origx - e.pageX - 4}px`
+        }
+    }
+    else{
+        if(loop.right){
+            activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 3}px`
+        }
+        if(loop.bottom){
+            activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 1}px`
+        }
+        if(loop.top){
+            activewindow.style.top = `${e.clientY - prevy}px`
+            activewindow.style.height = `${prevheight + origy - e.pageY + 2}px`
+        }
+        if(loop.left){
+            activewindow.style.left = `${e.clientX - prevx}px`
+            activewindow.style.width = `${prevwidth + origx - e.pageX + 7}px`
         }
     }
 } 
@@ -484,14 +511,26 @@ function displayError(title, content){
     AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 200, title, content, ""), true, true, true)
 }
 
-document.onreadystatechange = () => {
-    if (document.readyState == "complete") {
-        winload.remove()
-        document.body.setAttribute("onmousemove", "move(event);"); 
-        document.body.setAttribute("ontouchmove", "move(event);");
-        AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 300, "Welcome", "Welcome to Windows Beta!", "./Resources/icon.jpg"), true)
-    }
+function desktopInit(){
+    winload.remove()
+    document.body.setAttribute("onmousemove", "move(event);"); 
+    document.body.setAttribute("ontouchmove", "move(event);");
+    document.querySelector(".explorer").style.display = "";
+    loadApp("sfc", undefined, "/silent")
 }
+
+document.onreadystatechange = () => {
+    if (document.readyState == "complete") isLoaded = true
+    if (localStorage.fastBoot == "true" || localStorage.verboseBoot == "true" || bootAnimationEnded ) desktopInit()
+}
+
+bootAnimation.addEventListener("ended", e => {
+    console.log("a")
+    if (isLoaded) desktopInit()
+    bootAnimationEnded = true;
+    bootAnimation.currentTime = 3;
+    bootAnimation.play()
+})
 // OKNA 8 COMPATIBILITY MODE
 function closemetroapp(appName){
     getAllWindows().forEach(val => {
@@ -500,8 +539,42 @@ function closemetroapp(appName){
     })
 }
 function CloseMetroDialog(a){}
+function broadcast(message){
+    for (a of windows.children){
+        a.children[1].children[1].children[0].contentWindow.postMessage(message)
+    }
+}
+addEventListener("resize", e => {
+    broadcast("getscrwidth|" + innerWidth)
+    broadcast("getscrheight|" + innerWidth)
+})
 onmessage = (e) => {
     const commands = e.data.split("|")
-    if (commands[0] == "ModalMetroDialog" && commands.length == 2)
-        AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true), false, false, false, true)
+    if (commands.length > 1){
+        let wnd = getWnd(commands[1])
+        let frame = wnd.children[1].children[1].children[0].contentWindow
+        if (commands[0] == "ModalMetroDialog")
+            AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true), false, false, false, true)
+        else if (commands[0] == "close")
+            closeWindow(getWnd(commands[1]))
+        else if (commands[0] == "max")
+            maximise(getWnd(commands[1]))
+        else if (commands[0] == "min")
+            minimizeWindow(getWnd(commands[1]))
+        else if (commands[0] == "show")
+            showWindow(commands[2], commands[1])
+        else if (commands[0] == "setwidth" || commands[0] == "setheight" || commands[0] == "settop" || commands[0] == "setleft")
+            wnd.style[commands[0].slice(3, commands[0].length)] = commands[2]
+        else if (commands[0] == "settitle")
+            wnd.firstElementChild.firstElementChild.lastElementChild.innerText = commands[2]
+        else if (commands[0] == "width" || commands[0] == "height" || commands[0] == "top" || commands[0] == "left")
+            frame.postMessage("get" + commands[0] + "|" + wnd.style[commands[0]])
+        else if (commands[0] == "title")
+            frame.postMessage("get" + commands[0] + "|" + wnd.firstElementChild.firstElementChild.lastElementChild.innerText)
+        else if (commands[0] == "scrwidth")
+            frame.postMessage("getscrwidth|" + innerWidth)
+        else if (commands[0] == "scrheight")
+            frame.postMessage("getscrheight|" + innerHeight)
+    }
+    
 }

@@ -3,11 +3,24 @@
     <head>
         <title>Calculator Test</title>
         <link rel="stylesheet" href="../../Winda/dwm.css">
-        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" id="theme" href="../../Winda/Resources/aero/style.css">
+        <link rel="stylesheet" id="localTheme" href="aero.css">
         <script src="calc.js"></script>
     </head>
     <body>
+        <script>
+            function changeTheme(a){
+                theme.href = "../../Winda/Resources/" + a + "/style.css"
+                localTheme.href = a + ".css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                console.log(e.data)
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
         <div class="menubar">
             <div class="element">Вид</div>
             <div class="element">Правка</div>

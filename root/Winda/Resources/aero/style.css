@@ -206,12 +206,7 @@ iframe {
     height: 100%;
     width: 100%;
 }
-ignore{
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    display: none;
-}
+
 .winapi_shadow{
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
 }

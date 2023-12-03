@@ -6,26 +6,15 @@
         <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
         <link rel="stylesheet" href="../../Winda/dwm.css">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
-        <style>
-            .content{
-                height: calc(100% -  40px);
-                width: calc(100% - 4px);
-                margin-top: 1px;
-                margin-left: 1px;
-                display: block;
-            }
-            .navbar{
-                height: 36px;
-                display: flex;
-            }
-        </style>
+        <link rel="stylesheet" href="./aero/style.css" id="controlTheme">
         <script>
             function changeTheme(a){
                 theme.href = "../../Winda/Resources/" + a + "/style.css"
+                controlTheme.href = "./" + a + "/style.css"
             }
             changeTheme(localStorage.theme)
             onmessage = (e) => {
-                const commands = e.data.split(":")
+                const commands = e.data.split("|")
                 console.log(e.data)
                 if (commands[0] == "theme" && commands.length == 2)
                     changeTheme(commands[1])
@@ -35,7 +24,9 @@
     </head>
     <body>
         <div class="navbar">
-
+            <div class="nav"><div class="backnext"><button disabled class="back"></button><button disabled class="next"></button></div></div>
+            <div class="adressbar"><div>Панель управления</div></div>
+            <input type="text" id="searchbox" placeholder="Поиск в панели управления">
         </div>
         <div class="content">
             <div class="select">
@@ -43,16 +34,20 @@
                 <select name="themeSelect" onchange="top.changeTheme(this.value)">
                     <option value="aero">Aero</option>
                     <option value="basic">Basic</option>
+                    <option value="classic">Classic</option>
+                    <option value="aero8">Windows 8</option>
+                    <option value="aero10">Windows 10</option>
                 </select>
                 <selecticon></selecticon>
             </div>
             <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
-            <label for="verboseBoot">Verbose boot</label>
+            <label for="verboseBoot">Verbose boot</label><br>
+            <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
+            <label for="fastBoot">Fast boot (Skip boot animation)</label>
             <script>
                 document.querySelector("select").value = localStorage.theme
                 verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
-            </script>
-            <script>
+                fastBoot.checked = localStorage.fastBoot == "true" ? true : false
                 top.showWindow("../ProgramFiles/control/icon.png", frameElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>

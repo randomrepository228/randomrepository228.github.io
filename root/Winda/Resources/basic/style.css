@@ -73,9 +73,6 @@ html, body{
 body{
     position: fixed;
 }
-::selection {
-    background-color: transparent;
-}
 .dash, .square{
     background-image: url("./buttons/min/normal.png");
     width: 32px;
@@ -249,12 +246,6 @@ text{
 iframe {
     height: 100%;
     width: 100%;
-}
-ignore{
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    display: none;
 }
 .dock-br{
     position: absolute;

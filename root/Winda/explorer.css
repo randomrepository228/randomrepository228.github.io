@@ -138,6 +138,7 @@ bottomright{
     text-align: center;
     font-size: 12px;
     padding-top: 2px;
+    line-height: 17px;
 }
 .show-desktop{
     position: relative;

@@ -104,7 +104,7 @@ body{
     top: 0 !important;
     box-sizing: border-box;
 }
-::selection{
+:not(input, select, *[contenteditable], textarea)::selection{
     background-color: transparent;
 }
 .select{
@@ -203,4 +203,10 @@ input:focus{
 }
 button:disabled{
     opacity: 0.5;
+}
+ignore{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: none;
 }

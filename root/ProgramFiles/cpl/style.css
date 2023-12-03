@@ -3,67 +3,6 @@ html, body {
     background-color: white;
 }
 
-.nav {
-    width: 100%; height: 36px;
-    position: fixed;
-    top:0;left:0;
-}
-
-.nav > .backnext {
-    width: 68px;
-    height: 36px;
-    position: relative;
-}
-
-.nav > .backnext > button {
-    min-width: 20px;
-    height: 20px;
-    position: absolute;
-    background-image: url(../../../img/explorer/nav_backnext.png);
-    outline: none;
-    border: none;
-}
-
-.nav > .backnext > .back {left:10px;top:8px;}
-.nav > .backnext > .next {left:38px;top:8px;background-position-x: -20px;}
-.nav > .backnext > button:hover    {background-position-y: -20px;}
-.nav > .backnext > button:active   {background-position-y: -40px;}
-.nav > .backnext > button:disabled {background-position-y: -60px;}
-
-#searchbox {
-    position: fixed;
-    width: 194px;
-    top: 7px; right: 12px;
-    padding: 2.5px 4px;
-    border-radius: 0;
-    border: 1px solid rgb(217,217,217);
-    font-size: 12px;
-}
-
-#searchbox:focus {
-    outline: none;
-}
-
-.adressbar {
-    width: calc(100vw - 346px);
-    border: 1px solid rgb(217,217,217);
-    position: absolute;
-    left: 109px; top: 7px;
-    font-size: 0;
-}
-
-.adressbar > div {
-    font-size: 12px;
-    display: inline-block;
-    border: 1px transparent solid;
-    padding: 1.5px 3px;
-}
-
-.adressbar > div:hover {
-    border: 1px rgb(112,192,231) solid;
-    background-color: rgba(112,192,231,0.2);
-}
-
 .controlContent {
     width: 100vw;
     height: calc(100vh - 36px);
