@@ -150,22 +150,29 @@ function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
     }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
-    if (ispopup){
-        newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
-        newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
+    console.log(window.x, window.y)
+    if(!(window.x && window.y)){
+        if (ispopup){
+            newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
+            newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
+        }
+        else{
+            const openedwindows = getAllWindows().length
+            let openedwindowsx = openedwindows
+            let openedwindowsy = openedwindows
+            if (openedwindows * 25 + 50 > innerHeight - window.height){
+                openedwindowsy = -2
+            }
+            if (openedwindows * 25 + 50 > innerWidth - window.width){
+                openedwindowsx = -2
+            }
+            newWindow.style.left = openedwindowsx * 25 + 50 + "px"
+            newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+        }
     }
     else{
-        const openedwindows = getAllWindows().length
-        let openedwindowsx = openedwindows
-        let openedwindowsy = openedwindows
-        if (openedwindows * 25 + 50 > innerHeight - window.height){
-            openedwindowsy = -2
-        }
-        if (openedwindows * 25 + 50 > innerWidth - window.width){
-            openedwindowsx = -2
-        }
-        newWindow.style.left = openedwindowsx * 25 + 50 + "px"
-        newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+        newWindow.style.left = window.x + "px"
+        newWindow.style.top = window.y + "px"
     }
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
@@ -218,22 +225,28 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
-    if (ispopup){
-        newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
-        newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
+    if(!window.x || !window.y){
+        if (ispopup){
+            newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
+            newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
+        }
+        else{
+            const openedwindows = getAllWindows().length
+            let openedwindowsx = openedwindows
+            let openedwindowsy = openedwindows
+            if (openedwindows * 25 + 50 > innerHeight - window.height){
+                openedwindowsy = -2
+            }
+            if (openedwindows * 25 + 50 > innerWidth - window.width){
+                openedwindowsx = -2
+            }
+            newWindow.style.left = openedwindowsx * 25 + 50 + "px"
+            newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+        }
     }
     else{
-        const openedwindows = getAllWindows().length
-        let openedwindowsx = openedwindows
-        let openedwindowsy = openedwindows
-        if (openedwindows * 25 + 50 > innerHeight - window.height){
-            openedwindowsy = -2
-        }
-        if (openedwindows * 25 + 50 > innerWidth - window.width){
-            openedwindowsx = -2
-        }
-        newWindow.style.left = openedwindowsx * 25 + 50 + "px"
-        newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+        newWindow.style.left = window.x
+        newWindow.style.top = window.y
     }
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
@@ -534,7 +547,7 @@ bootAnimation.addEventListener("ended", e => {
 // OKNA 8 COMPATIBILITY MODE
 function closemetroapp(appName){
     getAllWindows().forEach(val => {
-        if (val.title == appName || val.title == `Message from ${appName}`)
+        if (val.title == appName || val.title == `Message from Metro app`)
             closeWindow(idToWindow(val.id))
     })
 }
@@ -551,11 +564,16 @@ addEventListener("resize", e => {
 onmessage = (e) => {
     const commands = e.data.split("|")
     if (commands.length > 1){
-        let wnd = getWnd(commands[1])
+        try{
+            let wnd = getWnd(commands[1])
+        }
+        catch (e) {
+            if (commands[0] == "ModalMetroDialog")
+                AddWindow(new Window((window.innerWidth / 2) - 300, (window.innerHeight / 2) - 150, 600, 300, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), false, false, false, true)
+            return
+        }
         let frame = wnd.children[1].children[1].children[0].contentWindow
-        if (commands[0] == "ModalMetroDialog")
-            AddWindow(new Window((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 150, 400, 300, `Message from ${e.source.frameElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText}`, commands[1], '', true), false, false, false, true)
-        else if (commands[0] == "close")
+        if (commands[0] == "close")
             closeWindow(getWnd(commands[1]))
         else if (commands[0] == "max")
             maximise(getWnd(commands[1]))

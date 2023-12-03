@@ -210,3 +210,28 @@ ignore{
     position: absolute;
     display: none;
 }
+.metro-dialog{
+    background-color: rgba(0,150,200);
+    height: 100%;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.metro-dialog button{
+    background-image: none;
+    background-color: rgba(255,255,255,0.3);
+    color: white;
+}
+.metro-dialog button:hover{
+    background-image: none;
+    background-color: rgba(255,255,255,0.5);
+}
+.metro-dialog button:active{
+    background-image: none;
+    background-color: rgba(255,255,255,0.7);
+}
+.metro-dialog .buttons{
+    text-align: right;
+    margin-top: auto;
+}
