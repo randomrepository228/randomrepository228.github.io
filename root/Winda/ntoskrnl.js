@@ -339,8 +339,7 @@ function closeWindow(window){
     setTimeout(timeout, 300);
 }
 function getWnd(id){
-    const wnd = document.querySelectorAll(".n" + id)
-    return wnd[wnd.length - 1]
+    return document.querySelector(".window.n" + id)
 }
 function minimiseWindow(window){
     const animtime = {
@@ -559,15 +558,16 @@ function broadcast(message){
 }
 addEventListener("resize", e => {
     broadcast("getscrwidth|" + innerWidth)
-    broadcast("getscrheight|" + innerWidth)
+    broadcast("getscrheight|" + innerHeight)
 })
 onmessage = (e) => {
     const commands = e.data.split("|")
     if (commands.length > 1){
+        let wnd;
         try{
-            let wnd = getWnd(commands[1])
+            wnd = getWnd(commands[1])
         }
-        catch (e) {
+        catch(e){
             if (commands[0] == "ModalMetroDialog")
                 AddWindow(new Window((window.innerWidth / 2) - 300, (window.innerHeight / 2) - 150, 600, 300, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), false, false, false, true)
             return
@@ -583,6 +583,10 @@ onmessage = (e) => {
             showWindow(commands[2], commands[1])
         else if (commands[0] == "setwidth" || commands[0] == "setheight" || commands[0] == "settop" || commands[0] == "setleft")
             wnd.style[commands[0].slice(3, commands[0].length)] = commands[2]
+        else if (commands[0] == "setpos"){
+            wnd.style.top = commands[2];
+            wnd.style.left = commands[3]
+        }
         else if (commands[0] == "settitle")
             wnd.firstElementChild.firstElementChild.lastElementChild.innerText = commands[2]
         else if (commands[0] == "width" || commands[0] == "height" || commands[0] == "top" || commands[0] == "left")

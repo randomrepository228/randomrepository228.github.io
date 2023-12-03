@@ -62,5 +62,6 @@ let win = {
     setHeight: (a) => top.postMessage("setheight|" + win.id + "|" + a),
     setTop: (a) => top.postMessage("settop|" + win.id + "|" + a),
     setLeft: (a) => top.postMessage("setleft|" + win.id + "|" + a),
+    setPos: (a, b) => top.postMessage("setpos|" + win.id + "|" + a + "|" + b),
     id: -1
 }
