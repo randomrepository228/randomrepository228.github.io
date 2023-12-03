@@ -9,7 +9,9 @@
     </head>
     <body>
         <script>
+            const supportedthemes = ["aero", "classic"]
             function changeTheme(a){
+                if (!supportedthemes.includes(a)) a = supportedthemes[0]
                 theme.href = "../../Winda/Resources/" + a + "/style.css"
                 localTheme.href = a + ".css"
             }

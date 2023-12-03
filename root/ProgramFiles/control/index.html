@@ -8,7 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <link rel="stylesheet" href="./aero/style.css" id="controlTheme">
         <script>
+            const supportedthemes = ["classic", "aero", "basic"]
             function changeTheme(a){
+                if (!supportedthemes.includes(a)) a = supportedthemes[0]
                 theme.href = "../../Winda/Resources/" + a + "/style.css"
                 controlTheme.href = "./" + a + "/style.css"
             }

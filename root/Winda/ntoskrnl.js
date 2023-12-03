@@ -50,6 +50,10 @@ function setInactive(){
         element.removeAttribute("focus")
 }
 function showWindow(icon, num){
+    if (document.querySelector(`.n${num}.window-tray`)) {
+        setActive(document.querySelectorAll(`.n${num}`)[1]);
+        return;
+    }
     document.querySelector(".left-bar").innerHTML += `
     <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelectorAll('.n${num}')[1])">
         <img src="${icon}" onerror="this.remove()">
