@@ -60,16 +60,6 @@ function showWindow(icon, num){
     </div>`
     if(localStorage.theme == "aero"){
         let window = document.querySelectorAll(`.n${num}`)
-        window[window.length-1].animate(
-            [
-                {transform: "perspective(400px) rotateX(-5deg) scale(0.9)", opacity: 0},
-                {transform: "perspective(400px) rotateX(0deg) scale(1)", opacity: 1}
-            ],
-            {
-                duration: 300,
-                iterations: 1,
-            }
-        )
         document.querySelector(`.n${num}.window-tray`).animate(
             [{opacity: 0}, {opacity: 1}],
             {
@@ -180,7 +170,6 @@ function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
     }
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
-    newWindow.style.opacity = 1
     newWindow.style.display = "none"
     newWindow.innerHTML =
     `
@@ -254,7 +243,6 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     }
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
-    newWindow.style.opacity = 1
     newWindow.style.display = "none"
     newWindow.innerHTML =
     `
@@ -329,7 +317,6 @@ function closeWindow(window){
     function timeout(){
         for (a of document.querySelectorAll(".n" + window.attributes.windowid.value)) a.remove()
     }
-    if (localStorage.theme != "aero") {timeout(); return}
     window.className += " closing"
     document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).style.opacity = 0
     document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).animate(
@@ -348,11 +335,9 @@ function getWnd(id){
 function minimiseWindow(window){
     const animtime = {
         duration: 300,
-        iterations: 1,
+        iterations: 1
     };
-    if (window.style.opacity === '0'){
-        window.style.opacity = '1'
-        window.style.pointerEvents = 'auto'
+    if (window.className.includes("minimised")){
         setActive(window)
         if (localStorage.theme == "aero") window.animate([
             {
@@ -370,8 +355,7 @@ function minimiseWindow(window){
         ], animtime)
     } else {
         setInactive()
-        window.style.opacity = '0'
-        window.style.pointerEvents = 'none'
+        window.className += " minimised"
         if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(0deg)", 
@@ -394,10 +378,10 @@ function restoreWindow(window){
         duration: 300,
         iterations: 1,
     };
-    if (window.style.opacity == '0'){
-        window.style.opacity = '1'
-        window.style.pointerEvents = 'auto'
+    if (window.className.includes("minimised")){
         setActive(window)
+        console.log(window.className, window.className.replace(" minimised", ""))
+        window.className = window.className.replace(" minimised", "")
         if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(2deg)",

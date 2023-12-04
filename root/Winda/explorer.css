@@ -8,6 +8,7 @@
     flex-wrap: wrap;
     height: calc(100% - 38px);
     align-content: flex-start;
+    z-index: -9999;
 }
 .icon{
     display: flex;

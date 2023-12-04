@@ -242,3 +242,7 @@ ignore{
     text-align: right;
     margin-top: auto;
 }
+.minimised{
+    opacity: 0 !important;
+    pointer-events: none;
+}
