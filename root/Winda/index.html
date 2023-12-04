@@ -101,6 +101,7 @@
                 --taskbar-height: 40px
             }
         </style>
+        <link rel="stylesheet" href="./fonts/fonts.css">
         <link rel="stylesheet" href="dwm.css">
         <link rel="stylesheet" href="explorer.css">
         <link rel="stylesheet" href="./Resources/aero/style.css" id="theme">
@@ -253,12 +254,12 @@
                 if (!localStorage.showBootMenu)
                     window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
             </script> -->
-            <div style="display: none; text-align: center; font-family: sans-serif !important; position: absolute; bottom: 20vh; left: 50vw; transform: translateX(-50%);">
+            <div style="display: none; text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50vh + 100px); top: calc(50vh - 100px); width: 100vw;">
                 <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
                     <source src="../boot.webm" type="video/webm">
                 </video>
-                <p style="font-size: 20px; color: white; margin: 0;">Loading Winda</p><br>
-                <p style="font-size: 20px; color: gray; margin-left: 0;">By kitaes</p>
+                <p style="font-size: 20px; color: white; margin: 0; margin-top: 50px;">Loading Winda</p><br>
+                <p style="font-size: 20px; color: gray; margin-left: 0; position: absolute; bottom: 20px; left: 50vw; transform: translateX(-50%);">By kitaes</p>
             </div>
             <script>
                 if(localStorage.verboseBoot == "true")

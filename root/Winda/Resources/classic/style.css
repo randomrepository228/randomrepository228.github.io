@@ -170,7 +170,7 @@ iframe {
     height: 100%;
     width: 100%;
 }
-.dock-br{
+.dock-b{
     position: absolute;
     right: 0;
     bottom: 40px;
@@ -433,7 +433,7 @@ input[type=submit]:disabled {
 }
 th{
     height: 15px;
-    background-color: none;
+    background-color: transparent;
     box-sizing: border-box;
     background-image: none !important;
     background-color: silver;

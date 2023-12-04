@@ -26,8 +26,8 @@ function AddSym(symbol) {
             CalcString = '0'
         }
     } else if (symbol == '=') {
-        CalcString = eval(CalcStringSmall.toString().replaceAll(',', '.') + CalcString.toString().replaceAll(',', '.'))
-        CalcString = CalcString.toString().replaceAll('.', ',')
+        CalcString = eval(CalcStringSmall.toString().replace(/\,/g, '.') + CalcString.toString().replace(/\,/g, '.'))
+        CalcString = CalcString.toString().replace(/\./g, ',')
         CalcStringSmall = ''
     } else if (symbol == 'CE') {
         CalcString = '0'

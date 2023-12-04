@@ -127,6 +127,7 @@ body {
 }
 
 #CalcPageStandart > .row > button {
+    width: 34px;
     min-width: 34px;
     height: 27px;
     display: inline-block;

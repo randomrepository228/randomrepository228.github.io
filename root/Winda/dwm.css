@@ -1,4 +1,11 @@
-/* Fonts, cursor, and disable scale */
+body{
+    margin: 0;
+    background-color: transparent;
+    background-image: var(--wallpaper);
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
 html{
     font-family: 'segoeui', 'sans-serif', system-ui;
     touch-action: manipulation;
@@ -110,14 +117,13 @@ body{
 .select{
     display: flex;
 }
-button, select{
+button, select, button:disabled:hover, button:disabled:active{
     height: 23px;
     min-width: 75px;
-    border: 0;
     background-position: left, right, 4px;
     background-repeat: no-repeat;
     background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
-    background-color: transparent;
+    border: 0;
 }
 .menubar .element{
     height: 20px;
@@ -138,6 +144,7 @@ button, select{
 }
 select{
     appearance: none;
+    -moz-appearance: none;
     padding-right: 20px;
 }
 .dock-br{

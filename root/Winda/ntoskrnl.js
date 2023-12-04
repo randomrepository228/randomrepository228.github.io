@@ -30,7 +30,7 @@ function changeTheme(a){
     localStorage.theme = a
     theme.href = "./Resources/" + a + "/style.css"
     for (let i = 0; i < frames.length; i++) {
-        frames[i].postMessage("theme|" + a)
+        frames[i].postMessage("theme|" + a, "*")
     }
 }
 function setActive(window){
@@ -62,8 +62,8 @@ function showWindow(icon, num){
         let window = document.querySelectorAll(`.n${num}`)
         window[window.length-1].animate(
             [
-                {transform: "perspective(400px) rotateX(-5deg)", opacity: 0, scale: 0.9},
-                {transform: "perspective(400px) rotateX(0deg)", opacity: 1, scale: 1}
+                {transform: "perspective(400px) rotateX(-5deg) scale(0.9)", opacity: 0},
+                {transform: "perspective(400px) rotateX(0deg) scale(1)", opacity: 1}
             ],
             {
                 duration: 300,
@@ -318,7 +318,7 @@ async function loadApp(packageName, path, args){
     request.send();
 }
 function sendInfo(element){
-    element.contentWindow.postMessage("id|" + element.parentElement.parentElement.parentElement.getAttribute("windowid"))
+    element.contentWindow.postMessage("id|" + element.parentElement.parentElement.parentElement.getAttribute("windowid"), "*")
 }
 async function loadAppNoInfo(packageName, path, args){
     if (!path) path = "../ProgramFiles/"
@@ -561,8 +561,8 @@ function broadcast(message){
     }
 }
 addEventListener("resize", e => {
-    broadcast("getscrwidth|" + innerWidth)
-    broadcast("getscrheight|" + innerHeight)
+    broadcast("getscrwidth|" + innerWidth, "*")
+    broadcast("getscrheight|" + innerHeight, "*")
 })
 onmessage = (e) => {
     const commands = e.data.split("|")
@@ -594,13 +594,13 @@ onmessage = (e) => {
         else if (commands[0] == "settitle")
             wnd.firstElementChild.firstElementChild.lastElementChild.innerText = commands[2]
         else if (commands[0] == "width" || commands[0] == "height" || commands[0] == "top" || commands[0] == "left")
-            frame.postMessage("get" + commands[0] + "|" + wnd.style[commands[0]])
+            frame.postMessage("get" + commands[0] + "|" + wnd.style[commands[0]], "*")
         else if (commands[0] == "title")
-            frame.postMessage("get" + commands[0] + "|" + wnd.firstElementChild.firstElementChild.lastElementChild.innerText)
+            frame.postMessage("get" + commands[0] + "|" + wnd.firstElementChild.firstElementChild.lastElementChild.innerText, "*")
         else if (commands[0] == "scrwidth")
-            frame.postMessage("getscrwidth|" + innerWidth)
+            frame.postMessage("getscrwidth|" + innerWidth, "*")
         else if (commands[0] == "scrheight")
-            frame.postMessage("getscrheight|" + innerHeight)
+            frame.postMessage("getscrheight|" + innerHeight, "*")
     }
     
 }

@@ -1,8 +1,6 @@
 .content{
     height: calc(100% - 34px);
     width: calc(100% - 4px);
-    margin-top: 1px;
-    margin-left: 1px;
     display: block;
 }
 .navbar{
@@ -27,16 +25,18 @@
     height: 30px;
     background-image: url(../../explorer/back.png);
     outline: none;
-    border: none;
+    border: none !important;
     box-shadow: none;
+    background-color: transparent;
 }
 .nav > .backnext > .next {
     min-width: 30px;
     height: 30px;
     background-image: url(../../explorer/next.png);
     outline: none;
-    border: none;
+    border: none !important;
     box-shadow: none;
+    background-color: transparent;
 }
 
 .nav > .backnext > .next:disabled, .nav > .backnext > .back:disabled{
@@ -82,8 +82,7 @@
     background-color: rgba(112,192,231,0.2);
 }
 .adressbar, #searchbox{
-    border: 1px solid rgb(29, 55, 81);
-    outline: 1px solid rgba(255,255,255,0.7);
+    box-shadow: inset 0px 0px 0px 1px rgb(29, 55, 81);
+    border: 1px solid rgba(255,255,255,0.7);
     border-radius: 2px;
-    box-shadow: none !important;
 }

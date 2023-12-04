@@ -27,6 +27,7 @@
     outline: none;
     border: none;
     box-shadow: none;
+    background-color: transparent !important;
 }
 .nav > .backnext > .next {
     min-width: 30px;
@@ -35,6 +36,7 @@
     outline: none;
     border: none;
     box-shadow: none;
+    background-color: transparent !important;
 }
 
 .nav > .backnext > .next:disabled, .nav > .backnext > .back:disabled{

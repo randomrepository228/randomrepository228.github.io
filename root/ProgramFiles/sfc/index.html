@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
-        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
         <link rel="stylesheet" href="../../Winda/dwm.css">
+        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             body{
@@ -53,9 +53,10 @@
             <div id="missingapplist">None</div>
         </div>
         <div class="bottompage">
-            These programs and themes are required to be installed in order for them to be shown properly on installed app/theme list. Running system file checker is recommended after the update<br><br>
+            These programs and themes are required to be installed in order for them to be shown properly on installed app/theme list. Running system file checker is recommended after the update. If you don't have any custom apps you can also click on reset<br><br>
             <footer>
-                <button onclick="localStorage.appList = JSON.stringify(JSON.parse(localStorage.appList).concat(missingapps))">Install</button>
+                <button onclick="localStorage.appList = JSON.stringify(systemapplist); parent.reloadIcons(); win.close()">Reset</button>
+                <button onclick="localStorage.appList = JSON.stringify(JSON.parse(localStorage.appList).concat(missingapps)); parent.reloadIcons(); win.close()">Install</button>
             </footer>
         </div>
         <script>

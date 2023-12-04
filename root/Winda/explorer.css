@@ -58,6 +58,7 @@ bottomright{
     bottom: 0px;
     width: 100%;
     backdrop-filter: blur(5px);
+    outline-offset: 0;
 }
 .taskbar-btn{
     object-fit: cover;
@@ -165,11 +166,12 @@ bottomright{
     border-top-right-radius: 10px;
     background-image: url("./Resources/start_menu.png");
     background-size: 100% 100%;
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5);
 }
 .left-start{
     background-color: white;
-    border: 1px solid black;
-    outline: 1px solid rgba(255,255,255,0.5);
+    box-shadow: inset 0px 0px 0px 1px black;
+    border: 1px solid rgba(255,255,255,0.5);
     border-radius: 3px;
     width: 60%;
     padding: 3px;

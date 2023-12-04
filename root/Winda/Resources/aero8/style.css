@@ -177,16 +177,16 @@ selecticon{
     pointer-events: none;
 }
 button, select, button:disabled:hover, button:disabled:active{
-    background-color: rgb(225,225,225) !important;
-    border: 1px solid rgb(173,173,173) !important;
+    background-color: rgb(225,225,225);
+    border: 1px solid rgb(173,173,173);
     transition: ease 0.2s;
 }
 button:hover, select:hover{
-    background-color: rgb(229, 241, 251) !important;
-    border: 1px solid rgb(0, 120, 215) !important;
+    background-color: rgb(229, 241, 251);
+    border: 1px solid rgb(0, 120, 215);
 }
 button:active, select:active{
-    background-color: rgb(204, 228, 247) !important;
+    background-color: rgb(204, 228, 247);
 }
 text{
     height: 100%;

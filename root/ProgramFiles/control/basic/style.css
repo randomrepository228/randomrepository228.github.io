@@ -80,8 +80,7 @@
     background-color: rgba(112,192,231,0.2);
 }
 .adressbar, #searchbox{
-    border: 1px solid rgba(29, 55, 81, 0.7);
-    outline: 1px solid rgba(255,255,255,0.5);
+    box-shadow: inset 0px 0px 0px 1px rgb(29, 55, 81);
+    border: 1px solid rgba(255,255,255,0.7);
     border-radius: 2px;
-    box-shadow: none !important;
 }
