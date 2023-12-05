@@ -13,12 +13,12 @@ const taskbar = document.querySelector(".taskbar");
 function createIcon(icon){
     let a = document.createElement("div")
     a.className = "icon"
-    a.innerHTML = `<img src="${icon.image}">${icon.title}`
+    a.innerHTML = `<img src="${icon.image}" onerror="this.style.opacity = '0'">${icon.title}`
     a.setAttribute("ondblclick", icon.action)
     document.querySelector(".icons").appendChild(a)
 }
 function startMenu(open){
-    if (open === true) timeMenu(false)
+    // if (open === true) timeMenu(false)
     if(open){
         document.querySelector(".start-menu").style.display = "flex";
         document.querySelector(".wrapper").setAttribute("onclick", "startMenu(false)");
@@ -28,40 +28,20 @@ function startMenu(open){
         document.querySelector(".wrapper").setAttribute("onclick", "startMenu(true)");
     }
 }
-function timeMenu(open){
-    if (open === true) startMenu(false)
-    if(open){
-        timepanel.style.display = "flex";
-        document.querySelector(".time").setAttribute("onclick", "timeMenu(false)");
-    }
-    else{
-        timepanel.style.display = "none";
-        document.querySelector(".time").setAttribute("onclick", "timeMenu(true)");
-    }
-}
+// function timeMenu(open){
+//     if (open === true) startMenu(false)
+//     if(open){
+//         timepanel.style.display = "flex";
+//         document.querySelector(".time").setAttribute("onclick", "timeMenu(false)");
+//     }
+//     else{
+//         timepanel.style.display = "none";
+//         document.querySelector(".time").setAttribute("onclick", "timeMenu(true)");
+//     }
+// }
 function addStartMenuEntryLeft(name, icon, action){
     document.querySelector(".left-start").innerHTML += `<div class="start-option blue" onclick="${action}"><img src="${icon}"></img>${name}</div>`
 }
-function padTo2Digits(num) {
-    return num.toString().padStart(2, '0');
-}
-function formatDate(date) {
-    return [padTo2Digits(date.getDate()), padTo2Digits(date.getMonth() + 1), date.getFullYear(),].join('.');
-}
-function formatTime(date) {
-    return [date.getHours(), padTo2Digits(date.getMinutes())].join(':');
-}
-function formatMonth(date){
-    return ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][date.getMonth()]
-}
-function changeTime(){
-    const time = new Date()
-    const formatted = `${formatTime(time)}<br>${formatDate(time)}`
-    if (document.querySelector(".time").innerHTML != formatted)
-        document.querySelector(".time").innerHTML = formatted
-}
-changeTime()
-setInterval(changeTime, 1000)
 addStartMenuEntryLeft("Version 0.0.1", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.0.1/simulator.html'")
 addStartMenuEntryLeft("Version 0.0.2", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.0.2/simulator.html'")
 addStartMenuEntryLeft("Version 0.1.0", "./Resources/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'")
@@ -75,7 +55,4 @@ function reloadIcons(){
 }
 reloadIcons()
 // createIcon(new Icon("OBS Studio (Fleen5177)", "../ProgramFiles/fleen5177-obs/icon.png", "loadApp('fleen5177-obs')"))
-addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `AddWindow(
-    new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 500, 
-    'Welcome', 
-    'Welcome to Windows Beta!'), true)`)
+addStartMenuEntryLeft("Welcome window", './Resources/icon.jpg', `msgbox('Welcome', 'Welcome to Windows Beta!'), true)`)

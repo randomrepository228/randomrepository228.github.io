@@ -202,6 +202,7 @@ selecticon{
 button, select, button:disabled:hover, button:disabled:active{
     background-image: url("../button/normal/left.png"), url("../button/normal/right.png"), url("../button/normal/center.png");
     border: none;
+    background-color: transparent;
 }
 button:hover, select:hover{
     background-image: url("../button/hover/left.png"), url("../button/hover/right.png"), url("../button/hover/center.png");

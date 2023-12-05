@@ -6,6 +6,7 @@ let prevheight;
 let origx;
 let origy;
 let activewindow;
+let activetray;
 let isLoaded = false;
 let bootAnimationEnded = false;
 class Window {
@@ -17,6 +18,20 @@ class Window {
         this.title = title;
         this.innerhtml = innerhtml;
         this.icon = icon
+    }
+}
+class Tray {
+    constructor(width, height, innerhtml, title) {
+        this.height = height;
+        this.width = width;
+        this.innerhtml = innerhtml;
+        this.title = title
+    }
+}
+class TrayIcon {
+    constructor(width, innerhtml) {
+        this.width = width;
+        this.innerhtml = innerhtml;
     }
 }
 if (!localStorage.theme) localStorage.theme = "aero"
@@ -129,19 +144,8 @@ function windowResize(event, elem, ...actions){
     else
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
-function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
+function AddWindow(window, ispopup, options, id){
     newWindow = document.createElement("div")
-    const randNum = Math.round(Math.random() * 99999)
-    let id;
-    for(let i = randNum;;i++){
-        let idCollision = false
-        for(const a of windows.children)
-            if(a.getAttribute("windowid") == i.toString())
-                idCollision = true
-        if (!idCollision)
-            id = i
-            break
-    }
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
     console.log(window.x, window.y)
@@ -171,20 +175,22 @@ function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
     newWindow.style.width = window.width + "px"
     newWindow.style.height = window.height + "px"
     newWindow.style.display = "none"
+    if(options.alwaysontop) newWindow.zIndex = 9999;
+    if(options.alwaysbehind) newWindow.zIndex = -9999;
     newWindow.innerHTML =
     `
-    <div class="topbar" ${noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${noResize})">
+    <div class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
         <left>
             <img src="${window.icon}" onerror="this.remove()">
             <p>${window.title}</p>
         </left>
         <div class="buttons">
-            ${xOnly? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
-            <div class="square" ${noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
-            <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
+            ${options.xOnly ? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
+            <div class="square" ${options.noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
+            <div class="x" onclick="closeWindow(${id})"><img src="./Resources/aero/buttons/close/icon.png"></div>
         </div>
     </div>
-    ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+    ${options.noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
     <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
     <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
     <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
@@ -195,13 +201,40 @@ function AddWindow(window, ispopup, noResize, xOnly, noSelfOpen){
     <div class="content">
         <ignore></ignore>
         <text>${window.innerhtml}</text>
-        ${ispopup ? '<footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>' : ''}
+        ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
     </div>
     `
     windows.append(newWindow)
-    if(ispopup || noSelfOpen){
+    if(ispopup || options.noSelfOpen){
         showWindow(window.icon, id)
     }
+    broadcast("newprocess|" + id)
+}
+function addTray(id, trayicon, tray, options){
+    let newTray = document.createElement("div")
+    newTray.className = `dock-br winapi_transparent winapi_shadow n${id} tray`
+    newTray.setAttribute("windowid", id)
+    newTray.style.width = tray.width + "px"
+    newTray.style.height = tray.height + "px"
+    newTray.style.display = "none"
+    newTray.setAttribute("name", tray.title)
+    newTray.innerHTML =
+    `
+    <div class="content">
+        ${tray.innerhtml}
+    </div>
+    `
+    trays.append(newTray)
+    newTray = document.createElement("div")
+    newTray.className = `trayicon n${id}`
+    newTray.style.width = trayicon.width + "px"
+    newTray.innerHTML =
+    `
+    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(${id}));console.log(getTray(${id}))"></div>
+    ${trayicon.innerhtml}
+    `
+    trayicons.append(newTray)
+    broadcast("newprocess|" + id)
 }
 function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     newWindow = document.createElement("div")
@@ -253,7 +286,7 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
         <div class="buttons">
             ${xOnly? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
             <div class="square" ${noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
-            <div class="x" onclick="closeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/close/icon.png"></div>
+            <div class="x" onclick="closeWindow(${id})"><img src="./Resources/aero/buttons/close/icon.png"></div>
         </div>
     </div>
     ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
@@ -266,7 +299,7 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
     <ignore></ignore>
     <text>${window.innerhtml}</text>
-    ${ispopup ? '<footer><button onclick="closeWindow(this.parentElement.parentElement.parentElement)">OK</button></div>' : ''}
+    ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
     `
     windows.append(newWindow)
     if(ispopup || noSelfOpen){
@@ -275,8 +308,22 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
 }
 function getAllWindows(){
     let openedwindows = [];
-    for (a of windows.children)
-        openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
+    let userids = []
+    for (a of document.querySelectorAll("*[windowid]")){
+        console.log(a)
+        if (a.className.includes("window ")){
+            if (!userids.includes(a.getAttribute("windowid"))){
+                openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
+                userids.push(a.getAttribute("windowid"))
+            }
+        }
+        else if (!a.className.includes("window-tray")){
+            if (!userids.includes(a.getAttribute("windowid"))){
+                openedwindows.push({id: a.getAttribute("windowid"), title: a.getAttribute("name") + " (Tray element)"})
+                userids.push(a.getAttribute("windowid"))
+            }
+        }
+    }
     return openedwindows
 }
 async function loadApp(packageName, path, args){
@@ -288,17 +335,37 @@ async function loadApp(packageName, path, args){
             if(request.status == 200){
                 console.log(request.responseText)
                 const info = JSON.parse(request.responseText)
-                if (info.noGUI)
-                    AddWindowNoGUI(new Window(info.x, info.y, info.width, info.height, info.title, 
-                        `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
-                        path + info.icon, true), undefined, info.noResize, info.xOnly)
-                else
-                    AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
-                        `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
-                        path + info.icon, true), undefined, info.noResize, info.xOnly)
+                const randNum = Math.round(Math.random() * 99999)
+                let id;
+                for(let i = randNum;;i++){
+                    let idCollision = false
+                    for(const a of document.querySelectorAll("*[windowid]"))
+                        if(a.getAttribute("windowid") == i.toString())
+                            idCollision = true
+                    if (!idCollision)
+                        id = i
+                        break
+                }
+                if (info.window){
+                    if (info.noGUI)
+                        AddWindowNoGUI(new Window(info.x, info.y, info.width, info.height, info.title, 
+                            `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
+                            path + info.icon, true), undefined, info.noResize, info.xOnly)
+                    else
+                        AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
+                            `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
+                            path + info.icon, true), undefined, info, id)
+                }
+                else if (info.tray) {
+                    addTray(id, new TrayIcon(info.tray.width, 
+                        `<iframe src="${path}tray.html" ${info.tray.monochrome ? 'class="monochrome"' : ''} 
+                        windowid="${id}" name="${info.title}" frameborder="0" style="width: ${info.tray.width}px"></iframe>`, info.title), 
+                        new Tray(info.width, info.height, `<iframe src="${path}index.html" frameborder="0"></iframe>`, info.title)
+                    )
+                }
             }
             else{
-                displayError(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`)
+                msgbox(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`)
             }
         }
     }
@@ -313,13 +380,20 @@ async function loadAppNoInfo(packageName, path, args){
     path += packageName + "/"
     AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, packageName, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, undefined, undefined, true)
 }
-function closeWindow(window){
+function closeWindow(id){
+    let window = getWnd(id)
+    if (!window) window = getTray(id)
     function timeout(){
-        for (a of document.querySelectorAll(".n" + window.attributes.windowid.value)) a.remove()
+        for (a of document.querySelectorAll(".n" + id)) a.remove()
+        broadcast("processdied|" + id)
+    }
+    if (!window.className.includes("window")){
+        timeout()
+        return
     }
     window.className += " closing"
-    document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).style.opacity = 0
-    document.querySelector(`.n${window.attributes.windowid.value}.window-tray`).animate(
+    document.querySelector(`.n${id}.window-tray`).style.opacity = 0
+    document.querySelector(`.n${id}.window-tray`).animate(
         [{opacity: 1}, {opacity: 0}],
         {
             duration: 300,
@@ -331,6 +405,21 @@ function closeWindow(window){
 }
 function getWnd(id){
     return document.querySelector(".window.n" + id)
+}
+function getTray(id){
+    return document.querySelector(".tray.n" + id)
+}
+function showTray(tray){
+    if (tray == activetray){
+        tray.style.display = "none"
+        activetray = undefined
+        return
+    }
+    try{
+        activetray.style.display = "none"
+    } catch (e) {}
+    activetray = tray
+    activetray.style.display = "block"
 }
 function minimiseWindow(window){
     const animtime = {
@@ -506,9 +595,9 @@ function snapLeft(window){
 function snapRight(window){
     window.className = window.className.replace("", "snap-right ")
 }
-function displayError(title, content){
+function msgbox(title, content){
     content = `<div style="margin: 20px;">${content}</div>`
-    AddWindow(new Window((window.innerWidth/2)-150, (window.innerHeight/2)-150, 500, 200, title, content, ""), true, true, true)
+    AddWindow(new Window((window.innerWidth/2)-250, (window.innerHeight/2)-150, 500, 200, title, content, ""), true, true, true)
 }
 
 function desktopInit(){
@@ -541,7 +630,10 @@ function closemetroapp(appName){
 function CloseMetroDialog(a){}
 function broadcast(message){
     for (a of windows.children){
-        a.children[1].children[1].children[0].contentWindow.postMessage(message)
+        try{
+            a.lastElementChild.children[1].children[0].contentWindow.postMessage(message)
+        }
+        catch (e) {}
     }
 }
 addEventListener("resize", e => {
@@ -560,7 +652,7 @@ onmessage = (e) => {
                 AddWindow(new Window((window.innerWidth / 2) - 300, (window.innerHeight / 2) - 150, 600, 300, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), false, false, false, true)
             return
         }
-        let frame = wnd.children[1].children[1].children[0].contentWindow
+        let frame = wnd.lastElementChild.children[1].children[0].contentWindow
         if (commands[0] == "close")
             closeWindow(getWnd(commands[1]))
         else if (commands[0] == "max")

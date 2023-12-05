@@ -131,6 +131,12 @@ body{
 .closing{
     display: none !important;
 }
+.dock-br{
+    margin: 0;
+}
+iframe.monochrome{
+    filter: invert();
+}
 footer{
     height: 40px;
     max-height: 40px;

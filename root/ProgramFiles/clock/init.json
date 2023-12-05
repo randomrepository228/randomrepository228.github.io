@@ -1,7 +1,7 @@
 {
     "width": 322, 
-    "height": 280, 
+    "height": 280,
     "title": "Clock",
     "icon": "",
-    "tray": true
+    "tray": {"small": true, "big": true, "width": 79, "monochrome": true}
 }

@@ -61,7 +61,7 @@
         </div>
         <script>
             let corrupted = false;
-            const systemapplist = ["calc", "changelog", "control", "ExampleApp", "Okna8Mode", "regedit", "run", "sfc", "taskmgr", "dvd"]
+            const systemapplist = ["calc", "changelog", "clock", "control", "ExampleApp", "Okna8Mode", "regedit", "run", "sfc", "taskmgr", "dvd"]
             const systemthemelist = ["aero", "basic", "classic"]
             try{
                 JSON.parse(localStorage.appList)
@@ -96,7 +96,7 @@
                 let msg;
                 if (corrupted) msg = "System file checker have fixed corrupted application/theme list"
                 else msg = "System file checker didn't found any missing system apps or themes"
-                document.body.innerHTML = msg + "<footer><button onclick=\"top.reloadIcons();top.closeWindow(mainwindow)\">OK</button></footer>"
+                document.body.innerHTML = msg + `<footer><button onclick=\"top.reloadIcons();top.closeWindow(${mainwindow.getAttribute("windowid")})\">OK</button></footer>`
             }
             try{
                 missingapplist.innerHTML = missingapps.join("<br>")

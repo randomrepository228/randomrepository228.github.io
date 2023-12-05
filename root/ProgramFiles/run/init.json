@@ -3,6 +3,7 @@
     "height": 195, 
     "title": "Run",
     "icon": "icon.png",
+    "window": true,
     "xOnly": true,
     "noResize": true
 }

@@ -3,6 +3,7 @@
     "height": 200, 
     "title": "DVD",
     "icon": "",
+    "window": true,
     "xOnly": true,
     "noResize": true
 }

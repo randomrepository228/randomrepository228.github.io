@@ -5,6 +5,7 @@
         <link rel="stylesheet" id="theme" href="../../Winda/Resources/aero/style.css">
         <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
         <link rel="stylesheet" href="../../Winda/dwm.css">
+        <script src="../../Winda/winapi.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             html { 
@@ -62,8 +63,16 @@
             onmessage = (e) => {
                 const commands = e.data.split("|")
                 console.log(e.data)
-                if (commands[0] == "theme" && commands.length == 2)
-                    changeTheme(commands[1])
+                if (commands.length > 1){
+                    if (commands[0] == "theme")
+                        changeTheme(commands[1])
+                    // if (commands[0] == "newprocess")
+                    if (commands[0] == "id"){
+                        win.id = +commands[1];
+                        console.log(win.id)
+                        win.show("../ProgramFiles/taskmgr/icon.png");
+                    }
+                }
             }
         </script>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
@@ -106,7 +115,7 @@
             function select(windowid){
                 selectedID = windowid
                 endprocess.removeAttribute("disabled")
-                endprocess.setAttribute("onclick", `top.closeWindow(top.idToWindow(selectedID)); this.setAttribute('disabled', '')`)
+                endprocess.setAttribute("onclick", `top.closeWindow(selectedID); this.setAttribute('disabled', '')`)
             }
             function refresh(){
                 let temptable = "";
@@ -129,7 +138,6 @@
             }
             refresh()
             setInterval(refresh, 1000)
-            top.showWindow("../ProgramFiles/taskmgr/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
         </script>
     </body>
 </html>

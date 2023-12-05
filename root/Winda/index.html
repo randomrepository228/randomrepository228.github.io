@@ -277,12 +277,7 @@
                 <div class="left-start"></div>
                 <div class="right-start"></div>
             </div>
-            <div class="dock-br winapi_transparent winapi_shadow" id="timepanel" style="display: none; width: 322px; height: 280px;">
-                <div class="content">
-                    <iframe onload="log(this.getAttribute('src'))" src="../ProgramFiles/clock/index.html" frameborder="0" class="clock"></iframe>
-                </div>
-            </div>
-            <bottomright>Winda7<br>Build 20231201</bottomright>
+            <bottomright>Winda7<br>Build 20231205 PRERELEASE</bottomright>
             <div class="taskbar">
                 <div class="wrapper" onclick="startMenu(true)">
                     <img onload="log(this.getAttribute('src'))" class="taskbar-btn" src="./Resources/taskbar-btn.png"></img>
@@ -290,7 +285,12 @@
                 </div>
                 <div class="left-bar"></div>
                 <div class="right-bar">
-                    <div class="time" onclick="timeMenu(true)"></div>
+                    <div id="trayicons">
+                        <div class="trayicon n0">
+                            <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(0));console.log(getTray(0))"></div>
+                            <iframe src="../ProgramFiles/clock/tray.html" class="monochrome" windowid="0" name="Clock" frameborder="0" style="width: 79px"></iframe>
+                        </div>
+                    </div>
                     <div class="show-desktop" onclick="minimiseAll()"></div>
                 </div>
             </div>
@@ -298,5 +298,12 @@
         </div>
         <script src="ntoskrnl.js" defer></script>
         <div id="windows"></div>
+        <div id="trays">
+            <div class="dock-br winapi_transparent winapi_shadow n0 tray" windowid="0" name="Clock" style="display: none; width: 322px; height: 280px;">
+                <div class="content">
+                    <iframe src="../ProgramFiles/clock/index.html" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

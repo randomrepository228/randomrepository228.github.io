@@ -135,19 +135,11 @@ bottomright{
     height: 30px;
     width: 30px;
 }
-.time{
-    color: white;
-    text-align: center;
-    font-size: 12px;
-    padding-top: 2px;
-    line-height: 17px;
-}
 .show-desktop{
     position: relative;
     bottom: 1px;
     width: 15px;
     height: 40px;
-    margin-left: 11px;
     background-image: url("./Resources/hide_windows.png");
     background-size: 100% 100%; 
 }
@@ -188,4 +180,18 @@ bottomright{
 .start-option img{
     width: 32px;
     height: 32px;
+}
+.trayicon > iframe{
+    pointer-events: none;
+}
+.tray > .content{
+    height: 100%;
+    box-sizing: border-box;
+}
+.tray, .start-menu{
+    z-index: 99999;
+}
+#trayicons{
+    display: flex;
+    flex-direction: row;
 }
