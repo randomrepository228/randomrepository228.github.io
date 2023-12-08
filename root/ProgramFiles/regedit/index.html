@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="../../Winda/dwm.css">
         <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
         <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
+        <script src="../../Winda/winapi.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             html { 
@@ -63,6 +64,8 @@
                 console.log(e.data)
                 if (commands[0] == "theme" && commands.length == 2)
                     changeTheme(commands[1])
+                if (commands[0] == "id")
+                    win.id = commands[1]
             }
         </script>
     </head>
@@ -122,7 +125,7 @@
 <footer>
     <button onclick="localStorage['${ls[i][0]}'] = this.parentElement.parentElement.children[0].children[2].value;">OK</button>
 </footer>`
-                    col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 200, 'Edit Value', \`${editvalue}\`, ''), false, true, true, true)`)
+                    col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 200, 'Edit Value', \`${editvalue}\`, ''), false, {noSelfOpen: true}, '${top.getId()}')`)
                     if (isBool(val)) valtype = "bool"
                     if (isJson(val)) valtype = "object"
                     if (val && !isNaN(+val)) valtype = "number"

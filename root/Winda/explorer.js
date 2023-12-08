@@ -1,3 +1,4 @@
+explorerbottomrightinfo.innerHTML = "Build " + localStorage.ver
 class Icon {
     constructor(title, image, action) {
         this.action = action;

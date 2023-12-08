@@ -14,6 +14,7 @@
                 }
             }
         </script>
+        <script src="ver.js"></script>
         <style>
         #winload:first-child p{
             margin-left: 20px;
@@ -277,7 +278,7 @@
                 <div class="left-start"></div>
                 <div class="right-start"></div>
             </div>
-            <bottomright>Winda7<br>Build 20231205 PRERELEASE</bottomright>
+            <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
             <div class="taskbar">
                 <div class="wrapper" onclick="startMenu(true)">
                     <img onload="log(this.getAttribute('src'))" class="taskbar-btn" src="./Resources/taskbar-btn.png"></img>
@@ -286,8 +287,12 @@
                 <div class="left-bar"></div>
                 <div class="right-bar">
                     <div id="trayicons">
+                        <div class="trayicon n1">
+                            <div style="width: 24px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(1))"></div>
+                            <iframe src="../ProgramFiles/update/tray.html" windowid="1" name="Winda Update" frameborder="0" style="width: 24px"></iframe>
+                        </div>
                         <div class="trayicon n0">
-                            <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(0));console.log(getTray(0))"></div>
+                            <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(0))"></div>
                             <iframe src="../ProgramFiles/clock/tray.html" class="monochrome" windowid="0" name="Clock" frameborder="0" style="width: 79px"></iframe>
                         </div>
                     </div>
@@ -302,6 +307,11 @@
             <div class="dock-br winapi_transparent winapi_shadow n0 tray" windowid="0" name="Clock" style="display: none; width: 322px; height: 280px;">
                 <div class="content">
                     <iframe src="../ProgramFiles/clock/index.html" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="dock-br winapi_transparent winapi_shadow n1 tray" windowid="1" name="Winda Update" style="display: none; width: 300px; height: 100px;">
+                <div class="content">
+                    <iframe src="../ProgramFiles/update/index.html" frameborder="0"></iframe>
                 </div>
             </div>
         </div>

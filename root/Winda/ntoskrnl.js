@@ -306,6 +306,18 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
         showWindow(window.icon, id)
     }
 }
+function getId(){
+    const randNum = Math.round(Math.random() * 99999)
+    let id;
+    for(let i = randNum;;i++){
+        let idCollision = false
+        for(const a of document.querySelectorAll("*[windowid]"))
+            if(a.getAttribute("windowid") == i.toString())
+                idCollision = true
+        if (!idCollision)
+            return i
+    }
+}
 function getAllWindows(){
     let openedwindows = [];
     let userids = []
@@ -335,17 +347,7 @@ async function loadApp(packageName, path, args){
             if(request.status == 200){
                 console.log(request.responseText)
                 const info = JSON.parse(request.responseText)
-                const randNum = Math.round(Math.random() * 99999)
-                let id;
-                for(let i = randNum;;i++){
-                    let idCollision = false
-                    for(const a of document.querySelectorAll("*[windowid]"))
-                        if(a.getAttribute("windowid") == i.toString())
-                            idCollision = true
-                    if (!idCollision)
-                        id = i
-                        break
-                }
+                const id = getId()
                 if (info.window){
                     if (info.noGUI)
                         AddWindowNoGUI(new Window(info.x, info.y, info.width, info.height, info.title, 
@@ -378,7 +380,8 @@ function sendInfo(element){
 async function loadAppNoInfo(packageName, path, args){
     if (!path) path = "../ProgramFiles/"
     path += packageName + "/"
-    AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, packageName, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, undefined, undefined, true)
+    const id = getId()
+    AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, packageName, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "noSelfOpen": true, "title": packageName}, id)
 }
 function closeWindow(id){
     let window = getWnd(id)
@@ -624,7 +627,7 @@ bootAnimation.addEventListener("ended", e => {
 function closemetroapp(appName){
     getAllWindows().forEach(val => {
         if (val.title == appName || val.title == `Message from Metro app`)
-            closeWindow(idToWindow(val.id))
+            closeWindow(val.id)
     })
 }
 function CloseMetroDialog(a){}
@@ -648,8 +651,20 @@ onmessage = (e) => {
             wnd = getWnd(commands[1])
         }
         catch(e){
-            if (commands[0] == "ModalMetroDialog")
-                AddWindow(new Window((window.innerWidth / 2) - 300, (window.innerHeight / 2) - 150, 600, 300, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), false, false, false, true)
+            if (commands[0] == "ModalMetroDialog"){
+                const randNum = Math.round(Math.random() * 99999)
+                let id;
+                for(let i = randNum;;i++){
+                    let idCollision = false
+                    for(const a of document.querySelectorAll("*[windowid]"))
+                        if(a.getAttribute("windowid") == i.toString())
+                            idCollision = true
+                    if (!idCollision)
+                        id = i
+                        break
+                }
+                AddWindow(new Window((window.innerWidth / 2) - 300, (window.innerHeight / 2) - 150, 600, 300, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), undefined, {"window": true, "noSelfOpen": true, "title": "Message from Metro app"}, id)
+            }
             return
         }
         let frame = wnd.lastElementChild.children[1].children[0].contentWindow

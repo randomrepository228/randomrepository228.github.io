@@ -1,0 +1,1 @@
+if (!localStorage.ver) localStorage.ver = "20231207"
