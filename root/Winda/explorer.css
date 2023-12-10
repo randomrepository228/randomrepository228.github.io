@@ -210,6 +210,10 @@ bottomright{
 .trayicon > iframe{
     pointer-events: none;
 }
+.trayicon > div{
+    position: relative;
+    z-index: 9999999;
+}
 .tray > .content{
     height: 100%;
     box-sizing: border-box;
