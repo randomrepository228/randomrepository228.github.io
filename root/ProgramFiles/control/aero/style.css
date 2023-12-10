@@ -9,7 +9,7 @@
     align-items: center;
 }
 .nav {
-    width: 100%;
+    width: 68px;
     position: fixed;
     top:0;left:0;
 }
@@ -68,6 +68,7 @@
     margin-right: 10px;
     box-sizing: border-box;
     min-width: 150px;
+    padding: 1px;
 }
 
 .adressbar > div {
@@ -75,6 +76,8 @@
     display: inline-block;
     border: 1px transparent solid;
     padding: 1.5px 3px;
+    padding: 0 3px;
+    height: 14px;
 }
 
 .adressbar > div:hover {

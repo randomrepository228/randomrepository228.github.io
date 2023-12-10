@@ -22,31 +22,77 @@
                     changeTheme(commands[1])
             }
         </script>
+        <style>
+            .icons{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                height: calc(100% - 38px);
+                align-content: flex-start;
+                z-index: -9999;
+            }
+            .icon{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 75px;
+                text-align: center;
+                color: black;
+                line-clamp: 3; 
+                overflow: hidden;
+                height: 80px;
+                border: 1px solid transparent;
+                outline: 1px solid transparent;
+                border-radius: 3px;
+                font-size: 12px;
+                box-sizing: border-box;
+            }
+            .icon img{
+                height: 48px;
+                width: 48px;
+            }
+        </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
         <div class="navbar">
-            <div class="nav"><div class="backnext"><button disabled class="back"></button><button disabled class="next"></button></div></div>
-            <div class="adressbar"><div>Панель управления</div></div>
-            <input type="text" id="searchbox" placeholder="Поиск в панели управления">
+            <div class="nav"><div class="backnext"><button class="back" onclick="closeSection()"></button><button disabled class="next"></button></div></div>
+            <div class="adressbar"><div onclick="closeSection()">Control Panel</div></div>
+            <input type="text" id="searchbox" placeholder="Search in control panel">
         </div>
         <div class="content">
-            <div class="select">
-                Current theme:&nbsp;
-                <select name="themeSelect" onchange="top.changeTheme(this.value)">
-                    <option value="aero">Aero</option>
-                    <option value="basic">Basic</option>
-                    <option value="classic">Classic</option>
-                    <option value="aero8">Windows 8</option>
-                    <option value="aero10">Windows 10</option>
-                </select>
-                <selecticon></selecticon>
+            <div class="icons">
+                <div class="icon" ondblclick="openSection('main')"><img src="Icon1666.png" onerror="this.style.opacity = '0'">System</div>
             </div>
-            <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
-            <label for="verboseBoot">Verbose boot</label><br>
-            <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
-            <label for="fastBoot">Fast boot (Skip boot animation)</label>
+            <div class="main" style="display: none">
+                <div class="select">
+                    Current theme:&nbsp;
+                    <select name="themeSelect" onchange="top.changeTheme(this.value)">
+                        <option value="aero">Aero</option>
+                        <option value="basic">Basic</option>
+                        <option value="classic">Classic</option>
+                        <option value="aero8">Windows 8</option>
+                        <option value="aero10">Windows 10</option>
+                    </select>
+                    <selecticon></selecticon>
+                </div>
+                <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
+                <label for="verboseBoot">Verbose boot</label><br>
+                <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
+                <label for="fastBoot">Fast boot (Skip boot animation)</label>
+            </div>
             <script>
+                function openSection(sectionName){
+                    document.querySelector('.icons').style.display = 'none';
+                    document.querySelector('.' + sectionName).style.display = 'block'
+                    document.querySelector('.adressbar').innerHTML += "<div>System</div>";
+                }
+                function closeSection(){
+                    for (a of document.querySelector('.content').children)
+                        a.style.display = 'none'
+                    document.querySelector('.icons').style.display = 'block';
+                    document.querySelector('.adressbar').lastElementChild.remove()
+                }
                 document.querySelector("select").value = localStorage.theme
                 verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
                 fastBoot.checked = localStorage.fastBoot == "true" ? true : false

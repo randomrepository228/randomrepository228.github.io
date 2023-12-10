@@ -139,8 +139,17 @@ button, select, button:disabled:hover, button:disabled:active{
     background-size: 3px 100%, 3px 100%, calc(100% - 6px) 100%;
     background-color: transparent;
 }
+.start-option-right{
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: 4px 100%, 4px 100%, calc(100% - 8px) 100%;
+    background-color: transparent;
+}
 .start-option:hover{
-    background-image: url("./Resources/selectionBig/hover/left.png"), url("./Resources/selectionBig/hover/right.png"), url("./Resources/selectionBig/hover/center.png");
+    background-image: url("./Resources/startmenuitemleft/hover/left.png"), url("./Resources/startmenuitemleft/hover/right.png"), url("./Resources/startmenuitemleft/hover/center.png");
+}
+.start-option-right:hover{
+    background-image: url("./Resources/startmenuitemright/hover/left.png"), url("./Resources/startmenuitemright/hover/right.png"), url("./Resources/startmenuitemright/hover/center.png");
 }
 select{
     appearance: none;

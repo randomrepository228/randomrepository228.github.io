@@ -695,3 +695,13 @@ onmessage = (e) => {
     }
     
 }
+function shutdown(){
+    document.body.style.backgroundColor = "black"
+    document.body.innerHTML = '<div style="position: absolute; left: 50vw; top: 50vh; transform: translate(-50%, -50%); color: white">It is now safe to turn off your computer</div>'
+    wallpaper.innerHTML = 
+    `
+    :root{
+        --wallpaper: none
+    }
+    `
+}

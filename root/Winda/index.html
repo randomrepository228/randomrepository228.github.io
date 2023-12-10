@@ -276,7 +276,13 @@
             <div class="icons" oncontextmenu="contextMenu(event);" onclick="contextMenuOff();"></div>
             <div class="start-menu winapi_transparent">
                 <div class="left-start"></div>
-                <div class="right-start"></div>
+                <div class="right-start">
+                    <div class="rstop">
+                        <div class="start-option-right">SYSTEM</div>
+                        <div class="start-option-right" onclick="startMenu(false);loadApp('control')">Control Panel</div>
+                    </div>
+                    <button onclick="shutdown()">Shutdown</button>
+                </div>
             </div>
             <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
             <div class="taskbar">

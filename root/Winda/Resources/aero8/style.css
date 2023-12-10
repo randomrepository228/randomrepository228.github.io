@@ -271,7 +271,8 @@ left img{
 }
 .taskbar{
     border-top: 1px solid rgba(255,255,255,0.3);
-    backdrop-filter: blur(5000px);
+    backdrop-filter: none;
+    background-color: rgba(81, 185, 255, 0.5);
     outline: none;
 }
 .left-bar, .right-bar{
