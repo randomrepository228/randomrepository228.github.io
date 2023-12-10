@@ -585,10 +585,11 @@ function contextMenuOff(e){
     contextMenuElement.style.display = "none";
 }
 function minimiseAll(){
+    setInactive()
     for (const id of getAllWindows()){
-        let wnd = document.querySelectorAll(".n" + id.id)[1]
-        wnd.style.opacity = '0'
-        wnd.style.pointerEvents = 'none'
+        for (const wnd of document.querySelectorAll(".window.n" + id.id)){
+            wnd.className += " minimised"
+        }
     }
     setInactive()
 }
