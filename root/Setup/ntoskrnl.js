@@ -162,7 +162,7 @@ function move(e){
         activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
     }
     if(loop.bottom){
-        activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
+        activewindow.style.height = `${e.clientY - +activewindow.style.parent.substring(0, activewindow.style.parent.length - 2) - 4}px`
     }
 } 
 function contextMenu(e){

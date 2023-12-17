@@ -37,7 +37,7 @@
     </head>
     <body>
         <script>
-            frameElement.parentElement.parentElement.parentElement.style.top = (top.innerHeight - 195 - 40 - 14).toString() + "px"
+            frameElement.parentElement.parentElement.parentElement.style.top = (parent.innerHeight - 195 - 40 - 14).toString() + "px"
             frameElement.parentElement.parentElement.parentElement.style.left = 10 + "px"
             function changeTheme(a){
                 theme.href = "../../Winda/Resources/" + a + "/style.css"
@@ -65,11 +65,11 @@
             <input type="text" id="program" placeholder="">
         </div>
         <footer>
-            <button onclick="top.loadApp(program.value.split(' ')[0], undefined, program.value.split(' ').slice(1).join('|'))">OK</button>
-            <button onclick="top.closeWindow(frameElement.parentElement.parentElement.parentElement)">Cancel</button>
+            <button onclick="parent.loadApp(program.value.split(' ')[0], undefined, program.value.split(' ').slice(1).join('|'))">OK</button>
+            <button onclick="parent.closeWindow(frameElement.parentElement.parentElement.parentElement)">Cancel</button>
         </footer>
         <script>
-            top.showWindow("../ProgramFiles/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+            parent.showWindow("../ProgramFiles/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
         </script>
     </body>
 </html>

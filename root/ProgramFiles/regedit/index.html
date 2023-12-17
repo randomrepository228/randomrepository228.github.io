@@ -125,7 +125,7 @@
 <footer>
     <button onclick="localStorage['${ls[i][0]}'] = this.parentElement.parentElement.children[0].children[2].value;">OK</button>
 </footer>`
-                    col.setAttribute("ondblclick", `top.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 200, 'Edit Value', \`${editvalue}\`, ''), false, {noSelfOpen: true}, '${top.getId()}')`)
+                    col.setAttribute("ondblclick", `parent.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 200, 'Edit Value', \`${editvalue}\`, ''), false, {noSelfOpen: true}, '${parent.getId()}')`)
                     if (isBool(val)) valtype = "bool"
                     if (isJson(val)) valtype = "object"
                     if (val && !isNaN(+val)) valtype = "number"
@@ -142,7 +142,7 @@
             }
             refresh()
             setInterval(refresh, 1000)
-            top.showWindow("../ProgramFiles/regedit/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+            parent.showWindow("../ProgramFiles/regedit/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
         </script>
     </body>
 </html>

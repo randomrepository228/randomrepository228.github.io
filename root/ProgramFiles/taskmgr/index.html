@@ -115,11 +115,11 @@
             function select(windowid){
                 selectedID = windowid
                 endprocess.removeAttribute("disabled")
-                endprocess.setAttribute("onclick", `top.closeWindow(selectedID); this.setAttribute('disabled', '')`)
+                endprocess.setAttribute("onclick", `parent.closeWindow(selectedID); this.setAttribute('disabled', '')`)
             }
             function refresh(){
                 let temptable = "";
-                const allWindows = top.getAllWindows()
+                const allWindows = parent.getAllWindows()
                 for (let i = 0; i < allWindows.length; i++){
                     let col = document.createElement("tr")
                     entryInfo = [allWindows[i].title, allWindows[i].id]

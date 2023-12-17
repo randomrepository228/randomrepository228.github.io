@@ -67,7 +67,7 @@
             <div class="main" style="display: none">
                 <div class="select">
                     Current theme:&nbsp;
-                    <select name="themeSelect" onchange="top.changeTheme(this.value)">
+                    <select name="themeSelect" onchange="parent.changeTheme(this.value)">
                         <option value="aero">Aero</option>
                         <option value="basic">Basic</option>
                         <option value="classic">Classic</option>
@@ -96,7 +96,7 @@
                 document.querySelector("select").value = localStorage.theme
                 verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
                 fastBoot.checked = localStorage.fastBoot == "true" ? true : false
-                top.showWindow("../ProgramFiles/control/icon.png", frameElement.parentElement.parentElement.getAttribute("windowid"));
+                parent.showWindow("../ProgramFiles/control/icon.png", frameElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>
     </body>

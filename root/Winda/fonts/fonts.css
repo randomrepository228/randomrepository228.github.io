@@ -1,4 +1,9 @@
 @font-face {
+    font-family: 'bsod';
+    src: url(./lucida.ttf);
+}
+
+@font-face {
     font-family: 'segoeui';
     src: url(./segoeuil.ttf);
     font-weight: 100;

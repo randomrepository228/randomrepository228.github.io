@@ -5,7 +5,7 @@ addEventListener("message", (e) => {
     }
 })
 async function waitForOutput(action){
-    top.postMessage(action + "|" + win.id, "*")
+    parent.postMessage(action + "|" + win.id, "*")
     let returnVal;
     await new Promise(resolve => {
         const messageHandler = (e) => {
@@ -22,10 +22,10 @@ async function waitForOutput(action){
 }
 async function exec(fn, ...options){
     if (/^[a-zA-Z_0-9]+$/g.test(fn))
-        top.postMessage(`eval|${fn}(${options.join(",")})`, "*")
+        parent.postMessage(`eval|${fn}(${options.join(",")})`, "*")
 }
 async function getAllWindows(){
-    top.postMessage("|" + win.id)
+    parent.postMessage("|" + win.id)
     let returnVal;
     await new Promise(resolve => {
         const messageHandler = (e) => {
@@ -41,10 +41,10 @@ async function getAllWindows(){
     return returnVal
 }
 let win = {
-    close: () => top.postMessage("close|" + win.id, "*"),
-    max: () => top.postMessage("max|" + win.id, "*"),
-    min: () => top.postMessage("min|" + win.id, "*"),
-    show: (icon) => top.postMessage("show|" + win.id + "|" + icon, "*"),
+    close: () => parent.postMessage("close|" + win.id, "*"),
+    max: () => parent.postMessage("max|" + win.id, "*"),
+    min: () => parent.postMessage("min|" + win.id, "*"),
+    show: (icon) => parent.postMessage("show|" + win.id + "|" + icon, "*"),
     getTitle: async () => await waitForOutput("title"),
     getWidth: async () => await waitForOutput("width"),
     getHeight: async () => await waitForOutput("height"),
@@ -57,11 +57,11 @@ let win = {
     left: "0",
     scrwidth: "0",
     scrheight: "0",
-    setTitle: (a) => top.postMessage("settitle|" + win.id + "|" + a, "*"),
-    setWidth: (a) => top.postMessage("setwidth|" + win.id + "|" + a, "*"),
-    setHeight: (a) => top.postMessage("setheight|" + win.id + "|" + a, "*"),
-    setTop: (a) => top.postMessage("settop|" + win.id + "|" + a, "*"),
-    setLeft: (a) => top.postMessage("setleft|" + win.id + "|" + a, "*"),
-    setPos: (a, b) => top.postMessage("setpos|" + win.id + "|" + a + "|" + b, "*"),
+    setTitle: (a) => parent.postMessage("settitle|" + win.id + "|" + a, "*"),
+    setWidth: (a) => parent.postMessage("setwidth|" + win.id + "|" + a, "*"),
+    setHeight: (a) => parent.postMessage("setheight|" + win.id + "|" + a, "*"),
+    setTop: (a) => parent.postMessage("settop|" + win.id + "|" + a, "*"),
+    setLeft: (a) => parent.postMessage("setleft|" + win.id + "|" + a, "*"),
+    setPos: (a, b) => parent.postMessage("setpos|" + win.id + "|" + a + "|" + b, "*"),
     id: -1
 }

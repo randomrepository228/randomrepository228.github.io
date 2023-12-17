@@ -27,8 +27,8 @@
         <script src="../../Winda/winapi.js"></script>
         <script>
             let mainwindow = frameElement.parentElement.parentElement.parentElement
-            mainwindow.style.top = (top.innerHeight / 2) - 200 + "px"
-            mainwindow.style.left = (top.innerWidth / 2) - 190 + "px"
+            mainwindow.style.top = (parent.innerHeight / 2) - 200 + "px"
+            mainwindow.style.left = (parent.innerWidth / 2) - 190 + "px"
             function changeTheme(a){
                 theme.href = "../../Winda/Resources/" + a + "/style.css"
             }
@@ -92,11 +92,11 @@
             if (!missingthemes.length && !missingapps.length){
                 if (frameElement.getAttribute("args") === "/silent" && !corrupted) mainwindow.remove()
                 mainwindow.style.height = "200px"
-                mainwindow.style.top = (top.innerHeight / 2) - 100 + "px"
+                mainwindow.style.top = (parent.innerHeight / 2) - 100 + "px"
                 let msg;
                 if (corrupted) msg = "System file checker have fixed corrupted application/theme list"
                 else msg = "System file checker didn't found any missing system apps or themes"
-                document.body.innerHTML = msg + `<footer><button onclick=\"top.reloadIcons();top.closeWindow(${mainwindow.getAttribute("windowid")})\">OK</button></footer>`
+                document.body.innerHTML = msg + `<footer><button onclick=\"parent.reloadIcons();parent.closeWindow(${mainwindow.getAttribute("windowid")})\">OK</button></footer>`
             }
             try{
                 missingapplist.innerHTML = missingapps.join("<br>")
