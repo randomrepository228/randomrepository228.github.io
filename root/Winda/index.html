@@ -272,6 +272,9 @@
         <div class="context-menu" id="contextMenuElement">
             <div class="context-menu-option">(No options available)</div>
         </div>
+        <div class="logonui" style="display: none">
+
+        </div>
         <div class="explorer" style="display: none;">
             <div class="icons" oncontextmenu="contextMenu(event);" onclick="contextMenuOff();"></div>
             <div class="start-menu winapi_transparent">
@@ -281,7 +284,14 @@
                         <div class="start-option-right">SYSTEM</div>
                         <div class="start-option-right" onclick="startMenu(false);loadApp('control')">Control Panel</div>
                     </div>
-                    <button onclick="shutdown()">Shutdown</button>
+                    <div class="select">
+                        <select name="startMenuSessionActionSelect" onchange="if(this.value == 'shutdown') shutdown(); if(this.value == 'logoff') logoff(); this.value = 'none'">
+                            <option value="none" disabled selected hidden>Shutdown</option>
+                            <option value="shutdown">Shutdown</option>
+                            <option value="logoff">Log off</option>
+                        </select>
+                        <selecticon></selecticon>
+                    </div>
                 </div>
             </div>
             <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div> Winda applications may not work under &lt;iframe&gt;</bottomright>

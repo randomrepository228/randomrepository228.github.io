@@ -107,7 +107,6 @@ function windowMouseDown(event, elem, a, noResize){
     document.addEventListener(evName, e => {
         loop.drag = false; 
         iframeignore.innerHTML = "";
-        console.log(e.clientX, e.clientY)
         if (!noResize){
             if (e.clientX < 1) {snapLeft(activewindow); return}
             if (e.clientX > innerWidth - 2) {snapRight(activewindow); return}
@@ -148,7 +147,6 @@ function AddWindow(window, ispopup, options, id){
     newWindow = document.createElement("div")
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     newWindow.setAttribute("windowid", id)
-    console.log(window.x, window.y)
     if(!(window.x && window.y)){
         if (ispopup){
             newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
@@ -156,16 +154,8 @@ function AddWindow(window, ispopup, options, id){
         }
         else{
             const openedwindows = getAllWindows().length
-            let openedwindowsx = openedwindows
-            let openedwindowsy = openedwindows
-            if (openedwindows * 25 + 50 > innerHeight - window.height){
-                openedwindowsy = -2
-            }
-            if (openedwindows * 25 + 50 > innerWidth - window.width){
-                openedwindowsx = -2
-            }
-            newWindow.style.left = openedwindowsx * 25 + 50 + "px"
-            newWindow.style.top = openedwindowsy * 25 + 50 + "px"
+            newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - window.width) + "px"
+            newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - window.height) + "px"
         }
     }
     else{
@@ -230,7 +220,7 @@ function addTray(id, trayicon, tray, options){
     newTray.style.width = trayicon.width + "px"
     newTray.innerHTML =
     `
-    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(${id}));console.log(getTray(${id}))"></div>
+    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(${id}))"></div>
     ${trayicon.innerhtml}
     `
     trayicons.append(newTray)
@@ -322,7 +312,6 @@ function getAllWindows(){
     let openedwindows = [];
     let userids = []
     for (a of document.querySelectorAll("*[windowid]")){
-        console.log(a)
         if (a.className.includes("window ")){
             if (!userids.includes(a.getAttribute("windowid"))){
                 openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
@@ -345,7 +334,6 @@ async function loadApp(packageName, path, args){
     request.onreadystatechange = function() {
         if (request.readyState == 4){
             if(request.status == 200){
-                console.log(request.responseText)
                 const info = JSON.parse(request.responseText)
                 const id = getId()
                 if (info.window){
@@ -472,7 +460,6 @@ function restoreWindow(window){
     };
     if (window.className.includes("minimised")){
         setActive(window)
-        console.log(window.className, window.className.replace(" minimised", ""))
         window.className = window.className.replace(" minimised", "")
         if (localStorage.theme == "aero") window.animate([
             {
@@ -618,7 +605,6 @@ document.onreadystatechange = () => {
 }
 
 bootAnimation.addEventListener("ended", e => {
-    console.log("a")
     if (isLoaded) desktopInit()
     bootAnimationEnded = true;
     bootAnimation.currentTime = 3;
@@ -760,4 +746,10 @@ Dumping physical memory to disk:  <span id="bsodCounter" style="font-family: 'bs
         }
         bsodCounter.innerText = bsodProgress
     }, 200)
+}
+function logoff(){
+    document.querySelector(".explorer").style.display = "none"
+    document.querySelector(".logonui").style.display = "block"
+    windows.innerHTML = ""
+    trays.innerHTML = ""
 }

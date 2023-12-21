@@ -255,3 +255,9 @@ ignore{
     opacity: 0 !important;
     pointer-events: none;
 }
+.logonui{
+    width: 100%;
+    height: 100%;
+    background-image: url(./Resources/login.jpg);
+    background-size: 100% 100%;
+}

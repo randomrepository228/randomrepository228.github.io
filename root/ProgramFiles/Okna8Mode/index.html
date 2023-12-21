@@ -64,13 +64,13 @@
             for (let i = 1; i < LOCALE_searchdata.length; i++){
                 if (LOCALE_searchdata[i][0].startsWith("desktop:") || LOCALE_searchdata[i][0] == "DESKTOP") continue
                 let col = document.createElement("tr")
-                col.setAttribute("ondblclick", `top.loadAppNoInfo('${LOCALE_searchdata[i][0]}', '../ProgramFiles/Okna8Mode/apps/metro/')`)
+                col.setAttribute("ondblclick", `parent.loadAppNoInfo('${LOCALE_searchdata[i][0]}', '../ProgramFiles/Okna8Mode/apps/metro/')`)
                 let row = document.createElement("td")
                 row.innerHTML = LOCALE_searchdata[i][0];
                 col.appendChild(row);
                 table.appendChild(col);
             }
-            top.showWindow("../ProgramFiles/Okna8Mode/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+            parent.showWindow("../ProgramFiles/Okna8Mode/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
         </script>
     </body>
 </html>

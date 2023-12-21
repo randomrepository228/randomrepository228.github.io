@@ -62,14 +62,12 @@
             changeTheme(localStorage.theme)
             onmessage = (e) => {
                 const commands = e.data.split("|")
-                console.log(e.data)
                 if (commands.length > 1){
                     if (commands[0] == "theme")
                         changeTheme(commands[1])
                     // if (commands[0] == "newprocess")
                     if (commands[0] == "id"){
                         win.id = +commands[1];
-                        console.log(win.id)
                         win.show("../ProgramFiles/taskmgr/icon.png");
                     }
                 }

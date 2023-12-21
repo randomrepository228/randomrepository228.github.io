@@ -198,10 +198,13 @@ bottomright{
     flex-direction: column;
     justify-content: space-between;
 }
-.right-start > button{
+.right-start > .select{
     width: 150px;
     margin-left: 10px;
     margin-bottom: 20px;
+}
+.right-start > .select > select{
+    width: 150px;
 }
 .start-option img{
     width: 32px;

@@ -17,7 +17,6 @@
             changeTheme(localStorage.theme)
             onmessage = (e) => {
                 const commands = e.data.split("|")
-                console.log(e.data)
                 if (commands[0] == "theme" && commands.length == 2)
                     changeTheme(commands[1])
             }
