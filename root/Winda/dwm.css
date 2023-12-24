@@ -124,6 +124,14 @@ button, select, button:disabled:hover, button:disabled:active{
     background-repeat: no-repeat;
     background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
     border: 0;
+    font-size: inherit;
+}
+option{
+    font-family: 'segoeui', sans-serif, system-ui;
+    font-size: 11px;
+}
+select:focus{
+    outline: none;
 }
 .menubar .element{
     height: 20px;
@@ -154,7 +162,9 @@ button, select, button:disabled:hover, button:disabled:active{
 select{
     appearance: none;
     -moz-appearance: none;
+    padding: 1px;
     padding-right: 20px;
+    padding-left: 4px;
 }
 .dock-br{
     position: absolute;

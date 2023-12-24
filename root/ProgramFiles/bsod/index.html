@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../Winda/dwm.css">
+        <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
+        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            html { 
+                overflow: auto; 
+            } 
+            body {
+                overflow: auto; 
+            }
+            .main{
+                margin: 25px;
+                margin-top: 10px;
+                margin-bottom: 0;
+            }
+            footer{
+                position: absolute;
+                bottom: 0;
+                width: 100vw;
+            }
+            textarea{
+                appearance: none;
+                resize: none;
+                border: 1px solid gray;
+                border-radius: 3px;
+                font-size: 12px;
+            }
+            textarea:focus{
+                outline: none;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            function changeTheme(a){
+                theme.href = "../../Winda/Resources/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
+    </head>
+    <body>
+        <div class="main">
+            Reason:<br>
+            <textarea name="a" id="bsodreason" cols="80" rows="13"></textarea>
+        </div>
+        <footer>
+            <button onclick="parent.displayBSOD(bsodreason.value)">Invoke</button>
+        </footer>
+        <script>
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            parent.showWindow("../ProgramFiles/bsod/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

@@ -1,1 +1,1 @@
-if (!localStorage.ver) localStorage.ver = "20231210"
+if (!localStorage.ver) localStorage.ver = "20231224"

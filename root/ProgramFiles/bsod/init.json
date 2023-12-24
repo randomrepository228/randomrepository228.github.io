@@ -1,0 +1,8 @@
+{
+    "width": 600, 
+    "height": 350, 
+    "title": "Blue Screen of Death",
+    "icon": "icon.png",
+    "window": true,
+    "noResize": true
+}

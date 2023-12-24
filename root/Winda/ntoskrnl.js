@@ -605,9 +605,9 @@ document.onreadystatechange = () => {
 }
 
 bootAnimation.addEventListener("ended", e => {
-    if (isLoaded) desktopInit()
-    bootAnimationEnded = true;
-    bootAnimation.currentTime = 3;
+    // if (isLoaded) desktopInit()
+    // bootAnimationEnded = true;
+    bootAnimation.currentTime = 3.02;
     bootAnimation.play()
 })
 // OKNA 8 COMPATIBILITY MODE
@@ -657,11 +657,11 @@ onmessage = (e) => {
         }
         let frame = wnd.lastElementChild.children[1].children[0].contentWindow
         if (commands[0] == "close")
-            closeWindow(getWnd(commands[1]))
+            closeWindow(commands[1])
         else if (commands[0] == "max")
-            maximise(getWnd(commands[1]))
+            maximise(commands[1])
         else if (commands[0] == "min")
-            minimizeWindow(getWnd(commands[1]))
+            minimizeWindow(commands[1])
         else if (commands[0] == "show")
             showWindow(commands[2], commands[1])
         else if (commands[0] == "setwidth" || commands[0] == "setheight" || commands[0] == "settop" || commands[0] == "setleft")
