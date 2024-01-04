@@ -60,19 +60,19 @@
                 return Math.round(Math.random() * (max - min) + min);
             }
             function keyDownHandler(e) {
-                if (e.key == "w") {
+                if (e.key == "w" || e.key == "ц" || e.keyCode == 38) {
                     a = s = d = false;
                     w = true;
                 }
-                if (e.key == "a") {
+                if (e.key == "a" || e.key == "ф" || e.keyCode == 37) {
                     w = s = d = false;
                     a = true;
                 }
-                if (e.key == "s") {
+                if (e.key == "s" || e.key == "ы" || e.keyCode == 40) {
                     w = a = d = false;
                     s = true;
                 }
-                if (e.key == "d") {
+                if (e.key == "d" || e.key == "в" || e.keyCode == 39) {
                     w = a = s = false;
                     d = true;
                 }
@@ -85,8 +85,8 @@
                 ctx.fillStyle = 'white';
                 ctx.fillText(text, x, y);
             }
-            function replaceColor(srcR, srcG, srcB, dstR, dstG, dstB) {
-                const im = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            function replaceColor(srcR, srcG, srcB, dstR, dstG, dstB, x, y, width, height) {
+                let im = ctx.getImageData(x ? x : 0, y ? y : 0, width ? width : canvas.width, height ? height : canvas.height);
                 for (var i = 0; i < im.data.length; i += 4) {
                     if (
                         im.data[i] === srcR &&
@@ -98,7 +98,7 @@
                         im.data[i + 2] = dstB;
                     }
                 }
-                ctx.putImageData(im, 0, 0);
+                ctx.putImageData(im, x ? x : 0, y ? y : 0);
             }
             document.addEventListener('keydown', keyDownHandler);
             function TrailRemover() {
@@ -118,7 +118,7 @@
                 ctx.globalCompositeOperation = "source-over";
                 ctx.beginPath();
                 ctx.rect(width, height, 50, 50);
-                replaceColor(255, 0, 0, 0, 255, 0)
+                replaceColor(255, 0, 0, 0, 255, 0, width - 5, height - 5, 60, 60)
                 ctx.fillStyle = '#FF0000';
                 ctx.fill();
                 ctx.closePath();
@@ -146,7 +146,6 @@
                     ctx.fill()
                 }
                 if (height > canvas.height - 50 || imageData[0].data[1] == 255 || imageData[1].data[1] == 255 || width > canvas.width - 50 || height < 0 || width < 0) {
-                    canvas.removeEventListener('keydown', keyDownHandler)
                     w = a = s = d = false
                     gameOver()
                 }
@@ -154,16 +153,25 @@
                     ctx.clearRect(0, 0, canvas.width, canvas.height)
                     TrailRemover()
                 }
-                to = setTimeout(draw, 12);
+                imageData = null;
             }
             function gameOver() {
+                clearInterval(loop)
                 let gameover = true;
-                document.addEventListener('keydown', (event) => {
-                    window.location.reload();
-                });
+                function gameOverEvent(event){
+                    let gameover = false;
+                    score = -1;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height)
+                    scoreblock.innerHTML = "Score: 0";
+                    loop = setInterval(() => draw(), 12);
+                    width = 0;
+                    height = 0;
+                    document.removeEventListener('keydown', gameOverEvent)
+                    document.addEventListener('keydown', keyDownHandler);
+                    TrailRemover()
+                }
+                document.addEventListener('keydown', gameOverEvent);
                 canvas.removeEventListener('keydown', keyDownHandler)
-                w = -999
-                height = -999
                 ctx.clearRect(0, 0, canvas.w, canvas.height)
                 ctx.beginPath();
                 outline("Game Over", 125, 250, "50px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
@@ -171,7 +179,7 @@
                 replaceColor(255, 0, 0, 0, 255, 0)
                 ctx.closePath()
             }
-            draw()
+            loop = setInterval(() => draw(), 12);
         }
         code()
     </script>
