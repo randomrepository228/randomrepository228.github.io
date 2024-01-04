@@ -2,149 +2,233 @@
 <html>
 
 <head>
-    <title>Рандомный репозиторий</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Losing Trail</title>
     <style>
-        *{
-            box-sizing: border-box;
+        canvas {
+            border: 3px solid black;
+            height: 500px;
+            width: 500px;
+            margin-top: 50px;
         }
-        body {
-            margin: 0;
-            background-color: black;
-            font-family: sans-serif;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        button, button:hover, button:active{
+            border: 3px solid black;
+            width: 100px;
+            height: 100px;
+            font-size: 50px;
+            background-color: transparent;
         }
-        html {
-            background-color: black;
-            margin: 0;
+        #retry, #retry:hover, #retry:active{
+            font-size: 25px;
         }
 
-        .list {
-            width: 300px;
+        html,
+        body {
+            background-color: rgb(0, 0, 0);
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: ease-in-out 0.2s;
-        }
-        .list div {
-            flex: 1;
-            width: 280px;
-            padding-left: 42.5px;
-            box-sizing: border-box;
-            background-color: rgb(30, 30, 30);
-            font-size: 15px;
-            line-height: 15px;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            border-radius: 25px;
-            cursor: default;
-            display: inline-block;
-            margin: 2%;
-            display: flex;
-            align-items: center;
-            transition: 0.2s;
-            z-index: 1000;
-        }
-        .list div:hover{
-            cursor: pointer;
-            background-color: rgb(80, 80, 80);
-            transform: scale(1.05);
-            box-shadow: 0px 0px 79px 48px rgba(128, 128, 128, 0.452);
-            z-index: 999;
-        }
-        .title{
-            text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
-            color: white;
-            text-align: center;
-            line-height: 28px;
-            padding: 19px;
+            justify-content: center;
             margin: 0;
+            overflow-y: hidden;
+            font-family: sans-serif;
         }
-        .bottom{
+
+        body {
+            width: 600px;
+        }
+
+        gray {
+            background-color: rgb(100, 100, 100);
+            width: 600px;
             display: flex;
-            height: calc(100% - 50px);
-            flex: 1;
-        }
-        iframe{
-            flex: 1;
-        }
-        .footer{
-            width: calc(100vw - 300px);
-            text-align: center;
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            font-size: 20px;
-            z-index: 2;
-            color: white;
-            pointer-events: none;
-        }
-        @media (max-width: 1000px) {
-            .list div{
-                width: 280px;
-                padding-left: 5px;
-                text-align: center;
-                font-size: 3vw;
-                line-height: 3vh;
-            }
-            .list{
-                width: 300px;
-            }
-            .footer{
-                font-size: 30px;
-                width: calc(100vw - 300px);
-            }
-            .bottom{
-                height: calc(100% - 100px);
-            }
-            .title{
-                font-size: 50px;
-                height: 100px;
-                line-height: 100px;
-                text-shadow: grey 0 0 20px, grey 0 0 20px, grey 0 0 20px;
-                z-index: 3;
-            }
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
         }
     </style>
 </head>
 
 <body>
-    <h2 class="title">
-        Какой-то сайт, я хз
-    </h2>
-    <div class="bottom">
-        <div class="list">
-            <div href="https://randomrepository228.github.io/root/">Winda</div>
-            <div href="https://randomrepository228.github.io/snake/">Змейка</div>
-            <div href="https://randomrepository228.github.io/counter/">CPS счетчик</div>
-            <div href="https://randomrepository228.github.io/user-agent/">Системная информация</div>
-        </div>
-        <iframe src="about:blank" frameborder="0"></iframe>
-    </div>
-    <div class="footer">
-        Double click/tap to go to website
-    </div>
+    <gray>
+        <canvas id="game" height="500px" width="500px"></canvas>
+        <h1 id="score">Score: 0</h1>
+        <table>
+            <tr>
+                <td></td>
+                <td><button onclick="setDirection('w')">▲</button></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><button onclick="setDirection('a')">◄</button></td>
+                <td><button id="retry">Retry</button></td>
+                <td><button onclick="setDirection('d')">►</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onclick="setDirection('s')">▼</button></td>
+                <td></td>
+            </tr>
+        </table>
+    </gray>
     <script>
-        document.body.style.height = innerHeight + "px"
-        addEventListener("resize", () => document.body.style.height = innerHeight + "px")
-        let frame = document.querySelector("iframe")
-        function setActive(a){
-            const href = a.getAttribute("href")
-            if (currentSection == href)
-                location.href = currentSection
-            else {
-                currentSection = href
-                frame.src = href
+        let canvas = document.getElementById("game");
+        let ctx = canvas.getContext("2d");
+        let score = -1
+        let scoreblock = document.getElementById("score");
+        let width = 0
+        let height = 0
+        let w, a, s, d
+        w = a = d = false;
+        s = true
+        let gameover = false
+        function Rand(min, max) {
+            return Math.round(Math.random() * (max - min) + min);
+        }
+        function keyDownHandler(e) {
+            if (e.key == "w" || e.key == "ц" || e.keyCode == 38) {
+                a = s = d = false;
+                w = true;
+            }
+            if (e.key == "a" || e.key == "ф" || e.keyCode == 37) {
+                w = s = d = false;
+                a = true;
+            }
+            if (e.key == "s" || e.key == "ы" || e.keyCode == 40) {
+                w = a = d = false;
+                s = true;
+            }
+            if (e.key == "d" || e.key == "в" || e.keyCode == 39) {
+                w = a = s = false;
+                d = true;
             }
         }
-        let currentSection = ""
-        for (a of document.querySelectorAll(".list > *")){
-            a.setAttribute("onclick", "setActive(this)")
+        function setDirection(direction){
+            if (direction == "w") {
+                a = s = d = false;
+                w = true;
+            }
+            if (direction == "a") {
+                w = s = d = false;
+                a = true;
+            }
+            if (direction == "s") {
+                w = a = d = false;
+                s = true;
+            }
+            if (direction == "d") {
+                w = a = s = false;
+                d = true;
+            }
         }
-        frame.src = "about:blank"
+        function outline(text, x, y, font) {
+            ctx.font = font
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 8;
+            ctx.strokeText(text, x, y);
+            ctx.fillStyle = 'white';
+            ctx.fillText(text, x, y);
+        }
+        function replaceColor(srcR, srcG, srcB, dstR, dstG, dstB, x, y, width, height) {
+            let im = ctx.getImageData(x ? x : 0, y ? y : 0, width ? width : canvas.width, height ? height : canvas.height);
+            for (var i = 0; i < im.data.length; i += 4) {
+                if (
+                    im.data[i] === srcR &&
+                    im.data[i + 1] === srcG &&
+                    im.data[i + 2] === srcB
+                ) {
+                    im.data[i] = dstR;
+                    im.data[i + 1] = dstG;
+                    im.data[i + 2] = dstB;
+                }
+            }
+            ctx.putImageData(im, x ? x : 0, y ? y : 0);
+        }
+        document.addEventListener('keydown', keyDownHandler);
+        function TrailRemover() {
+            ctx.fillStyle = 'blue';
+            let num = Rand(1, canvas.width - 50)
+            let num2 = Rand(1, canvas.height - 50)
+            X = Math.round(num / 5) * 5;
+            Y = Math.round(num2 / 5) * 5;
+            ctx.rect(X, Y, 50, 50);
+            ctx.fill();
+            ctx.fillStyle = 'red';
+            score += 1
+            scoreblock.innerHTML = "Score: " + score;
+        }
+        TrailRemover()
+        function draw() {
+            ctx.globalCompositeOperation = "source-over";
+            ctx.beginPath();
+            ctx.rect(width, height, 50, 50);
+            replaceColor(255, 0, 0, 0, 255, 0, width - 5, height - 5, 60, 60)
+            ctx.fillStyle = '#FF0000';
+            ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.clearRect(width + 10, height + 10, 30, 30)
+            ctx.closePath();
+            if (w == true) {
+                height -= 5
+                imageData = [ctx.getImageData(width, height, 1, 1), ctx.getImageData(width + 50, height, 1, 1)];
+                ctx.fill()
+            }
+            if (s == true) {
+                height += 5
+                imageData = [ctx.getImageData(width, height + 45, 1, 1), ctx.getImageData(width + 50, height + 45, 1, 1)];
+                ctx.fill()
+            }
+            if (a == true) {
+                width -= 5
+                imageData = [ctx.getImageData(width, height + 50, 1, 1), ctx.getImageData(width, height, 1, 1)];
+                ctx.fill()
+            }
+            if (d == true) {
+                width += 5
+                imageData = [ctx.getImageData(width + 45, height + 50, 1, 1), ctx.getImageData(width + 45, height, 1, 1)];
+                ctx.fill()
+            }
+            if (height > canvas.height - 50 || imageData[0].data[1] == 255 || imageData[1].data[1] == 255 || width > canvas.width - 50 || height < 0 || width < 0) {
+                w = a = s = d = false
+                gameOver()
+            }
+            if (imageData[0].data[2] == 255 || imageData[1].data[2] == 255) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                TrailRemover()
+            }
+            imageData = null;
+        }
+        function gameOver() {
+            clearInterval(loop)
+            let gameover = true;
+            function gameOverEvent(event){
+                w = a = d = false;
+                s = true
+                retry.onclick = null
+                let gameover = false;
+                score = -1;
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                scoreblock.innerHTML = "Score: 0";
+                loop = setInterval(() => draw(), 12);
+                width = 0;
+                height = 0;
+                document.removeEventListener('keydown', gameOverEvent)
+                document.addEventListener('keydown', keyDownHandler);
+                TrailRemover()
+            }
+            document.addEventListener('keydown', gameOverEvent);
+            canvas.removeEventListener('keydown', keyDownHandler)
+            ctx.clearRect(0, 0, canvas.w, canvas.height)
+            ctx.beginPath();
+            outline("Game Over", 125, 250, "50px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
+            outline("Press any key or \"Retry\"", 150, 275, "20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
+            replaceColor(255, 0, 0, 0, 255, 0)
+            ctx.closePath()
+            retry.onclick = gameOverEvent
+        }
+        loop = setInterval(() => draw(), 12);
     </script>
 </body>
+
 </html>
