@@ -105,8 +105,6 @@ body{
 }
 .content{
     border-radius: 0;
-    min-height: 50px;
-    min-width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -263,7 +261,7 @@ input[type=submit], .x, .square, .dash {
     color: transparent;
     min-height: 23px;
     min-width: 75px;
-    padding: 0 12px;
+    padding: 0 4px;
     text-shadow: 0 0 #222
 }
 
@@ -332,11 +330,12 @@ input[type=submit], .x, .square, .dash, .window-tray, .wrapper {
 .taskbar{
     border: none;
     outline: none;
-    height: calc(var(--taskbar-height) + 2px);
+    height: var(--taskbar-height);
     box-shadow: inset 0 1px #dfdfdf, inset 0 2px #fff;
+    margin: 0;
 }
 
-.window-tray[focus], .wrapper:active{
+.window-tray.focus, .wrapper:active{
     box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey;
     background-image: none;
 }
@@ -427,8 +426,6 @@ input[type=submit]:disabled {
     touch-action: none;
     resize: both;
     z-index: 4;
-    min-width: 100px;
-    min-height: 84px;
 }
 th{
     height: 15px;
@@ -577,11 +574,6 @@ legend {
 
 .field-row-stacked *+* {
     margin-top: 6px
-}
-
-label {
-    align-items: center;
-    display: inline-flex
 }
 
 input[type=checkbox],
@@ -1150,4 +1142,17 @@ table>tbody>tr.highlighted {
 table>tbody>tr>* {
     height: 14px;
     padding: 0 6px
+}
+.select{
+    display: inline-block;
+}
+.start-option-right{
+    border-radius: 0;
+}
+.start-option-right:hover{
+    background-image: none;
+    background-color: navy;
+}
+.left-start{
+    border-radius: 0;
 }

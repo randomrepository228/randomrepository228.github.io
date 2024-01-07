@@ -40,7 +40,7 @@
                         changeTheme(commands[1])
                     if (commands[0] == "id"){
                         win.id = +commands[1];
-                        win.show("../ProgramFiles/run/icon.png");
+                        win.show("../sfc/icon.png");
                     }
                 }
             }
@@ -61,7 +61,7 @@
         </div>
         <script>
             let corrupted = false;
-            const systemapplist = ["calc", "changelog", "clock", "control", "ExampleApp", "Okna8Mode", "regedit", "run", "sfc", "taskmgr", "dvd", "bsod"]
+            const systemapplist = ["calc", "changelog", "clock", "control", "ExampleApp", "Okna8Mode", "regedit", "run", "sfc", "taskmgr", "dvd", "bsod", "webapps", "winver"]
             const systemthemelist = ["aero", "basic", "classic"]
             try{
                 JSON.parse(localStorage.appList)

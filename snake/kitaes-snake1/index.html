@@ -1,0 +1,164 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>canvas {border: 3px solid black;height: 500px;width: 500px;margin-top: 50px;}button, button:hover, button:active{border: 3px solid black;width: 100px;height: 100px;font-size: 50px;background-color: transparent;touch-action: manipulation;}#retry, #retry:hover, #retry:active{font-size: 25px;}html,body {background-color: rgb(0, 0, 0);display: flex;flex-direction: column;align-items: center;justify-content: center;margin: 0;overflow-y: hidden;font-family: sans-serif;}gray {background-color: rgb(100, 100, 100);width: 600px;display: flex;flex-direction: column;align-items: center;height: 100vh;}#score{text-align: center;}@media screen and (min-width: 900px){gray{display: flex;flex-direction: row;width: 900px;height: 600px;align-items: center;justify-content: space-around;margin-top: calc(50vh - 300px);}canvas{margin-top: 0;}}</style></head><body><gray><canvas id="game" height="500px" width="500px"></canvas><div><h1 id="score">Score: 0</h1><table><tr><td></td><td><button onclick="setDirection('w')">▲</button></td><td></td></tr><tr><td><button onclick="setDirection('a')">◄</button></td><td><button id="retry">Retry</button></td><td><button onclick="setDirection('d')">►</button></td></tr><tr><td></td><td><button onclick="setDirection('s')">▼</button></td><td></td></tr></table></div></gray><script>
+window.addEventListener('message', function (event) {
+if (event.data.startsWith('YourID-')) {
+const WindowID = Number(event.data.replace('YourID-', ''))
+sendToTop('SetWindowHeader' + WindowID + '|Losing Trail')
+sendToTop('SetWindowIcon' + WindowID + '|../mods/apps/kitaes-snake1/icon.png')
+}
+})
+let canvas = document.getElementById("game");
+let ctx = canvas.getContext("2d");
+let score = -1
+let scoreblock = document.getElementById("score");
+let width = 0
+let height = 0
+let w, a, s, d
+w = a = d = false;
+s = true
+let gameover = false
+function Rand(min, max) {
+return Math.round(Math.random() * (max - min) + min);
+}
+function keyDownHandler(e) {
+if (e.key == "w" || e.key == "ц" || e.keyCode == 38) {
+a = s = d = false;
+w = true;
+}
+if (e.key == "a" || e.key == "ф" || e.keyCode == 37) {
+w = s = d = false;
+a = true;
+}
+if (e.key == "s" || e.key == "ы" || e.keyCode == 40) {
+w = a = d = false;
+s = true;
+}
+if (e.key == "d" || e.key == "в" || e.keyCode == 39) {
+w = a = s = false;
+d = true;
+}
+}
+function setDirection(direction){
+if (direction == "w") {
+a = s = d = false;
+w = true;
+}
+if (direction == "a") {
+w = s = d = false;
+a = true;
+}
+if (direction == "s") {
+w = a = d = false;
+s = true;
+}
+if (direction == "d") {
+w = a = s = false;
+d = true;
+}
+}
+function outline(text, x, y, font) {
+ctx.font = font
+ctx.strokeStyle = 'black';
+ctx.lineWidth = 8;
+ctx.strokeText(text, x, y);
+ctx.fillStyle = 'white';
+ctx.fillText(text, x, y);
+}
+function replaceColor(srcR, srcG, srcB, dstR, dstG, dstB, x, y, width, height) {
+let im = ctx.getImageData(x ? x : 0, y ? y : 0, width ? width : canvas.width, height ? height : canvas.height);
+for (var i = 0; i < im.data.length; i += 4) {
+if (
+im.data[i] === srcR &&
+im.data[i + 1] === srcG &&
+im.data[i + 2] === srcB
+) {
+im.data[i] = dstR;
+im.data[i + 1] = dstG;
+im.data[i + 2] = dstB;
+}
+}
+ctx.putImageData(im, x ? x : 0, y ? y : 0);
+}
+document.addEventListener('keydown', keyDownHandler);
+function TrailRemover() {
+ctx.fillStyle = 'blue';
+let num = Rand(1, canvas.width - 50)
+let num2 = Rand(1, canvas.height - 50)
+X = Math.round(num / 5) * 5;
+Y = Math.round(num2 / 5) * 5;
+ctx.rect(X, Y, 50, 50);
+ctx.fill();
+ctx.fillStyle = 'red';
+score += 1
+scoreblock.innerHTML = "Score: " + score;
+}
+TrailRemover()
+function draw() {
+ctx.globalCompositeOperation = "source-over";
+ctx.beginPath();
+ctx.rect(width, height, 50, 50);
+replaceColor(255, 0, 0, 0, 255, 0, width - 5, height - 5, 60, 60)
+ctx.fillStyle = '#FF0000';
+ctx.fill();
+ctx.closePath();
+ctx.beginPath();
+ctx.clearRect(width + 10, height + 10, 30, 30)
+ctx.closePath();
+if (w == true) {
+height -= 5
+imageData = [ctx.getImageData(width, height, 1, 1), ctx.getImageData(width + 50, height, 1, 1)];
+ctx.fill()
+}
+if (s == true) {
+height += 5
+imageData = [ctx.getImageData(width, height + 45, 1, 1), ctx.getImageData(width + 50, height + 45, 1, 1)];
+ctx.fill()
+}
+if (a == true) {
+width -= 5
+imageData = [ctx.getImageData(width, height + 50, 1, 1), ctx.getImageData(width, height, 1, 1)];
+ctx.fill()
+}
+if (d == true) {
+width += 5
+imageData = [ctx.getImageData(width + 45, height + 50, 1, 1), ctx.getImageData(width + 45, height, 1, 1)];
+ctx.fill()
+}
+if (height > canvas.height - 50 || imageData[0].data[1] == 255 || imageData[1].data[1] == 255 || width > canvas.width - 50 || height < 0 || width < 0) {
+w = a = s = d = false
+gameOver()
+}
+if (imageData[0].data[2] == 255 || imageData[1].data[2] == 255) {
+ctx.clearRect(0, 0, canvas.width, canvas.height)
+TrailRemover()
+}
+imageData = null;
+}
+function gameOver() {
+clearInterval(loop)
+let gameover = true;
+function gameOverEvent(event){
+w = a = d = false;
+s = true
+retry.onclick = null
+let gameover = false;
+score = -1;
+ctx.clearRect(0, 0, canvas.width, canvas.height)
+scoreblock.innerHTML = "Score: 0";
+loop = setInterval(() => draw(), 12);
+width = 0;
+height = 0;
+document.removeEventListener('keydown', gameOverEvent)
+document.addEventListener('keydown', keyDownHandler);
+TrailRemover()
+}
+document.addEventListener('keydown', gameOverEvent);
+canvas.removeEventListener('keydown', keyDownHandler)
+ctx.clearRect(0, 0, canvas.w, canvas.height)
+ctx.beginPath();
+outline("Game Over", 125, 250, "50px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
+outline("Press any key or \"Retry\"", 150, 275, "20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
+replaceColor(255, 0, 0, 0, 255, 0)
+ctx.closePath()
+retry.onclick = gameOverEvent
+}
+loop = setInterval(() => draw(), 12);</script></body></html>

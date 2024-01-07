@@ -15,5 +15,5 @@ function openLast () {
 }
 
 if (localStorage.getItem('OKNA8_locale') != 'ru-ru') {
-    window.top.postMessage('AppNotLocalized','*')
+    window.parent.postMessage('AppNotLocalized','*')
 }

@@ -13,15 +13,12 @@ function createIcon(icon){
     a.setAttribute("onclick", icon.action)
     document.querySelector(".icons").appendChild(a)
 }
-function startMenu(open){
-    if(open){
-        document.querySelector(".start-menu").style.display = "grid";
-        document.querySelector(".wrapper").setAttribute("onclick", "startMenu(false)");
-    }
-    else{
-        document.querySelector(".start-menu").style.display = "none";
-        document.querySelector(".wrapper").setAttribute("onclick", "startMenu(true)");
-    }
+function startMenu(){
+    let start = document.querySelector(".start-menu")
+    if(start.style.display == "none")
+        start.style.display = "grid";
+    else
+        start.style.display = "none";
 }
 function addStartMenuEntryLeft(name, icon, action){
     document.querySelector(".left-start").innerHTML += `<div class="start-option" onclick="${action}"><img src="${icon}"></img>${name}</div>`

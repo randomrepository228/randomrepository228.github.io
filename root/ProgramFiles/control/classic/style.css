@@ -68,6 +68,8 @@
     margin-right: 10px;
     box-sizing: border-box;
     min-width: 150px;
+    overflow: hidden;
+    display: flex;
 }
 
 .adressbar > div {
@@ -76,6 +78,7 @@
     border: 1px transparent solid;
     padding: 0 3px;
     height: 18px;
+    max-width: fit-content;
 }
 
 .adressbar > div:hover {

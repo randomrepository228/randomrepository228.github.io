@@ -1,0 +1,7 @@
+{
+    "width": 500, 
+    "height": 500, 
+    "title": "Example App",
+    "icon": "icon.png",
+    "window": true
+}

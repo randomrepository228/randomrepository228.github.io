@@ -1,8 +1,6 @@
 body{
     margin: 0;
     background-color: transparent;
-    background-image: var(--wallpaper);
-    background-size: 100% 100%;
     overflow: hidden;
 }
 
@@ -116,15 +114,40 @@ body{
 }
 .select{
     display: flex;
+    position: relative;
 }
-button, select, button:disabled:hover, button:disabled:active{
-    height: 23px;
+button, select{
+    min-height: 23px;
     min-width: 75px;
     background-position: left, right, 4px;
     background-repeat: no-repeat;
     background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
     border: 0;
     font-size: inherit;
+}
+input[type=file]{
+    display: none;
+}
+button > label{
+    height: calc(100% + 8px);
+    min-height: 20px;
+    width: calc(100% + 8px);
+    margin: -5px;
+    padding: 0;
+}
+select, selecticon{
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+select{
+    height: 23px;
+    position: relative;
+}
+.select{
+    height: 23px;
+    width: min-content;
+    display: inline-block;
 }
 option{
     font-family: 'segoeui', sans-serif, system-ui;
@@ -197,6 +220,10 @@ input:focus{
 #windows{
     width: 100%;
     height: 100%;
+    pointer-events: none;
+}
+.window{
+    pointer-events: auto;
 }
 .menubar {
     width: 100vw;
@@ -244,10 +271,16 @@ ignore{
     display: flex;
     flex-direction: column;
 }
+.metro-dialog h1, .metro-dialog h2, .metro-dialog h3, .metro-dialog h4, .metro-dialog h5, .metro-dialog h6{
+    font-weight: 300;
+    font-size: 25px;
+} 
 .metro-dialog button{
-    background-image: none;
-    background-color: rgba(255,255,255,0.3);
     color: white;
+    background-color: rgba(255,255,255,0.3);
+}
+.metro-dialog button::after{
+    display: none;
 }
 .metro-dialog button:hover{
     background-image: none;
@@ -270,4 +303,53 @@ ignore{
     height: 100%;
     background-image: url(./Resources/login.jpg);
     background-size: 100% 100%;
+}
+.tabs button{
+    background-image: none;
+    background-color: white;
+    border: 1px solid rgb(137,140,149);
+    border-bottom: 0;
+}
+.tabs button::before{
+    display: none;
+}
+.tabs button[aria-selected=true]{
+    padding-bottom: 2px;
+}
+.tabs article{
+    border: 1px solid rgb(137,140,149);
+}
+menu[role=tablist]{
+    margin: 0;
+    margin-bottom: -1px;
+    padding-left: 0;
+}
+.tabs{
+    margin: 5px;
+}
+button[role=tab]::after{
+    display: none;
+}
+.nogui, .nogui > .content{
+    padding: 0 !important;
+    outline: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    animation: none !important;
+}
+.content{
+    min-width: 0;
+    min-height: 0;
+}
+.nogui > .topbar{
+    display: none !important;
+}
+.alwaysontop{
+    z-index: 999999 !important;
+}
+.alwaysbehind{
+    z-index: -9998 !important;
 }

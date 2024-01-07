@@ -4,12 +4,12 @@ $(document).ready(() => {
         setTimeout(function () {
             //$('.metrosplash').addClass('hidden')
             $('.ViewCollection').css('display', 'block')
-            window.top.postMessage('ModalMetroDialog|<h1>Приложение не доступно</h1><p></p><div class="buttons"><button onclick="closemetroapp(\'Music\');CloseMetroDialog(\'__ID__\')">Выход</button></div>', '*')
+            window.parent.postMessage('ModalMetroDialog|<h1>Приложение не доступно</h1><p></p><div class="buttons"><button onclick="closemetroapp(\'Music\');CloseMetroDialog(\'__ID__\')">Выход</button></div>', '*')
         }, 200)
     }, 200)
     setTimeout(() => {
         if (localStorage.getItem('OKNA8_Music_Library') == null) {
-            //window.top.postMessage('eval>ipcRenderer.send(\'UpdateMusicLibrary\', \'D:/Users/Igor/Music\')')
+            //window.parent.postMessage('eval>ipcRenderer.send(\'UpdateMusicLibrary\', \'D:/Users/Igor/Music\')')
         } else {
 
         }

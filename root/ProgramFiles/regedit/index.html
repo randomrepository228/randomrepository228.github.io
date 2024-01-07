@@ -74,11 +74,13 @@
         </div>
         <div class="right"> 
             <table>
-                <tr>
-                    <th width="200px">Name</th>
-                    <th width="50px">Type</th>
-                    <th>Value</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th width="200px">Name</th>
+                        <th width="50px">Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
                 <tbody id="table"></tbody>
             </table>
         </div>
@@ -141,7 +143,7 @@
             }
             refresh()
             setInterval(refresh, 1000)
-            parent.showWindow("../ProgramFiles/regedit/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+            parent.showWindow("../regedit/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
         </script>
     </body>
 </html>

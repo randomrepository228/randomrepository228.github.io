@@ -1,7 +1,7 @@
 {
     "width": 212, 
-    "height": 310, 
-    "title": "Calculator",
+    "height": 284, 
+    "title": "Калькулятор",
     "icon": "icon.png",
     "window": true,
     "noResize": true

@@ -20,7 +20,7 @@ input[type="checkbox"]:checked:active + label{
     background-image: url("./buttons/min/normal.png");
     width: 29px;
 }
-.x:hover::after, .x:active::after{
+.x::after{
     margin-left: -1px;
     width: 69px;
     height: 37px;
@@ -32,9 +32,10 @@ input[type="checkbox"]:checked:active + label{
     position: absolute;
     z-index: 99999;
     pointer-events: none;
+    opacity: 0;
+    transition: 0.3s;
 }
-.square:hover::after, .square:active::after, .dash:hover::after,
-.dash:active::after{
+.square::after, .dash::after{
     margin-left: 1px;
     width: 52px;
     height: 37px;
@@ -46,6 +47,11 @@ input[type="checkbox"]:checked:active + label{
     position: absolute;
     z-index: 99999;
     pointer-events: none;
+    opacity: 0;
+    transition: 0.1s ease-in-out;
+}
+.square:hover::after, .square:active::after, .dash:hover::after, .dash:active::after, .x:active::after, .x:hover::after{
+    opacity: 1;
 }
 .square[disabled]::after, .dash[disabled]::after, .x[disabled]::after{
     display: none;
@@ -98,7 +104,7 @@ input[type="checkbox"]:checked:active + label{
 }
 .winapi_transparent{
     padding: 5px;
-    background-color: rgba(61, 57, 117, 0.3);
+    background-color: hsla(209, 68%, 50%, 0.15);
     backdrop-filter: blur(3px);
     border: 1px solid black;
     background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png");
@@ -118,8 +124,6 @@ input[type="checkbox"]:checked:active + label{
 } */
 .window{
     padding-top: 0;
-    min-width: 100px;
-    min-height: 84px;
 }
 .topbar{
     display: flex;
@@ -141,8 +145,6 @@ input[type="checkbox"]:checked:active + label{
     margin-bottom: 2px;
 }
 .content{
-    min-height: 50px;
-    min-width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -193,22 +195,62 @@ footer{
 selecticon{
     height: 19px;
     width: 10px;
-    display: block;
     background-image: url("../dropdown.png");
     margin-left: -15px;
     margin-top: 2px;
     pointer-events: none;
 }
-button, select, button:disabled:hover, button:disabled:active{
-    background-image: url("../button/normal/left.png"), url("../button/normal/right.png"), url("../button/normal/center.png");
+button, select{
     border: none;
     background-color: transparent;
+    position: relative;
+    z-index: 100;
 }
-button:hover, select:hover{
-    background-image: url("../button/hover/left.png"), url("../button/hover/right.png"), url("../button/hover/center.png");
+button::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(../button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: -1;
 }
-button:active, select:active{
-    background-image: url("../button/pressed/left.png"), url("../button/pressed/right.png"), url("../button/pressed/center.png");
+.select::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(../button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: 99;
+}
+selecticon{
+    z-index: 100;
+}
+button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
+    border-image-source: url(../button/disabled.png);
+    opacity: 1;
+}
+button:hover::after, button[default]:hover::after, .select:hover::after{
+    border-image-source: url(../button/hover.png);
+}
+button:active::after, button[default]:active::after, .select:active::after{
+    border-image-source: url(../button/pressed.png);
+}
+button[default]::after{
+    border-image-source: url(../button/default.png);
 }
 text{
     height: 100%;

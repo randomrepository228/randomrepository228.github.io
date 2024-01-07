@@ -15,9 +15,7 @@
                 overflow: none; 
             }
             .main{
-                border: 1px solid black;
                 margin: 15px;
-                background-color: white;
                 overflow: auto;
                 cursor: default;
                 height: calc(100% - 90px);
@@ -68,7 +66,7 @@
                     // if (commands[0] == "newprocess")
                     if (commands[0] == "id"){
                         win.id = +commands[1];
-                        win.show("../ProgramFiles/taskmgr/icon.png");
+                        win.show("../taskmgr/icon.png");
                     }
                 }
             }
@@ -79,12 +77,14 @@
         <div class="menubar">
             <div class="element">File</div>
         </div>
-        <div class="main"> 
+        <div class="main sunken-panel"> 
             <table>
-                <tr>
-                    <th>Name</th>
-                    <th width="50px">PID</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="50px">PID</th>
+                    </tr>
+                </thead>
                 <tbody id="table"></tbody>
             </table>
         </div>

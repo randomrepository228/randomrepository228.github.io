@@ -17,7 +17,7 @@
                 <td>${VERSION['ver']}, build ${VERSION['build']}</td>
             </tr>
         </table>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.top.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['PcInfo'][2]}</button>
+        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['PcInfo'][2]}</button>
     `,
     'LockScreen':`
         <h1>${LOCALE_app_settings[6]['LockScreen'][0]}</h1>
@@ -120,7 +120,7 @@
             }
             function SetSystemLocale (id) {
                 localStorage.setItem('OKNA8_locale', id)
-                window.top.postMessage(\`ModalMetroDialog|
+                window.parent.postMessage(\`ModalMetroDialog|
                     <h1>${LOCALE_app_settings[6]['LangNRegion'][5]}</h1>
                     <p>${LOCALE_app_settings[6]['LangNRegion'][6]}</p>
                     <div class="buttons">
@@ -142,11 +142,11 @@
     'YourAccount':`
         <h1>${localStorage.getItem('OKNA8_user_' + currentUser + '_username')}</h1>
         <p>${LOCALE_app_settings[6]['YourAccount'][0]}</p>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.top.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][4]}</button>
+        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][4]}</button>
         <br><br>
         <h1>${LOCALE_app_settings[6]['YourAccount'][5]}</h1>
         <img src="../../../img/avatar.png" style="width:230px;height:230px;"><br>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.top.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][6]}</button>
+        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][6]}</button>
     `,
     'WindowsUpdate':`
         <script>
@@ -203,19 +203,19 @@
     'Recovery':`
     <h1>${LOCALE_app_settings[6]['Recovery'][0]}</h1>
     <p style="width: 680px">${LOCALE_app_settings[6]['Recovery'][1]}</p>
-    <button onclick="window.top.postMessage('unavaiblefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][2]}</button>
+    <button onclick="window.parent.postMessage('unavaiblefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][2]}</button>
     <h1>${LOCALE_app_settings[6]['Recovery'][3]}</h1>
     <p style="width: 680px">${LOCALE_app_settings[6]['Recovery'][4]}</p>
-    <button onclick="window.top.postMessage('unavaiblefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][5]}</button>
+    <button onclick="window.parent.postMessage('unavaiblefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][5]}</button>
     <h1>${LOCALE_app_settings[6]['Recovery'][6]}</h1>
     <p style="width: 680px">${LOCALE_app_settings[6]['Recovery'][7]}</p>
-    <button onclick="window.top.postMessage('RestartToRecovery', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][8]}</button>
+    <button onclick="window.parent.postMessage('RestartToRecovery', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][8]}</button>
     `,
     'LoginMethods':`
     <script>
         function ChangePassword () {
             if (localStorage.getItem('OKNA8_user_' + currentUser + '_password') == '' || localStorage.getItem('OKNA8_user_' + currentUser + '_password') == null) {
-                window.top.postMessage(\`ModalMetroDialog|
+                window.parent.postMessage(\`ModalMetroDialog|
                     <h1>${LOCALE_app_settings[6]['LoginMethods'][4]}</h1>
                     <p>${LOCALE_app_settings[6]['LoginMethods'][6]}</p>
                     <input type="password" id="password1" placeholder="${LOCALE_app_settings[6]['LoginMethods'][7]}" style="margin-bottom: 12px"><br>
@@ -231,7 +231,7 @@
                     </div>
                 \`, '*')
             } else {
-                window.top.postMessage(\`ModalMetroDialog|
+                window.parent.postMessage(\`ModalMetroDialog|
                     <h1>${LOCALE_app_settings[6]['LoginMethods'][5]}</h1>
                     <p>${LOCALE_app_settings[6]['LoginMethods'][6]}</p>
                     <input type="password" id="password1" placeholder="${LOCALE_app_settings[6]['LoginMethods'][7]}" style="margin-bottom: 12px"><br>
@@ -345,7 +345,7 @@
             }
         </style>
         <h1>${LOCALE_app_settings[6]['OtherUsers'][0]}</h1>
-        <div class="addAccount" onclick="window.top.postMessage('UserCreateDialog','*')"><img src="gui/add.png"><p>Добавление учётной записи</p></div>
+        <div class="addAccount" onclick="window.parent.postMessage('UserCreateDialog','*')"><img src="gui/add.png"><p>Добавление учётной записи</p></div>
         <div class="useraccountslist">
         </div>
         <script>
@@ -353,7 +353,7 @@
             $('.useraccountslist').html('')
             for (let i = 0; i < Users.length; i++) {
                 if (Users[i] != currentUser) {
-                    $('.useraccountslist').append('<div id="UserAccountsList_User_' + Users[i] + '" onclick="$(\\'.useraccountslist div\\').removeClass(\\'active\\');$(\\'#UserAccountsList_User_' + Users[i] + '\\').addClass(\\'active\\');"><img src="../../../img/avatar.png"><p>' + localStorage.getItem('OKNA8_user_' + Users[i] + '_username') + '</p><button class="negative" onclick="window.top.postMessage(\\'removeUser_\\' + \\'' + Users[i] + '\\', \\'*\\');setTimeout(()=>{openRightPage(\\'OtherUsers\\')},100)">${LOCALE_app_settings[6]['OtherUsers'][6]}</button></div>')
+                    $('.useraccountslist').append('<div id="UserAccountsList_User_' + Users[i] + '" onclick="$(\\'.useraccountslist div\\').removeClass(\\'active\\');$(\\'#UserAccountsList_User_' + Users[i] + '\\').addClass(\\'active\\');"><img src="../../../img/avatar.png"><p>' + localStorage.getItem('OKNA8_user_' + Users[i] + '_username') + '</p><button class="negative" onclick="window.parent.postMessage(\\'removeUser_\\' + \\'' + Users[i] + '\\', \\'*\\');setTimeout(()=>{openRightPage(\\'OtherUsers\\')},100)">${LOCALE_app_settings[6]['OtherUsers'][6]}</button></div>')
                 }
             }
         </script>
@@ -361,8 +361,8 @@
     'DataExport': `
         <h1>${LOCALE_app_settings[6]['DataExport'][0]}</h1>
         <p>${LOCALE_app_settings[6]['DataExport'][1]}</p>
-        <button onclick="window.top.postMessage('export-data' + JSON.stringify(localStorage), '*')" class="MetroButton2" style="margin-left:0">${LOCALE_app_settings[6]['DataExport'][2]}</button>
-        <button onclick="window.top.postMessage('import-data', '*')" class="MetroButton2">${LOCALE_app_settings[6]['DataExport'][3]}</button>
+        <button onclick="window.parent.postMessage('export-data' + JSON.stringify(localStorage), '*')" class="MetroButton2" style="margin-left:0">${LOCALE_app_settings[6]['DataExport'][2]}</button>
+        <button onclick="window.parent.postMessage('import-data', '*')" class="MetroButton2">${LOCALE_app_settings[6]['DataExport'][3]}</button>
     `,
     'OknaMods': `
         <h1>${LOCALE_app_settings[6]['OknaMods'][0]}</h1>
@@ -443,12 +443,12 @@
                 margin: 0;
             }
         </style>
-        <div class="addMod" onclick="window.top.postMessage('UserCreateDialog','*')"><img src="gui/add.png"><p>${LOCALE_app_settings[6]['OknaMods'][1]}</p></div>
+        <div class="addMod" onclick="window.parent.postMessage('UserCreateDialog','*')"><img src="gui/add.png"><p>${LOCALE_app_settings[6]['OknaMods'][1]}</p></div>
         <div class="modslist mods">
         </div>
-        <div class="addMod" onclick="window.top.postMessage('UserCreateDialog','*')"><img src="gui/add.png"><p>${LOCALE_app_settings[6]['OknaMods'][2]}</p></div>
+        <div class="addMod" onclick="window.parent.postMessage('UserCreateDialog','*')"><img src="gui/add.png"><p>${LOCALE_app_settings[6]['OknaMods'][2]}</p></div>
         <div class="modslist apps">
-        <div id="Modslist_Mod_" onclick="$('.modslist div').removeClass('active');$('#Modslist_Mod_').addClass('active');"><img src="../../../img/avatar.png"><p>Mod name</p><button class="negative" onclick="window.top.postMessage('removeUser_' + '', '*');setTimeout(()=>{openRightPage('OtherUsers')},100)">${LOCALE_app_settings[6]['OknaMods'][3]}</button></div>
+        <div id="Modslist_Mod_" onclick="$('.modslist div').removeClass('active');$('#Modslist_Mod_').addClass('active');"><img src="../../../img/avatar.png"><p>Mod name</p><button class="negative" onclick="window.parent.postMessage('removeUser_' + '', '*');setTimeout(()=>{openRightPage('OtherUsers')},100)">${LOCALE_app_settings[6]['OknaMods'][3]}</button></div>
         </div>
         <script>
             var Apps = localStorage.getItem('OKNA8_node_apps').split(';')
@@ -464,7 +464,7 @@
             }
 
             function DeleteApp(Modname, Modfolder) {
-                window.top.postMessage('DeleteAppDialog|' + Modname + '|' + Modfolder, '*')
+                window.parent.postMessage('DeleteAppDialog|' + Modname + '|' + Modfolder, '*')
             }
         </script>
     `

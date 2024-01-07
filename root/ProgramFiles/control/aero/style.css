@@ -39,6 +39,10 @@
     background-color: transparent;
 }
 
+.nav > .backnext > *::after{
+    display: none;
+}
+
 .nav > .backnext > .next:disabled, .nav > .backnext > .back:disabled{
     opacity: 1;
 }
@@ -69,6 +73,8 @@
     box-sizing: border-box;
     min-width: 150px;
     padding: 1px;
+    overflow: hidden;
+    display: flex;
 }
 
 .adressbar > div {
@@ -78,6 +84,8 @@
     padding: 1.5px 3px;
     padding: 0 3px;
     height: 14px;
+    max-width: fit-content;
+    white-space: pre;
 }
 
 .adressbar > div:hover {

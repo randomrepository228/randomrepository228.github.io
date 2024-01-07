@@ -2,46 +2,73 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../../Winda/dwm.css">
         <link rel="stylesheet" href="../../Winda/fonts/fonts.css">
-        <link rel="stylesheet" href="../../Winda/Resources/aero/style.css" id="theme">
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             html { 
-                overflow: auto; 
+                margin: 0;
+                overflow: hidden;
             } 
             body {
-                overflow: none; 
+                overflow: hidden; 
                 display: flex;
                 align-items: flex-start;
                 background-color: white;
-                padding-top: 2px;
+                background-color: rgb(36, 36, 36);
+                margin: 0;
             }
-            table{
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            .flex{
                 width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            .title{
+                background-color: forestgreen;
+                background-image: none;
+                font-size: 25px;
+                color: white;
+                height: 75px;
+                font-weight: 300;
+                padding-left: 20px;
+            }
+            tr{
+                height: 50px;
+                font-size: 15px;
+                color: white;
+                width: 100%;
+                transition: 0.1s ease-in-out;
+            }
+            tr:hover{
+                background-color: rgb(80, 80, 80);
+            }
+            tr:active{
+                transform: scale(0.95);
+            }
+            td, title{
+                padding-left: 30px;
+            }
+            #table{
+                overflow-x: auto;
+                height: calc(100vh - 75px);
+            }
+            .title, tr{
+                display: flex;
+                align-items: center;
             }
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
-        <table>
-            <tr>
-                <th width="200px">Select An Okna8 App</th>
-            </tr>
-            <tbody id="table"></tbody>
-        </table>
+        <div class="flex">
+            <div class="title">Select An Okna8 App</div>
+            <div id="table"></div>
+            <div class="flex">
         <script src="./script/search-data.js"></script>
         <script>
-            function changeTheme(a){
-                theme.href = "../../Winda/Resources/" + a + "/style.css"
-            }
-            changeTheme(localStorage.theme)
-            onmessage = (e) => {
-                const commands = e.data.split("|")
-                console.log(e.data)
-                if (commands[0] == "theme" && commands.length == 2)
-                    changeTheme(commands[1])
-            }
             if (!localStorage.OKNA8_locale){
                 localStorage.OKNA8_NetworkDetecting = "true"
                 localStorage.OKNA8_locale = "en-us"
@@ -63,10 +90,11 @@
             }
             for (let i = 1; i < LOCALE_searchdata.length; i++){
                 if (LOCALE_searchdata[i][0].startsWith("desktop:") || LOCALE_searchdata[i][0] == "DESKTOP") continue
+                const withspaces = LOCALE_searchdata[i][0].replace(/([A-Z])/g, " $1").trim()
                 let col = document.createElement("tr")
-                col.setAttribute("ondblclick", `parent.loadAppNoInfo('${LOCALE_searchdata[i][0]}', '../ProgramFiles/Okna8Mode/apps/metro/')`)
+                col.setAttribute("onclick", `parent.loadOkna8App('${LOCALE_searchdata[i][0]}', '../ProgramFiles/Okna8Mode/apps/metro/', '${withspaces}')`)
                 let row = document.createElement("td")
-                row.innerHTML = LOCALE_searchdata[i][0];
+                row.innerHTML = withspaces;
                 col.appendChild(row);
                 table.appendChild(col);
             }

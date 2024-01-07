@@ -126,8 +126,6 @@ body{
     touch-action: none;
     resize: both;
     z-index: 4;
-    min-width: 100px;
-    min-height: 84px;
     padding: 7px;
     padding-top: 0;
     box-shadow: -1px -1px rgba(0, 255, 255, 1) inset, 1px 1px white inset;
@@ -166,8 +164,6 @@ body{
 .content{
     border-radius: 0;
     background-color: white;
-    min-height: 50px;
-    min-width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -201,36 +197,62 @@ footer{
     box-sizing: border-box;
     padding: 8px;
 }
-.select{
-    display: flex;
-}
-button, select{
-    background-image: url("../button/normal/left.png"), url("../button/normal/right.png"), url("../button/normal/center.png");
-    background-position: left, right, 4px;
-    background-repeat: no-repeat;
-    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
-    height: 23px;
-    border: none;
-    background-color: transparent;
-    min-width: 75px;
-}
-select{
-    appearance: none;
-}
 selecticon{
     height: 19px;
     width: 10px;
-    display: block;
     background-image: url("../dropdown.png");
     margin-left: -15px;
     margin-top: 2px;
     pointer-events: none;
 }
-button:hover, select:hover{
-    background-image: url("../button/hover/left.png"), url("../button/hover/right.png"), url("../button/hover/center.png");
+button, select{
+    border: none;
+    background-color: transparent;
+    position: relative;
+    z-index: 100;
 }
-button:active, select:active{
-    background-image: url("../button/pressed/left.png"), url("../button/pressed/right.png"), url("../button/pressed/center.png");
+button::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(../button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: -1;
+}
+.select::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(../button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: 99;
+}
+selecticon{
+    z-index: 100;
+}
+button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
+    border-image-source: url(../button/disabled.png);
+    opacity: 1;
+}
+button:hover::after, .select:hover::after{
+    border-image-source: url(../button/hover.png);
+}
+button:active::after, .select:active::after{
+    border-image-source: url(../button/pressed.png);
 }
 text{
     height: 100%;

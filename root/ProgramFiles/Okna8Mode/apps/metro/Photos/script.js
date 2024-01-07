@@ -1,11 +1,11 @@
 var ImagesLibrary
 var currentUser = sessionStorage.getItem('OKNA8_sessionUser')
-var CloseApp = () => { window.top.postMessage("eval>closemetroapp('Photos')", '*') }
-var selectPhotosFolder = () => { window.top.postMessage('eval>ipcRenderer.send("SelectPhotosFolder")') }
+var CloseApp = () => { window.parent.postMessage("eval>closemetroapp('Photos')", '*') }
+var selectPhotosFolder = () => { window.parent.postMessage('eval>ipcRenderer.send("SelectPhotosFolder")') }
 
 $(document).ready(() => {
     if (typeof require == 'undefined') {
-        window.top.postMessage('ModalMetroDialog|<h1>Приложение не доступно в этой версии Okna8</h1><p>Чтобы использовать "Фотографии", загрузите Okna8Node. Из-за технических ограничений браузера, невозможно просмотрить фотографии с вашего компьютера.</p><div class="buttons"><button onclick="closemetroapp(\'Photos\');CloseMetroDialog(\'__ID__\')">Выход</button></div>', '*')
+        window.parent.postMessage('ModalMetroDialog|<h1>Приложение не доступно в этой версии Okna8</h1><p>Чтобы использовать "Фотографии", загрузите Okna8Node. Из-за технических ограничений браузера, невозможно просмотрить фотографии с вашего компьютера.</p><div class="buttons"><button onclick="closemetroapp(\'Photos\');CloseMetroDialog(\'__ID__\')">Выход</button></div>', '*')
     } else {
         var { ipcRenderer } = require('electron')
         setTimeout(() => {

@@ -108,8 +108,6 @@ input[type="checkbox"]:checked:active + label{
 } */
 .window{
     padding-top: 0;
-    min-width: 100px;
-    min-height: 84px;
 }
 .topbar{
     display: flex;
@@ -132,8 +130,6 @@ input[type="checkbox"]:checked:active + label{
     margin-bottom: 2px;
 }
 .content{
-    min-height: 50px;
-    min-width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
