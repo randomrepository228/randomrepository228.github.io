@@ -115,6 +115,7 @@ function windowMouseDown(event, elem, a, noResize){
 function windowResize(event, elem, ...actions){
     let touch = false;
     activewindow = elem.parentElement
+    let activewindowcontent = elem.parentElement.querySelector("text")
     loop = {drag: false, top: false, left: false, right: false, bottom: false}
     for (a of actions) loop[a] = true
     iframeignore.innerHTML = "ignore{display:block !important}"
@@ -126,11 +127,11 @@ function windowResize(event, elem, ...actions){
     prevy=event.clientY-elem.getBoundingClientRect().y
     origx=event.clientX-elem.getBoundingClientRect().width - 6
     origy=event.clientY-elem.getBoundingClientRect().height - 1
-    prevheight=activewindow.getBoundingClientRect().height
-    prevwidth=activewindow.getBoundingClientRect().width
+    prevheight=activewindowcontent.getBoundingClientRect().height
+    prevwidth=activewindowcontent.getBoundingClientRect().width
     if (activewindow.classList.contains("snap-left") || activewindow.classList.contains("snap-right")){
-        activewindow.style.height = prevheight + "px"
-        activewindow.style.width = prevwidth + "px"
+        activewindowcontent.style.height = prevheight + "px"
+        activewindowcontent.style.width = prevwidth + "px"
         activewindow.style.top = activewindow.getBoundingClientRect().y + "px"
         activewindow.style.left = activewindow.getBoundingClientRect().x + "px"
         activewindow.className = activewindow.className.replace("snap-right ", "")
@@ -142,6 +143,7 @@ function windowResize(event, elem, ...actions){
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function move(e){
+    let activewindowcontent = activewindow.querySelector("text")
     if (e.touches) e = e.touches[0]
     if(loop.drag){
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
@@ -158,50 +160,50 @@ function move(e){
     }
     if(localStorage.theme == "aero"){
         if(loop.right){
-            activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
+            activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
         }
         if(loop.bottom){
-            activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
+            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24}px`
         }
         if(loop.top){
             activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-            activewindow.style.height = `${prevheight + origy - e.pageY}px`
+            activewindowcontent.style.height = `${prevheight + origy - e.pageY - 20 + 20}px`
         }
         if(loop.left){
             activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
-            activewindow.style.width = `${prevwidth + origx - e.pageX}px`
+            activewindowcontent.style.width = `${prevwidth + origx - e.pageX + 20}px`
         }
     }
     else if (localStorage.theme == "basic"){
         if(loop.right){
-            activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 11}px`
+            activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 11}px`
         }
         if(loop.bottom){
-            activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4}px`
+            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24}px`
         }
         if(loop.top){
             activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-            activewindow.style.height = `${prevheight + origy - e.pageY - 2}px`
+            activewindowcontent.style.height = `${prevheight + origy - e.pageY - 2 + 15}px`
         }
         if(loop.left){
             activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
-            activewindow.style.width = `${prevwidth + origx - e.pageX - 4}px`
+            activewindowcontent.style.width = `${prevwidth + origx - e.pageX - 4 + 20}px`
         }
     }
     else{
         if(loop.right){
-            activewindow.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 3}px`
+            activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 3}px`
         }
         if(loop.bottom){
-            activewindow.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 1}px`
+            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 1 - 24}px`
         }
         if(loop.top){
             activewindow.style.top = `${e.clientY - prevy}px`
-            activewindow.style.height = `${prevheight + origy - e.pageY + 2}px`
+            activewindowcontent.style.height = `${prevheight + origy - e.pageY + 2 - 24 + 20}px`
         }
         if(loop.left){
             activewindow.style.left = `${e.clientX - prevx}px`
-            activewindow.style.width = `${prevwidth + origx - e.pageX + 7}px`
+            activewindowcontent.style.width = `${prevwidth + origx - e.pageX + 7 + 20}px`
         }
     }
 } 

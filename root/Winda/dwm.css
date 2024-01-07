@@ -353,3 +353,7 @@ button[role=tab]::after{
 .alwaysbehind{
     z-index: -9998 !important;
 }
+.snap-left text, .snap-right text{
+    width: 100% !important;
+    height: 100% !important;
+}

@@ -182,8 +182,6 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
         newWindow.style.left = window.x
         newWindow.style.top = window.y
     }
-    newWindow.style.width = window.width + "px"
-    newWindow.style.height = window.height + "px"
     newWindow.style.display = "none"
     newWindow.innerHTML =
     `
@@ -206,7 +204,7 @@ function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
     <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
     <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
     <ignore></ignore>
-    <text>${window.innerhtml}</text>
+    <text style="width: ${window.width}px; height: ${window.height}px">${window.innerhtml}</text>
     ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
     `
     windows.append(newWindow)

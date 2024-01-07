@@ -1,1 +1,1 @@
-localStorage.ver = "20240006"
+localStorage.ver = "20240007.2"
