@@ -103,12 +103,21 @@ function windowMouseDown(event, elem, a, noResize){
     if (!touch) evName = "mouseup"
     else evName = "touchend"
     document.addEventListener(evName, e => {
+        let minsnap = 1
         loop.drag = false; 
-        iframeignore.innerHTML = "";
+        if (e.clientX){
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        else{
+            clientX = activewindow.style.left;
+            clientY = activewindow.style.top;
+            minsnap = 100
+        }
         if (!noResize){
-            if (e.clientX < 1) {snapLeft(activewindow); return}
-            if (e.clientX > innerWidth - 2) {snapRight(activewindow); return}
-            if (e.clientY < 1) maximise(activewindow)
+            if (clientX < minsnap) {snapLeft(activewindow); return}
+            if (clientX > innerWidth - minsnap - 1) {snapRight(activewindow); return}
+            if (clientY < minsnap) maximise(activewindow)
         }
     }, {once: true});
 }
@@ -143,6 +152,7 @@ function windowResize(event, elem, ...actions){
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function move(e){
+    if (!activewindow) return
     let activewindowcontent = activewindow.querySelector("text")
     if (e.touches) e = e.touches[0]
     if(loop.drag){

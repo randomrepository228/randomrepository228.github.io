@@ -357,3 +357,13 @@ button[role=tab]::after{
     width: 100% !important;
     height: 100% !important;
 }
+text{
+    min-width: 100%;
+    min-height: 100%;
+}
+.contentnostyle{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}

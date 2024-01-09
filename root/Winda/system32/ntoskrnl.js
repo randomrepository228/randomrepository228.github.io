@@ -89,8 +89,8 @@ function AddWindow(window, ispopup, options, id){
     `
     <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
         <left>
-            <img src="${window.icon}" onerror="this.remove()">
-            <p>${window.title}</p>
+            <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
+            <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
         </left>
         <div class="buttons">
             ${options.xOnly ? `` : `<div class="dash" ${options.noTray ? 'disabled' : 'onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/min/icon.png"></div>
@@ -99,14 +99,14 @@ function AddWindow(window, ispopup, options, id){
         </div>
     </div>
     ${options.noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-    <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-    <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-    <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-    <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
-    <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
-    <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
-    <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
-    <div class="content">
+    <div ontouchdown="windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
+    <div ontouchdown="windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
+    <div ontouchdown="windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
+    <div ontouchdown="windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="top"></div>
+    <div ontouchdown="windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
+    <div ontouchdown="windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
+    <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+    <div class="content${options.noGUI ? 'nostyle' : ''}">
         <ignore></ignore>
         <text style="width: ${options.width}px; height: ${options.height}px">${window.innerhtml}</text>
         ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
@@ -144,74 +144,6 @@ function addTray(id, trayicon, tray, options){
     trayicons.append(newTray)
     broadcast("newprocess|" + id)
 }
-function AddWindowNoGUI(window, ispopup, noResize, xOnly, noSelfOpen){
-    newWindow = document.createElement("div")
-    const randNum = Math.round(Math.random() * 99999)
-    let id;
-    for(let i = randNum;;i++){
-        let idCollision = false
-        for(const a of windows.children)
-            if(a.getAttribute("windowid") == i.toString())
-                idCollision = true
-        if (!idCollision)
-            id = i
-            break
-    }
-    newWindow.className = `n${id} window winapi_shadow winapi_transparent`
-    newWindow.setAttribute("windowid", id)
-    if(!window.x || !window.y){
-        if (ispopup){
-            newWindow.style.left = (innerWidth / 2 ) - (window.width) / 2 + "px"
-            newWindow.style.top = (innerHeight / 2 ) - (window.height) / 2 + "px"
-        }
-        else{
-            const openedwindows = getAllWindows().length
-            let openedwindowsx = openedwindows
-            let openedwindowsy = openedwindows
-            if (openedwindows * 25 + 50 > innerHeight - window.height){
-                openedwindowsy = -2
-            }
-            if (openedwindows * 25 + 50 > innerWidth - window.width){
-                openedwindowsx = -2
-            }
-            newWindow.style.left = openedwindowsx * 25 + 50 + "px"
-            newWindow.style.top = openedwindowsy * 25 + 50 + "px"
-        }
-    }
-    else{
-        newWindow.style.left = window.x
-        newWindow.style.top = window.y
-    }
-    newWindow.style.display = "none"
-    newWindow.innerHTML =
-    `
-    <div class="topbar" ${noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${noResize})">
-        <left>
-            <p style="display: none;">${window.title}</p>
-        </left>
-        <div class="buttons">
-            ${xOnly? `` : `<div class="dash" onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"><img src="./Resources/aero/buttons/min/icon.png"></div>
-            <div class="square" ${noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./Resources/aero/buttons/max/icon.png"></div>`}
-            <div class="x" onclick="closeWindow(${id})"><img src="./Resources/aero/buttons/close/icon.png"></div>
-        </div>
-    </div>
-    ${noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-    <div onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-    <div onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-    <div onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-    <div onmousedown="windowResize(event, this, 'top')" class="top"></div>
-    <div onmousedown="windowResize(event, this, 'left')" class="left"></div>
-    <div onmousedown="windowResize(event, this, 'right')" class="right"></div>
-    <div onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
-    <ignore></ignore>
-    <text style="width: ${window.width}px; height: ${window.height}px">${window.innerhtml}</text>
-    ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
-    `
-    windows.append(newWindow)
-    if(ispopup || noSelfOpen){
-        showWindow(window.icon, id)
-    }
-}
 function getId(){
     const randNum = Math.round(Math.random() * 99999)
     let id;
@@ -234,14 +166,9 @@ async function loadApp(packageName, path, args, id){
                 const info = JSON.parse(request.responseText)
                 if (typeof id == "undefined") id = getId()
                 if (info.window){
-                    if (info.noGUI)
-                        AddWindowNoGUI(new Window(info.x, info.y, info.width, info.height, info.title, 
-                            `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
-                            path + info.icon, true), undefined, info.noResize, info.xOnly)
-                    else
-                        AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
-                            `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
-                            path + info.icon, true), undefined, info, id)
+                    AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
+                        `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
+                        path + info.icon, true), undefined, info, id)
                 }
                 else if (info.tray) {
                     addTray(id, new TrayIcon(info.tray.width, 

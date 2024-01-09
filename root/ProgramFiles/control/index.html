@@ -229,7 +229,7 @@
                 document.querySelector("select").value = localStorage.theme
                 verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
                 fastBoot.checked = localStorage.fastBoot == "true" ? true : false
-                parent.showWindow("../control/icon.png", frameElement.parentElement.parentElement.getAttribute("windowid"));
+                parent.showWindow("../control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>
     </body>
