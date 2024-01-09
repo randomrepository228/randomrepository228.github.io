@@ -105,6 +105,7 @@ function windowMouseDown(event, elem, a, noResize){
     document.addEventListener(evName, e => {
         let minsnap = 1
         loop.drag = false; 
+        iframeignore.innerHTML = "none"
         if (e.clientX){
             clientX = e.clientX;
             clientY = e.clientY;
