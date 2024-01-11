@@ -1,0 +1,114 @@
+body {
+    background-color: transparent;
+}
+
+.travelButtons .back {
+    width: 38px;
+    height: 38px;
+    background-image: url(travel_disabled.png);
+    background-repeat: no-repeat;
+    background-position-y: -1px;
+    position: absolute;
+    left: 2px; top: 0;
+    transition: 0.5s ease;
+}
+
+.travelButtons .next {
+    width: 26px;
+    height: 26px;
+    background-image: url(travel_disabled.png);
+    background-repeat: no-repeat;
+    background-position-y: -7px;
+    background-position-x: -39px;
+    position: absolute;
+    left: 43px; top: 6px;
+    transition: 0.5s ease;
+}
+
+.travelButtons .enabled {
+    background-image: url(travel_enabled.png);
+    border-radius: 100vw;
+    background-color: rgb(2, 132, 195);
+}
+
+.travelButtons .enabled:hover {
+    background-color: rgb(53, 157, 207);
+}
+
+.travelButtons .enabled:active {
+    background-color: rgb(12, 116, 166);
+    transition: none;
+}
+
+.tabs {
+    width: calc(100vw - 2px);
+    position: fixed;
+    top: 33px; left: 1px;
+    height: 23px;
+    font-size: 0;
+}
+
+.tabs .tabContainer {
+    display: inline-flex;
+    max-width: calc(100% - 28px);
+}
+
+.tabs .tab {
+    width: 200px;
+    display: inline-flex;
+    height: 22px;
+    border-top: 1px solid rgba(0, 0, 0, 0.29);
+    border-left: 1px solid rgba(0, 0, 0, 0.29);
+}
+
+.tabs .tab > div {
+    background-color: rgba(180, 180, 180, 0.35);
+    width: 100%;
+    height: 22px;
+}
+
+.tabs .tab:hover > div {
+    background-color: rgba(180, 180, 180, 0.5);
+}
+
+.tabs .tab.active > div {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.tabs .newtab {
+    width: 26px;
+    min-width: 26px;
+    height: 22px;
+    border-top: 1px solid rgba(0, 0, 0, 0.29);
+    border-left: 1px solid rgba(0, 0, 0, 0.29);
+    border-right: 1px solid rgba(0, 0, 0, 0.29);
+    display: inline-block;
+    position: relative;
+    top: -22px
+}
+
+.tabs .newtab > div {
+    width: 26px;
+    height: 22px;
+    background-color: rgba(180, 180, 180, 0.35);
+}
+
+.tabs .newtab:hover > div {
+    background-color: rgba(180, 180, 180, 0.5);
+}
+
+.frame {
+    position: fixed;
+    left: 0px;
+    top: 56px;
+    width: 100vw;
+    height: calc(100vh - 56px);
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    display: none;
+}
+
+.frame iframe {
+    width: 100%;
+    height: 100%;
+}

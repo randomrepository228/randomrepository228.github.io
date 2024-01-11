@@ -1,0 +1,8 @@
+{
+    "width": 500, 
+    "height": 500, 
+    "title": "Internet Explorer",
+    "icon": "icon.png",
+    "window": true,
+    "noGUI": true
+}

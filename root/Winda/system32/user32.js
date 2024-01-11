@@ -217,7 +217,11 @@ function move(e){
             activewindowcontent.style.width = `${prevwidth + origx - e.pageX + 7 + 20}px`
         }
     }
-} 
+    if (loop.top || loop.left || loop.right || loop.bottom || loop.drag){
+        activewindow.style.bottom = null;
+        activewindow.style.right = null;
+    }
+}
 function snapLeft(window){
     window.className = window.className.replace("", "snap-left ")
 }

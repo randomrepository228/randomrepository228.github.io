@@ -67,16 +67,16 @@ function AddWindow(window, ispopup, options, id){
         newWindow.style.left = options.left
     if (options.top)
         newWindow.style.top = options.top
-    if(!((options.left && options.top) || options.customPos)){
-        if (ispopup){
-            newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
-            newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
-        }
-        else{
-            const openedwindows = getAllWindows().length
+    if (ispopup){
+        newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
+        newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
+    }
+    else{
+        const openedwindows = getAllWindows().length
+        if (!(options.right || options.left))
             newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - options.width) + "px"
+        if (!(options.bottom || options.top))
             newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - options.height) + "px"
-        }
     }
     if (options.bottom)
         newWindow.style.bottom = options.bottom
