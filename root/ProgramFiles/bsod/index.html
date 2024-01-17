@@ -56,8 +56,9 @@
             <button onclick="parent.displayBSOD(bsodreason.value)">Invoke</button>
         </footer>
         <script>
+            document.onready
             let thisWindow = frameElement.parentElement.parentElement.parentElement
-            parent.showWindow("../ProgramFiles/bsod/icon.png", thisWindow.getAttribute("windowid"));
+            parent.showWindow("../bsod/icon.png", thisWindow.getAttribute("windowid"));
         </script>
     </body>
 </html>

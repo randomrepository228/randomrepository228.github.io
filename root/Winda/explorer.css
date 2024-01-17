@@ -54,6 +54,14 @@ bottomright{
     color: white;
     z-index: -1;
 }
+@keyframes slide{
+    0% {
+        transform: translateY(38px);
+    }
+    100% {
+
+    }
+}
 .taskbar{
     height: 38px;
     border-top: 1px solid rgba(255,255,255,0.5);
@@ -66,6 +74,7 @@ bottomright{
     width: 100%;
     backdrop-filter: blur(5px);
     outline-offset: 0;
+    animation: slide 0.3s ease-in-out;
 }
 .taskbar-btn{
     object-fit: cover;

@@ -16,7 +16,12 @@ function sendMsg(windowid, message){
     }
 }
 function sendInfo(element){
-    element.contentWindow.postMessage("id|" + element.parentElement.parentElement.parentElement.getAttribute("windowid"), "*")
+    const windowid = element.parentElement.parentElement.parentElement.getAttribute("windowid")
+    if (element.parentElement.parentElement.parentElement.className.includes("okna8")){
+        element.contentWindow.postMessage("YourID-" + windowid, "*");
+        return
+    }
+    element.contentWindow.postMessage("id|" + windowid, "*")
 }
 function getWnd(id){
     return document.querySelector(".window.n" + id)
@@ -57,10 +62,13 @@ function setInactive(){
         element.className = element.className.replace(" focus", "")
 }
 function showWindow(icon, num, doNotShowTray){
-    if (leftBar.querySelector(`.n${num}`)) {
-        windowSelectHandler(getWnd(num))
-        return;
+    try{
+        if (leftBar.querySelector(`.n${num}`)) {
+            windowSelectHandler(getWnd(num))
+            return;
+        }
     }
+    catch(e){}
     if (!doNotShowTray){
         try{
             leftBar.innerHTML += `
@@ -103,7 +111,7 @@ function windowMouseDown(event, elem, a, noResize){
     if (!touch) evName = "mouseup"
     else evName = "touchend"
     document.addEventListener(evName, e => {
-        let minsnap = 1
+        let minsnap = 10
         loop.drag = false; 
         iframeignore.innerHTML = "none"
         if (e.clientX){
@@ -111,8 +119,8 @@ function windowMouseDown(event, elem, a, noResize){
             clientY = e.clientY;
         }
         else{
-            clientX = activewindow.style.left;
-            clientY = activewindow.style.top;
+            clientX = +activewindow.style.left.substring(0, -2);
+            clientY = +activewindow.style.top.substring(0, -2);
             minsnap = 100
         }
         if (!noResize){
@@ -230,8 +238,8 @@ function snapRight(window){
 }
 addEventListener("resize", resizeHandler)
 onmessage = (e) => {
+    console.log(e.data)
     const commands = e.data.split("|")
-    console.log(commands)
     if (commands.length > 1){
         let wnd;
         try{

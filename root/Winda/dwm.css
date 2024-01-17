@@ -367,3 +367,18 @@ text{
     justify-content: space-between;
     flex-grow: 1;
 }
+@keyframes fadeout{
+    from {backdrop-filter: grayscale(0);}
+    to {backdrop-filter: grayscale(1);}
+}
+#changethemesplash{
+    background-image: url(./Resources/pleasewait.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    animation: fadeout 1s ease-in forwards;
+    z-index: 1000000;
+    position: fixed;
+    display: none;
+}

@@ -60,6 +60,7 @@ function AddWindow(window, ispopup, options, id){
     if (typeof options.left == "number") options.left += "px"
     if (typeof options.right == "number") options.right += "px"
     if (typeof options.bottom == "number") options.bottom += "px"
+    if (options.okna8) window.icon = "Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
     if (options.NoGUI) newWindow.className += " nogui"
     newWindow.setAttribute("windowid", id)
     if (options.noTray) newWindow.setAttribute("notray", "true")
@@ -85,11 +86,12 @@ function AddWindow(window, ispopup, options, id){
     newWindow.style.display = "none"
     if(options.alwaysontop) newWindow.className += " alwaysontop"
     if(options.alwaysbehind) newWindow.className += " alwaysbehind"
+    if(options.classes) newWindow.className += options.classes
     newWindow.innerHTML =
     `
     <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
         <left>
-            <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
+            <img src="${options.okna8 ? "../ProgramFiles/" + window.icon : window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
             <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
         </left>
         <div class="buttons">
@@ -113,8 +115,8 @@ function AddWindow(window, ispopup, options, id){
     </div>
     `
     windows.append(newWindow)
-    if(ispopup || options.noSelfOpen){
-        showWindow(window.icon, id)
+    if(ispopup || options.noSelfOpen || options.okna8){
+        showWindow(options.okna8 ? "../" + window.icon : window.icon, id)
     }
     broadcast("newprocess|" + id)
 }
@@ -197,7 +199,7 @@ async function loadOkna8App(packageName, path, name, args){
     if (!path) path = "../ProgramFiles/"
     path += packageName + "/"
     const id = getId()
-    AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "noSelfOpen": true, "title": packageName, "left": 50, "top": 50, "width": window.innerWidth - 100, "height": window.innerHeight - 100}, id)
+    AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "left": 50, "top": 50, "width": window.innerWidth - 100, "height": window.innerHeight - 100, "classes": " okna8"}, id)
 }
 
 function showTray(tray){
