@@ -62,6 +62,7 @@ function AddWindow(window, ispopup, options, id){
     if (typeof options.bottom == "number") options.bottom += "px"
     if (options.okna8) window.icon = "Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
     if (options.NoGUI) newWindow.className += " nogui"
+    if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
     newWindow.setAttribute("windowid", id)
     if (options.noTray) newWindow.setAttribute("notray", "true")
     if (options.left)
@@ -140,7 +141,7 @@ function addTray(id, trayicon, tray, options){
     newTray.style.width = trayicon.width + "px"
     newTray.innerHTML =
     `
-    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(${id}))"></div>
+    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="parent.showTray(parent.getTray(${id}))"></div>
     ${trayicon.innerhtml}
     `
     trayicons.append(newTray)
@@ -174,7 +175,7 @@ async function loadApp(packageName, path, args, id){
                 }
                 else if (info.tray) {
                     addTray(id, new TrayIcon(info.tray.width, 
-                        `<iframe src="${path}tray.html" ${info.tray.monochrome ? 'class="monochrome"' : ''} 
+                        `<iframe src="${path.replace("../ProgramFiles", "..", 1)}tray.html" ${info.tray.monochrome ? 'class="monochrome"' : ''} 
                         windowid="${id}" name="${info.title}" frameborder="0" sandbox="allow-scripts allow-same-origin" style="width: ${info.tray.width}px"></iframe>`, info.title), 
                         new Tray(info.width, info.height, `<iframe src="${path}index.html" frameborder="0"></iframe>`, info.title)
                     )

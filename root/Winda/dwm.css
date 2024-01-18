@@ -196,6 +196,19 @@ select{
     margin: 8px;
     padding-top: 5px;
 }
+.rightclickdialogtray{
+    position: absolute;
+    bottom: 40px;
+    margin: 8px;
+    padding-top: 5px;
+    /* animation: slide 0.2s ease-out; */
+}
+.rightclickdialogtray > div > div{
+    margin: 2px
+}
+.rightclickdialogtray > div{
+    padding: 5px;
+}
 table{
     border-collapse: collapse;
 }

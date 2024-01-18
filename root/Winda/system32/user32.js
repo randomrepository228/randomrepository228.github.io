@@ -112,6 +112,7 @@ function windowMouseDown(event, elem, a, noResize){
     else evName = "touchend"
     document.addEventListener(evName, e => {
         let minsnap = 10
+        let minsnapx = 0
         loop.drag = false; 
         iframeignore.innerHTML = "none"
         if (e.clientX){
@@ -119,13 +120,16 @@ function windowMouseDown(event, elem, a, noResize){
             clientY = e.clientY;
         }
         else{
-            clientX = +activewindow.style.left.substring(0, -2);
-            clientY = +activewindow.style.top.substring(0, -2);
-            minsnap = 100
+            clientX = +activewindow.style.left.substring(0, activewindow.style.left.length - 2);
+            let wndwidth = activewindow.getBoundingClientRect().width
+            if (clientX + wndwidth > innerWidth) clientX += wndwidth
+            clientY = +activewindow.style.top.substring(0, activewindow.style.top.length - 2);
+            minsnap = 1
+            minsnapx = wndwidth / -4
         }
         if (!noResize){
-            if (clientX < minsnap) {snapLeft(activewindow); return}
-            if (clientX > innerWidth - minsnap - 1) {snapRight(activewindow); return}
+            if (clientX < minsnap + minsnapx) {snapLeft(activewindow); return}
+            if (clientX > innerWidth - minsnap - minsnapx) {snapRight(activewindow); return}
             if (clientY < minsnap) maximise(activewindow)
         }
     }, {once: true});

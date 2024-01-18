@@ -68,7 +68,9 @@
                 <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
                 <label for="verboseBoot">Verbose boot</label><br>
                 <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
-                <label for="fastBoot">Fast boot (Skip boot animation)</label>
+                <label for="fastBoot">Fast boot (Skip boot animation)</label><br>
+                <input type="checkbox" name="maximiseWindows" id="maximiseWindows" onchange="localStorage.maximiseWindows = this.checked ? 'true' : 'false'">
+                <label for="maximiseWindows">Maximise windows on start</label>
             </div>
             <div class="personalize" style="display: none" id="Personalize">
                 <div class="controlContent" id="ControlContentPersonalize">
@@ -239,6 +241,7 @@
                 document.querySelector("select").value = localStorage.theme
                 verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
                 fastBoot.checked = localStorage.fastBoot == "true" ? true : false
+                maximiseWindows.checked = localStorage.maximiseWindows == "true" ? true : false
                 parent.showWindow("../control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>
