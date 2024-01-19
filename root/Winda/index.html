@@ -76,7 +76,7 @@
         }
         #verboseBoot{
             color: white;
-            height: calc(100vh - 82px);
+            height: calc(100% - 82px);
             overflow: hidden;
         }
         </style>
@@ -101,6 +101,7 @@
                 background-repeat: no-repeat;
             }
         </style>
+        <style id="maximisetransparency"></style>
         <style id="iframeignore"></style>
         <script src="applist.js"></script>
         <meta name="title" content="Winda7">
@@ -164,7 +165,7 @@
         <!-- <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/left.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/center.png">
         <link onload="log(this.getAttribute('href'))" as="image" rel="preload" href="./Resources/selectionSmall/hover/right.png"> -->
-        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no" id="dpiscale">
         <style>
             @media (max-aspect-ratio: 1/1) {
                 #verboseBoot{
@@ -214,7 +215,7 @@
                 if (!localStorage.showBootMenu)
                     window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
             </script> -->
-            <div style="display: none; text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50vh + 100px); top: calc(50vh - 100px); width: 100vw;">
+            <div style="display: none; text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50% + 100px); top: calc(50% - 100px); width: 100vw;">
                 <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
                     <source src="boot.webm" type="video/webm">
                 </video>
@@ -267,6 +268,7 @@
         </div>
         <script src="system32/ntoskrnl.js"></script>
         <script src="system32/user32.js"></script>
+        <script src="system32/fs.js"></script>
         <div id="windows"></div>
         <div id="trays">
             <div class="dock-br winapi_transparent winapi_shadow n1 tray" windowid="1" name="Clock" style="display: none; width: 322px; height: 280px;">

@@ -47,6 +47,10 @@ function connectScript(path) {
     document.head.append(script)
 }
 function changeTheme(a){
+    if (a != "aero" && localStorage.maximiseTransparency){
+        localStorage.maximiseTransparency = "false"
+        refreshTransparency()
+    }
     localStorage.theme = a
     theme.href = "./Resources/" + a + "/style.css"
     for (let i = 0; i < frames.length; i++) {
@@ -111,8 +115,10 @@ function AddWindow(window, ispopup, options, id){
     <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
     <div class="content${options.noGUI ? 'nostyle' : ''}">
         <ignore></ignore>
-        <text style="width: ${options.width}px; height: ${options.height}px">${window.innerhtml}</text>
-        ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
+        <text style="width: ${options.width}px; height: ${options.height}px">
+            ${window.innerhtml}
+            ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
+        </text>
     </div>
     `
     windows.append(newWindow)
@@ -386,3 +392,10 @@ function setWallpaperStretch(stretchmode){
 }
 changeWallpaper(localStorage.wallpaper, true)
 setWallpaperStretch(localStorage.wallpaperstretch)
+function refreshTransparency(){
+    maximisetransparency.innerHTML = localStorage.maximiseTransparency == "true" && localStorage.theme == "aero" ? ".maximised{background-color: black !important; backdrop-filter: none !important}" : ""
+}
+function refreshDpi(){
+    dpiscale.setAttribute("content", `width=device-width, initial-scale=${localStorage.dpiscale == "true" ? 0.5 : 1}, user-scalable=no`)
+}
+refreshDpi()

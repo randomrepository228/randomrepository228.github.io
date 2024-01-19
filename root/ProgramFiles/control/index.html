@@ -70,7 +70,15 @@
                 <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
                 <label for="fastBoot">Fast boot (Skip boot animation)</label><br>
                 <input type="checkbox" name="maximiseWindows" id="maximiseWindows" onchange="localStorage.maximiseWindows = this.checked ? 'true' : 'false'">
-                <label for="maximiseWindows">Maximise windows on start</label>
+                <label for="maximiseWindows">Maximise windows on start</label><br>
+                <input type="checkbox" name="maximiseTransparency" id="maximiseTransparency" onchange="localStorage.maximiseTransparency = this.checked ? 'true' : 'false';parent.refreshTransparency()">
+                <label for="maximiseTransparency">Maximised windows not transparent</label><br>
+                <input type="checkbox" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.checked ? 'true' : 'false';parent.refreshDpi()">
+                <label for="dpiscale">Do not scale based on system DPI</label><br>
+                <input type="checkbox" name="aerosnap" id="aerosnap" onchange="localStorage.aerosnap = this.checked ? 'true' : 'false';">
+                <label for="aerosnap">Turn off aero snap</label><br>
+                <!-- <input type="range" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.value">
+                <label for="dpiscale">Maximised windows transparent</label> -->
             </div>
             <div class="personalize" style="display: none" id="Personalize">
                 <div class="controlContent" id="ControlContentPersonalize">
@@ -242,6 +250,8 @@
                 verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
                 fastBoot.checked = localStorage.fastBoot == "true" ? true : false
                 maximiseWindows.checked = localStorage.maximiseWindows == "true" ? true : false
+                dpiscale.checked = localStorage.dpiscale == "true" ? true : false
+                aerosnap.checked = localStorage.aerosnap == "true" ? true : false
                 parent.showWindow("../control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>

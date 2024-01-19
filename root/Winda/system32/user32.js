@@ -171,7 +171,7 @@ function move(e){
     if(loop.drag){
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
         if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
-            activewindow.className = activewindow.className.replace("maximised ", "");
+            activewindow.className = activewindow.className.replace(" maximised", "");
             activewindow.className = activewindow.className.replace("snap-right ", "")
             activewindow.className = activewindow.className.replace("snap-left ", "")
             activewindow.style.top = "-10px";
@@ -235,9 +235,11 @@ function move(e){
     }
 }
 function snapLeft(window){
+    if (localStorage.aerosnap == "true") return
     window.className = window.className.replace("", "snap-left ")
 }
 function snapRight(window){
+    if (localStorage.aerosnap == "true") return
     window.className = window.className.replace("", "snap-right ")
 }
 addEventListener("resize", resizeHandler)
@@ -426,12 +428,12 @@ function minimiseAll(){
 }
 function maximiseWindow(window){
     if (window.className.search("maximised") == -1){
-        window.className = window.className.replace("", "maximised ")
+        window.className += " maximised"
         window.className = window.className.replace("snap-right ", "")
         window.className = window.className.replace("snap-left ", "")
     }
     else
-        window.className = window.className.replace("maximised ", "")
+        window.className = window.className.replace(" maximised", "")
 }
 maximise = maximiseWindow
 // OKNA 8 COMPATIBILITY MODE
