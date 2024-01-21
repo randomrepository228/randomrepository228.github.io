@@ -13,6 +13,10 @@
             body {
                 overflow: auto; 
             }
+            #segoe_slboot{
+                font-family: 'Segoe Boot Semilight';
+                font-size: 25px;
+            }
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <script>
@@ -54,8 +58,15 @@
             <article role="tabpanel" id="tab-B" hidden>Tab B is active</article>
             <article role="tabpanel" id="tab-C" hidden>Tab C is active</article>
             <article role="tabpanel" id="tab-D" hidden>Tab D is inactive</article>
-          </section>
+        </section>
+        <div id="segoe_slboot"></div>
         <script>
+            let charCode = 57426
+            setInterval(() =>{
+                segoe_slboot.innerHTML = String.fromCharCode([charCode])
+                charCode++
+                if (charCode == 57548) charCode = 57426
+            }, 25)
             let thisWindow = frameElement.parentElement.parentElement.parentElement // главное окно
             parent.showWindow("../ExampleApp/icon.png", thisWindow.getAttribute("windowid")); // показывает окно
             // thisWindow.children[0].children[0].lastElementChild.innerHTML - название окна

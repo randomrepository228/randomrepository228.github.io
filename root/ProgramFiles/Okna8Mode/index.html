@@ -54,19 +54,45 @@
             #table{
                 overflow-x: auto;
                 height: calc(100vh - 75px);
+                scrollbar-arrow-color: transparent;
             }
             .title, tr{
                 display: flex;
                 align-items: center;
             }
+            #appSplash{
+                position: absolute;
+                inset: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: forestgreen;
+            }
+            @keyframes fade-in{
+                0%{
+                    transform: translateX(20px);
+                    opacity: 0;
+                    overflow: hidden;
+                }
+                99%{
+                    overflow: hidden;
+                }
+                100%{
+                    transform: none;
+                    opacity: 1;
+                }
+            }
+            #table{
+                animation: fade-in 0.2s ease-in-out;
+            }
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
     <body>
+        <div id="appSplash"></div>
         <div class="flex">
             <div class="title">Select An Okna8 App</div>
             <div id="table"></div>
-            <div class="flex">
+        </div>
         <script src="./script/search-data.js"></script>
         <script>
             if (!localStorage.OKNA8_locale){
@@ -98,7 +124,10 @@
                 col.appendChild(row);
                 table.appendChild(col);
             }
-            parent.showWindow("../Okna8Mode/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+            window.onload = (e) => {
+                appSplash.animate([{opacity: 1, pointerEvents: "none"}, {opacity: 0, pointerEvents: "none"}], {duration: 300, iterations: 1})
+                setTimeout(() => appSplash.remove(), 300)
+            }
         </script>
     </body>
 </html>
