@@ -165,7 +165,7 @@ function getId(){
     }
 }
 async function loadApp(packageName, path, args, id){
-    if (!path) path = "../bin/"
+    if (!path) path = "bin/"
     path += packageName + "/"
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
@@ -196,13 +196,13 @@ async function loadApp(packageName, path, args, id){
 }
 
 async function loadAppNoInfo(packageName, path, name, args){
-    if (!path) path = "../ProgramFiles/"
+    if (!path) path = "bin/"
     path += packageName + "/"
     const id = getId()
     AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, name, `<iframe src="${path}index.html" args="${args}" sandbox="allow-scripts allow-same-origin" frameborder="0">`, '', true), undefined, {"window": true, "noSelfOpen": true, "title": packageName}, id)
 }
 async function loadOkna8App(packageName, path, name, args){
-    if (!path) path = "../bin/"
+    if (!path) path = "bin/"
     path += packageName + "/"
     const id = getId()
     AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "left": 50, "top": 50, "width": window.innerWidth - 100, "height": window.innerHeight - 100, "classes": " okna8"}, id)
