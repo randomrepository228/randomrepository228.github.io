@@ -1,0 +1,17 @@
+div.nav {
+    width:100vw;height: 10vh;
+    background-color: black;
+    position: fixed;
+    left:0;bottom:0
+}
+
+div.nav > input {
+    height: 6vh;
+    position: fixed;
+    left:10vw; bottom:2vh;
+    outline: 0;
+    border: 0.5vh solid rgb(82,82,82);
+    background-color: black;
+    color:white;
+    width: 70vw;
+}

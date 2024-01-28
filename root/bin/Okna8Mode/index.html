@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            html { 
+                margin: 0;
+                overflow: hidden;
+            } 
+            body {
+                overflow: hidden; 
+                display: flex;
+                align-items: flex-start;
+                background-color: white;
+                background-color: rgb(36, 36, 36);
+                margin: 0;
+            }
+            *{
+                margin: 0;
+                padding: 0; 
+                font-family: 'Segoe UI';
+            }
+            .flex{
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            .title{
+                background-color: forestgreen;
+                background-image: none;
+                font-size: 25px;
+                color: white;
+                height: 75px;
+                font-weight: 300;
+                padding-left: 20px;
+            }
+            tr{
+                height: 50px;
+                font-size: 15px;
+                color: white;
+                width: 100%;
+                transition: 0.1s ease-in-out;
+            }
+            tr:hover{
+                background-color: rgb(80, 80, 80);
+            }
+            tr:active{
+                transform: scale(0.95);
+            }
+            td, title{
+                padding-left: 30px;
+            }
+            #table{
+                overflow-x: auto;
+                height: calc(100vh - 75px);
+                scrollbar-arrow-color: transparent;
+            }
+            .title, tr{
+                display: flex;
+                align-items: center;
+            }
+            #appSplash{
+                position: absolute;
+                inset: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: forestgreen;
+            }
+            @keyframes fade-in{
+                0%{
+                    transform: translateX(20px);
+                    opacity: 0;
+                    overflow: hidden;
+                }
+                99%{
+                    overflow: hidden;
+                }
+                100%{
+                    transform: none;
+                    opacity: 1;
+                }
+            }
+            #table{
+                animation: fade-in 0.2s ease-in-out;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    </head>
+    <body>
+        <div id="appSplash"></div>
+        <div class="flex">
+            <div class="title">Select An Okna8 App</div>
+            <div id="table"></div>
+        </div>
+        <script src="./script/search-data.js"></script>
+        <script>
+            if (!localStorage.OKNA8_locale){
+                localStorage.OKNA8_NetworkDetecting = "true"
+                localStorage.OKNA8_locale = "en-us"
+                localStorage.OKNA8_lockscreenWallpaper = "img104"
+                localStorage.OKNA8_pcname = "Okna 8 Runtime"
+                localStorage.OKNA8_setupState = "1"
+                localStorage.OKNA8_soundlevel = "50"
+                localStorage.OKNA8_user_user0_StartScreenBackground = "22000"
+                localStorage.OKNA8_user_user0_color_background = "0,60,0"
+                localStorage.OKNA8_user_user0_color_foreground = "22,153,0"
+                localStorage.OKNA8_user_user0_desktopWallpaper = "img0"
+                localStorage.OKNA8_user_user0_eosnotify_skip = "true"
+                localStorage.OKNA8_user_user0_password = ""
+                localStorage["OKNA8_user_user0_startScreen-layout"] = "92metrotile, wide, 2, rgb(1,111,193), rgb(0,141,211), Mail, rgb(1,111,193), ../../metro/Mail, |metrotile, wide, 14, rgb(81,51,171), rgb(100,62,191), Sports, rgb(81,51,171), ../../metro/Sports, |metrotile, standart, 10, rgb(210,71,38), rgb(220,87,46), People, rgb(210,71,38), ../../metro/People, |metrotile, standart, 13, rgb(0,175,240), rgb(26,200,243), Skype, rgb(0,175,240), ../../metro/Skype, |desktoptile, wide, 6|metrotile, wide, 12, rgb(81,51,171), rgb(100,62,191), Calendar, rgb(81,51,171), ../../metro/Calendar, |metrotile, wide, 15, rgb(0,138,0), rgb(0,166,0), Money, rgb(0,138,0), ../../metro/Money, |metrotile, large, 11, rgb(38,114,236), rgb(46,141,239), Weather, rgb(38,114,236), ../../metro/Weather, |metrotile, standart, 5, rgb(38,114,236), rgb(46,141,239), InternetExplorer, rgb(38,114,236), ../../metro/InternetExplorer, |metrotile, standart, 4, rgb(210,71,38), rgb(220,86,46), Music, rgb(210,71,38), ../../metro/Music, |metrotile, wide, 16, rgb(0,130,153), rgb(0,160,177), Photos, rgb(0,130,153), ../../metro/Photos, "
+                localStorage.OKNA8_user_user0_theme_color = "42,81,67"
+                localStorage.OKNA8_user_user0_userPrepared = "true"
+                localStorage.OKNA8_user_user0_username = "Okna 8 Mode User"
+                localStorage.OKNA8_users = "user0"
+            }
+            for (let i = 1; i < LOCALE_searchdata.length; i++){
+                if (LOCALE_searchdata[i][0].startsWith("desktop:") || LOCALE_searchdata[i][0] == "DESKTOP") continue
+                const withspaces = LOCALE_searchdata[i][0].replace(/([A-Z])/g, " $1").trim()
+                let col = document.createElement("tr")
+                col.setAttribute("onclick", `parent.loadOkna8App('${LOCALE_searchdata[i][0]}', './bin/Okna8Mode/apps/metro/', '${withspaces}')`)
+                let row = document.createElement("td")
+                row.innerHTML = withspaces;
+                col.appendChild(row);
+                table.appendChild(col);
+            }
+            window.onload = (e) => {
+                appSplash.animate([{opacity: 1, pointerEvents: "none"}, {opacity: 0, pointerEvents: "none"}], {duration: 300, iterations: 1})
+                setTimeout(() => appSplash.remove(), 300)
+            }
+        </script>
+    </body>
+</html>

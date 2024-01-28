@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="../../../style/fonts.css">
+        <link rel="stylesheet" href="../../../style/main.css">
+        <link rel="stylesheet" href="../../../style/metroui.css">
+        <link rel="stylesheet" href="registryeditor.css">
+        <script src="../../../script/jquery.js"></script>
+        <div class="metrosplash" style="background-color:rgb(169,25,62)"><img src="AppSplash.png" alt=""></div>
+        <script>
+            function addScript(src){
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = false; 
+                document.head.appendChild(script);
+            }
+
+            addScript('../../../localization/' + localStorage.getItem('OKNA8_locale') + '/apps/registryeditor.js')
+            addScript('registryeditor.js')
+        </script>
+        <script src="../../../script/metro.js"></script>
+    </head>
+    <body>
+        <div class="leftpanel Dark">
+            <h1 style="margin-top:0;animation: showani 0.4s 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;opacity:0;">Навигация</h1>
+            <div class="elements">
+            </div>
+        </div>
+        <div class="main"></div>
+            
+        <script>
+        window.onload = function(){
+            setTimeout(() => {
+                $('.metrosplash').addClass('metrosplashhideani');
+                setTimeout(function(){
+                    $('.main').css('display', 'block')
+                    setTimeout(() => {
+                        $('.metrosplash').addClass('hidden')
+                    }, 100);
+                },100)                
+            }, 300);        
+        }
+        </script>
+    </body>
+</html>

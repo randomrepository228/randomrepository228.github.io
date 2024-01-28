@@ -1,0 +1,8 @@
+{
+    "width": 300, 
+    "height": 500, 
+    "title": "Okna 8 Mode",
+    "icon": "icon.png",
+    "window": true,
+    "noSelfOpen": true
+}

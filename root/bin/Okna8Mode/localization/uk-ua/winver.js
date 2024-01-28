@@ -1,0 +1,4 @@
+﻿var LOCALE_winver = [
+    "",
+    "<img src=\"../../../img/logo/winver1.bmp\" draggable=\"false\" alt=\"\"><div class=\"dialog-separator\" style=\"width: 425px; margin-left:15px; margin-top:5px\"></div><p style=\"margin-top: 16px\">Майкрософт Windows</p><p>Версія ((VER)) (складання ((BUILD)))</p><p>(c) Корпорація Майкрософт, 2013. Всі права захищені.</p><p>Операційна Windows 8.1 Професійна та користувальницька інтерфейс у ній захищені правами на товарні знаки та інші об'єкти інтелектуальної власності у США та інших країнах.</p><p style=\"margin-top:40px\">Цей продукт ліцензовано відповідно до < a>умовами ліцензійної угоди на використання програмного забезпечення корпорації Майкрософт</a>, виданої:</p><p style=\"margin-left:20px;margin-top:10px\">Windows User</p><button style=\"width:73px;position:absolute;right:10px;bottom:10px\" onclick=\"closedialog()\">OK</button>"
+]

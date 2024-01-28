@@ -1,0 +1,275 @@
+.metroAppHeader {
+    width: 100vw;
+    top: -30px;
+    height: 30px;
+    background-color: rgb(17, 17, 17);
+    position: fixed;
+    left:0;
+    z-index: 99990;
+    transition: 0.2s 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    animation: metroAppHeaderAni 4s cubic-bezier(0.1, 0.9, 0.2, 1)
+}
+
+@keyframes metroAppHeaderAni {
+    0%   {top:-30px}
+    10%  {top:0px}
+    90%  {top:0px}
+    100% {top:-30px;}
+}
+
+.metroAppHeader_container:hover .metroAppHeader {
+    top:0;
+    transition: 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.metroAppHeader_dropbtn {
+    width: 100vw;
+    height: 10px;
+    position: fixed;
+    top:0;left:0;
+    z-index: 99990;
+}
+
+.metroAppHeader h6 {
+    font-size: 12;
+    font-weight: 400;
+    color: white;
+    padding-top: 4px;
+    text-align: center;
+}
+
+.METRO_close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 30px;
+    height: 30px;
+    background-image: url(../img/METRO_header/close.png);
+}
+
+.METRO_close:hover {background-color: rgb(224,67,67);}
+.METRO_close:active {background-color: rgb(199,80,80);}
+
+.METRO_minimize {
+    position: absolute;
+    right: 30px;
+    top: 0px;
+    width: 30px;
+    height: 30px;
+    background-image: url(../img/METRO_header/minimize.png);
+}
+
+.METRO_minimize:hover {background-color: rgb(54,101,179);}
+.METRO_minimize:active {background-color: rgb(61,96,153);}
+
+.metroIcon {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+}
+
+@keyframes METRO_headerAni {
+    0%   { transform: translateY(0px); }
+    100% { transform: translateY(30px); }
+}
+
+.nocursor {
+    cursor: none;
+}
+
+.hidden {
+    display: none;
+}
+
+a {
+    cursor:default;
+}
+
+.metrosplash {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 99995;
+}
+
+.metrosplash img {
+    position: absolute;
+    top: 50%;                 
+    left: 50%;                 
+    transform: scale(1,1) translate(-50%,-50%);
+}
+
+.metrosplashhideani {
+    animation: metrosplashhideaniani 0.2 cubic-bezier(0.1, 0.9, 0.2, 1) forwards
+}
+
+@keyframes metrosplashhideaniani {
+    0%{opacity: 1;}
+    100%{opacity: 0;}
+}
+
+button{
+    cursor: default;
+}
+
+.progress-ring {
+    position: relative;
+    padding-top: 8px;
+    width: 40px;
+    height: 40px;
+    margin: auto;
+}
+
+.progress-ring .progress-ring__wrap {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+}
+
+.progress-ring .progress-ring__wrap .progress-ring__circle {
+    transform: rotate(225deg);
+    animation-iteration-count: infinite;
+    animation-name: orbit;
+    animation-duration: 4000ms;
+    width: 38px;
+    height: 38px;
+    opacity: 0;
+}
+
+.progress-ring .progress-ring__wrap .progress-ring__circle:after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height:6px;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.progress-ring .progress-ring__wrap:nth-child(2) {transform: rotate(-14deg);}
+.progress-ring .progress-ring__wrap:nth-child(2) .progress-ring__circle {animation-delay: 133.33333333ms;}
+.progress-ring .progress-ring__wrap:nth-child(3) {transform: rotate(-28deg);}
+.progress-ring .progress-ring__wrap:nth-child(3) .progress-ring__circle {animation-delay: 266.66666667ms;}
+.progress-ring .progress-ring__wrap:nth-child(4) {transform: rotate(-42deg);}
+.progress-ring .progress-ring__wrap:nth-child(4) .progress-ring__circle {animation-delay: 400ms;}
+.progress-ring .progress-ring__wrap:nth-child(5) {transform: rotate(-56deg);}
+.progress-ring .progress-ring__wrap:nth-child(5) .progress-ring__circle {animation-delay: 533.33333333ms;}
+
+@keyframes orbit{0%{transform:rotate(225deg);opacity:1;animation-timing-function:cubic-bezier(0.1, 0.9, 0.2, 1)-out}7%{transform:rotate(345deg);animation-timing-function:linear}35%{transform:rotate(495deg);animation-timing-function:cubic-bezier(0.1, 0.9, 0.2, 1)-in-out}42%{transform:rotate(690deg);animation-timing-function:linear}70%{transform:rotate(835deg);opacity:1;animation-timing-function:linear}76%{opacity:1}77%{transform:rotate(955deg);animation-timing-function:cubic-bezier(0.1, 0.9, 0.2, 1)-in}100%,78%{transform:rotate(955deg);opacity:0}}
+
+.metro_checkbox {
+    width: 50px;
+    height: 19px;
+    background-color: rgb(166,166,166);
+}
+
+.metro__checkbox {
+    width: 46px;
+    height: 15px;
+    background-color: rgb(166,166,166);
+    border: 1px white solid;
+    position: absolute;
+    top:2px;left:2px;
+}
+
+.metro___checkbox {
+    background-color: black;
+    width: 12px;height: 19px;
+    position: absolute;
+    left: 0;top:0;
+    z-index: 1;
+}
+
+.metro__activecheckbox {
+    width: 46px;
+    height: 15px;
+    background-color: rgb(166,166,166);
+    border: 1px white solid;
+    position: absolute;
+    top:2px;left:2px;
+}
+
+@keyframes appclose {
+    100% {transform: scale(0.9); opacity: 0;}
+}
+
+.app {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.AppSplashContainer {
+    position: fixed;
+    perspective: 300vh;
+    animation: SplashContainerAnim 1s ease forwards;
+    display: none;
+    z-index: 99990;
+    transform-origin: left top;
+    width: 100vw;
+    height: 100vh;
+}
+
+.AppSplashContainer .Splash {
+    width: 100%;
+    height: 100%;
+    animation: SplashAnim 1s ease forwards;
+    display: none;
+    transform-origin: 50% 70%;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@keyframes SplashAnim {
+    0% {transform: rotateY(-180deg);}
+    55% {transform: rotateY(0);}
+}
+
+@keyframes SplashContainerAnim {
+    100% {scale: 1 1; top: 0; left: 0;}
+}
+
+.AppSplashContainer .Splash > img {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transform-origin: center center;
+}
+
+@keyframes SplashImageAnim {
+    0% {scale: 0.3; transform: translateX(-80%) translateY(-80%)}
+    100% {scale: 1; transform: translateX(-50%) translateY(-50%)}
+}
+
+.AppSplashContainerV2 {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    /*background: linear-gradient(90deg, rgb(22, 133, 59) 0%, rgb(57, 202, 89) 100%);*/
+    perspective: 100vh;
+    z-index: 99999;
+    display: none;
+}
+
+.AppSplashContainerV2 .SplashV2 {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(00deg, rgba(22, 39, 133, 0.5) 0%, rgba(57, 137, 202, 0.5) 100%);
+    animation: SplashAnimV2 1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    transform-origin: 50% 50%;
+}
+
+@keyframes SplashAnimV2 {
+    0% {transform: rotateY(10deg); scale: 0.7;}
+    100% {transform: rotateY(0); scale: 1;}
+}
+
+.AppSplashContainerV2 .SplashV2 > img {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transform-origin: center center;
+}

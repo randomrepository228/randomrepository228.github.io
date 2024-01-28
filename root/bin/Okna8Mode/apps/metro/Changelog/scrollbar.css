@@ -1,0 +1,37 @@
+::-webkit-scrollbar {
+    width: 17px;
+    background-color: rgb(228,228,228);
+
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: rgb(205, 205, 205);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(205,205,205);
+    border: 1px solid rgb(195,195,195);
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:active{
+    background-color: rgb(65,65,65);
+}
+
+::-webkit-scrollbar-button:vertical:start:decrement {
+    background: url(scrollbar/v_t.png);
+    height: 33px;
+}
+
+::-webkit-scrollbar-button:vertical:end:increment {
+    background:url(scrollbar/v_d.png);
+    height: 33px;
+}
+
+::-webkit-scrollbar-button:vertical:start:decrement:active {
+    background: url(scrollbar/v_t_a.png);
+}
+
+::-webkit-scrollbar-button:vertical:end:increment:active {
+    background:url(scrollbar/v_d_a.png);
+}
