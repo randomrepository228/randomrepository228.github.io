@@ -1,0 +1,9 @@
+{
+    "width": 429, 
+    "height": 176, 
+    "title": "Run",
+    "icon": "icon.png",
+    "window": true,
+    "xOnly": true,
+    "noResize": true
+}

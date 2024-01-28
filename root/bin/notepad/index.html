@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <script src="../../../sys/ver.js"></script>
+        <script src="../../../res/script/jquery.js"></script>
+        <script src="../../../res/script/WindowsCommunication.js"></script>
+        <link rel="stylesheet" href="../../../res/style/fonts.css">
+        <link rel="stylesheet" href="../../../res/style/shellstyle.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+        <title>Безымянный — Блокнот</title>
+        <style type="text/css">
+          body {
+            border: none;
+            margin: 1;
+            font-size: 16px;
+           height: 10000px
+          }
+      
+        </style>
+    </head>
+
+        <body>
+          <div class="menubar", style="width: 100vw; top: 0px; left: 0px; position: fixed;">
+            <div class="element" id="menubarElement-view">Файл <div></div></div>
+            <div class="element" id="menubarElement-view">Правка <div></div></div>
+            <div class="element" id="menubarElement-view">Формат <div></div></div>
+            <div class="element" id="menubarElement-view">Вид <div></div></div>
+            <div class="element" id="menubarElement-view">Справка <div></div></div>
+            <div id="RibbonOnOff"><div style="background-position-y: -221px;"></div></div>
+        </div>
+            <div id="editor" contenteditable="true"
+              style="display: block; height: 50%; width: auto; text-align: left; left: -36px; outline: none; position: static;">
+            </div>
+            <script>
+              if (localStorage.getItem('text_in_editor') !== null) {
+                document.getElementById('editor').innerHTML = localStorage.getItem('text_in_editor');
+              }
+              document.addEventListener('keydown', function (e) {
+                localStorage.setItem('text_in_editor', document.getElementById('editor').innerHTML);
+              });
+            </script>
+          </body>
+</html>

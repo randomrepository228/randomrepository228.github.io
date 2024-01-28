@@ -1,0 +1,22 @@
+.right-bar{
+    margin-left: auto; 
+    margin-right: 0;
+}
+.window-tray{
+    min-width: 34px;
+    box-sizing: border-box;
+}
+.window-tray img{
+    height: 16px;
+    width: 16px;
+}
+.taskbar{
+    height: 27px;
+    bottom: 0;
+}
+.show-desktop{
+    height: 25px;
+}
+.taskbar-btn{
+    bottom: -5px;
+}

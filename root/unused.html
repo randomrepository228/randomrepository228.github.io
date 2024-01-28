@@ -2,6 +2,10 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <!-- <script>
+            if(!localStorage.locale) window.location.href = "../Setup/"
+            if(!localStorage.user) window.location.href = "../Setup/registeruser"
+        </script> -->
         <script>
             let preload = [];
             async function log(path, noText){
@@ -165,11 +169,42 @@
             <div style="display: none; height: 100%;">
                 <cntr style="color: black">Loading Winda Files</cntr><br>
                 <div id="verboseBoot"></div>
+                <!-- Выберите операционную систему для запуска<br>
+                <grey>(Выбирать можно стрелочками)</grey><br>
+                <option link="./Winda" class="selected first">Winda7</option>
+                <option link="../">Другая система</option> -->
                 <cntr class="bottom"  style="color: black">
                     <left>Please wait...</left>
                     <right></right>
                 </cntr>
             </div>
+            <!-- <script>
+                optionlist = document.getElementsByTagName("option")
+                selected = 0
+                function tapHandler(e){
+                    // if (e.key == "ArrowUp"){
+                    //     if(selected > 0){
+                    //         optionlist[selected].className = undefined
+                    //         selected--
+                    //         optionlist[selected].className = "selected"
+                    //     }
+                    // }
+                    // if (e.key == "ArrowDown"){
+                    //     if(selected < optionlist.length-1){
+                    //         optionlist[selected].className = undefined
+                    //         selected++
+                    //         optionlist[selected].className = "selected"
+                    //     }
+                    // }
+                    // if (e.key == "Enter"){
+                        window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+                    // }
+                }
+                document.addEventListener("mousedown", (e) => tapHandler(e))
+                document.addEventListener("keydown", (e) => {if (e.keyCode === 13) tapHandler(e)})
+                if (!localStorage.showBootMenu)
+                    window.location.href = document.getElementsByClassName("selected")[0].getAttribute("link")
+            </script> -->
             <div style="display: none; text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50% + 100px); top: calc(50% - 100px); width: 100%;">
                 <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
                     <source src="boot.webm" type="video/webm">
@@ -197,6 +232,13 @@
 
         </div>
         <div class="explorer" style="display: none;">
+            <!-- <div class="rightclickdialogtray winapi_transparent winapi_shadow">
+                <div class="content">
+                    <div>INSERT WINDOW TITLE HERE</div>
+                    <div>Pin to taskbar</div>
+                    <div>Close Window</div>
+                </div>
+            </div> -->
             <div class="start-menu winapi_transparent">
                 <div class="left-start"></div>
                 <div class="right-start">

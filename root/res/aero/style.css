@@ -1,0 +1,320 @@
+input[type="checkbox"] + label{
+    background-image: url("../checkbox/unchecked/normal.png");
+}
+input[type="checkbox"]:hover + label{
+    background-image: url("../checkbox/unchecked/hover.png");
+}
+input[type="checkbox"]:active + label{
+    background-image: url("../checkbox/unchecked/pressed.png");
+}
+input[type="checkbox"]:checked + label{
+    background-image: url("../checkbox/checked/normal.png");
+}
+input[type="checkbox"]:checked:hover + label{
+    background-image: url("../checkbox/checked/hover.png");
+}
+input[type="checkbox"]:checked:active + label{
+    background-image: url("../checkbox/checked/pressed.png");
+}
+.dash{
+    background-image: url("./buttons/min/normal.png");
+    width: 29px;
+}
+.x::after{
+    margin-left: -1px;
+    width: 69px;
+    height: 37px;
+    box-sizing: content-box;
+    background-image: url("./buttons/close/glow.png");
+    background-size: 100% 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.3s;
+}
+.square::after, .dash::after{
+    margin-left: 1px;
+    width: 52px;
+    height: 37px;
+    box-sizing: content-box;
+    background-image: url("./buttons/glow.png");
+    background-size: 100% 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.1s ease-in-out;
+}
+.square:hover::after, .square:active::after, .dash:hover::after, .dash:active::after, .x:active::after, .x:hover::after{
+    opacity: 1;
+}
+.square[disabled]::after, .dash[disabled]::after, .x[disabled]::after{
+    display: none;
+}
+.square:hover::after, .square:active::after{
+    margin-left: -1px;
+    width: 52px;
+}
+.x{
+    background-image: url("./buttons/close/normal.png");
+    width: 49px;
+    z-index: 5;
+}
+.x:hover{
+    background-image: url("./buttons/close/hover.png");
+}
+.x:active{
+    background-image: url("./buttons/close/pressed.png");
+}
+.x:only-child{
+    background-image: url("./buttons/close/lonenormal.png");
+}
+.x:only-child:hover{
+    background-image: url("./buttons/close/lonehover.png");
+}
+.x:only-child:active{
+    background-image: url("./buttons/close/lonepressed.png");
+}
+.square{
+    background-image: url("./buttons/max/normal.png");
+    width: 29px;
+}
+.square:hover{
+    background-image: url("./buttons/max/hover.png");
+}
+.square:active{
+    background-image: url("./buttons/max/pressed.png");
+}
+.square[disabled]:hover{
+    background-image: url("./buttons/max/normal.png");
+}
+.square[disabled]:active{
+    background-image: url("./buttons/max/normal.png");
+}
+.dash:hover{
+    background-image: url("./buttons/min/hover.png");
+}
+.dash:active{
+    background-image: url("./buttons/min/pressed.png");
+}
+.winapi_transparent{
+    padding: 5px;
+    background-color: hsla(209, 68%, 50%, 0.15);
+    backdrop-filter: blur(3px);
+    border: 1px solid black;
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png");
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px;
+    background-size: auto, auto, 100% 30%;
+    background-repeat: no-repeat, no-repeat;
+    border-radius: 8px;
+}
+/* ::-webkit-scrollbar{
+    width: 17px;
+}
+::-webkit-scrollbar-thumb{
+    background-image: url("./scrollbars/vertical/normal.png");
+    width: 17px;
+    height: 22px;
+    background-size: 100% 100%;
+} */
+.window{
+    padding-top: 0;
+}
+.topbar{
+    display: flex;
+    justify-content: space-between;
+    height: 27px;
+    margin-left: 3px;
+}
+.topbar .buttons{
+    display: flex;
+    height: 20px;
+    z-index: 5;
+}
+.topbar > .buttons > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.topbar > .buttons > * > img{
+    margin-bottom: 2px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: inset 0px 0px 0px 1px rgb(29, 55, 81);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 2px;
+    flex-grow: 1;
+    padding: 1px;
+}
+.maximised .content{
+    border-radius: 0px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: inset 0px 2px 0px 0px rgb(29, 55, 81);
+    padding: 0;
+    padding-top: 1px;
+}
+.window:hover{
+    cursor: default;
+}
+@keyframes close {
+    0% {transform: none; opacity: 1;}
+    100% {transform: perspective(400px) rotateY(2deg) rotateX(2deg) scale(0.95);opacity: 0;}
+}
+@keyframes open{
+    0% {transform: perspective(400px) rotateX(-5deg) scale(0.9); opacity: 0}
+    100% {transform: none; opacity: 1}
+}
+.closing{
+    animation-name: close;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+#windows > .window:not(.closing, .minimised){
+    animation-name: open;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    transition: ease;
+}
+footer{
+    height: 40px;
+    max-height: 40px;
+    display: flex;
+    justify-content: end;
+    background-color: rgb(224, 224, 224);
+    box-sizing: border-box;
+    padding: 8px;
+}
+selecticon{
+    height: 19px;
+    width: 10px;
+    background-image: url("../dropdown.png");
+    margin-left: -15px;
+    margin-top: 2px;
+    pointer-events: none;
+}
+button, select{
+    border: none;
+    background-color: transparent;
+    position: relative;
+    z-index: 100;
+}
+button::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(../button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: -1;
+}
+.select::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(../button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: 99;
+}
+selecticon{
+    z-index: 100;
+}
+button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
+    border-image-source: url(../button/disabled.png);
+    opacity: 1;
+}
+button:hover::after, button[default]:hover::after, .select:hover::after{
+    border-image-source: url(../button/hover.png);
+}
+button:active::after, button[default]:active::after, .select:active::after{
+    border-image-source: url(../button/pressed.png);
+}
+button[default]::after{
+    border-image-source: url(../button/default.png);
+}
+text{
+    height: 100%;
+}
+iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.winapi_shadow{
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5), 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
+}
+.maximised{
+    box-shadow: none;
+    border: none;
+}
+left{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(255,255,255), 
+    0 0 10px rgb(255,255,255), 
+    0 0 10px rgb(255,255,255), 
+    0 0 10px rgb(255,255,255), 
+    0 0 10px rgb(255,255,255);
+    flex-grow: 1;
+}
+left img{
+    width: 15px !important;
+    height: 15px !important;
+    margin: 3px;
+}
+.context-menu{
+    font-size: 12px;
+    background-color: white;
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    width: max-content;
+    padding: 2px;
+}
+.context-menu-option{
+    width: 100%;
+}
+.context-menu-option:hover{
+    background-color: rgba(0,255,255,0.3);
+    background: linear-gradient(180deg, rgba(0,142,255,0.3) 0%, rgba(0,151,255,0.5) 100%);
+}
+.maximised .buttons{
+    margin-right: 3px;
+}
+.start-menu{
+    position: absolute;
+    left: 0;
+    bottom: 40px;
+    width: 505px;
+    height: max-content;
+    display: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-image: url("../start_menu.png");
+    background-size: 100% 100%;
+}

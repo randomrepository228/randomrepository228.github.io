@@ -1,9 +1,0 @@
-{
-    "width": 380, 
-    "height": 400, 
-    "title": "System file checker",
-    "icon": "icon.png",
-    "window": true,
-    "xOnly": true,
-    "noResize": true
-}

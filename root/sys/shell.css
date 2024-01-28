@@ -1,0 +1,264 @@
+.explorer{
+    position: absolute;
+    height: 40px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+body{
+    background-color: black;
+}
+.icons{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: calc(100% - 38px);
+    align-content: flex-start;
+    z-index: -9999;
+}
+.icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75px;
+    text-align: center;
+    color: white;
+    line-clamp: 3; 
+    overflow: hidden;
+    padding-bottom: 28px;
+    height: 100px;
+    border: 1px solid transparent;
+    outline: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 12px;
+    box-sizing: border-box;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7);
+}
+.icon img{
+    height: 48px;
+    width: 48px;
+}
+.icon:hover{
+    background-color: rgba(230,230,255,0.5);
+    border: 1px solid rgba(230,230,255,0.8);
+    outline: 1px solid rgba(100,205,205,0.8);
+}
+.icon:active{
+    background-color: rgba(200,230,255, 0.7);
+}
+bottomright{
+    position: absolute; 
+    bottom: 40px; 
+    right: 0px; 
+    text-align: right; 
+    color: white;
+    z-index: -1;
+}
+@keyframes slide{
+    0% {
+        transform: translateY(38px);
+    }
+    100% {
+
+    }
+}
+.taskbar{
+    height: 38px;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    outline: 1px solid black;
+    z-index: 9999;
+    background-color: hsla(209, 68%, 50%, 0.15);
+    display: flex;
+    position: fixed;
+    margin-top: 1px;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    outline-offset: 0;
+    animation: slide 0.3s ease-in-out;
+}
+.taskbar-btn{
+    object-fit: cover;
+    object-position: 0 -8px;
+    position: fixed;
+    width: 54px;
+    height: 40px;
+    margin-top: -1px;
+}
+.taskbar-btn-orb{
+    /* width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    margin-left: 8px;
+    margin-top: -1px; */
+    display: none;
+}
+.taskbar-btn:hover{
+    object-position: 0 -62px;
+}
+.taskbar-btn:active, .taskbar-btn.focus{
+    object-position: 0 -116px;
+}
+.left-bar, .right-bar{
+    height: 100%;
+    display: flex;
+}
+.right-bar{
+    margin-left: auto; 
+    margin-right: 0;
+    padding-left: 50px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), linear-gradient(to right, transparent, rgba(0,0,0,0.25));
+    background-position: right 0, left 0;
+    background-size: calc(100% - 50px), 50px;
+}
+.wrapper{
+    width: 59px;
+    background: rgba(0,0,0,0.25);
+}
+.left-bar{
+    background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+    background-repeat: no-repeat;
+    background-size: 50px 59px;
+    min-width: 50px;
+}
+.window-tray{
+    position: relative;
+    bottom: 2px;
+    min-width: 50px;
+    max-width: 141px;
+    height: 30px;
+    border: 5px solid transparent;
+    border-radius: 3px;
+    margin-right: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-image: url("../res/taskbar_btn.png") 5 fill;
+}
+.window-tray.focus{
+    /* background-image: url("../res/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
+    /* background-position: left 0, center;
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat; */
+    background-image: url("../res/taskbar_btn_focus.png");
+}
+.window-tray:hover{
+    /* background-image: url("../res/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
+    background-position: left 0, center;
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat;
+}
+.window-tray img{
+    height: 30px;
+    width: 30px;
+}
+.window-tray p{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-overflow: ellipsis;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.show-desktop{
+    position: relative;
+    bottom: 1px;
+    width: 11px;
+    height: 38px;
+    border: 2px solid transparent;
+    border-image: url("../res/hide_windows.png") 2 fill;
+}
+.show-desktop:hover{
+    border-image: url("../res/hide_windows_hover.png") 2 fill;
+}
+.show-desktop:active{
+    border-image: url("../res/hide_windows_pressed.png") 2 fill;
+}
+.start-menu{
+    position: absolute;
+    left: 0;
+    bottom: 40px;
+    width: 504px;
+    max-width: 100vw;
+    box-sizing: border-box;
+    height: max-content;
+    display: none;
+    border-top-right-radius: 10px;
+    background-image: url("../res/start_menu.png");
+    background-size: 100% 100%;
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5);
+}
+.left-start{
+    background-color: white;
+    box-shadow: inset 0px 0px 0px 1px black;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 5px;
+    width: 300px;
+    padding: 2px;
+    box-sizing: border-box;
+    max-width: 65vw;
+}
+.start-option{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 2px;
+    border-radius: 3px;
+}
+.start-option-right{
+    display: flex;
+    align-items: center;
+    width: calc(100% - 8px);
+    height: 30px;
+    font-size: 12px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: white;
+    padding-left: 7px;
+    margin-left: 4px;
+    margin-right: -1px;
+}
+.right-start{
+    width: 189px;
+    max-width: 35vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.right-start > .select{
+    width: 150px;
+    max-width: 90%;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+.right-start > .select > select{
+    width: 100%;
+}
+.start-option img{
+    width: 32px;
+    height: 32px;
+}
+.trayicon > iframe{
+    pointer-events: none;
+}
+.trayicon > div{
+    position: relative;
+    z-index: 9999999;
+}
+.tray > .content{
+    height: 100%;
+    box-sizing: border-box;
+}
+.tray, .start-menu{
+    z-index: 99999;
+}
+#trayicons{
+    display: flex;
+    flex-direction: row;
+}
+.window-tray.focus{
+    background-image: none;
+    border-image: url("../res/taskbar_btn_focus.png") 5 fill;
+}

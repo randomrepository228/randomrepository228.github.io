@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            body{
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                height: 100%;
+                background-image: url(./logo.png);
+                background-size: 100% 100%;
+                background-color: black;
+            }
+            #missingthemelist, #missingapplist{
+                margin-left: 15px;
+            }
+            .main{
+                overflow-y: auto;
+                flex: 1;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    </head>
+    <body>
+        <script src="../../sys/api.js"></script>
+        <script>
+            let mainwindow = frameElement.parentElement.parentElement.parentElement
+            win.setTop("0px")
+            win.setLeft("0px")
+            let posx = 5;
+            let posy = 5;
+            direction = {top: false, right: true, left: false, bottom: true}
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands.length > 1){
+                    if (commands[0] == "theme")
+                        changeTheme(commands[1])
+                    if (commands[0] == "id"){
+                        win.id = +commands[1];
+                        win.show("../run/icon.png");
+                        waitForOutput("scrwidth")
+                        waitForOutput("scrheight")
+                        setInterval(() => {
+                            if (posx < 6 && direction.left) {direction.left = false; direction.right = true;}
+                            else if (posx > win.scrwidth - 400) {direction.left = true; direction.right = false;}
+                            if (posy < 6 && direction.top) {direction.top = false; direction.bottom = true;}
+                            else if (posy > win.scrheight - 200) {direction.top = true; direction.bottom = false;}
+                            if (direction.left) {posx -= win.scrwidth / 200}
+                            else {posx += win.scrwidth / 200}
+                            if (direction.top) {posy -= win.scrwidth / 300}
+                            else {posy += win.scrwidth / 300}
+                            win.setPos(posy + "px", posx + "px")
+                        }, 50)
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

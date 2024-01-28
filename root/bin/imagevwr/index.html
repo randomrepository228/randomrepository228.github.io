@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <style>
+            html, body{
+                user-select: none;
+                overflow: hidden;
+                margin: 0;
+            }
+            img{
+                max-width: 100vw;
+                max-height: 100vh;
+                position: absolute;
+                top: 50vh;
+                left: 50vw;
+                transform: translate(-50%, -50%);
+            }
+            /* .slide{
+                overflow: hidden;
+            } */
+        </style>
+    </head>
+    <body>
+        <!-- <div class="slide"> -->
+            <img id="image" draggable="false">
+        <!-- </div> -->
+        <script>
+            const args = frameElement.getAttribute("args")
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            if (!args){
+                thisWindow.remove()
+            }
+            image.src = args
+            /*
+            image.onload = () => {
+                slider.parentElement.style.height = image.naturalHeight + "px"
+            }
+            let mouseDown = false;
+            let startX, scrollLeft, startY, scrollTop;
+            const slider = document.querySelector('.slide');
+            const startDragging = (e) => {
+                mouseDown = true;
+                startX = e.pageX - slider.offsetLeft;
+                startY = e.pageY - slider.parentElement.parentElement.offsetTop;
+                scrollLeft = slider.scrollLeft;
+                scrollTop = slider.parentElement.parentElement.scrollTop;
+            }
+            const stopDragging = (e) => {
+                mouseDown = false;
+            }
+            const move = (e) => {
+                e.preventDefault();
+                if(!mouseDown) { return; }
+                const x = e.pageX - slider.offsetLeft;
+                const scrollX = x - startX;
+                const y = e.pageY - slider.parentElement.parentElement.offsetTop;
+                const scrollY = y - startY;
+                slider.scrollLeft = scrollLeft - scrollX;
+                slider.parentElement.parentElement.scrollTop = scrollTop - scrollY;
+                console.log(scrollTop - scrollY, slider.scrollTop)
+            }
+            slider.addEventListener('mousemove', move, false);
+            slider.addEventListener('mousedown', startDragging, false);
+            slider.addEventListener('mouseup', stopDragging, false);
+            slider.addEventListener('mouseleave', stopDragging, false);
+            */
+            parent.showWindow("../ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

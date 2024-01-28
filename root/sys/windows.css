@@ -1,0 +1,411 @@
+body{
+    margin: 0;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+html{
+    font-family: 'segoeui', 'sans-serif', system-ui;
+    touch-action: manipulation;
+    cursor: default;
+    color: black;
+    font-size: 12px;
+}
+.topleft, .topright, .bottomleft, .bottomright, .top, .left, .right, .bottom{
+    position: absolute;
+}
+.maximised .topleft, .maximised .topright, .maximised .bottomleft, .maximised .bottomright, .maximised .top, .maximised .left, .maximised .right, .maximised .bottom{
+    display: none;
+}
+.topleft, .topright, .bottomleft, .bottomright{
+    width: 7px;
+    height: 7px;
+    z-index: 1;
+}
+.top, .bottom{
+    width: 100%;
+    height: 7px;
+    cursor: n-resize;
+}
+.left, .right{
+    height: 100%;
+    width: 7px;
+    cursor: w-resize;
+}
+.left, .topleft, .bottomleft{
+    left: 0;
+}
+.right, .topright, .bottomright{
+    right: 0;
+}
+.topleft, .top, .topright{
+    top: 0;
+}
+.bottomleft, .bottom, .bottomright{
+    bottom: 0;
+}
+.topleft, .bottomright{
+    cursor: nw-resize;
+}
+.topright, .bottomleft{
+    cursor: ne-resize;
+}
+input[type="checkbox"]{
+    display: none;
+}
+label{
+    padding-left: 13px;
+    height: 13px;
+    display: inline-block;
+    background-repeat: no-repeat;
+}
+html, body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+body{
+    position: fixed;
+}
+.dash:hover, .square:hover{
+    z-index: 999;
+}
+.x:hover{
+    z-index: 999;
+}
+.window{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    touch-action: none;
+    z-index: 4;
+    margin-top: 0;
+}
+.maximised{
+    width: 100% !important;
+    height: calc(100% - var(--taskbar-height)) !important;
+    position: fixed;
+    box-shadow: none;
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+    left: 0 !important;
+    top: 0 !important;
+}
+.snap-left{
+    width: 50% !important;
+    height: calc(100% - var(--taskbar-height)) !important;
+    position: fixed;
+    left: 0 !important;
+    top: 0 !important;
+    box-sizing: border-box;
+}
+.snap-right{
+    width: 50% !important;
+    height: calc(100% - var(--taskbar-height)) !important;
+    position: fixed;
+    left: 50% !important;
+    top: 0 !important;
+    box-sizing: border-box;
+}
+:not(input, select, *[contenteditable], textarea)::selection{
+    background-color: transparent;
+}
+.select{
+    display: flex;
+    position: relative;
+}
+button, select{
+    min-height: 23px;
+    min-width: 75px;
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
+    border: 0;
+    font-size: inherit;
+}
+input[type=file]{
+    display: none;
+}
+button > label{
+    height: calc(100% + 8px);
+    min-height: 20px;
+    width: calc(100% + 8px);
+    margin: -5px;
+    padding: 0;
+}
+select, selecticon{
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+select{
+    height: 23px;
+    position: relative;
+}
+.select{
+    height: 23px;
+    width: min-content;
+    display: inline-block;
+}
+option{
+    font-family: 'segoeui', sans-serif, system-ui;
+    font-size: 11px;
+}
+select:focus{
+    outline: none;
+}
+.menubar .element{
+    height: 20px;
+    box-sizing: border-box;
+    background-position: left, right, 2px;
+    background-repeat: no-repeat;
+    background-size: auto 100%, auto 100%, calc(100% - 4px) 100%;
+    background-color: transparent;
+}
+.start-option{
+    background-position: left, right, 3px;
+    background-repeat: no-repeat;
+    background-size: 3px 100%, 3px 100%, calc(100% - 6px) 100%;
+    background-color: transparent;
+}
+.start-option-right{
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: 4px 100%, 4px 100%, calc(100% - 8px) 100%;
+    background-color: transparent;
+}
+.start-option:hover{
+    background-image: url("../res/startmenuitemleft/hover/left.png"), url("../res/startmenuitemleft/hover/right.png"), url("../res/startmenuitemleft/hover/center.png");
+}
+.start-option-right:hover{
+    background-image: url("../res/startmenuitemright/hover/left.png"), url("../res/startmenuitemright/hover/right.png"), url("../res/startmenuitemright/hover/center.png");
+}
+select{
+    appearance: none;
+    -moz-appearance: none;
+    padding: 1px;
+    padding-right: 20px;
+    padding-left: 4px;
+}
+.dock-br{
+    position: absolute;
+    right: 0;
+    bottom: 40px;
+    margin: 8px;
+    padding-top: 5px;
+}
+.rightclickdialogtray{
+    position: absolute;
+    bottom: 40px;
+    margin: 8px;
+    padding-top: 5px;
+    /* animation: slide 0.2s ease-out; */
+}
+.rightclickdialogtray > div > div{
+    margin: 2px
+}
+.rightclickdialogtray > div{
+    padding: 5px;
+}
+table{
+    border-collapse: collapse;
+}
+th{
+    background-image: url(../res/table-top.png);
+    background-size: 100% 100%;
+    border-bottom: 1px solid rgb(200,200,200);
+    border-right: 1px solid rgb(200,200,200);
+    padding: 5px;
+}
+text{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+input[type=text]{
+    cursor: text;
+}
+input:focus{
+    outline: none;
+}
+#windows{
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.window{
+    pointer-events: auto;
+}
+.menubar {
+    width: 100vw;
+    height: 19px;
+    background-image: url("../res/table-top.png");
+    border-bottom: 1px solid rgb(232,232,232);
+    font-size: 0;
+}
+
+.menubar .element {
+    display: inline-block;
+    font-size: 12px;
+    border: 1px transparent solid;
+    padding: 1px 7px;
+}
+
+.menubar .element:hover {
+    background-image: url("../res/selectionSmall/hover/left.png"), url("../res/selectionSmall/hover/right.png"), url("../res/selectionSmall/hover/center.png");
+}
+.details{
+    background-color: rgb(230,230,230);
+    border-top: 1px solid rgb(100,100,100);
+    border-right: 1px solid rgb(150,150,150);
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+}
+.detail{
+    width: fit-content;
+}
+button:disabled{
+    opacity: 0.5;
+}
+ignore{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: none;
+    z-index: 99999999;
+}
+.metro-dialog{
+    background-color: rgba(0,150,200);
+    height: 100%;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.metro-dialog h1, .metro-dialog h2, .metro-dialog h3, .metro-dialog h4, .metro-dialog h5, .metro-dialog h6{
+    font-weight: 300;
+    font-size: 25px;
+} 
+.metro-dialog button{
+    color: white;
+    background-color: rgba(255,255,255,0.3);
+}
+.metro-dialog button::after{
+    display: none;
+}
+.metro-dialog button:hover{
+    background-image: none;
+    background-color: rgba(255,255,255,0.5);
+}
+.metro-dialog button:active{
+    background-image: none;
+    background-color: rgba(255,255,255,0.7);
+}
+.metro-dialog .buttons{
+    text-align: right;
+    margin-top: auto;
+}
+.minimised{
+    opacity: 0 !important;
+    pointer-events: none;
+}
+.logonui{
+    width: 100%;
+    height: 100%;
+    background-image: url(../res/login.jpg);
+    background-size: 100% 100%;
+}
+.tabs button{
+    background-image: none;
+    background-color: white;
+    border: 1px solid rgb(137,140,149);
+    border-bottom: 0;
+}
+.tabs button::before{
+    display: none;
+}
+.tabs button[aria-selected=true]{
+    padding-bottom: 2px;
+}
+.tabs article{
+    border: 1px solid rgb(137,140,149);
+}
+menu[role=tablist]{
+    margin: 0;
+    margin-bottom: -1px;
+    padding-left: 0;
+}
+.tabs{
+    margin: 5px;
+}
+button[role=tab]::after{
+    display: none;
+}
+.nogui, .nogui > .content{
+    padding: 0 !important;
+    outline: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    animation: none !important;
+}
+.content{
+    min-width: 0;
+    min-height: 0;
+}
+.nogui > .topbar{
+    display: none !important;
+}
+.alwaysontop{
+    z-index: 999999 !important;
+}
+.alwaysbehind{
+    z-index: -9998 !important;
+}
+.snap-left text, .snap-right text{
+    width: 100% !important;
+    height: 100% !important;
+}
+text{
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+.contentnostyle{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+@keyframes fadeout{
+    from {backdrop-filter: grayscale(0);}
+    to {backdrop-filter: grayscale(1);}
+}
+#changethemesplash{
+    background-image: url(../res/pleasewait.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    animation: fadeout 1s ease-in forwards;
+    z-index: 1000000;
+    position: fixed;
+    display: none;
+}
+left{
+    pointer-events: none;
+}
+text > footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+text{
+    position: relative;
+}
