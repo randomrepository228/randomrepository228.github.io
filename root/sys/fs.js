@@ -8,6 +8,19 @@ fs.toPath = function(path){
     if(path.startsWith("/")) path = path.replace("/", "")
     return path
 }
+function sleep(milliseconds){
+    return new Promise(res => setTimeout(res, milliseconds))
+}
+fs.downloadFiles = async (files) => {
+    for (const path of files){
+        const response = await (await fetch("./" + path)).blob()
+        if (!(await fs.exists(path))) {
+            const match = path.match(/(.+\/).+/)
+            if (match.length == 2) if(!await fs.exists(match[1] + ".")) await fs.writeFile(match[1] + ".", "")
+            await fs.writeFile(path, response)
+        }
+    }
+}
 fs.checkSystemFolder = async function(){
     const transaction = db.transaction("rootfs", "readwrite")
     const initialfs = transaction.objectStore("rootfs");
@@ -18,69 +31,21 @@ fs.checkSystemFolder = async function(){
         const systemFiles = [
             {path: "bin/.", data: ""}, 
             {path: "bin/bsod/.", data: ""}, 
-            {path: "bin/bsod/index.html", data: ""},  
-            {path: "bin/bsod/icon.png", data: ""},  
-            {path: "bin/bsod/init.json", data: ""}, 
             {path: "bin/calc/.", data: ""}, 
-            {path: "bin/calc/index.html", data: ""},  
-            {path: "bin/calc/icon.png", data: ""},  
-            {path: "bin/calc/init.json", data: ""}, 
             {path: "bin/changelog/.", data: ""}, 
-            {path: "bin/changelog/index.html", data: ""},  
-            {path: "bin/changelog/icon.png", data: ""},  
-            {path: "bin/changelog/init.json", data: ""}, 
             {path: "bin/clock/.", data: ""}, 
-            {path: "bin/clock/index.html", data: ""},  
-            {path: "bin/clock/icon.png", data: ""},  
-            {path: "bin/clock/init.json", data: ""}, 
             {path: "bin/control/.", data: ""}, 
-            {path: "bin/control/index.html", data: ""},  
-            {path: "bin/control/icon.png", data: ""},  
-            {path: "bin/control/init.json", data: ""}, 
             {path: "bin/dvd/.", data: ""}, 
-            {path: "bin/dvd/index.html", data: ""},  
-            {path: "bin/dvd/icon.png", data: ""},  
-            {path: "bin/dvd/init.json", data: ""}, 
             {path: "bin/ExampleApp/.", data: ""}, 
-            {path: "bin/ExampleApp/index.html", data: ""},  
-            {path: "bin/ExampleApp/icon.png", data: ""},  
-            {path: "bin/ExampleApp/init.json", data: ""}, 
             {path: "bin/explorer/.", data: ""}, 
-            {path: "bin/explorer/index.html", data: ""},  
-            {path: "bin/explorer/icon.png", data: ""},  
-            {path: "bin/explorer/init.json", data: ""}, 
             {path: "bin/iexplore/.", data: ""}, 
-            {path: "bin/iexplore/index.html", data: ""},  
-            {path: "bin/iexplore/icon.png", data: ""},  
-            {path: "bin/iexplore/init.json", data: ""}, 
             {path: "bin/Okna8Mode/.", data: ""}, 
-            {path: "bin/Okna8Mode/index.html", data: ""},  
-            {path: "bin/Okna8Mode/icon.png", data: ""},  
-            {path: "bin/Okna8Mode/init.json", data: ""}, 
             {path: "bin/regedit/.", data: ""}, 
-            {path: "bin/regedit/index.html", data: ""},  
-            {path: "bin/regedit/icon.png", data: ""},  
-            {path: "bin/regedit/init.json", data: ""}, 
             {path: "bin/run/.", data: ""}, 
-            {path: "bin/run/index.html", data: ""},  
-            {path: "bin/run/icon.png", data: ""},  
-            {path: "bin/run/init.json", data: ""}, 
             {path: "bin/sfc/.", data: ""}, 
-            {path: "bin/sfc/index.html", data: ""},  
-            {path: "bin/sfc/icon.png", data: ""},  
-            {path: "bin/sfc/init.json", data: ""}, 
             {path: "bin/taskmgr/.", data: ""}, 
-            {path: "bin/taskmgr/index.html", data: ""},  
-            {path: "bin/taskmgr/icon.png", data: ""},  
-            {path: "bin/taskmgr/init.json", data: ""}, 
             {path: "bin/update/.", data: ""}, 
-            {path: "bin/update/index.html", data: ""},  
-            {path: "bin/update/icon.png", data: ""},  
-            {path: "bin/update/init.json", data: ""}, 
             {path: "bin/winver/.", data: ""}, 
-            {path: "bin/winver/index.html", data: ""},  
-            {path: "bin/winver/icon.png", data: ""},  
-            {path: "bin/winver/init.json", data: ""}, 
             {path: "sys/.", data: ""}, 
             {path: "usr/.", data: ""}, 
             {path: "usr/SYSTEM/.", data: ""},
@@ -93,7 +58,18 @@ fs.checkSystemFolder = async function(){
             {path: "shell/.", data: ""},
             {path: "Winda.old/.", data: ""}
         ]
-        systemFiles.forEach((file) => initialfs.add(file));
+        systemFiles.forEach((file) => initialfs.add(file)); 
+        let programs = []
+        for (a in systemFiles){
+            a = systemFiles[a].path
+            if (a.startsWith("bin/") && a.endsWith("/.") && a.length > 5){
+                programs.push(a.replace(/(.+)\./, "$1init.json"))
+                programs.push(a.replace(/(.+)\./, "$1icon.png"))
+                programs.push(a.replace(/(.+)\./, "$1index.html"))
+            }
+        }
+        console.log(programs)
+        fs.downloadFiles(programs)
     };
 }
 fs.writeFile = async function(filePath, data){
@@ -273,6 +249,7 @@ fs.searchHTML = async function(path, searchString){
 request.onsuccess = (e) => {
     db = e.target.result;
     fs.checkSystemFolder()
+    fs.writeFile("secret.txt", "IFRAME ЗЛО!")
 };
 request.onupgradeneeded = (e) => {
     db = e.target.result;

@@ -166,7 +166,6 @@ function windowResize(event, elem, ...actions){
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function move(e){
-    console.log(e.clientX, e.clientY)
     if (!activewindow) return
     let activewindowcontent = activewindow.querySelector("text")
     if (e.touches) e = e.touches[0]
@@ -438,6 +437,18 @@ function maximiseWindow(window){
         window.className = window.className.replace(" maximised", "")
 }
 maximise = maximiseWindow
+preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
+"res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
+"res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
+"res/aero/buttons/close/glow.png", "res/aero/buttons/close/hover.png", "res/aero/buttons/min/normal.png", "res/aero/buttons/min/hover.png", 
+"res/aero/buttons/min/pressed.png", "res/aero/buttons/min/icon.png", "res/aero/buttons/max/hover.png", "res/aero/buttons/max/normal.png", 
+"res/aero/buttons/max/pressed.png", "res/aero/buttons/max/icon.png", "res/aero/buttons/glow.png", "res/aero/style.css", "res/aero/window_aura.png",
+"res/aero/window_aura_mirror.png", "res/aero/window_side.png", "res/button/hover.png", "res/button/normal.png", "res/button/pressed.png", 
+"res/button/disabled.png", "res/button/default.png", "res/checkbox/unchecked/hover.png", "res/checkbox/unchecked/normal.png", 
+"res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
+"res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
+"res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg"]
+fs.downloadFiles(preload)
 // OKNA 8 COMPATIBILITY MODE
 function closemetroapp(appName){
     getAllWindows().forEach(val => {

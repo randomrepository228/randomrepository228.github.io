@@ -17,7 +17,7 @@ input[type="checkbox"]:checked:active + label{
     background-image: url("../checkbox/checked/pressed.png");
 }
 .dash{
-    background-image: url("./buttons/min/normal.png");
+    background-image: url("../aero/buttons/min/normal.png");
     width: 29px;
 }
 .x::after{
@@ -25,7 +25,7 @@ input[type="checkbox"]:checked:active + label{
     width: 69px;
     height: 37px;
     box-sizing: content-box;
-    background-image: url("./buttons/close/glow.png");
+    background-image: url("../aero/buttons/close/glow.png");
     background-size: 100% 100%;
     display: block;
     content: "";
@@ -40,7 +40,7 @@ input[type="checkbox"]:checked:active + label{
     width: 52px;
     height: 37px;
     box-sizing: content-box;
-    background-image: url("./buttons/glow.png");
+    background-image: url("../aero/buttons/glow.png");
     background-size: 100% 100%;
     display: block;
     content: "";
@@ -61,53 +61,53 @@ input[type="checkbox"]:checked:active + label{
     width: 52px;
 }
 .x{
-    background-image: url("./buttons/close/normal.png");
+    background-image: url("../aero/buttons/close/normal.png");
     width: 49px;
     z-index: 5;
 }
 .x:hover{
-    background-image: url("./buttons/close/hover.png");
+    background-image: url("../aero/buttons/close/hover.png");
 }
 .x:active{
-    background-image: url("./buttons/close/pressed.png");
+    background-image: url("../aero/buttons/close/pressed.png");
 }
 .x:only-child{
-    background-image: url("./buttons/close/lonenormal.png");
+    background-image: url("../aero/buttons/close/lonenormal.png");
 }
 .x:only-child:hover{
-    background-image: url("./buttons/close/lonehover.png");
+    background-image: url("../aero/buttons/close/lonehover.png");
 }
 .x:only-child:active{
-    background-image: url("./buttons/close/lonepressed.png");
+    background-image: url("../aero/buttons/close/lonepressed.png");
 }
 .square{
-    background-image: url("./buttons/max/normal.png");
+    background-image: url("../aero/buttons/max/normal.png");
     width: 29px;
 }
 .square:hover{
-    background-image: url("./buttons/max/hover.png");
+    background-image: url("../aero/buttons/max/hover.png");
 }
 .square:active{
-    background-image: url("./buttons/max/pressed.png");
+    background-image: url("../aero/buttons/max/pressed.png");
 }
 .square[disabled]:hover{
-    background-image: url("./buttons/max/normal.png");
+    background-image: url("../aero/buttons/max/normal.png");
 }
 .square[disabled]:active{
-    background-image: url("./buttons/max/normal.png");
+    background-image: url("../aero/buttons/max/normal.png");
 }
 .dash:hover{
-    background-image: url("./buttons/min/hover.png");
+    background-image: url("../aero/buttons/min/hover.png");
 }
 .dash:active{
-    background-image: url("./buttons/min/pressed.png");
+    background-image: url("../aero/buttons/min/pressed.png");
 }
 .winapi_transparent{
     padding: 5px;
     background-color: hsla(209, 68%, 50%, 0.15);
     backdrop-filter: blur(3px);
     border: 1px solid black;
-    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png");
+    background-image: url("../aero/window_aura.png"), url("../aero/window_aura_mirror.png"), url("../aero/window_side.png");
     background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px;
     background-size: auto, auto, 100% 30%;
     background-repeat: no-repeat, no-repeat;
@@ -316,5 +316,11 @@ left img{
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-image: url("../start_menu.png");
+    background-size: 100% 100%;
+}
+.taskbar{
+    background-image: url("../taskbar-vista.png") !important;
+    border: none;
+    outline: none;
     background-size: 100% 100%;
 }

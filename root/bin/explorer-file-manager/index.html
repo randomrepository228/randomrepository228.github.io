@@ -116,7 +116,9 @@
                         file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
                     else {
-                        file.innerHTML += `<img src="icon.png">`
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="file.png">`
+                        file.setAttribute("ondblclick", `parent.loadApp('notepad', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
                     file.innerHTML += "<p>" + htmlPath + "</p>"
                     document.querySelector(".files").append(file)

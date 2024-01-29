@@ -122,35 +122,6 @@
         <script defer onload="log(this.getAttribute('src'))" src="sys/fs.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/kernel.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/user.js"></script>
-        <script defer>
-            preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
-            "res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
-            "res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
-            "res/aero/buttons/close/glow.png", "res/aero/buttons/close/hover.png", "res/aero/buttons/min/normal.png", "res/aero/buttons/min/hover.png", 
-            "res/aero/buttons/min/pressed.png", "res/aero/buttons/min/icon.png", "res/aero/buttons/max/hover.png", "res/aero/buttons/max/normal.png", 
-            "res/aero/buttons/max/pressed.png", "res/aero/buttons/max/icon.png", "res/aero/buttons/glow.png", "res/aero/style.css", "res/aero/window_aura.png",
-            "res/aero/window_aura_mirror.png", "res/aero/window_side.png", "res/button/hover.png", "res/button/normal.png", "res/button/pressed.png", 
-            "res/button/disabled.png", "res/button/default.png", "res/checkbox/unchecked/hover.png", "res/checkbox/unchecked/normal.png", 
-            "res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
-            "res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
-            "res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg"]
-            async function loadToFs() {
-                try{
-                    for (path of preload){
-                        const response = await (await fetch("./" + path)).blob()
-                        if (!(await fs.exists(path))) {
-                            const match = path.match(/(.+\/).+/)
-                            if (match.length == 2) if(!await fs.exists(match[1] + ".")) await fs.writeFile(match[1] + ".", "")
-                            await fs.writeFile(path, response)
-                        }
-                    }
-                }
-                catch(e){
-                    setTimeout(loadToFs, 50)
-                }
-            }
-            loadToFs()
-        </script>
         <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no" id="dpiscale">
         <style>
             @media (max-aspect-ratio: 1/1) {
@@ -197,6 +168,26 @@
 
         </div>
         <div class="explorer" style="display: none;">
+            <div class="taskbar">
+                <div class="wrapper" onclick="startMenu(true, this)">
+                    <img class="taskbar-btn" src="../../res/taskbar-btn.png"></img>
+                    <div class="taskbar-btn-orb"></div>
+                </div>
+                <div class="left-bar"></div>
+                <div class="right-bar">
+                    <div id="trayicons">
+                        <div class="trayicon n2">
+                            <div style="width: 24px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(2))"></div>
+                            <iframe src="./bin/update/tray.html" windowid="2" name="Winda Update" frameborder="0" style="width: 24px"></iframe>
+                        </div>
+                        <div class="trayicon n1">
+                            <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(1))"></div>
+                            <iframe src="./bin/clock/tray.html" class="monochrome" windowid="1" name="Clock" frameborder="0" style="width: 79px"></iframe>
+                        </div>
+                    </div>
+                    <div class="show-desktop" onclick="minimiseAll()"></div>
+                </div>
+            </div>
             <div class="start-menu winapi_transparent">
                 <div class="left-start"></div>
                 <div class="right-start">
@@ -214,6 +205,9 @@
                     </div>
                 </div>
             </div>
+            <script>
+                passLeftBarAndTrayIcons(document.querySelector(".left-bar"), trayicons)
+            </script>
             <script src="sys/shell.js" defer></script>
         </div>
         <div id="windows"></div>
