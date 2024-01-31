@@ -6,11 +6,6 @@ class Icon {
     }
 }
 const taskbar = document.querySelector(".taskbar");
-let icons;
-function passIcons(elem){
-    icons = elem
-    reloadIcons()
-}
 function createIcon(icon){
     let a = document.createElement("div")
     a.className = "icon"
@@ -39,13 +34,11 @@ function addStartMenuEntryRight(name, action){
 function reloadIcons(){
     icons.innerHTML = ""
     JSON.parse(localStorage.appList).forEach((e) => {
-        createIcon(new Icon(appListLocale[e], "../" + e + "/icon.png", "parent.loadApp('" + e + "')"))
+        createIcon(new Icon(appListLocale[e], "./bin/" + e + "/icon.png", "parent.loadApp('" + e + "')"))
     })
 }
-function passLeftBarAndTrayIcons(leftbar, trayicons){
-    window.leftBar = leftbar
-    window.trayicons = trayicons
-}
+explorerbottomrightinfo.innerHTML = "Build " + localStorage.ver
+reloadIcons()
 addStartMenuEntryLeft("Version 0.0.1", "./res/icon.jpg", "window.location.href = '../Winda.old/0.0.1/simulator.html'")
 addStartMenuEntryLeft("Version 0.0.2", "./res/icon.jpg", "window.location.href = '../Winda.old/0.0.2/simulator.html'")
 addStartMenuEntryLeft("Version 0.1.0", "./res/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'")

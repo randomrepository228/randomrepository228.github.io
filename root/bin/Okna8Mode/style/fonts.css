@@ -1,66 +1,66 @@
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/segoeuil.ttf);
+    src: url(../../../fonts/segoeuil.ttf);
     font-weight: 100;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/segoeuisl.ttf);
+    src: url(../../../fonts/segoeuisl.ttf);
     font-weight: 200;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/segoeuisl.ttf);
+    src: url(../../../fonts/segoeuisl.ttf);
     font-weight: 300;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/segoeui.ttf);
+    src: url(../../../fonts/segoeui.ttf);
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/segoeui.ttf);
+    src: url(../../../fonts/segoeui.ttf);
     font-weight: 500;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/seguisb.ttf);
+    src: url(../../../fonts/seguisb.ttf);
     font-weight: 600;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/seguisb.ttf);
+    src: url(../../../fonts/seguisb.ttf);
     font-weight: 700;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/segoeuib.ttf);
+    src: url(../../../fonts/segoeuib.ttf);
     font-weight: 800;
 }
 
 @font-face {
     font-family: 'segoeui';
-    src: url(../fonts/seguibl.ttf);
+    src: url(../../../fonts/seguibl.ttf);
     font-weight: 900;
 }
 
 @font-face {
     font-family: 'msss';
-    src: url(../fonts/micross.ttf);
+    src: url(../../../fonts/micross.ttf);
     font-weight: 900;
 }
 
 @font-face {
     font-family: 'segoesymbol';
-    src: url(../fonts/seguisym.ttf);
+    src: url(../../../fonts/seguisym.ttf);
 }
 
 * {

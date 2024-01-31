@@ -1,6 +1,6 @@
 .explorer{
     position: absolute;
-    height: 40px;
+    top: 0;
     bottom: 0;
     right: 0;
     left: 0;
@@ -63,7 +63,7 @@ bottomright{
     }
 }
 .taskbar{
-    height: calc(var(--taskbar-height) - 2px);
+    height: 38px;
     border-top: 1px solid rgba(255,255,255,0.5);
     outline: 1px solid black;
     z-index: 9999;
@@ -75,6 +75,7 @@ bottomright{
     backdrop-filter: blur(5px);
     outline-offset: 0;
     animation: slide 0.3s ease-in-out;
+    bottom: 0;
 }
 .taskbar-btn{
     object-fit: cover;
@@ -125,14 +126,16 @@ bottomright{
 .window-tray{
     position: relative;
     bottom: 2px;
-    width: 60px;
-    height: 40px;
+    min-width: 50px;
+    max-width: 141px;
+    height: 30px;
+    border: 5px solid transparent;
     border-radius: 3px;
     margin-right: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../res/taskbar_btn.png");
+    border-image: url("../res/taskbar_btn.png") 5 fill;
 }
 .window-tray.focus{
     /* background-image: url("../res/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
@@ -151,19 +154,26 @@ bottomright{
     height: 30px;
     width: 30px;
 }
+.window-tray p{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-overflow: ellipsis;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+}
 .show-desktop{
     position: relative;
-    bottom: 1px;
-    width: 15px;
-    height: 40px;
-    background-image: url("../res/hide_windows.png");
-    background-size: 100% 100%; 
+    margin-top: -2px;
+    width: 11px;
+    border: 2px solid transparent;
+    border-image: url("../res/hide_windows.png") 2 fill;
 }
 .show-desktop:hover{
-    background-image: url("../res/hide_windows_hover.png");
+    border-image: url("../res/hide_windows_hover.png") 2 fill;
 }
 .show-desktop:active{
-    background-image: url("../res/hide_windows_pressed.png");
+    border-image: url("../res/hide_windows_pressed.png") 2 fill;
 }
 .start-menu{
     position: absolute;
@@ -247,4 +257,8 @@ bottomright{
 #trayicons{
     display: flex;
     flex-direction: row;
+}
+.window-tray.focus{
+    background-image: none;
+    border-image: url("../res/taskbar_btn_focus.png") 5 fill;
 }

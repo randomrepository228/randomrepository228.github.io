@@ -17,6 +17,7 @@
                 margin: 25px;
                 margin-top: 10px;
                 margin-bottom: 0;
+                height: calc(100vh - 65px);
             }
             footer{
                 position: absolute;
@@ -29,6 +30,8 @@
                 border: 1px solid gray;
                 border-radius: 3px;
                 font-size: 12px;
+                width: 100%;
+                height: calc(100% - 20px);
             }
             textarea:focus{
                 outline: none;
@@ -37,7 +40,7 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <script>
             function changeTheme(a){
-                theme.href = "../../Winda/Resources/" + a + "/style.css"
+                theme.href = "../../res/" + a + "/style.css"
             }
             changeTheme(localStorage.theme)
             onmessage = (e) => {
@@ -50,7 +53,7 @@
     <body>
         <div class="main">
             Reason:<br>
-            <textarea name="a" id="bsodreason" cols="80" rows="13"></textarea>
+            <textarea name="a" id="bsodreason"></textarea>
         </div>
         <footer>
             <button onclick="parent.displayBSOD(bsodreason.value)">Invoke</button>

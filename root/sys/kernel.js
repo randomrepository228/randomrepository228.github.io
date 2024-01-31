@@ -205,7 +205,7 @@ async function loadOkna8App(packageName, path, name, args){
     if (!path) path = "bin/"
     path += packageName + "/"
     const id = getId()
-    AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "left": 50, "top": 50, "width": window.innerWidth - 100, "height": window.innerHeight - 100, "classes": " okna8"}, id)
+    AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised"}, id)
 }
 function showTray(tray){
     if (tray == activetray){

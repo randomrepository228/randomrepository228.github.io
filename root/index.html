@@ -23,6 +23,9 @@
             :root{
                 --taskbar-height: 40px
             }
+            body{
+                font-family: 'segoeui', sans-serif, system-ui;
+            }
         </style>
         <script src="./sys/ver.js"></script>
         <style>
@@ -117,8 +120,9 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <link rel="stylesheet" href="./fonts/fonts.css">
         <link rel="stylesheet" href="./sys/windows.css">
-        <link rel="stylesheet" href="sys/shell.css">
+        <link rel="stylesheet" href="./shell/shell.css">
         <link rel="stylesheet" href="./res/aero/style.css" id="theme">
+        <script defer onload="log(this.getAttribute('src'))" src="sys/jszip.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/fs.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/kernel.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/user.js"></script>
@@ -136,6 +140,9 @@
             <div style="display: none; height: 100%;">
                 <cntr style="color: black">Loading Winda Files</cntr><br>
                 <div id="verboseBoot"></div>
+                <script>
+                    log("Filesystem is ON", true)
+                </script>
                 <cntr class="bottom"  style="color: black">
                     <left>Please wait...</left>
                     <right></right>
@@ -168,12 +175,14 @@
 
         </div>
         <div class="explorer" style="display: none;">
+            <div class="icons" id="icons"></div>
+            <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
             <div class="taskbar">
                 <div class="wrapper" onclick="startMenu(true, this)">
                     <img class="taskbar-btn" src="../../res/taskbar-btn.png"></img>
                     <div class="taskbar-btn-orb"></div>
                 </div>
-                <div class="left-bar"></div>
+                <div class="left-bar" id="leftBar"></div>
                 <div class="right-bar">
                     <div id="trayicons">
                         <div class="trayicon n2">
@@ -205,10 +214,7 @@
                     </div>
                 </div>
             </div>
-            <script>
-                passLeftBarAndTrayIcons(document.querySelector(".left-bar"), trayicons)
-            </script>
-            <script src="sys/shell.js" defer></script>
+            <script src="shell/shell.js" defer></script>
         </div>
         <div id="windows"></div>
         <div id="trays">

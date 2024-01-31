@@ -1,8 +1,0 @@
-{
-    "width": 500, 
-    "height": 500, 
-    "title": "Winda Control Panel",
-    "icon": "icon.png",
-    "window": true,
-    "noSelfOpen": true
-}
