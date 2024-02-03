@@ -146,7 +146,7 @@ select{
 }
 .select{
     height: 23px;
-    width: min-content;
+    width: max-content;
     display: inline-block;
 }
 option{
@@ -192,13 +192,13 @@ select{
 .dock-br{
     position: absolute;
     right: 0;
-    bottom: 40px;
+    bottom: var(--taskbar-height);
     margin: 8px;
     padding-top: 5px;
 }
 .rightclickdialogtray{
     position: absolute;
-    bottom: 40px;
+    bottom: var(--taskbar-height);
     margin: 8px;
     padding-top: 5px;
     /* animation: slide 0.2s ease-out; */
@@ -266,10 +266,6 @@ input:focus{
 
 .menubar .element:active::after{
     border-image: url(../res/menubar_pressed.png) 4 fill;
-}
-
-.menubar .element:hover {
-    background-image: url("../res/selectionSmall/hover/left.png"), url("../res/selectionSmall/hover/right.png"), url("../res/selectionSmall/hover/center.png");
 }
 .details{
     background-color: rgb(230,230,230);
@@ -423,4 +419,7 @@ text > footer{
 }
 text{
     position: relative;
+}
+.select > select{
+    width: 100%;
 }

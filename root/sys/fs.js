@@ -259,3 +259,8 @@ request.onupgradeneeded = (e) => {
         fs.checkSystemFolder()
     }
 }
+for (a of preload){
+    if (!fs.exists(a)){
+        fs.downloadFiles([a])
+    }
+}

@@ -20,3 +20,9 @@
 .taskbar-btn{
     bottom: -5px;
 }
+bottomright{
+    bottom: 28px;
+}
+:root{
+    --taskbar-height: 28px;
+}

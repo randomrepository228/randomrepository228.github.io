@@ -44,6 +44,17 @@
                 top: 24px;
                 position: absolute;
             }
+            footer{
+                flex-direction: column; 
+                max-height: 100px; 
+                height: 100px; 
+                justify-content: space-between; 
+            }
+            .content{
+                display: flex !important;
+                flex-direction: column;
+                justify-content: space-between;
+            }
         </style>
         <link rel="stylesheet" href="../control/aero/style.css" id="explorerTheme">
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
@@ -70,6 +81,33 @@
         </div>
         <div class="content">
             <div class="files"></div>
+            <footer style="display: none">
+                <div>
+                    <div style="display: flex; align-items: center;">
+                        Filename:&nbsp;
+                        <input type="text" name="" id="" style="flex-grow: 1">
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        File type:&nbsp;
+                        <div class="select" style="flex-grow: 1">
+                            <select name="" id="">
+                                <option value="">
+                                    SELECT PLACEHOLDER
+                                </option>
+                            </select>
+                            <selecticon></selecticon>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end">
+                    <button onclick="saveFile()">
+                        Save
+                    </button>
+                    <button onclick="frameElement.parentElement.parentElement.parentElement.remove()">
+                        Cancel
+                    </button>
+                </div>
+            </footer>
         </div>
         <script>
             let thisWindow = frameElement.parentElement.parentElement.parentElement
@@ -78,7 +116,7 @@
                 parent.msgbox("Winda Explorer", "FS is not found. Turn it on in Control Panel or do a System File check")
                 thisWindow.remove()
             }
-            parent.showWindow("../explorer-file-manager/icon.png", thisWindow.getAttribute("windowid"));
+            parent.showWindow("./bin/explorer-file-manager/icon.png", thisWindow.getAttribute("windowid"));
         </script>
         <script>
             let currentPath = ""

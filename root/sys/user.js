@@ -245,7 +245,6 @@ function snapRight(window){
 }
 addEventListener("resize", resizeHandler)
 onmessage = (e) => {
-    console.log(e.data)
     const commands = e.data.split("|")
     if (commands.length > 1){
         let wnd;
@@ -269,7 +268,10 @@ onmessage = (e) => {
             }
             return
         }
-        let frame = wnd.lastElementChild.children[1].children[0].contentWindow
+        let frame;
+        if (wnd){
+            frame = wnd.lastElementChild.children[1].children[0].contentWindow
+        }
         if (commands[0] == "close")
             closeWindow(commands[1])
         else if (commands[0] == "max")
@@ -294,6 +296,28 @@ onmessage = (e) => {
             frame.postMessage("getscrwidth|" + innerWidth, "*")
         else if (commands[0] == "scrheight")
             frame.postMessage("getscrheight|" + innerHeight, "*")
+        else if (commands[0] == "theme")
+            changeTheme(commands[1])
+        else if (commands[0] == "dontgroupicons"){
+            console.log("e")
+            localStorage.dontGroupIcons = commands[1]
+            if (commands[1] == "true"){
+                groupicons.href = ""
+            }
+            else{
+                groupicons.href = './shell/group_icons.css'
+            }
+        }
+        else if (commands[0] == "usesmalltaskbar"){
+            console.log("e")
+            localStorage.useSmallTaskbar = commands[1]
+            if (commands[1] == "true"){
+                smalltaskbar.href = "./shell/small_taskbar_icons.css"
+            }
+            else{
+                smalltaskbar.href = ''
+            }
+        }
     }
 }
 function getAllWindows(){
@@ -320,7 +344,6 @@ function closeWindow(id){
     if (!window) window = getTray(id)
     function timeout(){
         for (a of document.querySelectorAll(".n" + id)) a.remove()
-        leftBar.querySelector(`.n${id}.window-tray`).remove()
         broadcast("processdied|" + id)
     }
     if (!window.className.includes("window")){
@@ -448,7 +471,6 @@ preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.p
 "res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
 "res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
 "res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg"]
-fs.downloadFiles(preload)
 // OKNA 8 COMPATIBILITY MODE
 function closemetroapp(appName){
     getAllWindows().forEach(val => {

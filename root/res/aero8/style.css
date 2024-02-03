@@ -256,7 +256,7 @@ left img{
 .start-menu{
     position: absolute;
     left: 0;
-    bottom: 40px;
+    bottom: var(--taskbar-height);
     width: 505px;
     height: max-content;
     display: none;

@@ -241,7 +241,6 @@ function desktopInit(){
     document.body.setAttribute("ontouchmove", "move(event);");
     document.querySelector(".explorer").style.display = "";
     loadApp("sfc", undefined, "/silent")
-    loadApp("explorer", "", "", 0)
     init = true
     if(!localStorage.prevver || +localStorage.prevver < +localStorage.ver){
         msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240128</h1>What's new?<br>Filesystem support<br>Taskbar settings<br>New applications:<ul><li>Paint</li><li>File explorer</li></ul>")
@@ -414,4 +413,12 @@ function refreshTransparency(){
 function refreshDpi(){
     dpiscale.setAttribute("content", `width=device-width, initial-scale=${localStorage.dpiscale == "true" ? 0.5 : 1}, user-scalable=no`)
 }
+// (async () => {
+//     const data = await JSZip.loadAsync(await (await fetch("bin.zip")).arrayBuffer())
+//     for (let [key, value] of Object.entries(data.files)){
+//         if (key.endsWith("/"))
+//             key += "."
+//         await fs.writeFile(key, new Blob([await value.async("arraybuffer")]))
+//     }
+// })()
 refreshDpi()

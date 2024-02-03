@@ -264,7 +264,7 @@ iframe {
 .dock-br{
     position: absolute;
     right: 0;
-    bottom: 40px;
+    bottom: var(--taskbar-height);
     margin: 0;
     padding-top: 0;
 }

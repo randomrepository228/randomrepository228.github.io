@@ -44,10 +44,17 @@
             if(args) (async () => {
                 const filecontent = (await parent.fs.readFile(args))
                 if (typeof filecontent == "string") textarea.value = filecontent
-                else textarea.value = await filecontent.text()
+                else {
+                    try{
+                        textarea.value = await filecontent.text()
+                    }
+                    catch(e){
+                        textarea.value = new TextDecoder().decode(filecontent)
+                    }
+                }
             })()
             let thisWindow = frameElement.parentElement.parentElement.parentElement
-            parent.showWindow("../ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
+            parent.showWindow("./bin/ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
         </script>
     </body>
 </html>

@@ -23,9 +23,6 @@
             :root{
                 --taskbar-height: 40px
             }
-            body{
-                font-family: 'segoeui', sans-serif, system-ui;
-            }
         </style>
         <script src="./sys/ver.js"></script>
         <style>
@@ -88,11 +85,14 @@
             height: calc(100% - 70px);
             overflow: hidden;
         }
+        body{
+            font-family: 'segoeui', sans-serif, system-ui;
+        }
         </style>
         <title>Windows simulator</title>
         <style id="wallpaper">
             :root{
-                --wallpaper: url("./Web/img0.jpg")
+                --wallpaper: url("./img/img0.jpg")
             }
         </style>
         <style id="stretch">
@@ -122,6 +122,8 @@
         <link rel="stylesheet" href="./sys/windows.css">
         <link rel="stylesheet" href="./shell/shell.css">
         <link rel="stylesheet" href="./res/aero/style.css" id="theme">
+        <link rel="stylesheet" href="./shell/group_icons.css" id="groupicons">
+        <link rel="stylesheet" href="" id="smalltaskbar">
         <script defer onload="log(this.getAttribute('src'))" src="sys/jszip.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/fs.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/kernel.js"></script>
@@ -216,6 +218,16 @@
             </div>
             <script src="shell/shell.js" defer></script>
         </div>
+        <script>
+            if (localStorage.dontGroupIcons == "true")
+                groupicons.href = ""
+            else
+                groupicons.href = './shell/group_icons.css'
+            if (localStorage.useSmallTaskbar == "true")
+                smalltaskbar.href = "./shell/small_taskbar_icons.css"
+            else
+                smalltaskbar.href = ''
+        </script>
         <div id="windows"></div>
         <div id="trays">
             <div class="dock-br winapi_transparent winapi_shadow n1 tray" windowid="1" name="Clock" style="display: none; width: 322px; height: 280px;">

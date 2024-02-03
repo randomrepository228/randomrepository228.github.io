@@ -77,9 +77,9 @@
                 <label for="dpiscale">Do not scale based on system DPI</label><br>
                 <input type="checkbox" name="aerosnap" id="aerosnap" onchange="localStorage.aerosnap = this.checked ? 'true' : 'false';">
                 <label for="aerosnap">Turn off aero snap</label><br>
-                <input type="checkbox" name="useSmallTaskbar" id="useSmallTaskbar" onchange="localStorage.useSmallTaskbar = this.checked ? 'true' : 'false';parent.broadcast('usesmalltaskbar|' + this.checked)">
+                <input type="checkbox" name="useSmallTaskbar" id="useSmallTaskbar" onchange="localStorage.useSmallTaskbar = this.checked ? 'true' : 'false';parent.postMessage('usesmalltaskbar|' + this.checked)">
                 <label for="useSmallTaskbar">Use small taskbar icons</label><br>
-                <input type="checkbox" name="dontGroupIcons" id="dontGroupIcons" onchange="localStorage.dontGroupIcons = this.checked ? 'true' : 'false';parent.broadcast('dontgroupicons|' + this.checked)">
+                <input type="checkbox" name="dontGroupIcons" id="dontGroupIcons" onchange="localStorage.dontGroupIcons = this.checked ? 'true' : 'false';parent.postMessage('dontgroupicons|' + this.checked)">
                 <label for="dontGroupIcons">Do not group icons</label><br>
                 <!-- <input type="range" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.value">
                 <label for="dpiscale">Maximised windows transparent</label> -->
@@ -122,7 +122,7 @@
                         <table style="width: 100%;" id="ControlContentPersonalization_Table">
                             <tbody>
                                 <tr style="height: 70px">
-                                    <td onclick="openSection('wallpaper')"><img src="../../Winda/Web/img0.jpg" alt="" id="wallpaperpreview" style="max-height: 56px; max-width: 100px;"></td>
+                                    <td onclick="openSection('wallpaper')"><img src="../../img/img0.jpg" alt="" id="wallpaperpreview" style="max-height: 56px; max-width: 100px;"></td>
                                     <td><img src="602.png" alt="" style="height: 48px; width: 48px; border-radius: 5px; background-color: rgb(190, 240, 255);"></td>
                                     <td><img src="nosounds.png" alt=""></td>
                                     <td><img src="noscreensaver.png" alt=""></td>
@@ -258,7 +258,7 @@
                 aerosnap.checked = localStorage.aerosnap == "true" ? true : false
                 useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
                 dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
-                parent.showWindow("../control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+                parent.showWindow("./bin/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>
     </body>

@@ -68,7 +68,7 @@
                 if (charCode == 57548) charCode = 57426
             }, 35)
             let thisWindow = frameElement.parentElement.parentElement.parentElement // главное окно
-            parent.showWindow("../ExampleApp/icon.png", thisWindow.getAttribute("windowid")); // показывает окно
+            parent.showWindow("./bin/ExampleApp/icon.png", thisWindow.getAttribute("windowid")); // показывает окно
             // thisWindow.children[0].children[0].lastElementChild.innerHTML - название окна
             // thisWindow.style.left - позиция снизу
             // thisWindow.style.top - позиция сверху
