@@ -64,7 +64,7 @@ function AddWindow(window, ispopup, options, id){
     if (typeof options.left == "number") options.left += "px"
     if (typeof options.right == "number") options.right += "px"
     if (typeof options.bottom == "number") options.bottom += "px"
-    if (options.okna8) window.icon = "Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
+    if (options.okna8) window.icon = "./bin/Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
     if (options.NoGUI) newWindow.className += " nogui"
     if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
     newWindow.setAttribute("windowid", id)
@@ -96,7 +96,7 @@ function AddWindow(window, ispopup, options, id){
     `
     <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
         <left>
-            <img src="${options.okna8 ? "../ProgramFiles/" + window.icon : window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
+            <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
             <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
         </left>
         <div class="buttons">
