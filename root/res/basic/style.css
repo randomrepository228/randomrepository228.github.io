@@ -286,10 +286,7 @@ left img{
     display: none;
     flex-direction: column;
     width: max-content;
-    padding: 2px;
-}
-.context-menu-option{
-    width: 100%;
+    
 }
 .context-menu-option:hover{
     background-color: rgba(0,255,255,0.3);

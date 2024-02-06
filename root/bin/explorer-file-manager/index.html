@@ -153,6 +153,11 @@
                         file.innerHTML += `<img src="${url}">`
                         file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
+                    else if (a.endsWith(".html")){
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="file.png">`
+                        file.setAttribute("ondblclick", `parent.loadApp('iexplore', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
                     else {
                         a = currentPath + "/" + a
                         file.innerHTML += `<img src="file.png">`

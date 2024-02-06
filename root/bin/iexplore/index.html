@@ -48,8 +48,30 @@
                     </div>
                 `
             }
-            
-            NewTab()
+            const args = frameElement.getAttribute("args")
+            if(args) (async () => {
+                if(args.startsWith("/")){
+                    parent.fs.readFile(args.substring(1, args.length)).then((e) => {
+                        const url = URL.createObjectURL(e)
+                        NewFrameID = FrameMaxID
+                        FrameMaxID++
+                        let tabs = document.querySelectorAll('.tabs .tab')
+                        for (a of tabs)
+                            a.className = "tab"
+                        document.querySelector('.tabContainer').innerHTML += `
+                            <div class="tab active" onclick="ActivateTab('${NewFrameID}')" id="Tab_${NewFrameID}"><div></div></div>
+                        `
+                        document.querySelector('.frames').innerHTML += `
+                            <div class="frame" style="display:block" id="Frame_${NewFrameID}">
+                                <iframe onload="console.log(event)" src="${url}" frameborder="0"></iframe>
+                            </div>
+                        `
+                    })
+                }
+            })()
+            else{
+                NewTab()
+            }
         </script>
         <script>
             let thisWindow = frameElement.parentElement.parentElement.parentElement

@@ -219,11 +219,31 @@ function showTray(tray){
     activetray = tray
     activetray.style.display = "block"
 }
-function contextMenu(e){
+/**
+* @param {PointerEvent} e
+* @param {[string, string]} content
+* @param {Number} x
+* @param {Number} y
+*/
+function contextMenu(e, content, x, y){
     e.preventDefault();
+    contextMenuElement.innerHTML = ""
+    if (content){
+        for (const a of content){
+            contextMenuElement.innerHTML += `<div class="context-menu-option"><img src="${a[0]}"><div>${a[1]}</div></div>`
+        }
+    }
+    else{
+        contextMenuElement.innerHTML += `<div class="context-menu-option"><img src=""><div>(No options available)</div></div>`
+    }
     contextMenuElement.style.display = "flex";
-    contextMenuElement.style.left = `${e.clientX}px`
-    contextMenuElement.style.top = `${e.clientY}px`
+    const boundClientRect = contextMenuElement.getBoundingClientRect()
+    if(!x) x = e.clientX
+    if(!y) y = e.clientY
+    if (e.clientX > innerWidth - boundClientRect.width) x = innerWidth - boundClientRect.width
+    if (e.clientY > innerHeight  - boundClientRect.height) y = innerHeight - boundClientRect.height
+    contextMenuElement.style.left = `${x}px`
+    contextMenuElement.style.top = `${y}px`
 }
 function contextMenuOff(e){
     contextMenuElement.style.display = "none";
@@ -239,6 +259,7 @@ function desktopInit(){
     }
     document.body.setAttribute("onmousemove", "move(event);"); 
     document.body.setAttribute("ontouchmove", "move(event);");
+    document.querySelector(".icons").setAttribute("onclick", "if (event.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()")
     document.querySelector(".explorer").style.display = "";
     loadApp("sfc", undefined, "/silent")
     init = true

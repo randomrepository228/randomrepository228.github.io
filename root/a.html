@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #scrolll{
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="scrolll">aaa</div>
+    <script>
+        function sleep(ms){
+            return new Promise((res, rej) => {
+                setTimeout(() => {res()},ms)
+            })
+        }
+        async function a(){
+            for(let i = 0; i < 101; i++){
+                await sleep(1)
+                scrolll.style.top = Math.sin(i / (100 * 0.6)) * 100 + "px"
+            }
+        }
+        a()
+    </script>
+</body>
+</html>

@@ -79,6 +79,7 @@ fs.writeFile = async function(filePath, data){
     const request = initialfs.get(filePath.replace(fileName, "/."))
     request.onsuccess = (e) => {
         initialfs.put({path: filePath, data: data})
+        dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
     };
 }
 fs.getStorage = async function(){
@@ -148,6 +149,13 @@ fs.exists = function(filePath){
             if (!e.target.result) resolve(false)
             resolve(true)
         }
+    })
+}
+fs.watchFile = function(filePath){
+    return new Promise((resolve, reject) => {
+        addEventListener("filechange", (e) => {
+            if (e.detail.filename == filePath) resolve()
+        }, {once: true})
     })
 }
 fs.deleteFile = function(filePath){

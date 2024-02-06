@@ -5,146 +5,190 @@
     <title>Рандомный репозиторий</title>
     <meta charset="utf-8">
     <style>
+        @font-face {
+            font-family: 'segoeui';
+            src: url(./segoeuil.ttf);
+            font-weight: 300;
+        }
         *{
             box-sizing: border-box;
         }
+        @keyframes fadein{
+            0% {transform: translate(-100px, -10px); opacity: 0;}
+            100% {}
+        }
         body {
             margin: 0;
-            background-color: black;
             font-family: sans-serif;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            animation: 0.3s ease-out fadein forwards;
         }
         html {
-            background-color: black;
+            background-color: darkgreen;
             margin: 0;
         }
-
-        .list {
-            width: 300px;
+        .tiles{
+            margin-left: 50px;
             display: flex;
+            overflow: hidden;
             flex-direction: column;
-            align-items: center;
-            transition: ease-in-out 0.2s;
-        }
-        .list div {
-            flex: 1;
-            width: 280px;
-            padding-left: 42.5px;
-            box-sizing: border-box;
-            background-color: rgb(30, 30, 30);
-            font-size: 15px;
-            line-height: 15px;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            border-radius: 25px;
-            cursor: default;
-            display: inline-block;
-            margin: 2%;
-            display: flex;
-            align-items: center;
-            transition: 0.2s;
-            z-index: 1000;
-        }
-        .list div:hover{
-            cursor: pointer;
-            background-color: rgb(80, 80, 80);
-            transform: scale(1.05);
-            box-shadow: 0px 0px 79px 48px rgba(128, 128, 128, 0.452);
-            z-index: 999;
         }
         .title{
-            text-shadow: grey 0 0 5px, grey 0 0 5px, grey 0 0 5px;
             color: white;
-            text-align: center;
-            line-height: 28px;
-            padding: 19px;
-            margin: 0;
+            margin: 5vw;
+            font-weight: 300;
+            font-family: 'Segoe UI', 'segoeui', sans-serif;
+            font-size: min(5vh, 10vw);
+            margin-top: 5vh;
+            margin-bottom: 5vh;
         }
-        .bottom{
-            display: flex;
-            height: calc(100% - 50px);
-            flex: 1;
+        .hugetile, .mediumtile, .smalltile{
+            border: 3px solid var(--primary-color);
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            position: relative;
+            display: block;
         }
-        iframe{
-            flex: 1;
-        }
-        .footer{
-            width: calc(100vw - 300px);
-            text-align: center;
+        .hugetile p, .mediumtile p, .smalltile p{
             position: absolute;
-            right: 0;
-            bottom: 0;
-            font-size: 20px;
-            z-index: 2;
+            bottom: 5px;
+            left: 5px;
+            margin: 0;
+            font-size: 15px;
             color: white;
-            pointer-events: none;
         }
-        @media (max-width: 1000px) {
-            .list div{
-                width: 280px;
-                padding-left: 5px;
-                text-align: center;
-                font-size: 3vw;
-                line-height: 3vh;
+        .hugetile img, .mediumtile img, .smalltile img{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .hugetile img{
+            max-width: 50%;
+            max-height: 50%;
+        }
+        .hugetile{
+            width: calc(32.33vh);
+            height: calc(32.33vh);
+            margin: 0.5vh;
+        }
+        .mediumtile{
+            width: calc(15.66vh);
+            height: calc(15.66vh);
+            margin: 0.5vh;
+        }
+        .mediumtilecontainer{
+            width: calc(16.66vh);
+            height: calc(16.66vh);
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+        .smalltile{
+            width: calc(7.33vh);
+            height: calc(7.33vh);
+            margin: 0.5vh;
+        }
+        .talltilecontainer{
+            display: flex;
+            flex-direction: row;
+        }
+        @keyframes open{
+            0% {transform: perspective(500px) rotate3d(0, 1, 0, 180deg);}
+            100% {
+                transform: perspective(500px) rotate3d(0, 1, 0, 360deg);
+                width: 100vw;
+                height: 100vh;
+                top: 0;
+                left: 0; 
+                border: 0px solid transparent;
             }
-            .list{
-                width: 300px;
+        }
+        .opening{
+            animation: open 0.5s ease-out forwards;
+        }
+        @media (max-width: 768px) {
+            .hugetile{
+                width: calc(64.66vw);
+                height: calc(64.66vw);
+                margin: 1vw;
             }
-            .footer{
-                font-size: 30px;
-                width: calc(100vw - 300px);
+            .mediumtile{
+                width: calc(31.33vw);
+                height: calc(31.33vw);
+                margin: 1vw;
             }
-            .bottom{
-                height: calc(100% - 100px);
+            .mediumtilecontainer{
+                width: calc(33.33vw);
+                height: calc(33.33vw);
+            }
+            .smalltile{
+                width: calc(14.66vw);
+                height: calc(14.66vw);
+                margin: 1vw;
+            }
+            .tiles{
+                margin: 0;
+                flex-direction: row;
             }
             .title{
-                font-size: 50px;
-                height: 100px;
-                line-height: 100px;
-                text-shadow: grey 0 0 20px, grey 0 0 20px, grey 0 0 20px;
-                z-index: 3;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+            .talltilecontainer{
+                display: block;
             }
         }
     </style>
 </head>
 
 <body>
-    <h2 class="title">
+    <h1 class="title">
         Какой-то сайт, я хз
-    </h2>
-    <div class="bottom">
-        <div class="list">
-            <div href="https://randomrepository228.github.io/root/">Winda</div>
-            <div href="https://randomrepository228.github.io/snake/">Змейка</div>
-            <div href="https://randomrepository228.github.io/counter/">CPS счетчик</div>
-            <div href="https://randomrepository228.github.io/user-agent/">Системная информация</div>
+    </h1>
+    <div class="tiles">
+        <a class="hugetile" style="--primary-color: cyan; --secondary-color: rgb(0, 220, 220)" hrefd="./root/">
+            <img src="winda7.png">
+            <p>Winda7</p>
+        </a>
+        <div class="talltilecontainer">
+            <a class="mediumtile" style="--primary-color: gray; --secondary-color: rgb(110, 110, 110)" hrefd="./snake/">
+                <img src="losingtrail.png">
+                <p>Losing trail</p>
+            </a>
+            <div class="mediumtilecontainer">
+                <a class="smalltile" style="--primary-color: blue; --secondary-color: rgb(0, 0, 220)" hrefd="./user-agent/">
+                    <img src="useragent.png">
+                </a>
+                <a class="smalltile" style="--primary-color: red; --secondary-color: rgb(220, 0, 0)" hrefd="./counter/">
+                    <img src="cps.png">
+                </a>
+            </div>
         </div>
-        <iframe src="about:blank" frameborder="0"></iframe>
-    </div>
-    <div class="footer">
-        Double click/tap to go to website
     </div>
     <script>
         document.body.style.height = innerHeight + "px"
         addEventListener("resize", () => document.body.style.height = innerHeight + "px")
-        let frame = document.querySelector("iframe")
-        function setActive(a){
-            const href = a.getAttribute("href")
-            if (currentSection == href)
-                location.href = currentSection
-            else {
-                currentSection = href
-                frame.src = href
-            }
+        let links = document.querySelectorAll("a")
+        function openSite(elem){
+            elem.style.position = "absolute"
+            const pos = elem.getBoundingClientRect()
+            console.log(pos)
+            elem.style.left = pos.x + "px"
+            elem.style.top = pos.y + "px"
+            elem.style.margin = 0
+            let elemtext = elem.querySelector("p")
+            if (elemtext) elemtext.style.display = "none"
+            document.body.style.visibility = "hidden"
+            elem.style.visibility = "visible"
+            elem.className += " opening"
         }
-        let currentSection = ""
-        for (a of document.querySelectorAll(".list > *")){
-            a.setAttribute("onclick", "setActive(this)")
+        for (a of links){
+            a.setAttribute("onclick", "openSite(this)")
         }
-        frame.src = "about:blank"
     </script>
 </body>
 </html>

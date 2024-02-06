@@ -12,7 +12,7 @@ body{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: calc(100% - 38px);
+    height: calc(100% - var(--taskbar-height));
     align-content: flex-start;
     z-index: -9999;
 }
@@ -48,11 +48,12 @@ body{
 }
 bottomright{
     position: absolute; 
-    bottom: var(--taskbar-height);
+    bottom: var(--taskbar-height); 
     right: 0px; 
     text-align: right; 
     color: white;
     z-index: -1;
+    animation: slide 0.3s ease-in-out;
 }
 @keyframes slide{
     0% {
@@ -178,7 +179,7 @@ bottomright{
 .start-menu{
     position: absolute;
     left: 0;
-    bottom: var(--taskbar-height);
+    bottom: 40px;
     width: 504px;
     max-width: 100vw;
     box-sizing: border-box;
@@ -261,4 +262,14 @@ bottomright{
 .window-tray.focus{
     background-image: none;
     border-image: url("../res/taskbar_btn_focus.png") 5 fill;
+}
+.context-menu-option{
+    width: calc(100% - 10px);
+    height: 28px;
+    display: flex;
+    line-height: 28px;
+    padding: 0 5px;
+}
+.context-menu{
+    z-index: 9999999;
 }
