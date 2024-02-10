@@ -50,7 +50,9 @@ function setActive(window, noTray){
     try{
         for(element of leftBar.children)
             element.className = element.className.replace(" focus", "")
-        leftBar.querySelector(`.n${activewindow.getAttribute("windowid")}`).className += " focus"
+        let e = leftBar.querySelector(`.n${activewindow.getAttribute("windowid")}`)
+        console.log(e.className)
+        e.className = e.className + " focus"
     }
     catch(e){console.log(e)}
 }
@@ -63,34 +65,30 @@ function setInactive(){
 }
 function showWindow(icon, num, doNotShowTray){
     let wnd = getWnd(num)
+    if (doNotShowTray) try{
+        setActive(wnd)
+        return;
+    }
+    catch(e){}
     try{
-        if (leftBar.querySelector(`.n${num}`)) {
-            windowSelectHandler(wnd)
-            return;
+        leftBar.innerHTML += `
+        <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelector('.n${num}.window'))">
+            <img src="${icon}" onerror="this.src = './bin/ExampleApp/icon.png'">
+            <p>${wnd.firstElementChild.firstElementChild.lastElementChild.innerHTML}</p>
+        </div>`
+        if(localStorage.theme == "aero"){
+            leftBar.querySelector(`.n${num}`).animate(
+                [{opacity: 0}, {opacity: 1}],
+                {
+                    duration: 300,
+                    iterations: 1,
+                    easing: "ease-in-out"
+                }
+            )
         }
     }
     catch(e){}
-    if (!doNotShowTray){
-        try{
-            leftBar.innerHTML += `
-            <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelector('.n${num}.window'))">
-                <img src="${icon}" onerror="this.src = './bin/ExampleApp/icon.png'">
-                <p>${wnd.firstElementChild.firstElementChild.lastElementChild.innerHTML}</p>
-            </div>`
-            if(localStorage.theme == "aero"){
-                leftBar.querySelector(`.n${num}`).animate(
-                    [{opacity: 0}, {opacity: 1}],
-                    {
-                        duration: 300,
-                        iterations: 1,
-                        easing: "ease-in-out"
-                    }
-                )
-            }
-        }
-        catch(e){}
-    }
-    setActive(wnd, true)
+    setActive(wnd)
     for (windoww of document.querySelectorAll(`.n${num}.window`))
         windoww.style.display = ""
 }
