@@ -258,6 +258,7 @@ request.onsuccess = (e) => {
     db = e.target.result;
     fs.checkSystemFolder()
     fs.writeFile("secret.txt", "IFRAME ЗЛО!")
+    dispatchEvent(new CustomEvent("fsloaded"))
 };
 request.onupgradeneeded = (e) => {
     db = e.target.result;

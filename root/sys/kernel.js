@@ -39,7 +39,7 @@ if (!localStorage.theme) localStorage.theme = "aero"
 theme.href = "./res/" + localStorage.theme + "/style.css"
 if (!localStorage.wallpaper) localStorage.wallpaper = "./img/img0.jpg"
 if (!localStorage.wallpaperstretch) localStorage.wallpaperstretch = "stretch"
-if (!localStorage.sounds) localStorage.sounds = '{"msgbox": "./media/Windows Exclamation.wav"}'
+if (!localStorage.sounds) localStorage.sounds = '{"msgbox": "./media/Windows Exclamation.flac"}'
 sounds = JSON.parse(localStorage.sounds)
 function connectScript(path) {
     let script = document.createElement('script')
@@ -56,101 +56,6 @@ function changeTheme(a){
     for (let i = 0; i < frames.length; i++) {
         frames[i].postMessage("theme|" + a, "*")
     }
-}
-function AddWindow(window, ispopup, options, id){
-    newWindow = document.createElement("div")
-    newWindow.className = `n${id} window winapi_shadow winapi_transparent`
-    if (typeof options.top == "number") options.top += "px"
-    if (typeof options.left == "number") options.left += "px"
-    if (typeof options.right == "number") options.right += "px"
-    if (typeof options.bottom == "number") options.bottom += "px"
-    if (options.okna8) window.icon = "./bin/Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
-    if (options.NoGUI) newWindow.className += " nogui"
-    if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
-    newWindow.setAttribute("windowid", id)
-    if (options.noTray) newWindow.setAttribute("notray", "true")
-    if (options.left)
-        newWindow.style.left = options.left
-    if (options.top)
-        newWindow.style.top = options.top
-    if (ispopup){
-        newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
-        newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
-    }
-    else{
-        const openedwindows = getAllWindows().length
-        if (!(options.right || options.left))
-            newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - options.width) + "px"
-        if (!(options.bottom || options.top))
-            newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - options.height) + "px"
-    }
-    if (options.bottom)
-        newWindow.style.bottom = options.bottom
-    if (options.right)
-        newWindow.style.right = options.right
-    newWindow.style.display = "none"
-    if(options.alwaysontop) newWindow.className += " alwaysontop"
-    if(options.alwaysbehind) newWindow.className += " alwaysbehind"
-    if(options.classes) newWindow.className += options.classes
-    newWindow.innerHTML =
-    `
-    <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
-        <left>
-            <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
-            <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
-        </left>
-        <div class="buttons">
-            ${options.xOnly ? `` : `<div class="dash" ${options.noTray ? 'disabled' : 'onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"'}><img src="./res/aero/buttons/min/icon.png"></div>
-            <div class="square" ${options.noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./res/aero/buttons/max/icon.png"></div>`}
-            <div class="x" onclick="closeWindow(${id})"><img src="./res/aero/buttons/close/icon.png"></div>
-        </div>
-    </div>
-    ${options.noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-    <div ontouchdown="windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-    <div ontouchdown="windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-    <div ontouchdown="windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-    <div ontouchdown="windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="top"></div>
-    <div ontouchdown="windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
-    <div ontouchdown="windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
-    <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
-    <div class="content${options.noGUI ? 'nostyle' : ''}">
-        <ignore></ignore>
-        <text style="width: ${options.width}px; height: ${options.height}px">
-            ${window.innerhtml}
-            ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
-        </text>
-    </div>
-    `
-    windows.append(newWindow)
-    if(ispopup || options.noSelfOpen || options.okna8){
-        showWindow(options.okna8 ? "../" + window.icon : window.icon, id)
-    }
-    broadcast("newprocess|" + id)
-}
-function addTray(id, trayicon, tray, options){
-    let newTray = document.createElement("div")
-    newTray.className = `dock-br winapi_transparent winapi_shadow n${id} tray`
-    newTray.setAttribute("windowid", id)
-    newTray.style.width = tray.width + "px"
-    newTray.style.display = "none"
-    newTray.setAttribute("name", tray.title)
-    newTray.innerHTML =
-    `
-    <div class="content">
-        ${tray.innerhtml}
-    </div>
-    `
-    trays.append(newTray)
-    newTray = document.createElement("div")
-    newTray.className = `trayicon n${id}`
-    newTray.style.width = trayicon.width + "px"
-    newTray.innerHTML =
-    `
-    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="parent.showTray(parent.getTray(${id}))"></div>
-    ${trayicon.innerhtml}
-    `
-    trayicons.append(newTray)
-    broadcast("newprocess|" + id)
 }
 function getId(){
     const randNum = Math.round(Math.random() * 99999)
@@ -207,18 +112,6 @@ async function loadOkna8App(packageName, path, name, args){
     const id = getId()
     AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised"}, id)
 }
-function showTray(tray){
-    if (tray == activetray){
-        tray.style.display = "none"
-        activetray = undefined
-        return
-    }
-    try{
-        activetray.style.display = "none"
-    } catch (e) {}
-    activetray = tray
-    activetray.style.display = "block"
-}
 /**
 * @param {PointerEvent} e
 * @param {[string, string]} content
@@ -257,14 +150,19 @@ function desktopInit(){
     catch(e){
         console.log("Winload not found. skipped")
     }
-    document.body.setAttribute("onmousemove", "move(event);"); 
-    document.body.setAttribute("ontouchmove", "move(event);");
+    if (move){
+        document.body.setAttribute("onmousemove", "move(event);"); 
+        document.body.setAttribute("ontouchmove", "move(event);");
+    }
+    else{
+        msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
+    }
     document.querySelector(".icons").setAttribute("onclick", "if (event.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()")
     document.querySelector(".explorer").style.display = "";
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || +localStorage.prevver < +localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240128</h1>What's new?<br>Filesystem support<br>Taskbar settings<br>New applications:<ul><li>Paint</li><li>File explorer</li></ul>")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240211</h1>What's new?<br>can drag and drop files to desktop<br>programs moved to start menu")
         localStorage.prevver = localStorage.ver
         return;
     }

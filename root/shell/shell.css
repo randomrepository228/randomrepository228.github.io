@@ -124,19 +124,26 @@ bottomright{
     background-size: 50px 59px;
     min-width: 50px;
 }
+.left-start{
+    position: relative;
+}
+.left-start > .allprograms{
+    position: absolute;
+    inset: 0;
+    display: none;
+}
 .window-tray{
     position: relative;
     bottom: 2px;
-    min-width: 50px;
-    max-width: 141px;
     height: 30px;
     border: 5px solid transparent;
     border-radius: 3px;
     margin-right: 2px;
     display: flex;
-    justify-content: center;
     align-items: center;
     border-image: url("../res/taskbar_btn.png") 5 fill;
+    min-width: 50px;
+    justify-content: center;
 }
 .window-tray.focus{
     /* background-image: url("../res/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
@@ -199,6 +206,7 @@ bottomright{
     padding: 2px;
     box-sizing: border-box;
     max-width: 65vw;
+    padding-bottom: 27px;
 }
 .start-option{
     display: flex;
@@ -272,4 +280,55 @@ bottomright{
 }
 .context-menu{
     z-index: 9999999;
+}
+.window-tray > p{
+    display: none;
+}
+.allprogramsbutton{
+    height: 21px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid gray;
+    padding: 2px;
+    padding-left: 7px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.allprograms .start-option{
+    height: 22px;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.allprograms .start-option:hover{
+    background-image: url("../res/startmenuitemleft/hover/left.png"), url("../res/startmenuitemleft/hover/right.png"), url("../res/startmenuitemleft/hover/center.png");
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: 4px 100%, 4px 100%, calc(100% - 8px) 100%;
+    background-color: transparent;
+}
+.allprograms .start-option > img{
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+.allprogramsbutton:hover{
+    background-image: url("../res/startmenuitemleft/hover/left.png"), url("../res/startmenuitemleft/hover/right.png"), url("../res/startmenuitemleft/hover/center.png");
+    background-position: left, right, 4px;
+    background-repeat: no-repeat;
+    background-size: 4px 100%, 4px 100%, calc(100% - 8px) 100%;
+    background-color: transparent;
+}
+.allprograms{
+    padding: 2px;
+    padding-bottom: 27px;
+}
+.allprograms > .scrollable{
+    overflow-y: auto;
+    height: 100%;
 }

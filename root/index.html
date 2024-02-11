@@ -88,6 +88,12 @@
         }
         body{
             font-family: 'segoeui', sans-serif, system-ui;
+            margin: 0;
+            background-color: black;
+            background-image: var(--wallpaper);
+            overflow: hidden;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         </style>
         <title>Windows simulator</title>
@@ -102,14 +108,6 @@
             }
         </style>
         <style>
-            body{
-                margin: 0;
-                background-color: black;
-                background-image: var(--wallpaper);
-                overflow: hidden;
-                background-position: center;
-                background-repeat: no-repeat;
-            }
         </style>
         <style id="maximisetransparency"></style>
         <style id="iframeignore"></style>
@@ -123,12 +121,15 @@
         <link rel="stylesheet" href="./sys/windows.css">
         <link rel="stylesheet" href="./shell/shell.css">
         <link rel="stylesheet" href="./res/aero/style.css" id="theme">
-        <link rel="stylesheet" href="./shell/group_icons.css" id="groupicons">
         <link rel="stylesheet" href="" id="smalltaskbar">
+        <link rel="stylesheet" href="" id="groupicons">
         <script defer onload="log(this.getAttribute('src'))" src="sys/jszip.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/fs.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/kernel.js"></script>
-        <script defer onload="log(this.getAttribute('src'))" src="sys/user.js"></script>
+        <script defer onload="log(this.getAttribute('src'))" src="sys/windowManager.js"></script>
+        <script defer onload="log(this.getAttribute('src'))" src="sys/windowControls.js"></script>
+        <script defer onload="log(this.getAttribute('src'))" src="shell/shell.js"></script>
+        <script defer onload="log(this.getAttribute('src'))" src="sys/trayManager.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no" id="dpiscale">
         <style>
             @media (max-aspect-ratio: 1/1) {
@@ -171,59 +172,14 @@
         <div class="context-menu" id="contextMenuElement">
             <div class="context-menu-option">(No options available)</div>
         </div>
-        <div id="changethemesplash">
-
-        </div>
-        <div class="logonui" style="display: none">
-
-        </div>
-        <div class="explorer" style="display: none;">
-            <div class="icons" id="icons" oncontextmenu="contextMenu(event)"></div>
-            <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
-            <div class="taskbar">
-                <div class="wrapper" onclick="startMenu(true, this)">
-                    <img class="taskbar-btn" src="./res/taskbar-btn.png"></img>
-                    <div class="taskbar-btn-orb"></div>
-                </div>
-                <div class="left-bar" id="leftBar"></div>
-                <div class="right-bar">
-                    <div id="trayicons">
-                        <div class="trayicon n2">
-                            <div style="width: 24px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(2))"></div>
-                            <iframe src="./bin/update/tray.html" windowid="2" name="Winda Update" frameborder="0" style="width: 24px"></iframe>
-                        </div>
-                        <div class="trayicon n1">
-                            <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(1))"></div>
-                            <iframe src="./bin/clock/tray.html" class="monochrome" windowid="1" name="Clock" frameborder="0" style="width: 79px"></iframe>
-                        </div>
-                    </div>
-                    <div class="show-desktop" onclick="minimiseAll()"></div>
-                </div>
-            </div>
-            <div class="start-menu winapi_transparent">
-                <div class="left-start"></div>
-                <div class="right-start">
-                    <div class="rstop">
-                        <div class="start-option-right">SYSTEM</div>
-                        <div class="start-option-right" onclick="loadApp('control');startMenu(false)">Control Panel</div>
-                    </div>
-                    <div class="select">
-                        <select name="startMenuSessionActionSelect" onchange="if(this.value == 'shutdown') shutdown(); if(this.value == 'logoff') logoff(); this.value = 'none'">
-                            <option value="none" disabled selected hidden>Shutdown</option>
-                            <option value="shutdown">Shutdown</option>
-                            <option value="logoff">Log off</option>
-                        </select>
-                        <selecticon></selecticon>
-                    </div>
-                </div>
-            </div>
-            <script src="shell/shell.js" defer></script>
-        </div>
+        <div id="changethemesplash"></div>
+        <div class="logonui" style="display: none"></div>
+        <div class="explorer" id="shell" style="display: none;"></div>
         <script>
-            if (localStorage.dontGroupIcons == "true")
+            if (!localStorage.dontGroupIcons == "true")
                 groupicons.href = ""
             else
-                groupicons.href = './shell/group_icons.css'
+                groupicons.href = './shell/dont_group_icons.css'
             if (localStorage.useSmallTaskbar == "true")
                 smalltaskbar.href = "./shell/small_taskbar_icons.css"
             else

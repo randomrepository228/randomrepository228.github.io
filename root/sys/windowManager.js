@@ -1,3 +1,73 @@
+function AddWindow(window, ispopup, options, id){
+    newWindow = document.createElement("div")
+    newWindow.className = `n${id} window winapi_shadow winapi_transparent`
+    if (typeof options.top == "number") options.top += "px"
+    if (typeof options.left == "number") options.left += "px"
+    if (typeof options.right == "number") options.right += "px"
+    if (typeof options.bottom == "number") options.bottom += "px"
+    if (options.okna8) window.icon = "./bin/Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
+    if (options.NoGUI) newWindow.className += " nogui"
+    if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
+    newWindow.setAttribute("windowid", id)
+    if (options.noTray) newWindow.setAttribute("notray", "true")
+    if (options.left)
+        newWindow.style.left = options.left
+    if (options.top)
+        newWindow.style.top = options.top
+    if (ispopup){
+        newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
+        newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
+    }
+    else{
+        const openedwindows = getAllWindows().length
+        if (!(options.right || options.left))
+            newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - options.width) + "px"
+        if (!(options.bottom || options.top))
+            newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - options.height) + "px"
+    }
+    if (options.bottom)
+        newWindow.style.bottom = options.bottom
+    if (options.right)
+        newWindow.style.right = options.right
+    newWindow.style.display = "none"
+    if(options.alwaysontop) newWindow.className += " alwaysontop"
+    if(options.alwaysbehind) newWindow.className += " alwaysbehind"
+    if(options.classes) newWindow.className += options.classes
+    newWindow.innerHTML =
+    `
+    <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
+        <left>
+            <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
+            <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
+        </left>
+        <div class="buttons">
+            ${options.xOnly ? `` : `<div class="dash" ${options.noTray ? 'disabled' : 'onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"'}><img src="./res/aero/buttons/min/icon.png"></div>
+            <div class="square" ${options.noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./res/aero/buttons/max/icon.png"></div>`}
+            <div class="x" onclick="closeWindow(${id})"><img src="./res/aero/buttons/close/icon.png"></div>
+        </div>
+    </div>
+    ${options.noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+    <div ontouchdown="windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
+    <div ontouchdown="windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
+    <div ontouchdown="windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
+    <div ontouchdown="windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="top"></div>
+    <div ontouchdown="windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
+    <div ontouchdown="windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
+    <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+    <div class="content${options.noGUI ? 'nostyle' : ''}">
+        <ignore></ignore>
+        <text style="width: ${options.width}px; height: ${options.height}px">
+            ${window.innerhtml}
+            ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
+        </text>
+    </div>
+    `
+    windows.append(newWindow)
+    if(ispopup || options.noSelfOpen || options.okna8){
+        showWindow(options.okna8 ? "../" + window.icon : window.icon, id)
+    }
+    broadcast("newprocess|" + id)
+}
 function broadcast(message){
     for (a of windows.children){
         try{
@@ -92,156 +162,6 @@ function showWindow(icon, num, doNotShowTray){
     for (windoww of document.querySelectorAll(`.n${num}.window`))
         windoww.style.display = ""
 }
-function windowMouseDown(event, elem, a, noResize){
-    if(event.target != elem) return;
-    let touch = false;
-    let evName;
-    if(!elem.getAttribute("notray")) setActive(elem.parentElement);
-    loop.drag = true;
-    iframeignore.innerHTML = "ignore{display:block !important}"
-    if (event.touches) {
-        event = event.touches[0];
-        touch = true;
-    }
-    prevx=event.clientX-elem.getBoundingClientRect().x + 8
-    prevy=event.clientY-elem.getBoundingClientRect().y
-    prevheight=activewindow.getBoundingClientRect().height
-    prevwidth=activewindow.getBoundingClientRect().width - 7
-    if (!touch) evName = "mouseup"
-    else evName = "touchend"
-    document.addEventListener(evName, e => {
-        let minsnap = 10
-        let minsnapx = 0
-        loop.drag = false; 
-        iframeignore.innerHTML = "none"
-        if (e.clientX){
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }
-        else{
-            clientX = +activewindow.style.left.substring(0, activewindow.style.left.length - 2);
-            let wndwidth = activewindow.getBoundingClientRect().width
-            if (clientX + wndwidth > innerWidth) clientX += wndwidth
-            clientY = +activewindow.style.top.substring(0, activewindow.style.top.length - 2);
-            minsnap = 1
-            minsnapx = wndwidth / -4
-        }
-        if (!noResize){
-            if (clientX < minsnap + minsnapx) {snapLeft(activewindow); return}
-            if (clientX > innerWidth - minsnap - minsnapx) {snapRight(activewindow); return}
-            if (clientY < minsnap) maximise(activewindow)
-        }
-    }, {once: true});
-}
-function windowResize(event, elem, ...actions){
-    let touch = false;
-    activewindow = elem.parentElement
-    let activewindowcontent = elem.parentElement.querySelector("text")
-    loop = {drag: false, top: false, left: false, right: false, bottom: false}
-    for (a of actions) loop[a] = true
-    iframeignore.innerHTML = "ignore{display:block !important}"
-    if (event.touches) {
-        event = event.touches[0];
-        touch = true;
-    }
-    prevx=event.clientX-elem.getBoundingClientRect().x
-    prevy=event.clientY-elem.getBoundingClientRect().y
-    origx=event.clientX-elem.getBoundingClientRect().width - 6
-    origy=event.clientY-elem.getBoundingClientRect().height - 1
-    prevheight=activewindowcontent.getBoundingClientRect().height
-    prevwidth=activewindowcontent.getBoundingClientRect().width
-    if (activewindow.classList.contains("snap-left") || activewindow.classList.contains("snap-right")){
-        activewindowcontent.style.height = prevheight + "px"
-        activewindowcontent.style.width = prevwidth + "px"
-        activewindow.style.top = activewindow.getBoundingClientRect().y + "px"
-        activewindow.style.left = activewindow.getBoundingClientRect().x + "px"
-        activewindow.className = activewindow.className.replace("snap-right ", "")
-        activewindow.className = activewindow.className.replace("snap-left ", "")
-    }
-    if (!touch)
-        document.addEventListener("mouseup", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
-    else
-        document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
-}
-function move(e){
-    if (!activewindow) return
-    let activewindowcontent = activewindow.querySelector("text")
-    if (e.touches) e = e.touches[0]
-    if(loop.drag){
-        activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-        if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
-            activewindow.className = activewindow.className.replace(" maximised", "");
-            activewindow.className = activewindow.className.replace("snap-right ", "")
-            activewindow.className = activewindow.className.replace("snap-left ", "")
-            activewindow.style.top = "-10px";
-            prevx = activewindow.getBoundingClientRect().width / 2;
-            prevy += 10
-            return
-        }
-        activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
-    }
-    if(localStorage.theme == "aero"){
-        if(loop.right){
-            activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
-        }
-        if(loop.bottom){
-            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24}px`
-        }
-        if(loop.top){
-            activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-            activewindowcontent.style.height = `${prevheight + origy - e.pageY - 20 + 20}px`
-        }
-        if(loop.left){
-            activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
-            activewindowcontent.style.width = `${prevwidth + origx - e.pageX + 20}px`
-        }
-    }
-    else if (localStorage.theme == "basic"){
-        if(loop.right){
-            activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 11}px`
-        }
-        if(loop.bottom){
-            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24}px`
-        }
-        if(loop.top){
-            activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-            activewindowcontent.style.height = `${prevheight + origy - e.pageY - 2 + 15}px`
-        }
-        if(loop.left){
-            activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
-            activewindowcontent.style.width = `${prevwidth + origx - e.pageX - 4 + 20}px`
-        }
-    }
-    else{
-        if(loop.right){
-            activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 3}px`
-        }
-        if(loop.bottom){
-            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 1 - 24}px`
-        }
-        if(loop.top){
-            activewindow.style.top = `${e.clientY - prevy}px`
-            activewindowcontent.style.height = `${prevheight + origy - e.pageY + 2 - 24 + 20}px`
-        }
-        if(loop.left){
-            activewindow.style.left = `${e.clientX - prevx}px`
-            activewindowcontent.style.width = `${prevwidth + origx - e.pageX + 7 + 20}px`
-        }
-    }
-    if (loop.top || loop.left || loop.right || loop.bottom || loop.drag){
-        activewindow.style.bottom = null;
-        activewindow.style.right = null;
-    }
-}
-function snapLeft(window){
-    if (localStorage.aerosnap == "true") return
-    window.className = window.className.replace("", "snap-left ")
-}
-function snapRight(window){
-    if (localStorage.aerosnap == "true") return
-    window.className = window.className.replace("", "snap-right ")
-}
-addEventListener("resize", resizeHandler)
 onmessage = (e) => {
     const commands = e.data.split("|")
     if (commands.length > 1){
@@ -299,11 +219,11 @@ onmessage = (e) => {
         else if (commands[0] == "dontgroupicons"){
             console.log("e")
             localStorage.dontGroupIcons = commands[1]
-            if (commands[1] == "true"){
+            if (commands[1] != "true"){
                 groupicons.href = ""
             }
             else{
-                groupicons.href = './shell/group_icons.css'
+                groupicons.href = './shell/dont_group_icons.css'
             }
         }
         else if (commands[0] == "usesmalltaskbar"){
@@ -448,16 +368,6 @@ function minimiseAll(){
     }
     setInactive()
 }
-function maximiseWindow(window){
-    if (window.className.search("maximised") == -1){
-        window.className += " maximised"
-        window.className = window.className.replace("snap-right ", "")
-        window.className = window.className.replace("snap-left ", "")
-    }
-    else
-        window.className = window.className.replace(" maximised", "")
-}
-maximise = maximiseWindow
 preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
 "res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
 "res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
