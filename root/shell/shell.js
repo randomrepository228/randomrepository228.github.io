@@ -59,7 +59,7 @@ shell.innerHTML = `<div class="icons" id="icons" oncontextmenu="contextMenu(even
     <div class="right-start">
         <div class="rstop">
             <div class="start-option-right">SYSTEM</div>
-            <div class="start-option-right" onclick="loadApp('control');startMenu(false)">Control Panel</div>
+            <div class="start-option-right" onclick="loadApp('control');startMenu(false, document.querySelector('.taskbar').querySelector('.wrapper'))">Control Panel</div>
         </div>
         <div class="select">
             <select name="startMenuSessionActionSelect" onchange="if(this.value == 'shutdown') shutdown(); if(this.value == 'logoff') logoff(); this.value = 'none'">
