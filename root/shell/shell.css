@@ -289,8 +289,8 @@ bottomright{
     display: flex;
     align-items: center;
     border-top: 1px solid gray;
-    padding: 2px;
-    padding-left: 7px;
+    margin: 2px;
+    padding-left: 5px;
     position: absolute;
     bottom: 0;
     left: 0;

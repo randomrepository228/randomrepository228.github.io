@@ -255,10 +255,10 @@ fs.searchHTML = async function(path, searchString){
     })
 }
 request.onsuccess = (e) => {
+    dispatchEvent(new CustomEvent("fsloaded"))
     db = e.target.result;
     fs.checkSystemFolder()
-    fs.writeFile("secret.txt", "IFRAME ЗЛО!")
-    dispatchEvent(new CustomEvent("fsloaded"))
+    // fs.writeFile("secret.txt", "IFRAME ЗЛО!")
 };
 request.onupgradeneeded = (e) => {
     db = e.target.result;

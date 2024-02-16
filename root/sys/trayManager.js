@@ -3,6 +3,7 @@ function addTray(id, trayicon, tray, options){
     newTray.className = `dock-br winapi_transparent winapi_shadow n${id} tray`
     newTray.setAttribute("windowid", id)
     newTray.style.width = tray.width + "px"
+    newTray.style.height = tray.height + "px"
     newTray.style.display = "none"
     newTray.setAttribute("name", tray.title)
     newTray.innerHTML =

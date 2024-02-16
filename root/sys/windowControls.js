@@ -38,6 +38,20 @@ function windowMouseDown(event, elem, a, noResize){
             if (clientX > innerWidth - minsnap - minsnapx) {snapRight(activewindow); return}
             if (clientY < minsnap) maximise(activewindow)
         }
+        if (!localStorage.noContentMove) return
+        activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
+        if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
+            activewindow.className = activewindow.className.replace(" maximised", "");
+            activewindow.className = activewindow.className.replace("snap-right ", "")
+            activewindow.className = activewindow.className.replace("snap-left ", "")
+            activewindow.style.top = "-10px";
+            prevx = activewindow.getBoundingClientRect().width / 2;
+            prevy += 10
+            return
+        }
+        activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
+        activewindow.style.bottom = ''
+        activewindow.style.right = ''
     }, {once: true});
 }
 function windowResize(event, elem, ...actions){
@@ -72,6 +86,7 @@ function windowResize(event, elem, ...actions){
 }
 function move(e){
     if (!activewindow) return
+    if (localStorage.noContentMove) return
     let activewindowcontent = activewindow.querySelector("text")
     if (e.touches) e = e.touches[0]
     if(loop.drag){

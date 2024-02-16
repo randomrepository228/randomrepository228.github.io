@@ -162,7 +162,7 @@ function desktopInit(){
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || +localStorage.prevver < +localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240211</h1>What's new?<br>can drag and drop files to desktop<br>programs moved to start menu")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240216</h1>What's new?<br>Winda media player!")
         localStorage.prevver = localStorage.ver
         return;
     }

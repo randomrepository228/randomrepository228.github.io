@@ -10,10 +10,8 @@ function AddWindow(window, ispopup, options, id){
     if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
     newWindow.setAttribute("windowid", id)
     if (options.noTray) newWindow.setAttribute("notray", "true")
-    if (options.left)
-        newWindow.style.left = options.left
-    if (options.top)
-        newWindow.style.top = options.top
+    if (options.left) newWindow.style.left = options.left
+    if (options.top) newWindow.style.top = options.top
     if (ispopup){
         newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
         newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
@@ -56,7 +54,7 @@ function AddWindow(window, ispopup, options, id){
     <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
     <div class="content${options.noGUI ? 'nostyle' : ''}">
         <ignore></ignore>
-        <text style="width: ${options.width}px; height: ${options.height}px">
+        <text style="width: ${options.width}px; height: ${options.height}px; ${options.minWidth ? `min-width: ` + options.minWidth + `px;` : ``} ${options.minHeight ? `min-height: ` + options.minHeight + `px` : ``}">
             ${window.innerhtml}
             ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
         </text>
@@ -161,6 +159,7 @@ function showWindow(icon, num, doNotShowTray){
     setActive(wnd)
     for (windoww of document.querySelectorAll(`.n${num}.window`))
         windoww.style.display = ""
+    startMenu(false)
 }
 onmessage = (e) => {
     const commands = e.data.split("|")

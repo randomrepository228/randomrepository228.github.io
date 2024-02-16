@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            video{
+                width: 100vw;
+                height: 100vh;
+            }
+            body{
+                background-image: url(musicbg.png), url(bg.png);
+                background-size: auto, 100% 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
+    </head>
+    <body>
+        <video controls id="video">
+            <source src="" id="sourcee">
+        </video> 
+        <script>
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            const args = frameElement.getAttribute("args")
+            if(!args) thisWindow.remove()
+            const match = args.match(/.*\.(.*)/)
+            if (!args.length == 2) thisWindow.remove();
+            (async () => {
+                const videoURL = URL.createObjectURL(await parent.fs.readFile(args))
+                video.addEventListener("loadedmetadata", () => {
+                    if (!video.videoHeight) return
+                    document.body.style.backgroundImage = "url(bg.png)"
+                    document.body.style.backgroundSize = "100% 100%";
+                    frameElement.parentElement.style.width = video.videoWidth + "px"
+                    frameElement.parentElement.style.height = video.videoHeight + "px"
+                })
+                sourcee.addEventListener("error", () => parent.msgbox("Playback error", "This media file is either not supported or corrupted. Check your browser supported formats"))
+                sourcee.setAttribute("src", videoURL)
+                video.load()
+            })()
+            parent.showWindow("./bin/wmplayer/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

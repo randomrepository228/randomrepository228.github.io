@@ -27,7 +27,7 @@ function dropHandler(e){
 shell.innerHTML = `<div class="icons" id="icons" oncontextmenu="contextMenu(event)" ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
 <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
 <div class="taskbar">
-    <div class="wrapper" onclick="startMenu(true, this)">
+    <div class="wrapper" onclick="startMenu(true)">
         <img class="taskbar-btn" src="./res/taskbar-btn.png"></img>
         <div class="taskbar-btn-orb"></div>
     </div>
@@ -91,7 +91,8 @@ function createIcon(icon){
     a.setAttribute("ondblclick", icon.action)
     icons.appendChild(a)
 }
-function startMenu(open, elem){
+function startMenu(open){
+    let elem = document.querySelector(".wrapper")
     if(open){
         document.querySelector(".start-menu").style.display = "flex";
         elem.setAttribute("onclick", "startMenu(false, this)");
@@ -131,6 +132,10 @@ async function reloadIcons(){
         else if (f.endsWith(".html")){
             app = "iexplore"
             fileURL = "bin/explorer-file-manager/file.png"
+        }
+        else if (a.endsWith(".flac") || a.endsWith(".wav") || a.endsWith(".mp3") || a.endsWith(".mp4") || a.endsWith(".avi") || a.endsWith(".ogg") || a.endsWith(".webm")){
+            app = "wmplayer"
+            fileURL = "bin/explorer-file-manager/media.png"
         }
         else {
             app = "notepad"

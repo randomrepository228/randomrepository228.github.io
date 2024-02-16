@@ -153,6 +153,11 @@
                         file.innerHTML += `<img src="${url}">`
                         file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
+                    else if (a.endsWith(".flac") || a.endsWith(".wav") || a.endsWith(".mp3") || a.endsWith(".mp4") || a.endsWith(".avi") || a.endsWith(".ogg") || a.endsWith(".webm")){
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="media.png">`
+                        file.setAttribute("ondblclick", `parent.loadApp('wmplayer', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
                     else if (a.endsWith(".html")){
                         a = currentPath + "/" + a
                         file.innerHTML += `<img src="file.png">`
