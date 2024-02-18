@@ -133,7 +133,7 @@ async function reloadIcons(){
             app = "iexplore"
             fileURL = "bin/explorer-file-manager/file.png"
         }
-        else if (a.endsWith(".flac") || a.endsWith(".wav") || a.endsWith(".mp3") || a.endsWith(".mp4") || a.endsWith(".avi") || a.endsWith(".ogg") || a.endsWith(".webm")){
+        else if (a.toLowerCase().endsWith(".flac") || a.toLowerCase().endsWith(".wav") || a.toLowerCase().endsWith(".mp3") || a.toLowerCase().endsWith(".mp4") || a.toLowerCase().endsWith(".avi") || a.toLowerCase().endsWith(".ogg") || a.toLowerCase().endsWith(".webm")){
             app = "wmplayer"
             fileURL = "bin/explorer-file-manager/media.png"
         }

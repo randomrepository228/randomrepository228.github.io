@@ -12,14 +12,16 @@ function sleep(milliseconds){
     return new Promise(res => setTimeout(res, milliseconds))
 }
 fs.downloadFiles = async (files) => {
-    for (const path of files){
+    files.forEach(async path => {
+        console.log(path)
         const response = await (await fetch("./" + path)).blob()
+        console.log(response)
         if (!(await fs.exists(path))) {
             const match = path.match(/(.+\/).+/)
-            if (match.length == 2) if(!await fs.exists(match[1] + ".")) await fs.writeFile(match[1] + ".", "")
+            if (match) if (match.length == 2) if(!await fs.exists(match[1] + ".")) await fs.writeFile(match[1] + ".", "")
             await fs.writeFile(path, response)
         }
-    }
+    })
 }
 fs.checkSystemFolder = async function(){
     const transaction = db.transaction("rootfs", "readwrite")
@@ -133,6 +135,7 @@ fs.readFile = function(filePath){
             resolve(undefined)
         }
         request.onsuccess = (e) => {
+            console.log(e.target.result)
             resolve(e.target.result.data)
         }
     })
@@ -141,14 +144,16 @@ fs.exists = function(filePath){
     return new Promise((resolve, reject) => {
         const transaction = db.transaction("rootfs", "readwrite")
         const initialfs = transaction.objectStore("rootfs");
-        const request = initialfs.get(filePath)
-        request.onerror = (e) => {
-            resolve(false)
-        }
-        request.onsuccess = (e) => {
-            if (!e.target.result) resolve(false)
-            resolve(true)
-        }
+        try{
+            const request = initialfs.get(filePath)
+            request.onerror = (e) => {
+                resolve(false)
+            }
+            request.onsuccess = (e) => {
+                if (!e.target.result) resolve(false)
+                resolve(true)
+            }
+        } catch (e) {resolve(false)}
     })
 }
 fs.watchFile = function(filePath){
@@ -254,10 +259,30 @@ fs.searchHTML = async function(path, searchString){
         }
     })
 }
-request.onsuccess = (e) => {
-    dispatchEvent(new CustomEvent("fsloaded"))
+request.onsuccess = async (e) => {
     db = e.target.result;
+    dispatchEvent(new CustomEvent("fsloaded"))
     fs.checkSystemFolder()
+    preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
+    "res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
+    "res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
+    "res/aero/buttons/close/glow.png", "res/aero/buttons/close/hover.png", "res/aero/buttons/min/normal.png", "res/aero/buttons/min/hover.png", 
+    "res/aero/buttons/min/pressed.png", "res/aero/buttons/min/icon.png", "res/aero/buttons/max/hover.png", "res/aero/buttons/max/normal.png", 
+    "res/aero/buttons/max/pressed.png", "res/aero/buttons/max/icon.png", "res/aero/buttons/glow.png", "res/aero/style.css", "res/aero/window_aura.png",
+    "res/aero/window_aura_mirror.png", "res/aero/window_side.png", "res/button/hover.png", "res/button/normal.png", "res/button/pressed.png", 
+    "res/button/disabled.png", "res/button/default.png", "res/checkbox/unchecked/hover.png", "res/checkbox/unchecked/normal.png", 
+    "res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
+    "res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
+    "res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg", "boot.webm"]
+    preload.forEach(async a => {
+        console.log(a, preload)
+        const exists = await fs.exists(a)
+        console.log(exists, a)
+        if (!exists){
+            console.log("so")
+            await fs.downloadFiles([a])
+        }
+    })
     // fs.writeFile("secret.txt", "IFRAME ЗЛО!")
 };
 request.onupgradeneeded = (e) => {
@@ -266,10 +291,5 @@ request.onupgradeneeded = (e) => {
         const objstore = db.createObjectStore("rootfs", {keyPath: "path"});
         objstore.createIndex("data", "data", { unique: false})
         fs.checkSystemFolder()
-    }
-}
-for (a of preload){
-    if (!fs.exists(a)){
-        fs.downloadFiles([a])
     }
 }

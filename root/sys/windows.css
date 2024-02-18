@@ -67,11 +67,8 @@ html, body{
 body{
     position: fixed;
 }
-.dash:hover, .square:hover{
-    z-index: 999;
-}
-.x:hover{
-    z-index: 999;
+.dash:hover, .square:hover, .x:hover{
+    z-index: 5;
 }
 .window{
     position: absolute;
@@ -286,7 +283,7 @@ ignore{
     width: 100%;
     position: absolute;
     display: none;
-    z-index: 99999999;
+    z-index: 10000;
 }
 .metro-dialog{
     background-color: rgba(0,150,200);
@@ -373,20 +370,22 @@ button[role=tab]::after{
     display: none !important;
 }
 .alwaysontop{
-    z-index: 999999 !important;
+    z-index: 9999 !important;
 }
 .alwaysbehind{
-    z-index: -9998 !important;
+    z-index: -1 !important;
 }
 .snap-left text, .snap-right text{
     width: 100% !important;
     height: 100% !important;
 }
 text{
+    position: absolute;
     min-width: 100%;
     min-height: 100%;
-    max-width: 100%;
-    max-height: 100%;
+}
+.content, .contentnostyle{
+    position: relative;
 }
 .contentnostyle{
     display: flex;
@@ -405,7 +404,7 @@ text{
     width: 100vw;
     height: 100vh;
     animation: fadeout 1s ease-in forwards;
-    z-index: 1000000;
+    z-index: 10002;
     position: fixed;
     display: none;
 }

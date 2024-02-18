@@ -88,6 +88,7 @@ function move(e){
     if (!activewindow) return
     if (localStorage.noContentMove) return
     let activewindowcontent = activewindow.querySelector("text")
+    let pheight = activewindowcontent.parentElement.style.minHeight;
     if (e.touches) e = e.touches[0]
     if(loop.drag){
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
@@ -107,11 +108,13 @@ function move(e){
             activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 7}px`
         }
         if(loop.bottom){
-            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24}px`
+            const height = e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24
+            activewindowcontent.style.height = height > +pheight.substring(0, pheight.length - 2) ? height + "px" : pheight
         }
         if(loop.top){
             activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-            activewindowcontent.style.height = `${prevheight + origy - e.pageY - 20 + 20}px`
+            const height = prevheight + origy - e.pageY - 20 + 20
+            activewindowcontent.style.height = height > +pheight.substring(0, pheight.length - 2) ? height + "px" : pheight
         }
         if(loop.left){
             activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
@@ -123,11 +126,13 @@ function move(e){
             activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 11}px`
         }
         if(loop.bottom){
+            const height = 
             activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 4 - 24}px`
         }
         if(loop.top){
             activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
-            activewindowcontent.style.height = `${prevheight + origy - e.pageY - 2 + 15}px`
+            const height = prevheight + origy - e.pageY - 2 + 15
+            activewindowcontent.style.height = height > +pheight.substring(0, pheight.length - 2) ? height + "px" : pheight
         }
         if(loop.left){
             activewindow.style.left = `${Math.trunc(e.clientX - prevx)}px`
@@ -139,11 +144,13 @@ function move(e){
             activewindowcontent.style.width = `${e.clientX - +activewindow.style.left.substring(0, activewindow.style.left.length - 2) - 3}px`
         }
         if(loop.bottom){
-            activewindowcontent.style.height = `${e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 1 - 24}px`
+            const height = e.clientY - +activewindow.style.top.substring(0, activewindow.style.top.length - 2) - 1 - 24
+            activewindowcontent.style.height = height > +pheight.substring(0, pheight.length - 2) ? height + "px" : pheight
         }
         if(loop.top){
             activewindow.style.top = `${e.clientY - prevy}px`
-            activewindowcontent.style.height = `${prevheight + origy - e.pageY + 2 - 24 + 20}px`
+            const height = prevheight + origy - e.pageY + 2 - 24 + 20
+            activewindowcontent.style.height = height > +pheight.substring(0, pheight.length - 2) ? height + "px" : pheight
         }
         if(loop.left){
             activewindow.style.left = `${e.clientX - prevx}px`

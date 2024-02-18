@@ -141,9 +141,9 @@
                         a = currentPath + "/" + a
                         file.setAttribute("ondblclick", `openFolder("${a}")`)
                     }
-                    else if (a.endsWith(".png") || a.endsWith(".jpg") || a.endsWith(".gif") || a.endsWith(".bmp") || a.endsWith(".webp")){
+                    else if (a.toLowerCase().endsWith(".png") || a.toLowerCase().endsWith(".jpg") || a.toLowerCase().endsWith(".gif") || a.toLowerCase().endsWith(".bmp") || a.toLowerCase().endsWith(".webp")){
                         let length = 3;
-                        if (a.endsWith(".webp")) length = 4
+                        if (a.toLowerCase().endsWith(".webp")) length = 4
                         a = currentPath + "/" + a
                         let b;
                         if(a.startsWith("/")) b = a.replace("/", "")
@@ -153,12 +153,12 @@
                         file.innerHTML += `<img src="${url}">`
                         file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
-                    else if (a.endsWith(".flac") || a.endsWith(".wav") || a.endsWith(".mp3") || a.endsWith(".mp4") || a.endsWith(".avi") || a.endsWith(".ogg") || a.endsWith(".webm")){
+                    else if (a.toLowerCase().endsWith(".flac") || a.toLowerCase().endsWith(".wav") || a.toLowerCase().endsWith(".mp3") || a.toLowerCase().endsWith(".mp4") || a.toLowerCase().endsWith(".avi") || a.toLowerCase().endsWith(".ogg") || a.toLowerCase().endsWith(".webm")){
                         a = currentPath + "/" + a
                         file.innerHTML += `<img src="media.png">`
                         file.setAttribute("ondblclick", `parent.loadApp('wmplayer', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
-                    else if (a.endsWith(".html")){
+                    else if (a.toLowerCase().endsWith(".html")){
                         a = currentPath + "/" + a
                         file.innerHTML += `<img src="file.png">`
                         file.setAttribute("ondblclick", `parent.loadApp('iexplore', undefined, '${a.replace("\'", "\\\'")}')`)

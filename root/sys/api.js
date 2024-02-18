@@ -65,3 +65,4 @@ let win = {
     setPos: (a, b) => parent.postMessage("setpos|" + win.id + "|" + a + "|" + b, "*"),
     id: -1
 }
+function openFileDialog(windowtitle, windowicon, a){}
