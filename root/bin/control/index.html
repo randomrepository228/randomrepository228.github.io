@@ -258,6 +258,10 @@
                 aerosnap.checked = localStorage.aerosnap == "true" ? true : false
                 useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
                 dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
+                const args = frameElement.getAttribute("args")
+                if (args){
+                    openSection(args)
+                }
                 parent.showWindow("./bin/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
             </script>
         </div>

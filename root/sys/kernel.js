@@ -112,29 +112,27 @@ async function loadOkna8App(packageName, path, name, args){
     const id = getId()
     AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised"}, id)
 }
-/**
-* @param {PointerEvent} e
-* @param {[string, string]} content
-* @param {Number} x
-* @param {Number} y
-*/
 function contextMenu(e, content, x, y){
-    e.preventDefault();
+    if (e.preventDefault){
+        e.preventDefault()
+    }
     contextMenuElement.innerHTML = ""
     if (content){
         for (const a of content){
-            contextMenuElement.innerHTML += `<div class="context-menu-option"><img src="${a[0]}"><div>${a[1]}</div></div>`
+            let contextMenuOption = document.createElement("div")
+            contextMenuOption.className = "context-menu-option"
+            contextMenuOption.onclick = (e) => {e.preventDefault(); contextMenuOff(); a[2]()}
+            contextMenuOption.innerHTML += `<img src="${a[0]}" onerror="this.style.opacity = 0;"><div>${a[1]}</div>`
+            contextMenuElement.appendChild(contextMenuOption)
         }
     }
     else{
-        contextMenuElement.innerHTML += `<div class="context-menu-option"><img src=""><div>(No options available)</div></div>`
+        contextMenuElement.innerHTML += `<div class="context-menu-option"><img src="" onerror="this.style.opacity = 0;"><div>(No options available)</div></div>`
     }
     contextMenuElement.style.display = "flex";
     const boundClientRect = contextMenuElement.getBoundingClientRect()
-    if(!x) x = e.clientX
-    if(!y) y = e.clientY
-    if (e.clientX > innerWidth - boundClientRect.width) x = innerWidth - boundClientRect.width
-    if (e.clientY > innerHeight  - boundClientRect.height) y = innerHeight - boundClientRect.height
+    if (x > innerWidth - boundClientRect.width) x = innerWidth - boundClientRect.width
+    if (y > innerHeight  - boundClientRect.height) y = innerHeight - boundClientRect.height
     contextMenuElement.style.left = `${x}px`
     contextMenuElement.style.top = `${y}px`
 }
@@ -161,8 +159,8 @@ function desktopInit(){
     document.querySelector(".explorer").style.display = "";
     loadApp("sfc", undefined, "/silent")
     init = true
-    if(!localStorage.prevver || +localStorage.prevver < +localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240216</h1>What's new?<br>Winda media player!")
+    if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240219 Alpha!</h1>What's new?<br>Context menu (alpha)!")
         localStorage.prevver = localStorage.ver
         return;
     }

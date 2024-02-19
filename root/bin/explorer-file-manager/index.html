@@ -12,7 +12,9 @@
                 flex-wrap: wrap;
                 flex-direction: row;
                 overflow: auto;
-                max-height: 100%;
+                height: 100%;
+                align-content: flex-start;
+                flex-grow: 1;
             }
             .file{
                 height: 96px;
@@ -80,7 +82,15 @@
             <input type="text" id="searchbox" placeholder="Search in file explorer" onchange="parent.fs.searchHTML(currentPath, this.value).then(renderDir);">
         </div>
         <div class="content">
-            <div class="files"></div>
+            <div class="files" oncontextmenu="(e) => { console.log('e')
+                e.stopPropagation(); 
+                parent.console.log('e')
+                const elemoffset = frameElement.getBoundingClientRect();
+                console.log(elemoffset)
+                parent.contextMenu(e, [
+                    ['', 'Refresh', () => openFolder(currentFolder)]
+                ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
+            }"></div>
             <footer style="display: none">
                 <div>
                     <div style="display: flex; align-items: center;">
@@ -120,7 +130,9 @@
         </script>
         <script>
             let currentPath = ""
-            async function renderDir(files){
+            let currentFolder = ""
+            async function renderDir(files, fpath){
+                currentFolder = fpath
                 document.querySelector(".files").innerHTML = ""
                 for (a of files){
                     if (a == ".") continue
@@ -168,6 +180,13 @@
                         file.innerHTML += `<img src="file.png">`
                         file.setAttribute("ondblclick", `parent.loadApp('notepad', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
+                    file.oncontextmenu = (e) => {
+                        e.stopPropagation(); 
+                        const elemoffset = frameElement.getBoundingClientRect();
+                        parent.contextMenu(e, [
+                            ['', 'Delete', () => fs.deleteFile(a.replace("\'", "\\\'")).then(openFolder(fPath))]
+                        ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
+                    }
                     file.innerHTML += "<p>" + htmlPath + "</p>"
                     document.querySelector(".files").append(file)
                 }
@@ -184,7 +203,7 @@
                     document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('${path}')">${a}/</div>`
                 }
                 let files = await parent.fs.readdir(folderPath)
-                renderDir(files)
+                renderDir(files, folderPath)
             }
             function back(){
                 currentPath = ""

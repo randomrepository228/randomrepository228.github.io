@@ -422,3 +422,20 @@ text{
 .select > select{
     width: 100%;
 }
+.context-menu-option > img{
+    width: 16px;
+    height: 16px;
+    margin: auto 5px;
+}
+.context-menu-option{
+    width: calc(100% - 12px);
+    height: 26px;
+    margin: 1px;
+    display: flex;
+    line-height: 28px;
+    padding: 0 5px;
+    white-space: pre;
+}
+.context-menu{
+    z-index: 10001;
+}

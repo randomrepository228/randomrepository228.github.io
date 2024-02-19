@@ -24,10 +24,21 @@ function dropHandler(e){
       });
     }
 }
-shell.innerHTML = `<div class="icons" id="icons" oncontextmenu="contextMenu(event)" ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
+shell.innerHTML = `
+<div class="icons" id="icons" 
+    oncontextmenu="contextMenu(event, [
+        ['', 'Refresh', () => reloadIcons()], 
+        ['', 'Personalize', () => loadApp('control', '', 'personalize')], 
+        ['', 'New text document', () => fs.writeFile('usr/SYSTEM/desktop/New Text Document.txt', '', true)]
+    ], event.clientX, event.clientY)" 
+    ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
 <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
-<div class="taskbar">
-    <div class="wrapper" onclick="startMenu(true)">
+<div class="taskbar"
+    oncontextmenu="contextMenu(event, [
+        ['', 'Taskbar properties', () => loadApp('control', '', 'main')], 
+        ['', 'Task manager', () => loadApp('taskmgr')]
+    ], event.clientX, event.clientY)">
+    <div class="wrapper" onmousedown="startMenu(true)" ontouchstart="startMenu(true)">
         <img class="taskbar-btn" src="./res/taskbar-btn.png"></img>
         <div class="taskbar-btn-orb"></div>
     </div>
@@ -84,23 +95,34 @@ function hideAllPrograms(){
     leftStart.querySelector(".allprograms").style.display = "none"
 }
 const taskbar = document.querySelector(".taskbar");
-function createIcon(icon){
+function createIcon(icon, iconloc){
     let a = document.createElement("div")
     a.className = "icon"
     a.innerHTML = `<img src="${icon.image}" onerror="this.style.opacity = '0'">${icon.title}`
     a.setAttribute("ondblclick", icon.action)
+    a.oncontextmenu = (e) => {
+        e.stopPropagation(); 
+        contextMenu(e, [
+            ['', 'Delete', () => fs.deleteFile(iconloc)]
+        ], e.clientX, e.clientY)
+    }
     icons.appendChild(a)
 }
 function startMenu(open){
+    contextMenuOff();
     let elem = document.querySelector(".wrapper")
+    const SMAction1 = "startMenu(false, this)"
+    const SMAction2 = "startMenu(true, this)"
     if(open){
         document.querySelector(".start-menu").style.display = "flex";
-        elem.setAttribute("onclick", "startMenu(false, this)");
+        elem.setAttribute("ontouchstart", SMAction1);
+        elem.setAttribute("onmousedown", SMAction1);
         elem.children[0].className += " focus"
     }
     else{
         document.querySelector(".start-menu").style.display = "none";
-        elem.setAttribute("onclick", "startMenu(true, this)");
+        elem.setAttribute("ontouchstart", SMAction2);
+        elem.setAttribute("onmousedown", SMAction2);
         elem.children[0].className = elem.children[0].className.replace(" focus", "")
     }
 }
@@ -142,7 +164,7 @@ async function reloadIcons(){
             fileURL = "bin/explorer-file-manager/file.png"
         }
         if (!fileURL) fileURL = URL.createObjectURL(await fs.readFile("usr/SYSTEM/desktop/" + e))
-        createIcon(new Icon(e, fileURL, `parent.loadApp('${app}', undefined, 'usr/SYSTEM/desktop/${e}')`))
+        createIcon(new Icon(e, fileURL, `parent.loadApp('${app}', undefined, 'usr/SYSTEM/desktop/${e}')`), `usr/SYSTEM/desktop/${e}`)
     })
 }
 addEventListener("fsloaded", () => {

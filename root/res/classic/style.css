@@ -500,10 +500,10 @@ input[type=submit], .x, .square, .dash, .window-tray, .wrapper {
 
 .window-tray, .wrapper{
     border-radius: 0;
-    height: calc(100% - 4px);
+    height: calc(100% - 5px);
     min-width: 51px;
     max-width: 151px;
-    margin-top: 6px;
+    margin-top: 5px;
     margin-left: 2px;
     border-image: none !important;
     border: none !important;
@@ -522,7 +522,7 @@ input[type=submit], .x, .square, .dash, .window-tray, .wrapper {
 
 .wrapper{
     margin-top: 4px;
-    margin-right: 8px;
+    margin-right: 1px;
     position: relative;
 }
 
@@ -554,7 +554,8 @@ input[type=submit], .x, .square, .dash, .window-tray, .wrapper {
     padding-left: 3px;
 }
 .show-desktop{
-    height: 36px;
+    height: calc(100% - 3px) !important; 
+    margin-top: 1px;
     border-image: none !important;
 }
 
@@ -1410,4 +1411,30 @@ table>tbody>tr>* {
 .menubar > .element{
     padding-bottom: 0 !important;
     height: 18px !important;
+}
+.allprograms .start-option:hover, .allprogramsbutton:hover{
+    background-color: navy;
+    color: white;
+    background-image: none;
+}
+.start-option-right{
+    color: black;
+}
+.start-option-right:hover{
+    color: white;
+}
+#contextMenuElement{
+    background: silver;
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+}
+.context-menu-option{
+    margin: 3px;
+    height: 22px;
+    padding: 0 2px;
+    line-height: 22px;
+}
+.context-menu-option:hover{
+    background-image: none !important;
+    background-color: navy;
+    color: white;
 }

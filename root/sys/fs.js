@@ -74,16 +74,6 @@ fs.checkSystemFolder = async function(){
         fs.downloadFiles(programs)
     };
 }
-fs.writeFile = async function(filePath, data){
-    let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
-    const transaction = db.transaction("rootfs", "readwrite")
-    const initialfs = transaction.objectStore("rootfs");
-    const request = initialfs.get(filePath.replace(fileName, "/."))
-    request.onsuccess = (e) => {
-        initialfs.put({path: filePath, data: data})
-        dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
-    };
-}
 fs.getStorage = async function(){
     const quota = await navigator.storage.estimate();
     const totalSpace = quota.quota;
@@ -155,6 +145,27 @@ fs.exists = function(filePath){
             }
         } catch (e) {resolve(false)}
     })
+}
+fs.writeFile = async function(filePath, data, newFile){
+    let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
+    if (!(!newFile || (newFile && !await fs.exists(filePath)))) {
+        let i = 2;
+        while (true){
+            const newFileName = `${filePath} (${i})`
+            if (!await fs.exists(newFileName)){
+                filePath = newFileName
+                break
+            }
+            i++
+        }
+    }
+    const transaction = db.transaction("rootfs", "readwrite")
+    const initialfs = transaction.objectStore("rootfs");
+    const request = initialfs.get(filePath.replace(fileName, "/."))
+    request.onsuccess = async (e) => {
+        initialfs.put({path: filePath, data: data})
+        dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
+    };
 }
 fs.watchFile = function(filePath){
     return new Promise((resolve, reject) => {

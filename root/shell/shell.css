@@ -80,7 +80,7 @@ bottomright{
 }
 .taskbar-btn{
     object-fit: cover;
-    object-position: 0 -8px;
+    object-position: 0 -5px;
     position: fixed;
     width: 54px;
     height: 40px;
@@ -96,10 +96,10 @@ bottomright{
     display: none;
 }
 .taskbar-btn:hover{
-    object-position: 0 -62px;
+    object-position: 0 -59px;
 }
 .taskbar-btn:active, .taskbar-btn.focus{
-    object-position: 0 -116px;
+    object-position: 0 -113px;
 }
 .left-bar, .right-bar{
     height: 100%;
@@ -141,14 +141,14 @@ bottomright{
 .window-tray{
     position: relative;
     bottom: 2px;
-    height: 30px;
+    height: var(--taskbar-height);
     border: 5px solid transparent;
     border-radius: 3px;
     margin-right: 2px;
     display: flex;
     align-items: center;
     border-image: url("../res/taskbar_btn.png") 5 fill;
-    min-width: 50px;
+    min-width: 60px;
     justify-content: center;
 }
 .window-tray.focus{
@@ -192,7 +192,7 @@ bottomright{
 .start-menu{
     position: absolute;
     left: 0;
-    bottom: 40px;
+    bottom: var(--taskbar-height);
     width: 504px;
     max-width: 100vw;
     box-sizing: border-box;
@@ -213,6 +213,7 @@ bottomright{
     box-sizing: border-box;
     max-width: 65vw;
     padding-bottom: 27px;
+    margin-top: -1px;
 }
 .start-option{
     display: flex;
@@ -277,16 +278,6 @@ bottomright{
     background-image: none;
     border-image: url("../res/taskbar_btn_focus.png") 5 fill;
 }
-.context-menu-option{
-    width: calc(100% - 10px);
-    height: 28px;
-    display: flex;
-    line-height: 28px;
-    padding: 0 5px;
-}
-.context-menu{
-    z-index: 10001;
-}
 .window-tray > p{
     display: none;
 }
@@ -337,4 +328,10 @@ bottomright{
 .allprograms > .scrollable{
     overflow-y: auto;
     height: 100%;
+}
+.wrapper, .wrapper *{
+    z-index: 10001;
+}
+.window-tray{
+    box-sizing: border-box;
 }
