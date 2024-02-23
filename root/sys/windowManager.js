@@ -1,4 +1,4 @@
-function AddWindow(window, ispopup, options, id){
+function AddWindow(window, ispopup, options, id, elem){
     newWindow = document.createElement("div")
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     if (typeof options.top == "number") options.top += "px"
@@ -52,19 +52,28 @@ function AddWindow(window, ispopup, options, id){
     <div ontouchdown="windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
     <div ontouchdown="windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
     <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
-    <div class="content${options.noGUI ? 'nostyle' : ''}" style="${options.minWidth ? `min-width: ` + options.minWidth + `px;` : ``} ${options.minHeight ? `min-height: ` + options.minHeight + `px` : ``}">
-        <ignore></ignore>
-        <text style="width: ${options.width}px; height: ${options.height}px;">
-            ${window.innerhtml}
-            ${ispopup ? `<footer><button onclick="closeWindow(${id})">OK</button></div>` : ''}
-        </text>
-    </div>
     `
+    let content = document.createElement("div")
+    content.className = "content" + (options.noGUI ? 'nostyle' : '')
+    if (options.minWidth) content.style.minWidth = options.minWidth + 'px'
+    if (options.minHeight) content.style.minHeight = options.minHeight + `px`
+    content.appendChild(document.createElement("ignore"))
+    let text = document.createElement("text")
+    text.style.width = options.width + "px"
+    text.style.height = options.height + "px"
+    if (elem) text.appendChild(elem)
+    else{
+        text.innerHTML = window.innerhtml
+        if (ispopup) text.innerHTML += `<footer><button onclick="closeWindow(${id})">OK</button></div>`
+    }
+    content.appendChild(text)
+    newWindow.appendChild(content)
     windows.append(newWindow)
     if(ispopup || options.noSelfOpen || options.okna8){
         showWindow(options.okna8 ? "../" + window.icon : window.icon, id)
     }
     broadcast("newprocess|" + id)
+    return {id: id, elem: text, title: newWindow.querySelector("left").lastElementChild}
 }
 function broadcast(message){
     for (a of windows.children){
@@ -100,10 +109,60 @@ function getTray(id){
 function idToWindow(id){
     return document.querySelectorAll(`.n${id}`)[1]
 }
-function msgbox(title, content){
-    content = `<div style="padding: 20px; height: calc(100% - 80px); overflow-y: auto;">${content}</div>`
-    AddWindow(new Window((window.innerWidth/2)-250, (window.innerHeight/2)-150, 500, 200, title, content, ""), true, {width: 500, height: 200, noSelfOpen: true}, getId())
-    new Audio(sounds.msgbox).play()
+async function msgbox(title, content, buttons){
+    if (!buttons) buttons = ['OK']
+    return new Promise((resolve, reject) => {
+        const id = getId()
+        let msgboxContent = document.createElement("div")
+        msgboxContent.style.height = "100%"
+        let msgboxElem = document.createElement("div")
+        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px); overflow-y: auto;")
+        msgboxElem.innerHTML = content
+        let footer = document.createElement("footer")
+        footer.style.position = "absolute"
+        footer.style.left = "0"
+        footer.style.right = "0"
+        footer.style.bottom = "0"
+        for (btn of buttons){
+            console.log(btn)
+            let button = document.createElement("button")
+            button.innerHTML = btn
+            const str = (' ' + btn)
+            button.onclick = () => {resolve(str.slice(1)); closeWindow(id)}
+            footer.appendChild(button)
+        }
+        msgboxContent.appendChild(msgboxElem)
+        msgboxContent.appendChild(footer)
+        AddWindow(new Winda7Window(0, 0, 0, 0, title, undefined, ""), false, {width: 500, height: 200, left: (window.innerWidth/2)-250, top: (window.innerHeight/2)-150, noSelfOpen: true}, id, msgboxContent)
+        new Audio(sounds.msgbox).play()
+    })
+}
+async function inputbox(title, content, defaultValue){
+    return new Promise((resolve, reject) => {
+        const id = getId()
+        let msgboxContent = document.createElement("div")
+        msgboxContent.style.height = "100%"
+        let msgboxElem = document.createElement("div")
+        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px); overflow-y: auto;")
+        msgboxElem.innerHTML = content + "<br><br>"
+        let inputBox = document.createElement("input")
+        inputBox.type = "text"
+        inputBox.value = defaultValue ? defaultValue : ''
+        msgboxElem.appendChild(inputBox)
+        let footer = document.createElement("footer")
+        footer.style.position = "absolute"
+        footer.style.left = "0"
+        footer.style.right = "0"
+        footer.style.bottom = "0"
+        let okbutton = document.createElement("button")
+        okbutton.innerHTML = "OK"
+        okbutton.onclick = () => {resolve(inputBox.value); closeWindow(id)}
+        footer.appendChild(okbutton)
+        msgboxContent.appendChild(msgboxElem)
+        msgboxContent.appendChild(footer)
+        AddWindow(new Winda7Window(0, 0, 0, 0, title, undefined, ""), false, {width: 500, height: 200, left: (window.innerWidth/2)-250, top: (window.innerHeight/2)-150, noSelfOpen: true}, id, msgboxContent)
+        new Audio(sounds.msgbox).play()
+    })
 }
 function resizeHandler(e){
     broadcast("getscrwidth|" + innerWidth, "*")
@@ -181,7 +240,7 @@ onmessage = (e) => {
                         id = i
                         break
                 }
-                AddWindow(new Window(0, 0, 0, 0, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), undefined, {"window": true, "noSelfOpen": true, "title": "Message from Metro app", "left": (window.innerWidth / 2) - 300, "top": (window.innerHeight / 2) - 150, "width": 600, "height": 300}, false, id)
+                AddWindow(new Winda7Window(0, 0, 0, 0, `Message from Metro app`, "<div class=\"metro-dialog\">" + commands[1] + "</div>", '', true), undefined, {"window": true, "noSelfOpen": true, "title": "Message from Metro app", "left": (window.innerWidth / 2) - 300, "top": (window.innerHeight / 2) - 150, "width": 600, "height": 300}, false, id)
             }
             return
         }

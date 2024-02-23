@@ -85,7 +85,7 @@
             </table>
         </div>
         <script>
-            class Window {
+            class Winda7Window {
                 constructor(x, y, width, height, title, innerhtml, icon) {
                     this.height = height;
                     this.width = width;
@@ -126,7 +126,7 @@
 <footer>
     <button onclick="localStorage['${ls[i][0]}'] = this.parentElement.parentElement.children[0].children[2].value;">OK</button>
 </footer>`
-                    col.setAttribute("ondblclick", `parent.AddWindow(new Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 200, 'Edit Value', \`${editvalue}\`, ''), false, {noSelfOpen: true}, '${parent.getId()}')`)
+                    col.setAttribute("ondblclick", `parent.AddWindow(new Winda7Window((window.innerWidth/2)-125, (window.innerHeight/2)-75, 250, 200, 'Edit Value', \`${editvalue}\`, ''), false, {noSelfOpen: true}, '${parent.getId()}')`)
                     if (isBool(val)) valtype = "bool"
                     if (isJson(val)) valtype = "object"
                     if (val && !isNaN(+val)) valtype = "number"

@@ -114,9 +114,7 @@ fs.readdir = function(path){
     })
 }
 fs.readFile = function(filePath){
-    if (filePath.startsWith("/")){
-        filePath = filePath.substring(1, filePath.length)
-    }
+    filePath = fs.toPath(filePath)
     return new Promise((resolve, reject) => {
         const transaction = db.transaction("rootfs", "readwrite")
         const initialfs = transaction.objectStore("rootfs");
@@ -146,7 +144,24 @@ fs.exists = function(filePath){
         } catch (e) {resolve(false)}
     })
 }
+fs.moveFile = function(filePath){
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction("rootfs", "readwrite")
+        const initialfs = transaction.objectStore("rootfs");
+        try{
+            const request = initialfs.get(filePath)
+            request.onerror = (e) => {
+                resolve(false)
+            }
+            request.onsuccess = (e) => {
+                if (!e.target.result) resolve(false)
+                resolve(true)
+            }
+        } catch (e) {resolve(false)}
+    })
+}
 fs.writeFile = async function(filePath, data, newFile){
+    filePath = fs.toPath(filePath)
     let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
     if (!(!newFile || (newFile && !await fs.exists(filePath)))) {
         let i = 2;
@@ -165,7 +180,9 @@ fs.writeFile = async function(filePath, data, newFile){
     request.onsuccess = async (e) => {
         initialfs.put({path: filePath, data: data})
         dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
+        return 0
     };
+    request.onerror = (e) => {return 1}
 }
 fs.watchFile = function(filePath){
     return new Promise((resolve, reject) => {

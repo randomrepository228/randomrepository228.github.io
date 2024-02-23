@@ -1,10 +1,10 @@
 ﻿var Settings = {
-    'MainPage':`
+    MainPage: `
     
     `,
-    'WinActivation':`
+    WinActivation: `
     `,
-    'PcInfo':`
+    PcInfo: /*html*/ `
         <h1>${LOCALE_app_settings[6]['PcInfo'][0]}</h1>
         <style>.PcInfoTable > tbody > tr > td {min-width:200px;} .PcInfoTable > tbody > tr {height:32px}</style>
         <table class="PcInfoTable">
@@ -17,9 +17,9 @@
                 <td>${VERSION['ver']}, build ${VERSION['build']}</td>
             </tr>
         </table>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['PcInfo'][2]}</button>
+        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavailablefunction', '*')">${LOCALE_app_settings[6]['PcInfo'][2]}</button>
     `,
-    'LockScreen':`
+    LockScreen: /*html*/ `
         <h1>${LOCALE_app_settings[6]['LockScreen'][0]}</h1>
         <style>
             #LockScreenPreview {top:10px;width: 600px; height: 337px; position:relative; background-image: url('../../../img/wallpaper/lock/img100.png');background-size:cover;background-color:grey;}
@@ -58,7 +58,7 @@
             <div class="img105" onclick="setWallpaperLock('img105')" style="background-image:url('../../../img/wallpaper/lock/img105.png')"></div>
         </div>
     `,
-    'LangNRegion':`
+    LangNRegion: /*html*/ `
         <h1>${LOCALE_app_settings[6]['LangNRegion'][0]}</h1>
         <p id="LangNRegion-P">${LOCALE_app_settings[6]['LangNRegion'][1]}</p>
         <style>
@@ -139,16 +139,76 @@
         <div class="LangNRegion-languagesList">
         </div>
     `,
-    'YourAccount':`
-        <h1>${localStorage.getItem('OKNA8_user_' + currentUser + '_username')}</h1>
-        <p>${LOCALE_app_settings[6]['YourAccount'][0]}</p>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][4]}</button>
+    YourAccount: /*html*/ `
+        <h1 id="YourAccountH1"></h1>
+        <p id="LocalAccount">${LOCALE_app_settings[6]['YourAccount'][0]}<br><a onclick="sendToTop('eval>OnlineAccount.connect()')">Войти с учётной записью Okna</a></p>
+        <p id="OnlineAccount">${LOCALE_app_settings[6]['YourAccount'][1]}<br><a onclick="sendToTop('eval>OnlineAccount.disable()')">Отключить</a></p>
+        <br>
+        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavailablefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][4]}</button>
         <br><br>
         <h1>${LOCALE_app_settings[6]['YourAccount'][5]}</h1>
-        <img src="../../../img/avatar.png" style="width:230px;height:230px;"><br>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavaiblefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][6]}</button>
+        <img id="YourAccountUserAvatar" style="width:230px;height:230px;"><br>
+        <script>
+            if (localStorage.getItem('OKNA8_user_' + currentUser + '_avatar') != null) {
+                $("#YourAccountUserAvatar").attr('src', localStorage.getItem('OKNA8_user_' + currentUser + '_avatar'))
+            } else {
+                $("#YourAccountUserAvatar").attr('src', '../../../img/avatar.png')
+            }
+
+            var newAvatarFileInput = document.createElement('input');
+            newAvatarFileInput.type = 'file';
+            newAvatarFileInput.accept = 'image/*';
+            newAvatarFileInput.addEventListener('change', function (event) {
+                var selectedFile = event.target.files[0];
+
+                var reader = new FileReader();
+                reader.onload = function (readerEvent) {
+                    var base64String = readerEvent.target.result;
+                    localStorage.setItem('OKNA8_user_' + currentUser + '_avatar', base64String)
+                    if (localStorage.getItem("OKNA8_user_" + currentUser + "_OnlineAccount") != null) {
+                        var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
+                        axios.post(OKNASERVERS.oknasite + '/ChangeAccountSettings', JSON.stringify({"login":AccountInfo.Email,"password":AccountInfo.Password,"settingKey":"Avatar","settingData":base64String}))
+                            .then(response => {})
+                            .catch(error=>{
+                                sendToTop("eval>ModalMetroDialog('<h1>Ошибка синхронизации</h1><p>Произошла ошибка при отправке данных на сервер.</p><div class=\\\\'buttons\\\\'><button onclick=\\\\'CloseMetroDialog(__ID__)\\\\'>Close</button></div>')")
+                            })
+                    }
+                    openRightPage('YourAccount')
+                }
+
+                reader.readAsDataURL(selectedFile);
+            })
+
+            if (localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount') == null) {
+                $('#YourAccountH1').html(localStorage.getItem('OKNA8_user_' + currentUser + '_username'))
+                $('#OnlineAccount').css('display', 'none')
+            } else {
+                var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
+                $('#YourAccountH1').html(AccountInfo.FirstName + " " + AccountInfo.LastName)
+                $('#LocalAccount').css('display', 'none')
+            }
+
+            if (localStorage.getItem('OKNA8_user_' + currentUser + '_avatar') != null) {
+                $('.AvatarRemoveButton').css('display', 'inline-block')
+            }
+
+            function removeAvatar() {
+                localStorage.removeItem('OKNA8_user_' + currentUser + '_avatar')
+                if (localStorage.getItem("OKNA8_user_" + currentUser + "_OnlineAccount") != null) {
+                    var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
+                    axios.post(OKNASERVERS.oknasite + '/ChangeAccountSettings', JSON.stringify({"login":AccountInfo.Email,"password":AccountInfo.Password,"settingKey":"Avatar","settingData":"none"}))
+                        .then(response => {})
+                        .catch(error=>{
+                            sendToTop("eval>ModalMetroDialog('<h1>Ошибка синхронизации</h1><p>Произошла ошибка при отправке данных на сервер.</p><div class=\\\\'buttons\\\\'><button onclick=\\\\'CloseMetroDialog(__ID__)\\\\'>Close</button></div>')")
+                        })
+                }
+                openRightPage('YourAccount')
+            }
+        </script>
+        <button class="MetroButton2" style="margin-left:0" onclick="newAvatarFileInput.click()">${LOCALE_app_settings[6]['YourAccount'][6]}</button>
+        <button class="MetroButton2 AvatarRemoveButton" style="display:none" onclick="removeAvatar()">${LOCALE_app_settings[6]['YourAccount'][7]}</button>
     `,
-    'WindowsUpdate':`
+    WindowsUpdate: /*html*/ `
         <script>
             function checkupdates () {
                 var latestversion = null
@@ -200,18 +260,18 @@
         <iframe id="WindowsUpdate-IFRAME"></iframe>
         
     `,
-    'Recovery':`
+    Recovery: /*html*/ `
     <h1>${LOCALE_app_settings[6]['Recovery'][0]}</h1>
     <p style="width: 680px">${LOCALE_app_settings[6]['Recovery'][1]}</p>
-    <button onclick="window.parent.postMessage('unavaiblefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][2]}</button>
+    <button onclick="window.parent.postMessage('unavailablefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][2]}</button>
     <h1>${LOCALE_app_settings[6]['Recovery'][3]}</h1>
     <p style="width: 680px">${LOCALE_app_settings[6]['Recovery'][4]}</p>
-    <button onclick="window.parent.postMessage('unavaiblefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][5]}</button>
+    <button onclick="window.parent.postMessage('unavailablefunction', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][5]}</button>
     <h1>${LOCALE_app_settings[6]['Recovery'][6]}</h1>
     <p style="width: 680px">${LOCALE_app_settings[6]['Recovery'][7]}</p>
     <button onclick="window.parent.postMessage('RestartToRecovery', '*')" style="margin-bottom:44px;margin-left:0" class="MetroButton2">${LOCALE_app_settings[6]['Recovery'][8]}</button>
     `,
-    'LoginMethods':`
+    LoginMethods: /*html*/ `
     <script>
         function ChangePassword () {
             if (localStorage.getItem('OKNA8_user_' + currentUser + '_password') == '' || localStorage.getItem('OKNA8_user_' + currentUser + '_password') == null) {
@@ -254,15 +314,22 @@
     <button class="MetroButton2" id="ButtonPasswordChange" onclick="ChangePassword()" style="margin-left:0"></button>
     <button class="MetroButton2" id="ButtonPasswordRemove" onclick="localStorage.removeItem('OKNA8_user_' + currentUser + '_password');openRightPage('LoginMethods')" style="display:none">${LOCALE_app_settings[6]['LoginMethods'][12]}</button>
     <script>
-        if (localStorage.getItem('OKNA8_user_' + currentUser + '_password') == '' || localStorage.getItem('OKNA8_user_' + currentUser + '_password') == null) {
-            $('#ButtonPasswordChange').html('${LOCALE_app_settings[6]['LoginMethods'][2]}')
-        } else {
+        console.log(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
+        if (localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount') != null) {
             $('#ButtonPasswordChange').html('${LOCALE_app_settings[6]['LoginMethods'][3]}')
-            $('#ButtonPasswordRemove').css('display','inline-block')
+            $('#ButtonPasswordChange').attr('onclick', 'sendToTop("eval>OnlineAccount.changePassword()")')
+            $('#ButtonPasswordRemove').css('display','none')
+        } else {
+            if (localStorage.getItem('OKNA8_user_' + currentUser + '_password') == '' || localStorage.getItem('OKNA8_user_' + currentUser + '_password') == null) {
+                $('#ButtonPasswordChange').html('${LOCALE_app_settings[6]['LoginMethods'][2]}')
+            } else {
+                $('#ButtonPasswordChange').html('${LOCALE_app_settings[6]['LoginMethods'][3]}')
+                $('#ButtonPasswordRemove').css('display','inline-block')
+            }
         }
     </script>
     `,
-    'OtherUsers':`
+    OtherUsers: /*html*/ `
         <style>
             .addAccount {
                 width: 430px;
@@ -353,18 +420,23 @@
             $('.useraccountslist').html('')
             for (let i = 0; i < Users.length; i++) {
                 if (Users[i] != currentUser) {
-                    $('.useraccountslist').append('<div id="UserAccountsList_User_' + Users[i] + '" onclick="$(\\'.useraccountslist div\\').removeClass(\\'active\\');$(\\'#UserAccountsList_User_' + Users[i] + '\\').addClass(\\'active\\');"><img src="../../../img/avatar.png"><p>' + localStorage.getItem('OKNA8_user_' + Users[i] + '_username') + '</p><button class="negative" onclick="window.parent.postMessage(\\'removeUser_\\' + \\'' + Users[i] + '\\', \\'*\\');setTimeout(()=>{openRightPage(\\'OtherUsers\\')},100)">${LOCALE_app_settings[6]['OtherUsers'][6]}</button></div>')
+                    var UserName = localStorage.getItem('OKNA8_user_' + Users[i] + '_username')
+                    if (localStorage.getItem('OKNA8_user_' + Users[i] + '_OnlineAccount') != null) {
+                        var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + Users[i] + '_OnlineAccount'))
+                        UserName = AccountInfo.FirstName + ' ' + AccountInfo.LastName
+                    }
+                    $('.useraccountslist').append('<div id="UserAccountsList_User_' + Users[i] + '" onclick="$(\\'.useraccountslist div\\').removeClass(\\'active\\');$(\\'#UserAccountsList_User_' + Users[i] + '\\').addClass(\\'active\\');"><img src="../../../img/avatar.png"><p>' + UserName + '</p><button class="negative" onclick="window.parent.postMessage(\\'removeUser_\\' + \\'' + Users[i] + '\\', \\'*\\');setTimeout(()=>{openRightPage(\\'OtherUsers\\')},100)">${LOCALE_app_settings[6]['OtherUsers'][6]}</button></div>')
                 }
             }
         </script>
     `,
-    'DataExport': `
+    DataExport: /*html*/ `
         <h1>${LOCALE_app_settings[6]['DataExport'][0]}</h1>
         <p>${LOCALE_app_settings[6]['DataExport'][1]}</p>
         <button onclick="window.parent.postMessage('export-data' + JSON.stringify(localStorage), '*')" class="MetroButton2" style="margin-left:0">${LOCALE_app_settings[6]['DataExport'][2]}</button>
         <button onclick="window.parent.postMessage('import-data', '*')" class="MetroButton2">${LOCALE_app_settings[6]['DataExport'][3]}</button>
     `,
-    'OknaMods': `
+    OknaMods: /*html*/ `
         <h1>${LOCALE_app_settings[6]['OknaMods'][0]}</h1>
         <style>
             .addMod {
@@ -467,5 +539,5 @@
                 window.parent.postMessage('DeleteAppDialog|' + Modname + '|' + Modfolder, '*')
             }
         </script>
-    `
+    `,
 }

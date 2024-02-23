@@ -1,5 +1,6 @@
 
 function windowMouseDown(event, elem, a, noResize){
+    event.preventDefault();
     if(event.target != elem) return;
     let touch = false;
     let evName;

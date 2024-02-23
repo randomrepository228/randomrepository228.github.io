@@ -47,8 +47,8 @@
                     if (!video.videoHeight) return
                     document.body.style.backgroundImage = "url(bg.png)"
                     document.body.style.backgroundSize = "100% 100%";
-                    frameElement.parentElement.style.width = video.videoWidth + "px"
-                    frameElement.parentElement.style.height = video.videoHeight + "px"
+                    frameElement.parentElement.style.width = video.videoWidth < 236 ? 236 : video.viderHeight + "px"
+                    frameElement.parentElement.style.height = video.videoHeight < 236 ? 236 : video.viderHeight + "px"
                 })
                 sourcee.addEventListener("error", () => parent.msgbox("Playback error", "This media file is either not supported or corrupted. Check your browser supported formats"))
                 sourcee.setAttribute("src", videoURL)

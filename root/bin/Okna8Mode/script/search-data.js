@@ -18,4 +18,9 @@ var LOCALE_searchdata = [
     ['Photos', 'wide', 'rgb(0,130,153)', '../../metro/Photos', ''],
     ['desktop:run', 'standart', '', '../../../img/shell/icons/run2.png', ''],
     ['desktop:explorer', 'standart', '', '../../../img/shell/icons/explorer.png', ''],
+    ['desktop:calc', 'standart', '', '../../../apps/classic/calc/icon.png', ''],
+    ['desktop:taskmgr', 'standart', '', '../../../apps/classic/taskmgr/taskmgr.png', ''],
+    ['desktop:control', 'standart', '', '../../../img/shell/imageres/27.ico', ''],
+    ['desktop:notepad', 'standart', '', '../../../apps/classic/notepad/notepad.png', ''],
+    ['desktop:iexplore', 'standart', '', '../../../apps/classic/iexplore/icon.png', ''],
 ]

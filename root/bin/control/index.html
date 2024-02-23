@@ -259,7 +259,7 @@
                 useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
                 dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
                 const args = frameElement.getAttribute("args")
-                if (args){
+                if (args != "undefined"){
                     openSection(args)
                 }
                 parent.showWindow("./bin/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));

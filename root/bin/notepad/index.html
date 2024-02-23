@@ -9,7 +9,6 @@
         <style>
             body {
                 overflow: auto; 
-                display: flex;
             }
             textarea, textarea:hover{
                 min-width: 100%;
@@ -35,12 +34,20 @@
                 if (commands[0] == "theme" && commands.length == 2)
                     changeTheme(commands[1])
             }
+            const args = frameElement.getAttribute("args")
         </script>
     </head>
     <body>
-        <textarea name="textarea" id="textarea" spellcheck="false" wrap="off"></textarea>
+        <div class="menubar">
+            <div class="element" onmousedown="
+                const rect = this.getBoundingClientRect(); 
+                const frameRect = frameElement.getBoundingClientRect(); parent.contextMenu(event, [
+            ['', 'Save', async () => {if (await parent.fs.writeFile(args, new Blob([textarea.value]))) parent.msgbox('error', 'Cannot write to a file')}], 
+            // ['', 'Save as', async () => {if (await parent.fs.writeFile(args, new Blob([textarea.value]))) parent.msgbox('error', 'Cannot write to a file')}]
+        ], rect.x + frameRect.x, rect.y + rect.height + frameRect.y)">File</div>
+        </div>
+        <textarea name="textarea" id="textarea" spellcheck="false" wrap="off" onmousedown="parent.contextMenuOff()"></textarea>
         <script>
-            const args = frameElement.getAttribute("args")
             if(args) (async () => {
                 const filecontent = (await parent.fs.readFile(args))
                 if (typeof filecontent == "string") textarea.value = filecontent
@@ -54,7 +61,7 @@
                 }
             })()
             let thisWindow = frameElement.parentElement.parentElement.parentElement
-            parent.showWindow("./bin/ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
+            parent.showWindow("./bin/notepad/icon.png", thisWindow.getAttribute("windowid"));
         </script>
     </body>
 </html>

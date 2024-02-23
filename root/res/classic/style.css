@@ -1401,7 +1401,6 @@ table>tbody>tr>* {
 }
 .menubar{
     background-image: none !important;
-    border-bottom: 1px solid #888;
 }
 .menubar > .element::after{
     border: none !important;
@@ -1426,12 +1425,14 @@ table>tbody>tr>* {
 #contextMenuElement{
     background: silver;
     box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+    padding: 2px;
+    box-sizing: border-box;
 }
 .context-menu-option{
-    margin: 3px;
-    height: 22px;
+    height: 21px;
     padding: 0 2px;
-    line-height: 22px;
+    line-height: 21px;
+    margin: 0;
 }
 .context-menu-option:hover{
     background-image: none !important;

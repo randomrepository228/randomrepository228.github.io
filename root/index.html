@@ -130,6 +130,7 @@
         <script defer onload="log(this.getAttribute('src'))" src="sys/windowControls.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="shell/shell.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/trayManager.js"></script>
+        <script defer onload="log(this.getAttribute('src'))" src="sys/bcwdss.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no" id="dpiscale">
         <style>
             @media (max-aspect-ratio: 1/1) {
@@ -169,8 +170,11 @@
                 }
             </script>
         </div>
-        <div class="context-menu" id="contextMenuElement">
-            <div class="context-menu-option">(No options available)</div>
+        <div class="context-menu context-menu-part" id="contextMenuElement">
+            <div class="context-menu-option context-menu-part">(No options available)</div>
+        </div>
+        <div class="context-menu context-menu-part" id="contextMenuElement2">
+            <div class="context-menu-option context-menu-part">(No options available)</div>
         </div>
         <div id="changethemesplash"></div>
         <div class="logonui" style="display: none"></div>

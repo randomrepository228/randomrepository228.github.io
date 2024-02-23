@@ -132,11 +132,6 @@ button > label{
     margin: -5px;
     padding: 0;
 }
-select, selecticon{
-    display: inline-block;
-    position: absolute;
-    top: 0;
-}
 select{
     height: 23px;
     position: relative;
@@ -145,6 +140,7 @@ select{
     height: 23px;
     width: max-content;
     display: inline-block;
+    position: relative;
 }
 option{
     font-family: 'segoeui', sans-serif, system-ui;
@@ -419,23 +415,41 @@ text > footer{
 text{
     position: relative;
 }
-.select > select{
-    width: 100%;
-}
 .context-menu-option > img{
     width: 16px;
     height: 16px;
-    margin: auto 5px;
+    margin: auto 0;
+    margin-left: 0px;
+    padding-right: 8px;
+    margin-right: 2px;
+    padding-left: 3px;
+}
+.context-menu-option:hover > img{
+    box-shadow: none;
 }
 .context-menu-option{
-    width: calc(100% - 12px);
-    height: 26px;
+    width: calc(100% - 15px);
+    height: 21px;
     margin: 1px;
     display: flex;
-    line-height: 28px;
-    padding: 0 5px;
+    line-height: 21px;
+    padding-left: 3px;
     white-space: pre;
+    padding-right: 10px !important;
 }
 .context-menu{
     z-index: 10001;
+}
+.maximised text{
+    width: 100% !important;
+}
+text > *{
+    overflow: auto;
+}
+fieldset{
+    border: 1px solid rgb(213, 223, 229);
+    border-radius: 3px;
+}
+legend{
+    margin-left: -5px;
 }

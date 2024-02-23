@@ -106,3 +106,49 @@ body {
     background-color: rgb(230,230,230);
     border: rgb(230,230,230) solid 2px;
 }
+
+.topbar {
+    display: none;
+    height: 120px;
+    width: 100vw;
+    position: absolute;
+    left: 0; top: 0;
+    background-color: rgb(20,0,68);
+    animation: Metro_ShowAni2 cubic-bezier(0.1, 0.9, 0.2, 1) 0.3s forwards;
+}
+
+.topbar > .backbtn {
+    position: absolute;
+    top: 55px;
+    left: 20px;
+}
+
+.topbar > p {
+    color: white;
+    font-size: 28px;
+    font-weight: 100;
+    margin: 50px 0px 0px 60px;
+}
+
+@media screen and (max-width: 1000px) {
+    .leftpanel {
+        width: 100vw;
+    }
+
+    .rightpanel {
+        width: 100vw;
+        left: 0;
+    }
+    
+    .rightpanel > .cont {
+        padding-left: 20px;
+        width: calc(100vw - 20px);
+        padding-top: 8px;
+        position: absolute;
+        top: 120px
+    }
+
+    .topbar {
+        display: block;
+    }
+}

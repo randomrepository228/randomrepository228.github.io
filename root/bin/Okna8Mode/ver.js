@@ -1,11 +1,14 @@
 ﻿const VERSION = {
-    build: 94,
-    ver: '20231011-1050',
+    build: 104,
+    ver: 'Okna8Web 104 Closed Beta Test. Do not leak. Prerelease 2.',
     locales: [
         ['ru-ru', 'Русский'],
         ['en-us','English (United States)'],
-        ['uk-ua','Українська'],
     ],
     prerelease: false,
     productName: 'Okna',
+    additionalFeatures: {
+        'AutoColorSupport': true,
+        'IsWebVersion': true,
+    }
 }

@@ -38,7 +38,7 @@ shell.innerHTML = `
         ['', 'Taskbar properties', () => loadApp('control', '', 'main')], 
         ['', 'Task manager', () => loadApp('taskmgr')]
     ], event.clientX, event.clientY)">
-    <div class="wrapper" onmousedown="startMenu(true)" ontouchstart="startMenu(true)">
+    <div class="wrapper" onmousedown="startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()">
         <img class="taskbar-btn" src="./res/taskbar-btn.png"></img>
         <div class="taskbar-btn-orb"></div>
     </div>
@@ -102,27 +102,30 @@ function createIcon(icon, iconloc){
     a.setAttribute("ondblclick", icon.action)
     a.oncontextmenu = (e) => {
         e.stopPropagation(); 
+        console.log(iconloc)
         contextMenu(e, [
-            ['', 'Delete', () => fs.deleteFile(iconloc)]
+            ['', 'Delete', () => fs.deleteFile(iconloc)],
+            ['./bin/notepad/icon.png', 'Open with Notepad', () => loadApp("notepad", "", iconloc)]
         ], e.clientX, e.clientY)
     }
+    console.log(iconloc)
     icons.appendChild(a)
 }
 function startMenu(open){
     contextMenuOff();
     let elem = document.querySelector(".wrapper")
-    const SMAction1 = "startMenu(false, this)"
-    const SMAction2 = "startMenu(true, this)"
+    const SMAction1 = "startMenu(false)"
+    const SMAction2 = "startMenu(true)"
     if(open){
         document.querySelector(".start-menu").style.display = "flex";
-        elem.setAttribute("ontouchstart", SMAction1);
         elem.setAttribute("onmousedown", SMAction1);
+        elem.setAttribute("ontouchstart", SMAction1);
         elem.children[0].className += " focus"
     }
     else{
         document.querySelector(".start-menu").style.display = "none";
-        elem.setAttribute("ontouchstart", SMAction2);
         elem.setAttribute("onmousedown", SMAction2);
+        elem.setAttribute("ontouchstart", SMAction2);
         elem.children[0].className = elem.children[0].className.replace(" focus", "")
     }
 }
@@ -159,11 +162,16 @@ async function reloadIcons(){
             app = "wmplayer"
             fileURL = "bin/explorer-file-manager/media.png"
         }
+        else if (f.endsWith(".ca")){
+            createIcon(new Icon(e, "bin/explorer-file-manager/file.png", `loadbcwdApp('usr/SYSTEM/desktop/${e}')`), `usr/SYSTEM/desktop/${e}`)
+            return
+        }
         else {
             app = "notepad"
             fileURL = "bin/explorer-file-manager/file.png"
         }
         if (!fileURL) fileURL = URL.createObjectURL(await fs.readFile("usr/SYSTEM/desktop/" + e))
+        console.log(e)
         createIcon(new Icon(e, fileURL, `parent.loadApp('${app}', undefined, 'usr/SYSTEM/desktop/${e}')`), `usr/SYSTEM/desktop/${e}`)
     })
 }

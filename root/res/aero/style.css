@@ -289,11 +289,13 @@ left img{
 }
 .context-menu{
     font-size: 12px;
-    background-color: white;
+    background-color: rgb(241, 241, 241);
     position: absolute;
     display: none;
     flex-direction: column;
     width: max-content;
+    border: 1px solid rgb(151, 151, 151);
+    box-shadow: 5px 5px 2px -3px rgba(0,0,0,0.5), inset 28px 0px 0px 0px rgb(241, 241, 241), inset 29px 0px 0px 0px rgb(226,227,227), inset 30px 0px 0px 0px rgb(255, 255, 255);
 }
 .context-menu-option:hover{
     background-color: rgba(0,255,255,0.3);

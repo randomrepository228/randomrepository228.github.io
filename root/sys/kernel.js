@@ -10,7 +10,7 @@ let activetray;
 let isLoaded = false;
 let bootAnimationEnded = false;
 let init = false;
-class Window {
+class Winda7Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
         this.width = width;
@@ -79,7 +79,7 @@ async function loadApp(packageName, path, args, id){
                 const info = JSON.parse(request.responseText)
                 if (typeof id == "undefined") id = getId()
                 if (info.window){
-                    AddWindow(new Window(info.x, info.y, info.width, info.height, info.title, 
+                    AddWindow(new Winda7Window(info.x, info.y, info.width, info.height, info.title, 
                         `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
                         path + info.icon, true), undefined, info, id)
                 }
@@ -104,15 +104,18 @@ async function loadAppNoInfo(packageName, path, name, args){
     if (!path) path = "bin/"
     path += packageName + "/"
     const id = getId()
-    AddWindow(new Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, name, `<iframe src="${path}index.html" args="${args}" sandbox="allow-scripts allow-same-origin" frameborder="0">`, '', true), undefined, {"window": true, "noSelfOpen": true, "title": packageName}, id)
+    AddWindow(new Winda7Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, name, `<iframe src="${path}index.html" args="${args}" sandbox="allow-scripts allow-same-origin" frameborder="0">`, '', true), undefined, {"window": true, "noSelfOpen": true, "title": packageName}, id)
 }
 async function loadOkna8App(packageName, path, name, args){
     if (!path) path = "bin/"
     path += packageName + "/"
     const id = getId()
-    AddWindow(new Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised"}, id)
+    AddWindow(new Winda7Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised"}, id)
 }
-function contextMenu(e, content, x, y){
+function contextMenu(e, content, x, y, contextMenuType){
+    let contextMenuElem;
+    if (contextMenuType) contextMenuElem = contextMenuElement2
+    else contextMenuElem = contextMenuElement
     if (e.preventDefault){
         e.preventDefault()
     }
@@ -120,14 +123,14 @@ function contextMenu(e, content, x, y){
     if (content){
         for (const a of content){
             let contextMenuOption = document.createElement("div")
-            contextMenuOption.className = "context-menu-option"
+            contextMenuOption.className = "context-menu-option context-menu-part"
             contextMenuOption.onclick = (e) => {e.preventDefault(); contextMenuOff(); a[2]()}
-            contextMenuOption.innerHTML += `<img src="${a[0]}" onerror="this.style.opacity = 0;"><div>${a[1]}</div>`
+            contextMenuOption.innerHTML += `<img src="${a[0]}" onerror="this.style.opacity = 0;" class="context-menu-part"><div class="context-menu-part">${a[1]}</div>`
             contextMenuElement.appendChild(contextMenuOption)
         }
     }
     else{
-        contextMenuElement.innerHTML += `<div class="context-menu-option"><img src="" onerror="this.style.opacity = 0;"><div>(No options available)</div></div>`
+        contextMenuElement.innerHTML += `<div class="context-menu-option context-menu-part"><img src="" onerror="this.style.opacity = 0;" class="context-menu-part"><div class="context-menu-part">(No options available)</div></div>`
     }
     contextMenuElement.style.display = "flex";
     const boundClientRect = contextMenuElement.getBoundingClientRect()
@@ -155,12 +158,15 @@ function desktopInit(){
     else{
         msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
     }
+    document.body.setAttribute("onmousedown", "if (!event.target.classList.contains('context-menu-part')) {contextMenuOff()}"); 
+    document.body.setAttribute("ontouchstart", "if (!event.target.classList.contains('context-menu-part')) {event.preventDefault(); contextMenuOff()}");
     document.querySelector(".icons").setAttribute("onclick", "if (event.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()")
     document.querySelector(".explorer").style.display = "";
+    document.oncontextmenu = (e) => e.preventDefault()
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240219 Alpha!</h1>What's new?<br>Context menu (alpha)!")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240223!</h1>What's new?<br>Context menu!<br>You can now save files in Notepad!<br>bcwd support!<br>Input box!")
         localStorage.prevver = localStorage.ver
         return;
     }
