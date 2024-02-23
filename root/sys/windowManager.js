@@ -61,7 +61,7 @@ function AddWindow(window, ispopup, options, id, elem){
     let text = document.createElement("text")
     text.style.width = options.width + "px"
     text.style.height = options.height + "px"
-    if (elem) text.appendChild(elem)
+    if (typeof elem == "object") text.appendChild(elem)
     else{
         text.innerHTML = window.innerhtml
         if (ispopup) text.innerHTML += `<footer><button onclick="closeWindow(${id})">OK</button></div>`
