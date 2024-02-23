@@ -166,7 +166,7 @@ function desktopInit(){
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240223!</h1>What's new?<br>Context menu!<br>You can now save files in Notepad!<br>bcwd support!<br>Input box!")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240223!</h1>What's new?<br>Context menu!<br>You can now save files in Notepad!<br><a href=\"https://nekit270.ch/bcwd\">bcwd support!</a><br>Input box!")
         localStorage.prevver = localStorage.ver
         return;
     }
