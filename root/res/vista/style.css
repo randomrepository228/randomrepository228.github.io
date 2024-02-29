@@ -200,7 +200,7 @@ selecticon{
     height: 19px;
     width: 10px;
     background-image: url("../dropdown.png");
-    margin-left: -15px;
+    margin-right: 15px;
     margin-top: 2px;
     pointer-events: none;
 }

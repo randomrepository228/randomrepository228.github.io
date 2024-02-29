@@ -1,7 +1,9 @@
 
 function windowMouseDown(event, elem, a, noResize){
-    event.preventDefault();
     if(event.target != elem) return;
+    if (event.type == "touchstart"){
+        event.preventDefault();
+    }
     let touch = false;
     let evName;
     if(!elem.getAttribute("notray")) setActive(elem.parentElement);
@@ -15,6 +17,7 @@ function windowMouseDown(event, elem, a, noResize){
     prevy=event.clientY-elem.getBoundingClientRect().y
     prevheight=activewindow.getBoundingClientRect().height
     prevwidth=activewindow.getBoundingClientRect().width - 7
+    activewindow.style.transform = ''
     if (!touch) evName = "mouseup"
     else evName = "touchend"
     document.addEventListener(evName, e => {
@@ -86,6 +89,7 @@ function windowResize(event, elem, ...actions){
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function move(e){
+    console.log("sus")
     if (!activewindow) return
     if (localStorage.noContentMove) return
     let activewindowcontent = activewindow.querySelector("text")

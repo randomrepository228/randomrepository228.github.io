@@ -9,10 +9,12 @@
         <style>
             body {
                 overflow: auto; 
+                display: flex;
+                flex-direction: column;
             }
             textarea, textarea:hover{
                 min-width: 100%;
-                min-height: 100%;
+                flex-grow: 1;
                 outline: none;
                 border: none;
                 color: black;
@@ -21,6 +23,7 @@
                 line-height: 100%;
                 padding: 0;
                 resize: none;
+                white-space: pre-wrap;
             }
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
@@ -35,16 +38,57 @@
                     changeTheme(commands[1])
             }
             const args = frameElement.getAttribute("args")
+            let isMouseDown = false;
+            const fileTabContextMenu = (e, elem) => {
+                const rect = elem.getBoundingClientRect(); 
+                const frameRect = frameElement.getBoundingClientRect(); parent.contextMenu(event, [
+                    ['', 'Save', async () => {if (await parent.fs.writeFile(args, textarea.value)) parent.msgbox('error', 'Cannot write to a file')}], 
+                ], rect.x + frameRect.x, rect.y + rect.height + frameRect.y)
+                for (a of elem.parentElement.children){
+                    a.className = a.className.replace(" active", "")
+                }
+                if (!elem.classList.contains("active")) elem.className += " active"
+            }
+            const formatTabContextMenu = (e, elem) => {
+                const rect = elem.getBoundingClientRect(); 
+                const frameRect = frameElement.getBoundingClientRect(); parent.contextMenu(event, [
+                    ['', 'Word wrap', () => textarea.style.whiteSpace == 'pre-wrap' ? textarea.style.whiteSpace = 'pre' : textarea.style.whiteSpace = 'pre-wrap'], 
+                ], rect.x + frameRect.x, rect.y + rect.height + frameRect.y)
+                for (a of elem.parentElement.children){
+                    a.className = a.className.replace(" active", "")
+                }
+                if (!elem.classList.contains("active")) elem.className += " active"
+            }
+            function windowMouseDown(e){
+                if(!e.target.parentElement || !e.target.parentElement.classList.contains('menubar')) {
+                    isMouseDown = false; 
+                    if(!e.target.classList.contains('context-menu-part')) {
+                        parent.contextMenuOff();
+                        for (a of document.querySelector(".menubar").children){
+                            a.className = a.className.replace(" active", "")
+                        }
+                    }
+                }
+            }
+            parent.contextMenuElement.addEventListener("click", (e) => {
+                isMouseDown = false;
+                for (a of document.querySelector(".menubar").children){
+                    a.className = a.className.replace(" active", "")
+                }
+            })
+            parent.addEventListener('mousedown', windowMouseDown)
+            parent.addEventListener('touchstart', (e) => {
+                e.preventDefault()
+                windowMouseDown(e);
+            })
         </script>
     </head>
-    <body>
+    <body onmousedown="windowMouseDown(event)">
         <div class="menubar">
-            <div class="element" onmousedown="
-                const rect = this.getBoundingClientRect(); 
-                const frameRect = frameElement.getBoundingClientRect(); parent.contextMenu(event, [
-            ['', 'Save', async () => {if (await parent.fs.writeFile(args, new Blob([textarea.value]))) parent.msgbox('error', 'Cannot write to a file')}], 
-            // ['', 'Save as', async () => {if (await parent.fs.writeFile(args, new Blob([textarea.value]))) parent.msgbox('error', 'Cannot write to a file')}]
-        ], rect.x + frameRect.x, rect.y + rect.height + frameRect.y)">File</div>
+            <div class="element" onmousedown="isMouseDown = true;fileTabContextMenu(event, this)"
+                                 onmouseover="if (isMouseDown)   fileTabContextMenu(event, this)">File</div>
+            <div class="element" onmousedown="isMouseDown = true;formatTabContextMenu(event, this)"
+                                 onmouseover="if (isMouseDown)   formatTabContextMenu(event, this)">Format</div>
         </div>
         <textarea name="textarea" id="textarea" spellcheck="false" wrap="off" onmousedown="parent.contextMenuOff()"></textarea>
         <script>

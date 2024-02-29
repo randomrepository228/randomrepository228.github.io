@@ -178,9 +178,10 @@
         </div>
         <div id="changethemesplash"></div>
         <div class="logonui" style="display: none"></div>
-        <div class="explorer" id="shell" style="display: none;"></div>
+        <div class="explorer taskbar-bottom" id="shell" style="display: none;"></div>
         <script>
-            if (!localStorage.dontGroupIcons == "true")
+            console.log(localStorage.dontGroupIcons == "true")
+            if (!(localStorage.dontGroupIcons == "true"))
                 groupicons.href = ""
             else
                 groupicons.href = './shell/dont_group_icons.css'
@@ -189,8 +190,8 @@
             else
                 smalltaskbar.href = ''
         </script>
-        <div id="windows"></div>
-        <div id="trays">
+        <div id="windows" class="taskbar-bottom"></div>
+        <div id="trays" class="taskbar-bottom">
             <div class="dock-br winapi_transparent winapi_shadow n1 tray" windowid="1" name="Clock" style="display: none; width: 322px; height: 280px;">
                 <div class="content">
                     <iframe src="./bin/clock/index.html" frameborder="0"></iframe>

@@ -89,19 +89,13 @@
 .menubar > .element::after{
     border-image: none !important;
 }
-.menubar > .element:hover.active {
-	border-top-width: 1px;
-	border-left-width: 1px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
-}
 .menubar .element:hover::after{
     width: 100%;
     height: 100%;
     border: none;
 }
 
-.menubar .element:active::after{
+.menubar .element.active::after{
     width: 100%;
     height: 100%;
     border: none;
@@ -784,10 +778,11 @@ left img{
 }
 
 fieldset {
+    border: 2px solid transparent;
     border-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='5' height='5' fill='gray' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h5v5H0V2h2v1h1V2H0' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h4v4H0V1h1v2h2V1H0'/%3E%3C/svg%3E") 2;
     margin: 0;
     padding: 10px;
-    padding-block-start: 8px
+    padding-block-start: 8px;
 }
 
 legend {
@@ -1298,7 +1293,7 @@ summary:focus {
 menu[role=tablist] {
     display: flex;
     list-style-type: none;
-    margin: 0 0 -2px;
+    margin: 3px 3px -2px;
     padding-left: 3px;
     position: relative;
     text-indent: 0
@@ -1438,4 +1433,75 @@ table>tbody>tr>* {
     background-image: none !important;
     background-color: navy;
     color: white;
+}
+.progress-bar-container{
+    box-shadow: inset -1px -1px 0px 0px rgb(255,255,255), inset 1px 1px 0px 0px rgb(132,132,132);
+    padding: 2px;
+}
+.progress-bar{
+    width: 100%;
+    height: 100%;
+    border: none
+}
+.progress-bar-filled-container, .progress-bar-filled{
+    height: 100%;
+    border: none;
+    margin: 0;
+}
+.progress-bar-filled::after{
+    background-image: none;
+    display: none;
+}
+.progress-bar-marquee::after{
+    background-image: none;
+    background-color: navy;
+    height: 100%;
+    margin: 0;
+}
+.progress-bar-filled{
+    background-color: navy;
+}
+.tabs > article{
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey;
+    border: none;
+    padding: 2px;
+}
+button[role="tab"], button[role="tab"]:active{
+    box-shadow: inset 1px 1px #fff, inset -1px 0px rgb(64, 64, 64), inset -2px 0px rgb(128,128,128);
+    border: none;
+    background-image: none;
+    background-color: rgb(192, 192, 192);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    min-width: fit-content;
+    min-height: 16px;
+    outline: none;
+    text-shadow: none;
+    color: #000;
+    margin: 0;
+    margin-bottom: 2px;
+    margin-top: 3px;
+    z-index: 0;
+}
+button[role="tab"][aria-selected=true]{
+    height: 22px;
+    padding-left: 7px;
+    margin-right: -3px;
+    margin-left: -3px;
+    padding-right: 7px;
+    margin-top: 0;
+    z-index: 1;
+    border: 0;
+}
+button[role="tab"][aria-selected=true]:hover{
+    border: 0;
+}
+button[role="tab"]:hover{
+    background-image: none;
+}
+menu[role="tablist"]{
+    padding-left: 0;
+}
+menu[role="tablist"]{
+    height: 23px;
 }

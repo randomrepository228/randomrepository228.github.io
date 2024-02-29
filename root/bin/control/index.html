@@ -77,10 +77,6 @@
                 <label for="dpiscale">Do not scale based on system DPI</label><br>
                 <input type="checkbox" name="aerosnap" id="aerosnap" onchange="localStorage.aerosnap = this.checked ? 'true' : 'false';">
                 <label for="aerosnap">Turn off aero snap</label><br>
-                <input type="checkbox" name="useSmallTaskbar" id="useSmallTaskbar" onchange="localStorage.useSmallTaskbar = this.checked ? 'true' : 'false';parent.postMessage('usesmalltaskbar|' + this.checked)">
-                <label for="useSmallTaskbar">Use small taskbar icons</label><br>
-                <input type="checkbox" name="dontGroupIcons" id="dontGroupIcons" onchange="localStorage.dontGroupIcons = this.checked ? 'true' : 'false';parent.postMessage('dontgroupicons|' + this.checked)">
-                <label for="dontGroupIcons">Do not group icons</label><br>
                 <!-- <input type="range" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.value">
                 <label for="dpiscale">Maximised windows transparent</label> -->
             </div>
@@ -238,7 +234,7 @@
                                     b.innerHTML += `
 <div class="wallpaperitem" ondblclick="parent.changeWallpaper('./img/img${c}.jpg');new Audio(logonSound).play()">
     <div class="images">
-        <img class="img2" src="../../img/img${c}.jpg">
+        <img class="img2" src="../../img/img${c}_thumb.png">
     </div>
 </div>`
                                 }
@@ -256,8 +252,8 @@
                 maximiseWindows.checked = localStorage.maximiseWindows == "true" ? true : false
                 dpiscale.checked = localStorage.dpiscale == "true" ? true : false
                 aerosnap.checked = localStorage.aerosnap == "true" ? true : false
-                useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
-                dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
+                // useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
+                // dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
                 const args = frameElement.getAttribute("args")
                 if (args != "undefined"){
                     openSection(args)

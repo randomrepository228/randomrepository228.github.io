@@ -91,3 +91,9 @@
     border-radius: 2px;
     box-shadow: none !important;
 }
+.theme:hover{
+    background-color: navy !important;
+    border: 1px solid transparent !important;
+    border-radius: 0 !important;
+    color: white !important;
+}

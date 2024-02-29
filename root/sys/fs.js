@@ -144,23 +144,40 @@ fs.exists = function(filePath){
         } catch (e) {resolve(false)}
     })
 }
-fs.moveFile = function(filePath){
+fs.moveFile = function(initialFilePath, filePath){
     return new Promise((resolve, reject) => {
         const transaction = db.transaction("rootfs", "readwrite")
         const initialfs = transaction.objectStore("rootfs");
-        try{
-            const request = initialfs.get(filePath)
-            request.onerror = (e) => {
-                resolve(false)
-            }
-            request.onsuccess = (e) => {
-                if (!e.target.result) resolve(false)
-                resolve(true)
-            }
-        } catch (e) {resolve(false)}
+        const query = store.get(initialFilePath)
+        
+        query.onsuccess = (e) => {
+            const result = e.target.result
+            result.path = filePath
+            const query = initialfs.put(result, initialFilePath)
+            query.onerror = (e) => resolve(2)
+            query.onsuccess = (e) => resolve(0)
+        }
+        query.onerror = (e) => resolve(1)
+    })
+}
+fs.copyFile = function(initialFilePath, filePath){
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction("rootfs", "readwrite")
+        const initialfs = transaction.objectStore("rootfs");
+        const query = store.get(initialFilePath)
+        
+        query.onsuccess = (e) => {
+            const result = e.target.result
+            result.path = filePath
+            const query = initialfs.put(result)
+            query.onerror = (e) => resolve(2)
+            query.onsuccess = (e) => resolve(0)
+        }
+        query.onerror = (e) => resolve(1)
     })
 }
 fs.writeFile = async function(filePath, data, newFile){
+    if(typeof data != "object") data = new Blob([data])
     filePath = fs.toPath(filePath)
     let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
     if (!(!newFile || (newFile && !await fs.exists(filePath)))) {
@@ -192,6 +209,7 @@ fs.watchFile = function(filePath){
     })
 }
 fs.deleteFile = function(filePath){
+    if (filePath.startsWith("/")) filePath = filePath.substring(1)
     return new Promise((resolve, reject) => {
         const transaction = db.transaction("rootfs", "readwrite")
         const initialfs = transaction.objectStore("rootfs");

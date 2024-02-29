@@ -44,14 +44,14 @@ function AddWindow(window, ispopup, options, id, elem){
             <div class="x" onclick="closeWindow(${id})"><img src="./res/aero/buttons/close/icon.png"></div>
         </div>
     </div>
-    ${options.noResize ? `` : `<div onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-    <div ontouchdown="windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-    <div ontouchdown="windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-    <div ontouchdown="windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-    <div ontouchdown="windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="top"></div>
-    <div ontouchdown="windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
-    <div ontouchdown="windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
-    <div ontouchdown="windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+    ${options.noResize ? `` : `<div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="top"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
     `
     let content = document.createElement("div")
     content.className = "content" + (options.noGUI ? 'nostyle' : '')

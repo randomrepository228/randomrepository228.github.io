@@ -200,7 +200,7 @@ selecticon{
     height: 19px;
     width: 10px;
     background-image: url("../dropdown.png");
-    margin-left: -15px;
+    margin-right: 5px;
     margin-top: 2px;
     pointer-events: none;
 }
@@ -315,4 +315,25 @@ left img{
     border-bottom-left-radius: 0;
     background-image: url("../start_menu.png");
     background-size: 100% 100%;
+}
+.tabbody{
+    background-color: rgb(240, 240, 240);
+}
+.tabbody footer{
+    background-color: transparent;
+}
+input, textarea{
+    border: 1px solid rgb(227, 233, 239);
+    border-top-color: rgb(171, 173, 179);
+    border-radius: 2px;
+}
+input:focus, textarea:focus{
+    border: 1px solid rgb(183, 217, 237);
+    border-top-color: rgb(61, 123, 173);
+}
+.sunken-panel{
+    border: 1px solid gray;
+}
+article[role=tabpanel]{
+    background-color: white;
 }

@@ -64,7 +64,41 @@
             Example Text
         </fieldset>
         <div id="segoe_slboot"></div>
+        <div class="progress-bar-container" style="width: 500px; height: 23px; margin: 5px;">
+                <div class="progress-bar">
+                    <div class="progress-bar-filled-container" style="width: 300px;">
+                        <div class="progress-bar-filled" style="width: 300px"></div>
+                    </div>
+                </div>
+            </div>
+        <div class="progress-bar-container" style="width: 500px; height: 23px; margin: 5px;">
+            <div class="progress-bar progress-bar-marquee"></div>
+        </div>
         <script>
+            function tabHandler(elem){
+                for (a of elem.firstElementChild.children){
+                    a.setAttribute('onmousedown', 
+                       `for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
+                            a.style.display = "none"
+                        };
+                        this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
+                        for (a of this.parentElement.parentElement.querySelectorAll("button[role=tab]")) {
+                            a.setAttribute("aria-selected", "")
+                        }
+                        this.parentElement.parentElement.querySelector("button[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
+                    a.setAttribute('ontouchstart', 
+                       `event.preventDefault();
+                        for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
+                            a.style.display = "none"
+                        };
+                        this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
+                        for (a of this.parentElement.parentElement.querySelectorAll("button[role=tab]")) {
+                            a.setAttribute("aria-selected", "")
+                        }
+                        this.parentElement.parentElement.querySelector("button[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
+                }
+            }
+            tabHandler(document.querySelector(".tabs"))
             let charCode = 57426
             setInterval(() =>{
                 segoe_slboot.innerHTML = String.fromCharCode([charCode])

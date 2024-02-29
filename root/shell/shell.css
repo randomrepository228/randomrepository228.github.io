@@ -65,18 +65,17 @@ bottomright{
 }
 .taskbar{
     height: 38px;
-    border-top: 1px solid rgba(255,255,255,0.5);
-    outline: 1px solid black;
+    box-shadow: inset 0px 1px 0px 0px black, inset 0px 2px 0px 0px rgba(255,255,255,0.5);
     z-index: 9998;
     background-color: hsla(209, 68%, 50%, 0.15);
     display: flex;
     position: fixed;
-    margin-top: 1px;
     width: 100%;
     backdrop-filter: blur(5px);
     outline-offset: 0;
     animation: slide 0.3s ease-in-out;
     bottom: 0;
+    height: var(--taskbar-height);
 }
 .taskbar-btn{
     object-fit: cover;
@@ -84,7 +83,7 @@ bottomright{
     position: fixed;
     width: 54px;
     height: 40px;
-    margin-top: -1px;
+    margin-top: 1px;
 }
 .taskbar-btn-orb{
     /* width: 36px;
@@ -95,10 +94,10 @@ bottomright{
     margin-top: -1px; */
     display: none;
 }
-.taskbar-btn:hover{
+.wrapper:hover .taskbar-btn{
     object-position: 0 -59px;
 }
-.taskbar-btn:active, .taskbar-btn.focus{
+.wrapper:active .taskbar-btn, .taskbar-btn.focus{
     object-position: 0 -113px;
 }
 .left-bar, .right-bar{
@@ -140,7 +139,6 @@ bottomright{
 }
 .window-tray{
     position: relative;
-    bottom: 2px;
     height: var(--taskbar-height);
     border: 5px solid transparent;
     border-radius: 3px;
@@ -178,7 +176,6 @@ bottomright{
 }
 .show-desktop{
     position: relative;
-    margin-top: -2px;
     width: 11px;
     border: 2px solid transparent;
     border-image: url("../res/hide_windows.png") 2 fill;
@@ -334,4 +331,193 @@ bottomright{
 }
 .window-tray{
     box-sizing: border-box;
+}
+.taskbar-up .taskbar{
+    box-shadow: inset 0px -1px 0px 0px black, inset 0px -2px 0px 0px rgba(255,255,255,0.5);
+    bottom: auto;
+    top: 0;
+}
+.taskbar-up .tray, .taskbar-up .start-menu{
+    top: var(--taskbar-height);
+    bottom: auto;
+}
+.taskbar-up bottomright{
+    bottom: 0;
+}
+.taskbar-up .icons{
+    margin-top: var(--taskbar-height);
+}
+.taskbar-up .maximised{
+    top: var(--taskbar-height);
+    bottom: 0;
+}
+.taskbar-left .maximised, .taskbar-right .maximised{
+    top: 0;
+    bottom: 0;
+}
+.taskbar-left .maximised{
+    left: 61px;
+    right: 0;
+}
+.taskbar-right .maximised{
+    right: 61px;
+    left: 0;
+}
+.taskbar-up .taskbar-btn{
+    top: 0;
+    bottom: auto;
+}
+.taskbar-left .taskbar, .taskbar-right .taskbar{
+    width: 61px;
+    height: 100%;
+}
+.taskbar-left .taskbar{
+    left: 0;
+    flex-direction: column;
+    box-shadow: inset -1px 0px 0px 0px black, inset -2px 0px 0px 0px rgba(255,255,255,0.5);
+}
+.taskbar-left .wrapper{
+    height: 60px;
+}
+.taskbar-left .window-tray{
+    width: 61px;
+}
+.taskbar-left .right-bar{
+    height: auto;
+    width: 100%;
+    padding-left: 0;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    padding-top: 50px;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), linear-gradient(to bottom, transparent, rgba(0,0,0,0.25));
+    background-position: bottom, top;
+    background-size: 100% calc(100% - 50px), 100% 50px;
+}
+.taskbar-left #trayicons{
+    height: auto;
+    width: 100%;
+    padding-left: 0;
+    flex-wrap: wrap;
+    flex: 1;
+}
+.taskbar-left .left-bar{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.25), transparent);
+    background-size: 100% 50px;
+    background-repeat: no-repeat;
+}
+.taskbar-left .wrapper{
+    position: relative;
+}
+.taskbar-left .taskbar-btn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+}
+.taskbar-left .trayicon{
+    max-width: 100%;
+}
+.taskbar-left .trayicon > *{
+    height: 40px;
+    width: 100% !important;
+}
+.taskbar-left .show-desktop{
+    height: 15px;
+    width: calc(100% - 4px);
+    position: absolute;
+    bottom: 0;
+}
+.taskbar-left .start-menu{
+    top: var(--taskbar-height);
+    bottom: auto;
+    left: 0;
+}
+.taskbar-left .tray{
+    left: 61px;
+    bottom: 0;
+}
+.taskbar-right .tray{
+    right: 61px;
+    bottom: 0;
+}
+.taskbar-right bottomright{
+    right: 61px;
+    bottom: 0;
+}
+.taskbar-left bottomright{
+    right: 0;
+    bottom: 0;
+}
+.taskbar-right .taskbar{
+    right: 0;
+    flex-direction: column;
+    box-shadow: inset 1px 0px 0px 0px black, inset 2px 0px 0px 0px rgba(255,255,255,0.5);
+}
+.taskbar-right .wrapper{
+    height: 60px;
+}
+.taskbar-right .window-tray{
+    width: 61px;
+}
+.taskbar-right .right-bar{
+    height: auto;
+    width: 100%;
+    padding-left: 0;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    padding-top: 50px;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), linear-gradient(to bottom, transparent, rgba(0,0,0,0.25));
+    background-position: bottom, top;
+    background-size: 100% calc(100% - 50px), 100% 50px;
+}
+.taskbar-right #trayicons{
+    height: auto;
+    width: 100%;
+    padding-left: 0;
+    flex-wrap: wrap;
+    flex: 1;
+}
+.taskbar-right .left-bar{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.25), transparent);
+    background-size: 100% 50px;
+    background-repeat: no-repeat;
+}
+.taskbar-right .wrapper{
+    position: relative;
+}
+.taskbar-right .taskbar-btn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+}
+.taskbar-right .trayicon{
+    max-width: 100%;
+}
+.taskbar-right .trayicon > *{
+    height: 40px;
+    width: 100% !important;
+}
+.taskbar-right .show-desktop{
+    height: 15px;
+    width: calc(100% - 4px);
+    position: absolute;
+    bottom: 0;
+}
+.taskbar-right .start-menu{
+    top: var(--taskbar-height);
+    bottom: auto;
+    left: auto;
+    right: 0;
+}
+.taskbar-right .icons, .taskbar-left .icons{
+    height: 100%;
+    width: calc(100% - 61px);
+}
+.taskbar-left .icons{
+    margin-left: 61px;
 }

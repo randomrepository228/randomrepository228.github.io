@@ -10,6 +10,23 @@ function transferFile(file){
     reader.onload = () => fs.writeFile("usr/SYSTEM/desktop/" + file.name, new Blob([reader.result]))
     reader.readAsArrayBuffer(file)
 }
+function changeTaskbarDir(dir){
+    if (!dir) return
+    shell.className = shell.className.replace("taskbar-bottom", "taskbar-" + dir)
+    shell.className = shell.className.replace("taskbar-up", "taskbar-" + dir)
+    shell.className = shell.className.replace("taskbar-left", "taskbar-" + dir)
+    shell.className = shell.className.replace("taskbar-right", "taskbar-" + dir)
+    trays.className = trays.className.replace("taskbar-bottom", "taskbar-" + dir)
+    trays.className = trays.className.replace("taskbar-up", "taskbar-" + dir)
+    trays.className = trays.className.replace("taskbar-left", "taskbar-" + dir)
+    trays.className = trays.className.replace("taskbar-right", "taskbar-" + dir)
+    windows.className = windows.className.replace("taskbar-bottom", "taskbar-" + dir)
+    windows.className = windows.className.replace("taskbar-up", "taskbar-" + dir)
+    windows.className = windows.className.replace("taskbar-left", "taskbar-" + dir)
+    windows.className = windows.className.replace("taskbar-right", "taskbar-" + dir)
+    localStorage.taskbarDir = dir
+}
+changeTaskbarDir(localStorage.taskbarDir)
 function dropHandler(e){
     e.preventDefault()
     if (e.dataTransfer.items) {
@@ -34,13 +51,17 @@ shell.innerHTML = `
     ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
 <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
 <div class="taskbar"
-    oncontextmenu="contextMenu(event, [
-        ['', 'Taskbar properties', () => loadApp('control', '', 'main')], 
-        ['', 'Task manager', () => loadApp('taskmgr')]
+    oncontextmenu="if (!event.target.classList.contains('startbutton')) contextMenu(event, [
+        ['', 'Task manager', () => loadApp('taskmgr')],
+        ['', 'Properties', () => loadApp('taskbarproperties')]
     ], event.clientX, event.clientY)">
-    <div class="wrapper" onmousedown="startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()">
-        <img class="taskbar-btn" src="./res/taskbar-btn.png"></img>
-        <div class="taskbar-btn-orb"></div>
+    <div class="wrapper startbutton" onmousedown="if(event.which === 1) startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()"
+        oncontextmenu="contextMenu(event, [
+            ['', 'Properties', () => loadApp('taskbarproperties')],
+            ['', 'Open file explorer', () => loadApp('explorer-file-manager')]
+        ], event.clientX, event.clientY)">
+        <img class="taskbar-btn startbutton" src="./res/taskbar-btn.png"></img>
+        <div class="taskbar-btn-orb startbutton"></div>
     </div>
     <div class="left-bar" id="leftBar"></div>
     <div class="right-bar">
@@ -115,7 +136,7 @@ function startMenu(open){
     contextMenuOff();
     let elem = document.querySelector(".wrapper")
     const SMAction1 = "startMenu(false)"
-    const SMAction2 = "startMenu(true)"
+    const SMAction2 = "if(event.which === 1) startMenu(true)"
     if(open){
         document.querySelector(".start-menu").style.display = "flex";
         elem.setAttribute("onmousedown", SMAction1);
@@ -125,7 +146,7 @@ function startMenu(open){
     else{
         document.querySelector(".start-menu").style.display = "none";
         elem.setAttribute("onmousedown", SMAction2);
-        elem.setAttribute("ontouchstart", SMAction2);
+        elem.setAttribute("ontouchstart", "startMenu(true)");
         elem.children[0].className = elem.children[0].className.replace(" focus", "")
     }
 }

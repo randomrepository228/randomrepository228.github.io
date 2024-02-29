@@ -54,10 +54,11 @@ input[type="checkbox"]{
     display: none;
 }
 label{
-    padding-left: 13px;
-    height: 13px;
+    padding-left: 16px;
+    height: 16px;
     display: inline-block;
     background-repeat: no-repeat;
+    background-position-y: center;
 }
 html, body{
     height: 100%;
@@ -80,15 +81,55 @@ body{
     margin-top: 0;
 }
 .maximised{
-    width: 100% !important;
-    height: calc(100% - var(--taskbar-height)) !important;
     position: fixed;
     box-shadow: none;
+}
+.taskbar-bottom .maximised{
+    width: 100% !important;
+    height: calc(100% - var(--taskbar-height)) !important;
     border-radius: 0px !important;
     padding: 0px !important;
     border: none !important;
     left: 0 !important;
     top: 0 !important;
+}
+.taskbar-up .maximised{
+    width: 100% !important;
+    height: calc(100% - var(--taskbar-height)) !important;
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+    left: 0 !important;
+    top: var(--taskbar-height) !important;
+}
+.taskbar-left .maximised{
+    width: calc(100% - 61px) !important;
+    height: 100% !important;
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+    left: 61px !important;
+    top: 0 !important;
+    right: 0 !important;
+}
+.taskbar-right .maximised{
+    width: calc(100% - 61px) !important;
+    height: 100% !important;
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+    right: 61px !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+.taskbar-up .maximised{
+    width: 100% !important;
+    height: calc(100% - var(--taskbar-height)) !important;
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+    left: 0 !important;
+    top: var(--taskbar-height) !important;
 }
 .snap-left{
     width: 50% !important;
@@ -121,6 +162,9 @@ button, select{
     background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
     border: 0;
     font-size: inherit;
+}
+select{
+    width: calc(100% - 16px);
 }
 input[type=file]{
     display: none;
@@ -179,7 +223,6 @@ select{
     appearance: none;
     -moz-appearance: none;
     padding: 1px;
-    padding-right: 20px;
     padding-left: 4px;
 }
 .dock-br{
@@ -257,8 +300,16 @@ input:focus{
     content: "";
 }
 
-.menubar .element:active::after{
+.menubar .active::after, .menubar .active:hover::after{
+    display: block;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 4px solid transparent;
     border-image: url(../res/menubar_pressed.png) 4 fill;
+    content: "";
 }
 .details{
     background-color: rgb(230,230,230);
@@ -324,7 +375,6 @@ ignore{
 }
 .tabs button{
     background-image: none;
-    background-color: white;
     border: 1px solid rgb(137,140,149);
     border-bottom: 0;
 }
@@ -452,4 +502,130 @@ fieldset{
 }
 legend{
     margin-left: -5px;
+}
+.progress-bar{
+    height: calc(100% - 13px);
+    width: calc(100% - 18px);
+    border: 9px solid transparent;
+    border-image-source: url(../res/progressbar.png);
+    border-image-repeat: stretch;
+    border-image-width: 7px 9px 6px 9px;
+    border-image-slice: 7 9 6 9 fill;
+    border-width: 7px 9px 6px 9px;
+    position: relative;
+}
+@keyframes marquee{
+    0%{
+        left: -127px;
+    }
+    100%{
+        left: calc(100% + 100px);
+    }
+}
+.progress-bar-marquee::after, .progress-bar-filled::after{
+    background-image: url(../res/progressbar_marquee.png);
+    background-size: 127px 100%;
+    content: "";
+    display: block;
+    height: calc(100% + 13px);
+    width: 127px;
+    margin-top: -7px;
+    position: absolute;
+    background-repeat: no-repeat;
+    animation: marquee 2s linear infinite;
+}
+.progress-bar-filled::after{
+    margin-left: -25px;
+}
+.progress-bar-marquee::after{
+    margin-left: -9px;
+}
+.progress-bar-filled{
+    height: calc(100% - 13px);
+    width: calc(100% - 68px);
+    border: 25px solid transparent;
+    border-image-source: url(../res/progressbar_filled.png);
+    border-image-repeat: stretch;
+    border-image-width: 7px 25px 6px 25px;
+    border-image-slice: 7 25 6 25 fill;
+    border-width: 7px 25px 6px 25px;
+}
+.progress-bar-filled, .progress-bar-marquee{
+    position: relative;
+}
+.progress-bar-marquee::after{
+    background-image: url(../res/progressbar_marquee2.png);
+}
+.progress-bar-container{
+    overflow: hidden;
+    width: 100px;
+}
+.progress-bar-filled-container{
+    margin-left: -9px;
+    overflow: hidden;
+    margin-top: -7px;
+    height: calc(100% + 13px);
+}
+.select{
+    display: flex;
+    justify-content: space-between;
+}
+button, select{
+    font-size: 12px;
+}
+button[role="tab"], button[role="tab"]:active{
+    min-width: fit-content;
+    min-height: 16px;
+    outline: none;
+    text-shadow: none;
+    color: #000;
+    margin: 0;
+    margin-bottom: 2px;
+    margin-top: 3px;
+    z-index: 0;
+}
+button[role="tab"][aria-selected=true]{
+    height: 22px;
+    padding-left: 7px;
+    margin-right: -3px;
+    margin-left: -3px;
+    padding-right: 7px;
+    margin-top: 0;
+    z-index: 1;
+}
+menu[role="tablist"]{
+    padding-left: 0;
+}
+menu[role="tablist"]{
+    height: 23px;
+}
+menu[role=tablist] {
+    display: flex;
+    list-style-type: none;
+    margin: 3px 3px -2px;
+    position: relative;
+    text-indent: 0
+}
+button[role="tab"][disabled]{
+    background-color: #C9CACB;
+}
+button[role="tab"]{
+    background-image: url(../res/tabitem.png);
+    background-size: 100% 100%;
+    background-color: white;
+}
+button[role="tab"]:hover{
+    border-color: #3C7FB1;
+    background-image: url(../res/tabitem_hover.png);
+}
+button[role="tab"][aria-selected="true"]:hover{
+    border: 1px solid rgb(137,140,149);
+    border-bottom: none;
+    background-image: none;
+}
+button[role="tab"][aria-selected="true"]{
+    background-image: none;
+}
+footer > button{
+    margin-left: 5px;
 }

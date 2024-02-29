@@ -18,7 +18,10 @@ const bcwd = {
     fs: {
         file: {
             readObj: async (a) => JSON.parse(await (await fs.readFile(a)).text()),
-            writeObj: async (filename, a) => await fs.writeFile(filename, new Blob([JSON.stringify(a)]))
+            read: async (a) => await (await fs.readFile(a)).text(),
+            writeObj: async (filename, a) => await fs.writeFile(filename, JSON.stringify(a)),
+            write: fs.writeFile,
+            delete: fs.delete
         }
     },
     shell: {

@@ -180,11 +180,13 @@
                         file.innerHTML += `<img src="file.png">`
                         file.setAttribute("ondblclick", `parent.loadApp('notepad', undefined, '${a.replace("\'", "\\\'")}')`)
                     }
+                    const newfpath = (' ' + a).substring(1)
                     file.oncontextmenu = (e) => {
                         e.stopPropagation(); 
                         const elemoffset = frameElement.getBoundingClientRect();
+                        console.log(newfpath)
                         parent.contextMenu(e, [
-                            ['', 'Delete', () => fs.deleteFile(a.replace("\'", "\\\'")).then(openFolder(fPath))]
+                            ['', 'Delete', () => parent.fs.deleteFile(newfpath).then(openFolder(currentPath))]
                         ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
                     }
                     file.innerHTML += "<p>" + htmlPath + "</p>"

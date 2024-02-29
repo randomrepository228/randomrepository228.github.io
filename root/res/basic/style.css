@@ -234,7 +234,7 @@ selecticon{
     height: 19px;
     width: 10px;
     background-image: url("../dropdown.png");
-    margin-left: -15px;
+    margin-right: 5px;
     margin-top: 2px;
     pointer-events: none;
 }
@@ -280,7 +280,7 @@ selecticon{
     z-index: 100;
     background-image: url(../dropdown.png);
     width: 10px;
-    margin-right: 6px;
+    margin-right: 5px;
     display: block;
 }
 button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
@@ -306,4 +306,16 @@ button:active::after, .select:active::after{
 .context-menu-option:hover{
     background-color: rgba(0,255,255,0.3);
     background: linear-gradient(180deg, rgba(0,142,255,0.3) 0%, rgba(0,151,255,0.5) 100%);
+}
+.tabbody{
+    background-color: rgb(240, 240, 240);
+}
+.tabbody footer{
+    background-color: transparent;
+}
+.sunken-panel{
+    border: 1px solid gray;
+}
+article[role=tabpanel]{
+    background-color: white;
 }

@@ -65,11 +65,12 @@
             <input type="text" id="program" placeholder="">
         </div>
         <footer>
-            <button onclick="parent.loadApp(program.value.split(' ')[0], undefined, program.value.split(' ').slice(1).join('|'))">OK</button>
-            <button onclick="parent.closeWindow(frameElement.parentElement.parentElement.parentElement)">Cancel</button>
+            <button onclick="parent.loadApp(program.value.split(' ')[0], undefined, program.value.split(' ').slice(1).join('|')); parent.closeWindow(frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'))">OK</button>
+            <button onclick="parent.closeWindow(frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'))">Cancel</button>
         </footer>
         <script>
-            parent.showWindow("./bin/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+            parent.showWindow("./bin/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'));
+            document.querySelector("input").focus()
         </script>
     </body>
 </html>

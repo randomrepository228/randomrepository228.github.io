@@ -1,0 +1,9 @@
+{
+    "width": 410, 
+    "height": 423, 
+    "title": "Taskbar and start menu properties",
+    "icon": "icon.png",
+    "window": true,
+    "xOnly": true,
+    "noResize": true
+}

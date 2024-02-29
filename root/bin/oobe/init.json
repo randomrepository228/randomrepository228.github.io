@@ -1,0 +1,8 @@
+{
+    "width": 600, 
+    "height": 350, 
+    "title": "Set Up Winda7",
+    "icon": "icon.png",
+    "window": true,
+    "noResize": true
+}

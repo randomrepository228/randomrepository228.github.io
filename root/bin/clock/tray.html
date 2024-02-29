@@ -13,16 +13,19 @@
             text-align: center;
             font-size: 12px;
             padding-top: 2px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
         }
-        @media (max-height: 27px){
+        @media (max-height: 30px){
             .date{
                 display: none;
             }
-            .time{
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 100%;
+        }
+        @media (max-height: 50px){
+            .weekday{
+                display: none;
             }
         }
     </style>

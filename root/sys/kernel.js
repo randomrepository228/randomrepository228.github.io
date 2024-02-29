@@ -1,6 +1,8 @@
 loop = {drag: false, top: false, left: false, right: false, bottom: false};
 prevx = 150;
 prevy = 150;
+let lastx;
+let lasty;
 let prevwidth;
 let prevheight;
 let origx;
@@ -10,6 +12,7 @@ let activetray;
 let isLoaded = false;
 let bootAnimationEnded = false;
 let init = false;
+let currentUser = "SYSTEM";
 class Winda7Window {
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
@@ -152,21 +155,21 @@ function desktopInit(){
         console.log("Winload not found. skipped")
     }
     if (move){
-        document.body.setAttribute("onmousemove", "move(event);"); 
-        document.body.setAttribute("ontouchmove", "move(event);");
+        addEventListener("mousemove", move); 
+        addEventListener("touchmove", move);
     }
     else{
         msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
     }
-    document.body.setAttribute("onmousedown", "if (!event.target.classList.contains('context-menu-part')) {contextMenuOff()}"); 
-    document.body.setAttribute("ontouchstart", "if (!event.target.classList.contains('context-menu-part')) {event.preventDefault(); contextMenuOff()}");
-    document.querySelector(".icons").setAttribute("onclick", "if (event.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()")
+    addEventListener("mousedown", (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}); 
+    addEventListener("touchstart", (e) => {if (!e.target.classList.contains('context-menu-part')) {e.preventDefault(); contextMenuOff()}});
+    addEventListener("click", (e) => {if (e.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()})
     document.querySelector(".explorer").style.display = "";
     document.oncontextmenu = (e) => e.preventDefault()
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240223!</h1>What's new?<br>Context menu!<br>You can now save files in Notepad!<br><a href=\"https://nekit270.ch/bcwd\">bcwd support!</a><br>Input box!")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240229!</h1>What's new?<br><ul><li>Tabs, Progress bars and fieldsets!</li><li>Added taskbar custom position!</li></ul>")
         localStorage.prevver = localStorage.ver
         return;
     }

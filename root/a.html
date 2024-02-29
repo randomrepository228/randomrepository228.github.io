@@ -1,27 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        #scrolll{
-            position: absolute;
+<style>body{background-color: black;}</style>
+<canvas id="circle" width="1000" height="206"></canvas>
+<script>
+    function sleep(ms){
+        return new Promise((res, rej) => {
+            setTimeout(() => {res()},ms)
+        })
+    }
+    let ctx = circle.getContext("2d")
+    ctx.strokeStyle = "white"
+    async function a(cr, offsetx, offsety, sides){
+        for(let i = 0; i < 627; i += 629 / sides){
+            const previ = 629 / sides;
+            await sleep(previ * 5)
+            ctx.beginPath();
+            ctx.moveTo(Math.round((Math.sin((i - previ) / cr) + 1) * cr + offsetx), Math.round((Math.cos((i - previ) / cr) + 1) * cr + offsety));
+            ctx.lineTo(Math.round((Math.sin(i / cr) + 1) * cr + offsetx), Math.round((Math.cos(i / cr) + 1) * cr + offsety));
+            ctx.stroke();
         }
-    </style>
-</head>
-<body>
-    <div id="scrolll">aaa</div>
-    <script>
-        function sleep(ms){
-            return new Promise((res, rej) => {
-                setTimeout(() => {res()},ms)
-            })
-        }
-        async function a(){
-            for(let i = 0; i < 101; i++){
-                await sleep(1)
-                scrolll.style.top = Math.sin(i / (100 * 0.6)) * 100 + "px"
-            }
-        }
-        a()
-    </script>
-</body>
-</html>
+    }
+    a(100, 3, 3, 100)
+</script>

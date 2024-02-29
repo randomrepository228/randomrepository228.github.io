@@ -10,18 +10,8 @@
     height: 16px;
     width: 16px;
 }
-.taskbar{
-    height: 27px;
-    bottom: 0;
-}
-.show-desktop{
-    height: 25px;
-}
 .taskbar-btn{
-    bottom: -5px;
-}
-bottomright{
-    bottom: 28px;
+    bottom: -3px;
 }
 :root{
     --taskbar-height: 28px;
