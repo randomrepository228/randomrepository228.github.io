@@ -3,3 +3,6 @@ Winda.app/
 Resources/imageres
 Resources/shell32
 Web/
+install.zip
+install_web.js
+*.c
