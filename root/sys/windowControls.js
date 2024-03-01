@@ -89,7 +89,6 @@ function windowResize(event, elem, ...actions){
         document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function move(e){
-    console.log("sus")
     if (!activewindow) return
     if (localStorage.noContentMove) return
     let activewindowcontent = activewindow.querySelector("text")

@@ -41,6 +41,26 @@ function dropHandler(e){
       });
     }
 }
+function dragTaskbar(){
+    function mouseMoveEvent(e){
+        if (e.clientY <= 50){
+            changeTaskbarDir("up")
+        }
+        else if (e.clientY >= innerHeight - 50){
+            changeTaskbarDir("bottom")
+        }
+        else if (e.clientX <= 50) {
+            changeTaskbarDir("left")
+        }
+        else if (e.clientX >= innerWidth - 50){
+            changeTaskbarDir("right")
+        }
+    }
+    addEventListener("mousemove", mouseMoveEvent)
+    addEventListener("touchmove", mouseMoveEvent)
+    addEventListener("mouseup", (e) => removeEventListener("mousemove", mouseMoveEvent), {once: true})
+    addEventListener("touchend", (e) => removeEventListener("touchmove", mouseMoveEvent), {once: true})
+}
 shell.innerHTML = `
 <div class="icons" id="icons" 
     oncontextmenu="contextMenu(event, [
@@ -51,6 +71,7 @@ shell.innerHTML = `
     ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
 <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
 <div class="taskbar"
+    onmousedown="dragTaskbar()"
     oncontextmenu="if (!event.target.classList.contains('startbutton')) contextMenu(event, [
         ['', 'Task manager', () => loadApp('taskmgr')],
         ['', 'Properties', () => loadApp('taskbarproperties')]
