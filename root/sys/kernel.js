@@ -169,7 +169,7 @@ function desktopInit(){
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240301!</h1>What's new?<br><ul><li>Now you can drag taskbar to change it's position!</li></ul>")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240309!</h1>What's new?<br><ul><li>New theme: Luna</li><li></li></ul>")
         localStorage.prevver = localStorage.ver
         return;
     }
