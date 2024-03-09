@@ -4,7 +4,6 @@ body {
 
 .calcPage {
     background: url(background.png);
-    background-size: 100% 100%;
     width: 100vw;
     height: calc(100vh - 20px);
     position: relative;

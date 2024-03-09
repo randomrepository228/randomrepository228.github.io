@@ -221,7 +221,7 @@ button::after{
     left: 0;
     box-sizing: border-box;
     border: 6px solid transparent;
-    border-image: url(../button/normal.png);
+    border-image: url(../basic-aero/button/normal.png);
     border-image-slice: 6 fill;
     z-index: -1;
 }
@@ -236,7 +236,7 @@ button::after{
     left: 0;
     box-sizing: border-box;
     border: 6px solid transparent;
-    border-image: url(../button/normal.png);
+    border-image: url(../basic-aero/button/normal.png);
     border-image-slice: 6 fill;
     z-index: 99;
 }
@@ -244,17 +244,17 @@ selecticon{
     z-index: 100;
 }
 button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
-    border-image-source: url(../button/disabled.png);
+    border-image-source: url(../basic-aero/button/disabled.png);
     opacity: 1;
 }
 button:hover::after, button[default]:hover::after, .select:hover::after{
-    border-image-source: url(../button/hover.png);
+    border-image-source: url(../basic-aero/button/hover.png);
 }
 button:active::after, button[default]:active::after, .select:active::after{
-    border-image-source: url(../button/pressed.png);
+    border-image-source: url(../basic-aero/button/pressed.png);
 }
 button[default]::after{
-    border-image-source: url(../button/default.png);
+    border-image-source: url(../basic-aero/button/default.png);
 }
 text{
     height: 100%;

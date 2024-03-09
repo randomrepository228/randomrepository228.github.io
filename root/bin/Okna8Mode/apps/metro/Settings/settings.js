@@ -10,14 +10,21 @@
         <table class="PcInfoTable">
             <tr>
                 <td>${LOCALE_app_settings[6]['PcInfo'][1]}</td>
-                <td>${localStorage.getItem('OKNA8_SYSTEM_pcname')}</td>
+                <td>${localStorage.getItem('OKNA8_pcname')}</td>
             </tr>
             <tr>
                 <td>${LOCALE_app_settings[6]['PcInfo'][3]}</td>
                 <td>${VERSION['ver']}, build ${VERSION['build']}</td>
             </tr>
         </table>
-        <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavailablefunction', '*')">${LOCALE_app_settings[6]['PcInfo'][2]}</button>
+        <button class="MetroButton2" style="margin-left:0" onclick="sendToTop('ModalMetroDialog|' + LOCALE_app_settings[6]['PcInfo'][4].replace('pcname', localStorage.getItem('OKNA8_pcname')))">${LOCALE_app_settings[6]['PcInfo'][2]}</button>
+        <script>
+            window.addEventListener('message', (event)=>{
+                if (event.data = 'PcNameChanged') {
+                    sendToTop('ModalMetroDialog|' + LOCALE_app_settings[6]['PcInfo'][5].replace('pcname', localStorage.getItem('OKNA8_pcname')))
+                }
+            })
+        </script>    
     `,
     LockScreen: /*html*/ `
         <h1>${LOCALE_app_settings[6]['LockScreen'][0]}</h1>
@@ -124,7 +131,7 @@
                     <h1>${LOCALE_app_settings[6]['LangNRegion'][5]}</h1>
                     <p>${LOCALE_app_settings[6]['LangNRegion'][6]}</p>
                     <div class="buttons">
-                        <button onclick="shutdown('l')">${LOCALE_app_settings[6]['LangNRegion'][7]}</button>
+                        <button onclick="shutdown('r')">${LOCALE_app_settings[6]['LangNRegion'][7]}</button>
                         <button onclick="CloseMetroDialog(__ID__)">${LOCALE_app_settings[6]['LangNRegion'][8]}</button>
                     </div>\`,'*')
                 $('.LangNRegion-languagesList').html('')
@@ -147,7 +154,7 @@
         <button class="MetroButton2" style="margin-left:0" onclick="window.parent.postMessage('unavailablefunction', '*')">${LOCALE_app_settings[6]['YourAccount'][4]}</button>
         <br><br>
         <h1>${LOCALE_app_settings[6]['YourAccount'][5]}</h1>
-        <img id="YourAccountUserAvatar" style="width:230px;height:230px;"><br>
+        <img id="YourAccountUserAvatar" style="width:230px;height:230px;object-fit:cover"><br>
         <script>
             if (localStorage.getItem('OKNA8_user_' + currentUser + '_avatar') != null) {
                 $("#YourAccountUserAvatar").attr('src', localStorage.getItem('OKNA8_user_' + currentUser + '_avatar'))
@@ -165,14 +172,6 @@
                 reader.onload = function (readerEvent) {
                     var base64String = readerEvent.target.result;
                     localStorage.setItem('OKNA8_user_' + currentUser + '_avatar', base64String)
-                    if (localStorage.getItem("OKNA8_user_" + currentUser + "_OnlineAccount") != null) {
-                        var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
-                        axios.post(OKNASERVERS.oknasite + '/ChangeAccountSettings', JSON.stringify({"login":AccountInfo.Email,"password":AccountInfo.Password,"settingKey":"Avatar","settingData":base64String}))
-                            .then(response => {})
-                            .catch(error=>{
-                                sendToTop("eval>ModalMetroDialog('<h1>Ошибка синхронизации</h1><p>Произошла ошибка при отправке данных на сервер.</p><div class=\\\\'buttons\\\\'><button onclick=\\\\'CloseMetroDialog(__ID__)\\\\'>Close</button></div>')")
-                            })
-                    }
                     openRightPage('YourAccount')
                 }
 
@@ -194,14 +193,6 @@
 
             function removeAvatar() {
                 localStorage.removeItem('OKNA8_user_' + currentUser + '_avatar')
-                if (localStorage.getItem("OKNA8_user_" + currentUser + "_OnlineAccount") != null) {
-                    var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
-                    axios.post(OKNASERVERS.oknasite + '/ChangeAccountSettings', JSON.stringify({"login":AccountInfo.Email,"password":AccountInfo.Password,"settingKey":"Avatar","settingData":"none"}))
-                        .then(response => {})
-                        .catch(error=>{
-                            sendToTop("eval>ModalMetroDialog('<h1>Ошибка синхронизации</h1><p>Произошла ошибка при отправке данных на сервер.</p><div class=\\\\'buttons\\\\'><button onclick=\\\\'CloseMetroDialog(__ID__)\\\\'>Close</button></div>')")
-                        })
-                }
                 openRightPage('YourAccount')
             }
         </script>

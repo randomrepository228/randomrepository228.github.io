@@ -20,6 +20,10 @@
     position: relative;
 }
 
+.nav > .backnext > *::after{
+    display: none;
+}
+
 .nav > .backnext > .back {
     min-width: 30px;
     height: 30px;

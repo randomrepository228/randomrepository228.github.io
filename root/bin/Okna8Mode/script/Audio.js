@@ -1,5 +1,5 @@
 function PlaySound (path) {
-    var path = '../../../audio/' + path
+    var path = res + 'audio/' + path
     var audioElement = document.createElement('audio')
     audioElement.src = path
     audioElement.autoplay = true

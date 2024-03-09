@@ -6,7 +6,9 @@ function updateAppsContainer() {
     var AppsList = []
 
     for (let i = 1; i < LOCALE_searchdata.length; i++) {
-        AppsList.push([LOCALE_appsnames[i], LOCALE_searchdata[i][0]])
+        if (LOCALE_searchdata[i] != null) {
+            AppsList.push([LOCALE_appsnames[i], LOCALE_searchdata[i][0]])
+        }
     }
 
     var SortedAppsList = AppsList.sort()

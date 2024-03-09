@@ -1,5 +1,65 @@
 // ToDo: сделать блокировку символов ` ~ ! @ " № # $ ; % ^ : & ? * ( ) { } [ ] ' / | \ < > + =
 
+var syncSuccess = null
+
+var OnlineAccountDialogStyles = /*css*/ `
+    .AccountInfo {
+        width: 100%;
+        height: 70px;
+        padding-top: 16px;
+        position: relative;
+    }
+
+    .AccountInfo img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .AccountInfo h1 {
+        position: absolute;
+        left: 50px;
+        top: 0;
+        margin: 8px 0px;
+        color: white;
+        font-size: 28px;
+        font-weight: 100;
+    }
+
+    .AccountInfo p {
+        position: absolute;
+        left: 50px;
+        margin: 8px 0px;
+        color: white;
+        font-size: 16px;
+        top: 30px;
+    }
+
+    .InputsContainer {
+        width: 410px;
+    }
+
+    .InputsContainer > div {
+        width: 410px;
+        height: 50px;
+        position: relative;
+    }
+
+    .InputsContainer > div > p {
+        width: 140px;
+        position: absolute;
+        left: 0; top: 0;
+        color: white;
+        margin: 12px 0px;
+    }
+
+    .InputsContainer > div > input {
+        left: 150px;
+        top: 8px;
+        position: absolute;
+        width: 260px;
+    }
+`
+
 var OnlineAccount = {
     disable: () => {
         var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
@@ -11,7 +71,7 @@ var OnlineAccount = {
                     Сначала нам нужно проверить ваш текущий пароль.
                 </p>
                 <div class="AccountInfo">
-                    <img src="../../../img/avatar.png">
+                    <img src="img/avatar.png">
                     <h1>${AccountInfo.FirstName} ${AccountInfo.LastName}</h1>
                     <p>${AccountInfo.Email}</p>
                 </div>
@@ -23,61 +83,7 @@ var OnlineAccount = {
                 </div>
                 <p class="errormessage" style="color: yellow"></p>
                 <style>
-                    .AccountInfo {
-                        width: 100%;
-                        height: 70px;
-                        padding-top: 16px;
-                        position: relative;
-                    }
-
-                    .AccountInfo img {
-                        width: 44px;
-                        height: 44px;
-                    }
-
-                    .AccountInfo h1 {
-                        position: absolute;
-                        left: 50px;
-                        top: 0;
-                        margin: 8px 0px;
-                        color: white;
-                        font-size: 28px;
-                        font-weight: 100;
-                    }
-
-                    .AccountInfo p {
-                        position: absolute;
-                        left: 50px;
-                        margin: 8px 0px;
-                        color: white;
-                        font-size: 16px;
-                        top: 30px;
-                    }
-
-                    .InputsContainer {
-                        width: 410px;
-                    }
-
-                    .InputsContainer > div {
-                        width: 410px;
-                        height: 50px;
-                        position: relative;
-                    }
-
-                    .InputsContainer > div > p {
-                        width: 140px;
-                        position: absolute;
-                        left: 0; top: 0;
-                        color: white;
-                        margin: 12px 0px;
-                    }
-
-                    .InputsContainer > div > input {
-                        left: 150px;
-                        top: 8px;
-                        position: absolute;
-                        width: 260px;
-                    }
+                    ${OnlineAccountDialogStyles}
                 </style>
                 <div class="buttons">
                     <button onclick="CheckPasswordAndDisable()">Далее</button>
@@ -111,19 +117,25 @@ var OnlineAccount = {
                     if ($(".DisableOnlineAccountInputPassword").val() != "") {
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3').css('display', 'block')
-                        var response = await axios.get('${OKNASERVERS.oknasite}/LoginAccount:' + JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount')).Email + ':' + $(".DisableOnlineAccountInputPassword").val());
-                        if (typeof response.data == 'object') {
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
-                        } else if (response.data == 'error:password_incorrect') {
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Неверный пароль. <a>Забыли пароль?</a>')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
-                        } else {
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Неопознанная ошибка.')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
-                        }
+                        axios.post(VERSION.server + '/TryLogin', JSON.stringify({Login: JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount')).Email, Password: $(".DisableOnlineAccountInputPassword").val()}))
+                            .then(response=>{
+                                if (typeof response.data == "object") {
+                                    var AccountInfo = response.data.AccountInfo
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
+                                } else {
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Неопознанная ошибка.')
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                                }
+                                console.log(typeof response.data)
+                                console.log(response.data)
+                            })
+                            .catch(()=>{
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Неопознанная ошибка.')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                            })
                     }
                 }
 
@@ -145,41 +157,12 @@ var OnlineAccount = {
             <div class="page2 page" style="display:none;height:100%;width:100%">
                 <h1>Переключение на онлайн-учётную запись</h1>
                 <div class="AccountInfo">
-                    <img src="../../../img/avatar.png">
+                    <img src="img/avatar.png">
                     <h1></h1>
                     <p></p>
                 </div>
                 <style>
-                    .AccountInfo {
-                        width: 100%;
-                        height: 70px;
-                        padding-top: 16px;
-                        position: relative;
-                    }
-
-                    .AccountInfo img {
-                        width: 104px;
-                        height: 104px;
-                    }
-
-                    .AccountInfo h1 {
-                        position: absolute;
-                        left: 120px;
-                        top: 0;
-                        margin: 8px 0px;
-                        color: white;
-                        font-size: 28px;
-                        font-weight: 100;
-                    }
-
-                    .AccountInfo p {
-                        position: absolute;
-                        left: 120px;
-                        margin: 8px 0px;
-                        color: white;
-                        font-size: 16px;
-                        top: 30px;
-                    }
+                    ${OnlineAccountDialogStyles}
                 </style>
                 <div class="buttons">
                     <button onclick="">Переключиться</button>
@@ -224,8 +207,45 @@ var OnlineAccount = {
                     Подождите
                 </h1>
             </div>
+            <div class="page5 page" style="height:100%;width:100%;display:none">
+                <h1>Регистрация учётной записи Okna</h1>
+                <p>
+                    На ваш адрес <span id="RegisterOnlineAccountEmail"></span> отправлен код подтверждения. Введите его здесь.<br><br>
+                </p>
+                <input class="RegisterOnlineAccountInputVerifyCode" placeholder="Проверочный код" type="text"><br><br>
+                <p class="errormessage" style="color: yellow"></p>
+                <div class="buttons">
+                    <button onclick="CheckVerifyCodeAndRegister()">Далее</button>
+                    <button onclick="CloseMetroDialog(__ID__)">Отмена</button>
+                </div>
+            </div>
             
             <script>
+                async function TryLogin(Login, Password) {
+                    axios.post(VERSION.server + '/TryLogin', JSON.stringify({Login: Login, Password: Password}))
+                        .then(response=>{
+                            if (typeof response.data == "object") {
+                                var AccountInfo = response.data.AccountInfo
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > h1').html(AccountInfo.FirstName + " " + AccountInfo.LastName)
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > p').html(AccountInfo.Email + "<br><br>Почти готово. Старая учётная запись будет изменена на онлайн-учётную запись. Все ваши файлы на этом компьютере останутся на месте.")
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .buttons > button:nth-child(1)').attr('onclick', 'UseOnlineInsteadOfLocal({"Email": "' + AccountInfo.Email + '", "Password": "' + Password + '", "FirstName": "' + AccountInfo.FirstName + '", "LastName": "' + AccountInfo.LastName + '"})')
+                            } else {
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Неверный пароль.')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                            }
+                            console.log(typeof response.data)
+                            console.log(response.data)
+                        })
+                        .catch(()=>{
+                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Учётной записи не существует.')
+                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                        })
+                }
+
                 async function CheckEmailAndLogin() {
                     if ($(".ConnectOnlineAccountInputEmail").val() != "" && $(".ConnectOnlineAccountInputPassword").val() != "") {
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
@@ -240,23 +260,7 @@ var OnlineAccount = {
                             }
                         }
                         if (!EmailAlreadyUsed) {
-                            var response = await axios.get('${OKNASERVERS.oknasite}/LoginAccount:' + $(".ConnectOnlineAccountInputEmail").val() + ':' + $(".ConnectOnlineAccountInputPassword").val());
-                            if (typeof response.data == 'object') {
-                                var AccountInfo = response.data
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > h1').html(AccountInfo.FirstName + " " + AccountInfo.LastName)
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > p').html(AccountInfo.Email + "<br><br>Почти готово. Старая учётная запись будет изменена на онлайн-учётную запись. Все ваши файлы на этом компьютере останутся на месте.")
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .buttons > button:nth-child(1)').attr('onclick', 'UseOnlineInsteadOfLocal({"Email": "' + AccountInfo.Email + '", "Password": "' + $(".ConnectOnlineAccountInputPassword").val() + '", "FirstName": "' + AccountInfo.FirstName + '", "LastName": "' + AccountInfo.LastName + '"})')
-                            } else if (response.data == "error:password_incorrect") {
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Неверный пароль.')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
-                            } else {
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Учётной записи не существует.')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
-                            }
+                            TryLogin($(".ConnectOnlineAccountInputEmail").val(), $(".ConnectOnlineAccountInputPassword").val())
                         } else {
                             $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1 > .errormessage').html('Этот электронный адрес используется в другой учётной записи.')
                             $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
@@ -267,27 +271,74 @@ var OnlineAccount = {
 
                 async function CheckAccountInfoAndRegister() {
                     if ($(".RegisterOnlineAccountInputEmail").val() != "" &&
-                    $(".RegisterOnlineAccountInputPassword").val() != "" &&
-                    $(".RegisterOnlineAccountInputFirstName").val() != "" &&
-                    $(".RegisterOnlineAccountInputLastName").val() != "") {
+                        $(".RegisterOnlineAccountInputPassword").val() != "" &&
+                        $(".RegisterOnlineAccountInputFirstName").val() != "" &&
+                        $(".RegisterOnlineAccountInputLastName").val() != "" &&
+                        /^[a-zA-Z0-9-_-_@_.]*$/.test($(".RegisterOnlineAccountInputEmail").val()) &&
+                        /^[a-zA-Zа-яА-Я0-9\s]+$/.test($(".RegisterOnlineAccountInputFirstName").val()) &&
+                        /^[a-zA-Zа-яА-Я0-9\s]+$/.test($(".RegisterOnlineAccountInputLastName").val()) &&
+                        /^[a-zA-Z0-9-_-_@$!%*?&_.]{8,20}$/.test($(".RegisterOnlineAccountInputPassword").val())
+                    ) {
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page4').css('display', 'block')
-                        var response = await axios.get('${OKNASERVERS.oknasite}/RegisterAccount:' + $(".RegisterOnlineAccountInputEmail").val() + ':' + $(".RegisterOnlineAccountInputPassword").val() + ':' + $(".RegisterOnlineAccountInputFirstName").val() + ':' + $(".RegisterOnlineAccountInputLastName").val());
-                        if (response.data == "success") {
-                            var response = await axios.get('${OKNASERVERS.oknasite}/LoginAccount:' + $(".RegisterOnlineAccountInputEmail").val() + ':' + $(".RegisterOnlineAccountInputPassword").val());
-                            if (typeof response.data == 'object') {
-                                var AccountInfo = response.data
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > h1').html(AccountInfo.FirstName + " " + AccountInfo.LastName)
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > p').html(AccountInfo.Email + "<br><br>Почти готово. Старая учётная запись будет изменена на онлайн-учётную запись. Все ваши файлы на этом компьютере останутся на месте.")
-                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .buttons > button:nth-child(1)').attr('onclick', 'UseOnlineInsteadOfLocal({"Email": "' + AccountInfo.Email + '", "Password": "' + $(".RegisterOnlineAccountInputPassword").val() + '", "FirstName": "' + AccountInfo.FirstName + '", "LastName": "' + AccountInfo.LastName + '"})')
-                            }
-                        } else if (response.data == 'error:account_already_exist') {
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3 > .errormessage').html('Учётная запись с таким адресом электронной почты уже существует.')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3').css('display', 'block')
-                        }
+
+                        axios.post(VERSION.server + '/RegisterAccount', JSON.stringify({Login: $(".RegisterOnlineAccountInputEmail").val(), Password: $(".RegisterOnlineAccountInputPassword").val(), FirstName: $(".RegisterOnlineAccountInputFirstName").val(), LastName: $(".RegisterOnlineAccountInputLastName").val()}))
+                                .then(response=>{
+                                    if (response.data == 'success') {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5').css('display', 'block')
+                                        //TryLogin($(".RegisterOnlineAccountInputEmail").val(), $(".RegisterOnlineAccountInputPassword").val())
+                                    } else {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3 > .errormessage').html('Неопознанная ошибка.')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3').css('display', 'block')
+                                    }
+                                })
+                                .catch(err=>{
+                                    console.log(err.response.data)
+                                    if (err.response.data == 'error:account_already_exist') {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3 > .errormessage').html('Учётная запись с таким адресом электронной почты уже существует.')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3').css('display', 'block')
+                                    } else {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3 > .errormessage').html('Неопознанная ошибка.')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3').css('display', 'block')
+                                    }
+                                })
+                    } else {
+                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3 > .errormessage').html('Не все поля заполнены корректно.')
+                    }
+                }
+
+                async function CheckVerifyCodeAndRegister() {
+                    if ($(".RegisterOnlineAccountInputVerifyCode").val() != "") {
+                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page4').css('display', 'block')
+
+                        axios.post(VERSION.server + '/VerifyAccount', JSON.stringify({Login: $(".RegisterOnlineAccountInputEmail").val(), Code: $(".RegisterOnlineAccountInputVerifyCode").val()}))
+                                .then(response=>{
+                                    if (response.data == 'success') {
+                                        console.log('ебать оно работает')
+                                        TryLogin($(".RegisterOnlineAccountInputEmail").val(), $(".RegisterOnlineAccountInputPassword").val())
+                                    } else {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5 > .errormessage').html('Неопознанная ошибка.')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5').css('display', 'block')
+                                    }
+                                })
+                                .catch(err=>{
+                                    console.log(err.response.data)
+                                    if (err.response.data == 'error:account_already_exist') {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5 > .errormessage').html('Учётная запись с таким адресом электронной почты уже существует.')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5').css('display', 'block')
+                                    } else {
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5 > .errormessage').html('Неопознанная ошибка.')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                        $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page5').css('display', 'block')
+                                    }
+                                })
                     } else {
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3 > .errormessage').html('Необходимо заполнить все поля.')
                     }
@@ -312,66 +363,12 @@ var OnlineAccount = {
             <div class="page2 page" style="display:none;height:100%;width:100%">
                 <h1>Изменение пароля учётной записи</h1>
                 <div class="AccountInfo">
-                    <img src="../../../img/avatar.png">
+                    <img src="img/avatar.png">
                     <h1></h1>
                     <p></p>
                 </div>
                 <style>
-                    .AccountInfo {
-                        width: 100%;
-                        height: 70px;
-                        padding-top: 16px;
-                        position: relative;
-                    }
-
-                    .AccountInfo img {
-                        width: 104px;
-                        height: 104px;
-                    }
-
-                    .AccountInfo h1 {
-                        position: absolute;
-                        left: 120px;
-                        top: 0;
-                        margin: 8px 0px;
-                        color: white;
-                        font-size: 28px;
-                        font-weight: 100;
-                    }
-
-                    .AccountInfo p {
-                        position: absolute;
-                        left: 120px;
-                        margin: 8px 0px;
-                        color: white;
-                        font-size: 16px;
-                        top: 30px;
-                    }
-
-                    .InputsContainer {
-                        width: 410px;
-                    }
-
-                    .InputsContainer > div {
-                        width: 410px;
-                        height: 50px;
-                        position: relative;
-                    }
-
-                    .InputsContainer > div > p {
-                        width: 140px;
-                        position: absolute;
-                        left: 0; top: 0;
-                        color: white;
-                        margin: 12px 0px;
-                    }
-
-                    .InputsContainer > div > input {
-                        left: 150px;
-                        top: 8px;
-                        position: absolute;
-                        width: 260px;
-                    }
+                    ${OnlineAccountDialogStyles}
                 </style>
                 
                 <div class="InputsContainer" style="margin-top: 60px">
@@ -409,31 +406,53 @@ var OnlineAccount = {
                     if ($(".ChangepassOnlineAccountInputPassword").val() != "") {
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
                         $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page3').css('display', 'block')
-                        var response = await axios.get('${OKNASERVERS.oknasite}/LoginAccount:' + JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount')).Email + ':' + $(".ChangepassOnlineAccountInputPassword").val());
-                        if (typeof response.data == 'object') {
-                            var AccountInfo = response.data
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > h1').html(AccountInfo.FirstName + " " + AccountInfo.LastName)
-                            $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > p').html(AccountInfo.Email)
-                        }
+                        axios.post(VERSION.server + '/TryLogin', JSON.stringify({Login: JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount')).Email, Password: $(".ChangepassOnlineAccountInputPassword").val()}))
+                            .then(response=>{
+                                if (typeof response.data == "object") {
+                                    var AccountInfo = response.data.AccountInfo
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2').css('display', 'block')
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > h1').html(AccountInfo.FirstName + " " + AccountInfo.LastName)
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page2 > .AccountInfo > p').html(AccountInfo.Email)
+                                } else {
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                    $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                                }
+                                console.log(typeof response.data)
+                                console.log(response.data)
+                            })
+                            .catch(()=>{
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                            })
                     }
                 }
 
                 async function CheckNewPasswordsAndChange() {
                     if ($(".ChangepassOnlineAccountInputPasswordNewPassword1").val() != "" && $(".ChangepassOnlineAccountInputPasswordNewPassword1").val() == $(".ChangepassOnlineAccountInputPasswordNewPassword2").val()) {
-                        var response = await axios.get('${OKNASERVERS.oknasite}/ChangeAccountPassword:' + JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount')).Email + ':' + $(".ChangepassOnlineAccountInputPassword").val() + ':' + $(".ChangepassOnlineAccountInputPasswordNewPassword1").val());
-                        console.log(response.data)
-                        
-                        if (response.data == "success") {
-                            var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
-                            AccountInfo.Password = $(".ChangepassOnlineAccountInputPasswordNewPassword1").val()
-                            localStorage.setItem('OKNA8_user_' + currentUser + '_OnlineAccount', JSON.stringify(AccountInfo))
-                            OnlineAccount.sync()
-                            CloseMetroDialog(__ID__)
-                        } else {
-                            console.log('Error')
-                        }
+                        axios
+                            .post(VERSION.server + '/ChangeAccountPassword',
+                                JSON.stringify({
+                                    Login: JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount')).Email,
+                                    CurrentPassword: $(".ChangepassOnlineAccountInputPassword").val(),
+                                    NewPassword: $(".ChangepassOnlineAccountInputPasswordNewPassword1").val()
+                                })
+                            )
+                            .then(response=>{
+                                if (typeof response.data == "object") {
+                                    var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
+                                    AccountInfo.Password = $(".ChangepassOnlineAccountInputPasswordNewPassword1").val()
+                                    localStorage.setItem('OKNA8_user_' + currentUser + '_OnlineAccount', JSON.stringify(AccountInfo))
+                                    OnlineAccount.sync()
+                                    CloseMetroDialog(__ID__)
+                                } else {
+                                    console.log('Error')
+                                }
+                            })
+                            .catch(()=>{
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page').css('display', 'none')
+                                $('#ModalMetroDialog__ID__ > .metrodialog > .cont > .page1').css('display', 'block')
+                            })
                     }
                 }
 
@@ -456,21 +475,16 @@ var OnlineAccount = {
             log('Syncing with Online...')
             var AccountInfo = JSON.parse(localStorage.getItem('OKNA8_user_' + currentUser + '_OnlineAccount'))
             axios
-                .post(OKNASERVERS.oknasite + '/ChangeAccountSettings', JSON.stringify({ login: AccountInfo.Email, password: AccountInfo.Password, settingKey: 'Avatar' }))
+                .post(VERSION.server + '/TryLogin', JSON.stringify({ Login: AccountInfo.Email, Password: AccountInfo.Password }))
                 .then((response) => {
-                    if (response.data.data != 'none') {
-                        localStorage.setItem('OKNA8_user_' + currentUser + '_avatar', response.data.data)
-                        $('#start_avatar > img').attr('src', localStorage.getItem('OKNA8_user_' + currentUser + '_avatar'))
-                        log('Avatar synced.')
-                    } else {
-                        localStorage.removeItem('OKNA8_user_' + currentUser + '_avatar')
-                        $('#start_avatar > img').attr('src', 'img/avatar.png')
-                        log('Avatar not exist on server, avatar syncing cancel.')
-                    }
+                    syncSuccess = true
                 })
                 .catch((error) => {
                     log('Syncing with Online failed.')
-                    ModalMetroDialog('<h1>Ошибка синхронизации</h1><p>Произошла ошибка при получении данных с сервера.</p><div class="buttons"><button onclick="CloseMetroDialog(__ID__)">Close</button></div>')
+                    if (syncSuccess != false) {
+                        ModalMetroDialog('<h1>Ошибка синхронизации</h1><p>Произошла ошибка при получении данных с сервера.</p><div class="buttons"><button onclick="CloseMetroDialog(__ID__)">Close</button></div>')
+                    }
+                    syncSuccess = false
                 })
         }
     },

@@ -39,11 +39,7 @@ $(document).ready(()=>{
     document.getElementById('StartbuttonCharmsbar').contentWindow.postMessage('LocalizedLabel|' + LOCALE_charmsbar[3], '*')
 
     // Other
-    if (VERSION.additionalFeatures.IsWebVersion) {
-        $('.build').html(VERSION['ver'])
-    } else {
-        $('.build').html(VERSION['productName'] + ' ' + VERSION['ver'] + '<br>Build ' + VERSION['build'])
-    }
+    //$('.build').html('Okna8 ' + VERSION['ver'] + '<br>Build ' + VERSION['build'])
     $('.desktop-taskbar-window-lang > h5').html(LOCALE_desktop[6])
     $('.desktop-taskbar-window-lang > p').html(LOCALE_desktop[7])
 })

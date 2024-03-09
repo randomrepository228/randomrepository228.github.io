@@ -66,7 +66,9 @@ var LOCALE_app_settings = [
             'Компьютер',
             'Имя компьютера',
             'Переименование компьютера',
-            'Версия Okna8'
+            'Версия Okna8',
+            '<h1>Переименуйте компьютер</h1><p>Можно использовать сочетание букв, дефисов и цифр. <br><br>Текущее имя компьютера: pcname</p><input class="MetroDialogPcRenameInput" type="text"><div class="buttons"><button onclick="localStorage.setItem(\'OKNA8_pcname\', $(\'.MetroDialogPcRenameInput\').val());$(\'#metrowindow_Settings iframe\')[0].contentWindow.postMessage(\'PcNameChanged\', \'*\');CloseMetroDialog(__ID__)">Далее</button><button onclick="CloseMetroDialog(__ID__)">Отмена</button></div>',
+            '<h1>Переименуйте компьютер</h1><p>После перезапуска имя компьютера изменится на: pcname</p><div class="buttons"><button onclick="shutdown(\'r\');CloseMetroDialog(__ID__)">Перезагрузить сейчас</button><button onclick="CloseMetroDialog(__ID__)">Перезагрузить позже</button></div>'
         ],
         'LockScreen':[
             'Просмотр экрана блокировки'
@@ -90,7 +92,8 @@ var LOCALE_app_settings = [
             'Отключить',
             'Изменить имя учётной записи',
             'Аватар',
-            'Обзор'
+            'Обзор',
+            'Удалить',
         ],
         'WindowsUpdate':[
             'Центр обновления Windows',

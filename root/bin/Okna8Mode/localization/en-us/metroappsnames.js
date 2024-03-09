@@ -6,7 +6,7 @@ var LOCALE_appsnames = [
     "Music",
     "Internet Explorer",
     "Desktop",
-    "Changelog",
+    "News",
     "Registry editor",
     "Store",
     "People",
@@ -17,5 +17,10 @@ var LOCALE_appsnames = [
     "Money",
     "Photos",
     "Run",
-    "Explorer"
+    "Explorer",
+    "Calculator",
+    "Task manager",
+    "Control panel",
+    "Notepad",
+    "Internet Explorer",
 ]

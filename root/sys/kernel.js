@@ -154,7 +154,7 @@ function desktopInit(){
     catch(e){
         console.log("Winload not found. skipped")
     }
-    if (move){
+    if (window.move){
         addEventListener("mousemove", move); 
         addEventListener("touchmove", move);
     }

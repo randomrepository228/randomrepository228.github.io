@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <link rel="stylesheet" href="../../../style/fonts.css" />
+        <link rel="stylesheet" href="../../../style/LiveTile.css" />
+        <link rel="stylesheet" href="LiveTile.css" />
+        <script src="../../../script/jquery.js"></script>
+    </head>
+    <body>
+        <div class="GenericLiveTile">
+            <h2>24</h2>
+            <h3>четверг</h3>
+            <h4>Календарь</h4>
+            <img src="LiveTileIcon.png" />
+        </div>
+        <script src="../../../script/WindowsCommunication.js"></script>
+        <script>
+            addScript('../../../localization/' + localStorage.getItem('OKNA8_locale') + '/apps/Calendar.js').then(() => {
+                addScript('LiveTile.js')
+            })
+        </script>
+    </body>
+</html>

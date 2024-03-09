@@ -7,7 +7,6 @@ function updLockscreen() {
 function lock() {
     $('.lock').css('display', 'block')
     systemIsLocked = true
-    hide_all_start_windows()
 }
 
 var CheckPassword
@@ -15,12 +14,15 @@ var LoginUser
 var ExitToSelectuser
 var LogonAnim
 
+var SkipOOBE
+var UserToPrepare
+
 function DisplayLockscreen() {
-    $(".welcome").addClass("selectuser")
-    $(".welcome").removeClass("nocursor")
-    $(".welcome").removeClass("welcome")
-    $(".selectuser").attr("style", "")
-    $(".lock").attr("style", "")
+    $('.welcome').addClass('selectuser')
+    $('.welcome').removeClass('nocursor')
+    $('.welcome').removeClass('welcome')
+    $('.selectuser').attr('style', '')
+    $('.lock').attr('style', '')
     localStorage.removeItem('OKNA8_Crashes')
     sessionStorage.clear()
     updLockscreen()
@@ -35,10 +37,9 @@ function DisplayLockscreen() {
     })
 
     var Users = localStorage.getItem('OKNA8_users')
-    if (Users == null || Users == undefined || Users == '') {
-        window.location.href = '../../../pages/SETUP/OOBE/oobe.html'
-    }
     Users = Users.split('|')
+
+    $('.selectuser .userslist').html('')
 
     for (let i = 0; i < Users.length; i++) {
         var UserName = localStorage.getItem('OKNA8_user_' + Users[i] + '_username')
@@ -54,7 +55,6 @@ function DisplayLockscreen() {
         } else {
             AvatarPath = 'img/avatar.png'
         }
-        $('.selectuser .userslist').html('')
         $('.selectuser .userslist').append(`
             <div class="usercontainer" id="usercontainer_${Users[i]}" onclick="LoginUser('${Users[i]}')">
                 <div class="useravatar" style="background-image: url(${AvatarPath})"></div>
@@ -78,32 +78,13 @@ function DisplayLockscreen() {
         $('.welcome').addClass('nocursor')
         $('.welcome').removeClass('selectuser')
         $('.welcome').removeClass('login')
-        LogOn(user)
-        /*setTimeout(() => {
-            if (localStorage.getItem('OKNA8_user_' + currentUser + '_GoToDesktopInsteadOfStartscreen') != 'true') {
-                $('.tilesContainer').css('animation', 'none')
-                $('.tilesContainer').css('#startscreen_Start-label, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton', 'none')
-                $('#startscreen_Start-label, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('opacity', '0')
-                $('#startscreen_Start-label, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('animation', 'none')
-                setTimeout(() => {
-                    $('#startscreen_Start-label, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('animation', 'fadeani 2s 0.1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards')
-                    StartScreenAnimation()
-                    $('.welcome .usercontainer').css('margin-left', '-100px')
-                }, 50)
-            } else {
-                $('.startScreen').css('display', 'none')
-            }
-            $('.welcome .usercontainer').css('transition', 'cubic-bezier(0.1, 0.9, 0.2, 1) 500ms')
-            $('.welcome').css('opacity', '0')
-            systemIsLocked = false
-            $('.StartScreenBackground').css('display', 'none')
-            setTimeout(() => {
-                $('.StartScreenBackground').css('display', 'block')
-            }, 100)
-            setTimeout(() => {
-                $('.welcome').css('display', 'none')
-            }, 600)
-        }, 2000)*/
+        if (localStorage.getItem('OKNA8_user_' + user + '_FirstLogonCompleted') == 'true') {
+            LogOn(user)
+        } else {
+            SkipOOBE = true
+            UserToPrepare = user
+            addScript('apps/classic/oobe/oobeldr.js')
+        }
     }
 
     LoginUser = (user) => {
@@ -166,94 +147,86 @@ function DisplayLockscreen() {
         }, 100)
     }
 
-    if (sessionStorage.getItem('OKNA8_LoginToUserAfterPrepare') != null) {
-        var user = sessionStorage.getItem('OKNA8_LoginToUserAfterPrepare')
-        sessionStorage.removeItem('OKNA8_LoginToUserAfterPrepare')
+    if (localStorage.getItem('OKNA8_LoginToUserAfterPrepare') != null) {
         $('.lock').css('top', '-100vh')
-        LogOn(user)
         $('.welcome').css('display', 'none')
         systemIsLocked = false
+        currentUser = localStorage.getItem('OKNA8_LoginToUserAfterPrepare')
         $('.selectuser').css('display', 'none')
-        $('.HTMLpreloader').css('transition', 'none')
-        $('.HTMLpreloader').css('background-color', 'rgb(' + localStorage.getItem('OKNA8_user_' + user + '_color_background') + ')')
-        setTimeout(() => {
-            $('.HTMLpreloader').css('transition', '1s cubic-bezier(0.1, 0.9, 0.2, 1)')
-            $('.HTMLpreloader').css('opacity', '0')
-            setTimeout(() => {
-                $('.HTMLpreloader').css('display', 'none')
-            }, 250)
-        }, 1)
+        localStorage.removeItem('OKNA8_LoginToUserAfterPrepare')
     } else {
         setTimeout(() => {
             $('.HTMLpreloader').css('opacity', '0')
             setTimeout(() => {
                 $('.HTMLpreloader').css('display', 'none')
             }, 250)
-        }, 750)
+        }, 1000)
     }
 
-    if (localStorage.getItem('OKNA8_users').split('|').length == 1 && localStorage.getItem('OKNA8_user_' + localStorage.getItem('OKNA8_users') + '_password') == null && localStorage.getItem('OKNA8_user_' + localStorage.getItem('OKNA8_users') + '_OnlineAccount') == null) {
-        if (sessionStorage.getItem('OKNA8_DontSkipLockscreen') != 'true') {
-            sessionStorage.removeItem('OKNA8_DontSkipLockscreen')
-            var user = localStorage.getItem('OKNA8_users')
-            $('.lock').css('top', '-100vh')
-            $('.usercontainer').css('opacity', '0')
+    if (localStorage.getItem('OKNA8_users').split('|').length == 1 && localStorage.getItem('OKNA8_user_' + localStorage.getItem('OKNA8_users') + '_password') == null && localStorage.getItem('OKNA8_user_' + localStorage.getItem('OKNA8_users') + '_OnlineAccount') == null && localStorage.getItem('OKNA8_DontSkipLockscreen') != 'true') {
+        localStorage.removeItem('OKNA8_DontSkipLockscreen')
+        var user = localStorage.getItem('OKNA8_users')
+        $('.lock').css('top', '-100vh')
+        $('.usercontainer').css('opacity', '0')
+        setTimeout(() => {
+            $('.HTMLpreloader').css('opacity', '0')
             setTimeout(() => {
-                $('.HTMLpreloader').css('opacity', '0')
-                setTimeout(() => {
-                    $('.HTMLpreloader').css('display', 'none')
-                }, 250)
-            }, 2000)
-            setTimeout(() => {
-                $('.usercontainer').css('opacity', '1')
-                systemIsLocked = false
-                LoginUser(user)
-            }, 800)
-        }
+                $('.HTMLpreloader').css('display', 'none')
+            }, 250)
+        }, 2000)
+        setTimeout(() => {
+            $('.usercontainer').css('opacity', '1')
+            systemIsLocked = false
+            LoginUser(user)
+        }, 800)
     }
 }
 
-$(document).ready(DisplayLockscreen)
-
 function shutdown(type) {
-    $('#shutdownscreen').css('display', 'block')
+    $('.HTMLpreloader').css('opacity', '0')
     setTimeout(() => {
-        if (type == 's') {
-            $('.removeAfterLogoff').remove()
-            DisplayLockscreen()
+        $('.HTMLpreloader').css('display', 'block')
+        setTimeout(() => {
+            $('.HTMLpreloader').css('opacity', '1')
             setTimeout(() => {
-                window.location.reload()
-            }, 1000)
-        }
-        if (type == 'r') {
-            $('.removeAfterLogoff').remove()
-            DisplayLockscreen()
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000)
-        }
-        if (type == 'l') {
-            $('.removeAfterLogoff').remove()
-            DisplayLockscreen()
-            setTimeout(() => {
-                $('#shutdownscreen').css('display', 'none')
-            }, 1000)
-        }
-        if (type == 'w') {
-            $('.removeAfterLogoff').remove()
-            DisplayLockscreen()
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000)
-        }
-        if (type == 'u') {
-            $('.removeAfterLogoff').remove()
-            DisplayLockscreen()
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000)
-        }
-    }, 250)
+                $('#shutdownscreen > h1').css('display', 'none')
+                $('#shutdownscreen').css('display', 'block')
+                $('.removeAfterLogoff').remove()
+                DisplayLockscreen()
+                if (type == 's') {
+                    $('#shutdownscreen > .shutdown').css('display', 'block')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 5000)
+                }
+                if (type == 'r') {
+                    $('#shutdownscreen > .reboot').css('display', 'block')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 5000)
+                }
+                if (type == 'l') {
+                    $('#shutdownscreen > .logoff').css('display', 'block')
+                    setTimeout(() => {
+                        $('.HTMLpreloader').css('opacity', '0')
+                        $('#shutdownscreen').css('display', 'none')
+                    }, 5000)
+                }
+                if (type == 'w') {
+                    $('#shutdownscreen > .pleasewait').css('display', 'block')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 5000)
+                }
+                if (type == 'u') {
+                    $('#shutdownscreen > .pleasewait').css('display', 'block')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 5000)
+                }
+            }, 500)
+        }, 10)
+    }, 10)
 }
 
 function DisplayPowerMenuOnLock() {
@@ -270,16 +243,16 @@ function localStorageToString() {
 }
 
 function loadLocalStorage(data) {
-    if (typeof data == "object") {
+    if (typeof data == 'object') {
         localStorage.clear()
         Object.keys(data).forEach(function (k) {
-            localStorage.setItem(k, JSON.stringify(data[k]).replaceAll('\"', ''))
+            localStorage.setItem(k, JSON.stringify(data[k]).replaceAll('"', ''))
         })
         shutdown('r')
-    } else if (typeof data == "string") {
+    } else if (typeof data == 'string') {
         var newData = JSON.parse(data)
         Object.keys(newData).forEach(function (k) {
-            localStorage.setItem(k, JSON.stringify(newData[k]).replaceAll('\"', ''))
+            localStorage.setItem(k, JSON.stringify(newData[k]).replaceAll('"', ''))
         })
         shutdown('r')
     }

@@ -8,8 +8,8 @@ var ProcessesInfo = {}
 
 function CreateSectionWindows() {
     let i = document.createElement('section')
-    i.className = "Section-Windows"
-    i.id = "Section-Windows"
+    i.className = 'Section-Windows'
+    i.id = 'Section-Windows'
     document.body.append(i)
 }
 
@@ -112,7 +112,7 @@ function CreateWindow(path, parameters) {
         `)
     }
 
-    $('.desktop-taskbar .openedWindows').append('<div style="display:none" onclick="if(ActiveWindowID!=\'' + TemporaryWindowID + "'){FocusToWindow('WindowHeader_" + TemporaryWindowID + "')}else{MinimizeWindow(" + TemporaryWindowID + ')}" id="TaskbarOpenedWindow_' + TemporaryWindowID + '"><div></div><img draggable="false" src="../../../img/shell/imageres/15.ico" alt=""></div>')
+    $('.desktop-taskbar .openedWindows').append('<div style="display:none" onclick="if(ActiveWindowID!=\'' + TemporaryWindowID + "'){FocusToWindow('WindowHeader_" + TemporaryWindowID + "')}else{MinimizeWindow(" + TemporaryWindowID + ')}" id="TaskbarOpenedWindow_' + TemporaryWindowID + '"><div></div><img draggable="false" src="' + res + 'img/shell/imageres/15.ico" alt=""></div>')
 
     document.getElementById('Section-Windows').dispatchEvent(
         new CustomEvent('WindowCreate', {

@@ -21,7 +21,7 @@ var Metro_ProgressRing = `
 
 $(document).ready(() => {
     var metroDialogSample = `
-    <div class="metrodialogbg metrodialogSample">
+    <div class="metrodialogbg removeAfterLogoff metrodialogSample">
         <div class="metrodialog"><div class="cont"></div></div>
     </div>
     `

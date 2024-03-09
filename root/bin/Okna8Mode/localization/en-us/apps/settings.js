@@ -90,7 +90,8 @@ var LOCALE_app_settings = [
             'Disable',
             'Change account name',
             'Avatar',
-            'Browse'
+            'Browse',
+            'Remove',
         ],
         'WindowsUpdate':[
             'Windows Update',

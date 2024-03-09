@@ -35,5 +35,14 @@ var LOCALE_startscreen = [
     "Large",
     "Wide",
     "Medium",
-    "Tiny"
+    "Tiny",
+    "Disable live tile",
+    "Enable live tile",
+    `
+        <h1>We have some problems</h1>
+        <p>There was some problem reading tiles from local storage and we had to restore the default tile configuration.<br>This could happen when updating to a new version of Okna8.</p>
+        <div class="buttons">
+            <button onclick="CloseMetroDialog(__ID__)">Close</button>
+        </div>
+    `,
 ]

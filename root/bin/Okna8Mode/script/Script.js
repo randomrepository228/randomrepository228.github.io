@@ -25,20 +25,6 @@ function displayStartTiles() {
     DisplayBackground()
 }
 
-function openStart() {
-    startIsOpened = 1
-    $('.cb_panel_content_desktop').addClass('hidden')
-    $('.cb_panel_content_start').removeClass('hidden')
-    $('#startButtonOnDesktop').addClass('startButtonOnStart')
-    $('#startButtonOnDesktop').removeClass('startButtonOnDesktop')
-    setTimeout(function () {
-        $('.startScreen').css('animation', 'none')
-        setTimeout(function () {
-            $('.startScreen').css('animation', 'none')
-        }, 50)
-    }, 50)
-}
-
 window.onmessage = function (event) {
     if (event.data == 'opendesktop') {                                                                                  // Start button
         closeStart()
@@ -234,7 +220,7 @@ function DisplayAvatarMenuOnStart() {
 
 if (VERSION['prerelease'] == true && localStorage.getItem('OKNA8_remove-watermark') == null) {
     $('.build').html('Okna8 pre-release<br>' + VERSION['ver'])
-    $('.watermark').html('Okna8 pre-release ' + VERSION['ver'] + '<br><span style="font-size:16px;font-family:\'segoeui\'">If You found bag, please <a href="mailto:igor-kosov@outlook.com">contact me</a></span>')
+    $('.watermark').html('Okna8 pre-release ' + VERSION['ver'] + '<br><span style="font-size:16px;font-family:\'segoeui\'">If You found bag, please contact me</a></span>')
 }
 
 if (localStorage.getItem('OKNA8_scale150') == 'true') {

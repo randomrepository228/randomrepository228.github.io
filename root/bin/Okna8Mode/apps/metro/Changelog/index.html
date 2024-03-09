@@ -1,54 +1,109 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-        <link rel="stylesheet" href="scrollbar.css">
-        <link rel="stylesheet" href="../../../style/bootstrap.min.css">
-        <link rel="stylesheet" href="../../../style/main.css"> 
-        <link rel="stylesheet" href="clog.css">
-        <link rel="stylesheet" href="../../../style/fonts.css">
-        <link rel="stylesheet" href="../../../style/metroui.css">
-        <div class="metrosplash" style="background-color: rgb(81,51,171);"><img src="AppSplash.png" alt=""></div>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <link rel="stylesheet" href="scrollbar.css" />
+        <link rel="stylesheet" href="../../../style/main.css" />
+        <link rel="stylesheet" href="news.css" />
+        <link rel="stylesheet" href="../../../style/fonts.css" />
+        <link rel="stylesheet" href="../../../style/metroui.css" />
+        <div class="metrosplash" style="background-color: rgb(172, 25, 61)">
+            <img src="AppSplash.png" alt="" />
+            <div class="progress-ring">
+                <div class="progress-ring__wrap">
+                    <div class="progress-ring__circle"></div>
+                </div>
+                <div class="progress-ring__wrap">
+                    <div class="progress-ring__circle"></div>
+                </div>
+                <div class="progress-ring__wrap">
+                    <div class="progress-ring__circle"></div>
+                </div>
+                <div class="progress-ring__wrap">
+                    <div class="progress-ring__circle"></div>
+                </div>
+                <div class="progress-ring__wrap">
+                    <div class="progress-ring__circle"></div>
+                </div>
+            </div>
+        </div>
         <script src="../../../script/jquery.js"></script>
-        <script src="changelog.js"></script>
         <script>
-            function addScript(src){
-                var script = document.createElement('script');
-                script.src = src;
-                script.async = false; 
-                document.head.appendChild(script);
+            function addScript(src) {
+                var script = document.createElement('script')
+                script.src = src
+                script.async = false
+                document.head.appendChild(script)
             }
 
             addScript('../../../localization/' + localStorage.getItem('OKNA8_locale') + '/apps/changelog.js')
-            addScript('localization.js')
+            addScript('../../../ver.js')
+            addScript('../../../script/axios.js')
+            addScript('news.js')
         </script>
-        
     </head>
-    <body style=" background-color: rgb(235,235,235);">    
-        
-            <iframe class="iframe-last" style="transition:1s cubic-bezier(0.1, 0.9, 0.2, 1);position:fixed; top:0;left:0;width: 100vw; height: 100vh;" src="latest.html" frameborder="0"></iframe>
-            <iframe class="iframe-log" style="transition:1s cubic-bezier(0.1, 0.9, 0.2, 1);position:fixed; top:0;left:0;width: 100vw; height: 100vh; top:100vh" src="log.html" frameborder="0"></iframe>
-        
-        <span onclick="openLogs()" style="transition:0.3s cubic-bezier(0.1, 0.9, 0.2, 1);position: fixed;left:30px;bottom:60px;color:black;transform: rotateZ(-90deg);" class="backbtn" onclick="displayMainPage()"><span style=" top:-7px;left:-3px" class="s1"></span><span style=" top:-7px" class="s2"></span></span>
-            
-        <script>
-            if (localStorage.getItem('OKNA8_Changelog_theme') == 'dark') {
-                $('.headerlog').css('color','white');
-                $('.headerlog').css('background-color','rgb(29,29,29)')
-            } else if (localStorage.getItem('OKNA8_Changelog_theme') == 'darkgreen') {
-                $('.headerlog').css('color','rgb(0,200,0)');
-                $('.headerlog').css('background-color','rgb(29,29,29)')
-            } else if (localStorage.getItem('OKNA8_Changelog_theme') == 'green') {
-                $('.headerlog').css('color','rgb(0,120,0)');
-            }
-        </script>
-        <script>
-            window.onload = function(){
-            $('.metrosplash').addClass('metrosplashhideani');
-            setTimeout(function(){
-                $('.metrosplash').addClass('hidden')
-            },200)
-            }
-        </script>
+    <body style="background-color: rgb(235, 235, 235)">
+        <div class="app">
+            <div class="scrollblock" id="scrollblock_mainpage">
+                <div class="block1" id="newsElem1">
+                    <img src="../../../img/wallpaper/lock/img100.png" alt="" />
+                    <div class="imglayer"></div>
+                    <div class="text ShowAfterLoad">
+                        <h1>Hello, World!</h1>
+                        <h2>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas unde doloremque officia modi quo expedita illum autem porro veniam, at itaque, perspiciatis totam. Consequatur eos maiores sunt, sit in tenetur.</h2>
+                    </div>
+                </div>
+                <div class="block2">
+                    <h1 class="ShowAfterLoad">Новости </h1>
+                    <div class="elem1 ShowAfterLoad" id="newsElem2">
+                        <img src="../../../img/wallpaper/lock/img101.png" alt="" />
+                        <div class="imglayer"></div>
+                        <div class="text">
+                            <h1>Hello, World!</h1>
+                        </div>
+                    </div>
+                    <div class="elem2 ShowAfterLoad" id="newsElem3">
+                        <img src="../../../img/wallpaper/lock/img102.png" alt="" />
+                        <div class="imglayer"></div>
+                        <div class="text">
+                            <h1>Hello, World!</h1>
+                        </div>
+                    </div>
+                    <div class="elem2 ShowAfterLoad" id="newsElem4" style="left: 42vh; top: -27vh">
+                        <img src="../../../img/wallpaper/lock/img103.png" alt="" />
+                        <div class="imglayer"></div>
+                        <div class="text">
+                            <h1>Hello, World!</h1>
+                        </div>
+                    </div>
+                    <div class="elem2 ShowAfterLoad" id="newsElem5" style="position:absolute; left: 90vh; top: 6vh">
+                        <img src="../../../img/wallpaper/lock/img102.png" alt="" />
+                        <div class="imglayer"></div>
+                        <div class="text">
+                            <h1>Hello, World!</h1>
+                        </div>
+                    </div>
+                    <div class="elem2 ShowAfterLoad" id="newsElem6" style="position:absolute; left: 90vh; top: 33vh">
+                        <img src="../../../img/wallpaper/lock/img102.png" alt="" />
+                        <div class="imglayer"></div>
+                        <div class="text">
+                            <h1>Hello, World!</h1>
+                        </div>
+                    </div>
+                    <div class="elem2 ShowAfterLoad" id="newsElem7" style="position:absolute; left: 90vh; top: 60vh">
+                        <img src="../../../img/wallpaper/lock/img103.png" alt="" />
+                        <div class="imglayer"></div>
+                        <div class="text">
+                            <h1>Hello, World!</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scrollblock" id="scrollblock_newsContent">
+                <span class="backbtn" onclick="DisplayMainpage()"><span style=" top:-5px" class="s1"></span><span style=" top:-5px" class="s2"></span></span>
+                <h1>Header</h1>
+                <div class="content"></div>
+            </div>
+        </div>
     </body>
 </html>

@@ -11,7 +11,7 @@ body {
 
 * {
     /* font-family: 'msss'; */
-    letter-spacing: -0.6px;
+    letter-spacing: -0.2px;
 }
 
 p {
@@ -250,4 +250,33 @@ select:focus {
 a {
     font-size: 12px;
     color: rgb(0,102,204);
+}
+
+.menubar {
+    width: 100vw;
+    height: 19px;
+    background-color: rgb(245,245,245);
+    border-bottom: 1px solid rgb(232,232,232);
+    font-size: 0;
+}
+
+.menubar .element {
+    display: inline-block;
+    font-size: 12px;
+    border: 1px transparent solid;
+    padding: 1px 7px;
+}
+
+.menubar .element:hover {
+    border: 1px rgb(122, 177, 232) solid;
+    background-color: rgb(213, 231, 248);
+}
+
+.menubar .element:active {
+    border: 1px rgb(98, 163, 229) solid;
+    background-color: rgb(184, 216, 249);
+}
+
+iframe {
+    border: none;
 }

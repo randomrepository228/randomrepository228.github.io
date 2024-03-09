@@ -12,8 +12,8 @@
         <script>
             const supportedthemes = ["aero", "classic"]
             function changeTheme(a){
-                if (!supportedthemes.includes(a)) a = supportedthemes[0]
                 theme.href = "../../res/" + a + "/style.css"
+                if (!supportedthemes.includes(a)) a = supportedthemes[0]
                 localTheme.href = a + ".css"
             }
             changeTheme(localStorage.theme)

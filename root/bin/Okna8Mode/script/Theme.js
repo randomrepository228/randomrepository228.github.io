@@ -32,7 +32,7 @@ function UpdateThemeColors(image) {
                 background-color: rgba(${rgb0[0]}, ${rgb0[1]}, ${rgb0[2]}, 0.5)
             }
         `)
-    } else if (VERSION['additionalFeatures']['AutoColorSupport']) {
+    } else if (location.protocol != "file:") {
         RGBaster.colors(image, {
             exclude: ['rgb(255,255,255)'],
             success: function(payload) {

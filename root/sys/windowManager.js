@@ -1,3 +1,9 @@
+function windowMouseDown(event, elem, a, noResize){}
+function windowResize(event, elem, ...actions){}
+function snapLeft(window){}
+function snapRight(window){}
+function maximiseWindow(window){}
+maximise = maximiseWindow
 function AddWindow(window, ispopup, options, id, elem){
     newWindow = document.createElement("div")
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
@@ -7,6 +13,7 @@ function AddWindow(window, ispopup, options, id, elem){
     if (typeof options.bottom == "number") options.bottom += "px"
     if (options.okna8) window.icon = "./bin/Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
     if (options.NoGUI) newWindow.className += " nogui"
+    if (!this.move) newWindow.className += " maximised"
     if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
     newWindow.setAttribute("windowid", id)
     if (options.noTray) newWindow.setAttribute("notray", "true")
@@ -33,7 +40,7 @@ function AddWindow(window, ispopup, options, id, elem){
     if(options.classes) newWindow.className += options.classes
     newWindow.innerHTML =
     `
-    <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
+    <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar ${options.noGUI ? 'noncont' : ''}" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
         <left>
             <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
             <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
@@ -370,6 +377,7 @@ function minimiseWindow(window){
         if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(0deg)", 
+                display: "block",
                 opacity: 1,
                 scale: 1
             }, 

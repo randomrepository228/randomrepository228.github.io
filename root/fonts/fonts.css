@@ -33,6 +33,12 @@
 }
 
 @font-face {
+    font-family: 'segoeuii';
+    src: url(./seguisbi.ttf);
+    font-weight: 700;
+}
+
+@font-face {
     font-family: 'segoeui';
     src: url(./segoeui.ttf);
     font-weight: 500;
@@ -65,6 +71,11 @@
 @font-face {
     font-family: 'Segoe Boot Semilight';
     src: url(./segoe_slboot.ttf);
+}
+
+@font-face {
+    font-family: 'fixedsys';
+    src: url(./8514fix.ttf);
 }
 
 /* * {

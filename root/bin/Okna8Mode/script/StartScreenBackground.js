@@ -114,6 +114,7 @@ function DisplayBackground() {
     var ColorForeground = localStorage.getItem('OKNA8_user_' + currentUser + '_color_foreground')
     var ColorBackground = localStorage.getItem('OKNA8_user_' + currentUser + '_color_background')
     var CurrentBackground = localStorage.getItem('OKNA8_user_' + currentUser + '_StartScreenBackground')
+    console.log(localStorage.getItem('OKNA8_user_' + currentUser + '_StartScreenBackground'))
     if (CurrentBackground != 'desktop') {
         $('.StartScreenBackground > div').css('display', 'none')
         $('.StartScreenBackground > .bg' + CurrentBackground).css('display', 'inherit')

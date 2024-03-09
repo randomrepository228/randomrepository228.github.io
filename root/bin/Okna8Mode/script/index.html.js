@@ -2,7 +2,7 @@ $(document).ready(() => {
     if (typeof LOCALE_index == "undefined") {
         window.location.reload(true)
     }
-    if (VERSION['additionalFeatures']['IsWebVersion']) {
+    if (location.protocol != "file:") {
         $('.welcome .content').html(LOCALE_index[3])
     } else if (typeof require != 'undefined') {
         $('.welcome .content').html(LOCALE_index[2].replace('((VER))', 'Ver. ' + VERSION['ver'] + ', build ' + VERSION['build']))

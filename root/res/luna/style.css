@@ -1,0 +1,649 @@
+.window{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    touch-action: none;
+    resize: both;
+    z-index: 4;
+    padding-top: 0;
+    background-color: transparent;
+    background-position: left 0 top 0, left 0 top 20%;
+    background-size: 100% 27px, 100% 30%;
+    background-repeat: no-repeat, repeat-x;
+}
+.contentnostyle{
+    background-color: #0043CF;
+}
+.top, .left, .right, .bottom{
+    z-index: 100;
+}
+.topleft, .topright, .bottomleft, .bottomright{
+    z-index: 101 !important;
+}
+.content::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% - 10px);
+    height: calc(100% - 5px);
+    border: 5px solid transparent;
+    border-image: url(window.png) 0 5 5 5;
+    border-top: 0;
+    pointer-events: none;
+}
+.content{
+    box-sizing: border-box;
+    padding: 5px;
+    padding-top: 0;
+}
+.maximised .content{
+    padding: 0;
+}
+.maximised .content::after{
+    border-image: none;
+    display: none;
+}
+.taskbar{
+    background-color: lightblue;
+
+    box-shadow: none;
+}
+.taskbar::after{
+    content: "";
+    display: block;
+    position: absolute;
+    height: calc(100% - 12px);
+    top: 0;
+    width: 100%;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-image: url(taskbar.png) 6 0 fill;
+    background-image: url(taskbar.png);
+    z-index: -2;
+}
+.right-bar{
+    padding: 0;
+    background-image: none;
+}
+.taskbar .left-bar{
+    background: none;
+}
+.wrapper{
+    background-color: transparent;
+}
+.show-desktop{
+    display: none;
+}
+.maximised{
+    border-radius: 0px;
+    position: absolute;
+    padding: 0px;
+    border: none !important;
+}
+.topbar{
+    display: flex;
+    justify-content: space-between;
+    height: 29px;
+    margin-top: 0;
+    padding-left: 3px;
+    background-color: transparent;
+    position: relative;
+    padding-right: 3px;
+}
+.topbar::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    border: 6px solid transparent;
+    border-image: url(titlebar.png) 6 6 15 6 fill;
+}
+.maximised .topbar::after{
+    border-image: url(maximised.png) 6 6 15 6 fill;
+}
+.maximised .topbar{
+    padding: 0;
+}
+.maximised > .topbar > .buttons{
+    margin-top: 4px;
+}
+.topbar-ext::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    border: 6px solid transparent;
+    border-top: 0;
+    border-image: url(titlebar.png) 6 6 15 6 fill;
+    z-index: -1;
+}
+.topbar.noncont::after{
+    height: calc(100% - 6px);
+    border-bottom: 0;
+}
+.topbar .buttons{
+    display: flex;
+    height: 21px;
+    z-index: 5;
+    margin-top: 5px;
+}
+.topbar > .buttons > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2px;
+    width: 21px;
+}
+.content{
+    border-radius: 0;
+    background-color: #ece9d8;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+.maximised{
+    top: 0px !important;
+    left: 0px !important;
+    width: 100% !important;
+    height: calc(100% - 40px) !important;
+    position: fixed;
+    box-shadow: none !important;
+}
+.maximised .content{
+    border-radius: 0px;
+    border: none !important;
+    outline: none !important;
+}
+.window:hover{
+    cursor: default;
+}
+.dock-br{
+    position: absolute;
+    right: 0;
+    bottom: var(--taskbar-height);
+    margin: 0;
+    padding-top: 0;
+}
+text{
+    height: 100%;
+}
+iframe {
+    height: 100%;
+    width: 100%;
+}
+left{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-grow: 1;
+    z-index: 1;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    text-shadow: 1px 1px 0px #0A1883;
+}
+left img{
+    width: 15px !important;
+    height: 15px !important;
+    margin: 3px;
+}
+html, body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+body{
+    position: fixed;
+}
+.x, .dash, .square{
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.x{
+    background-image: url("close/icon.png"), url("close/normal.png");
+}
+.x:hover{
+    background-image: url("close/icon.png"), url("close/hover.png");
+}
+.x:active{
+    background-image: url("close/icon_pressed.png"), url("close/pressed.png");
+}
+.square{
+    background-image: url("max/icon.png"), url("min/normal.png");
+}
+.square:hover{
+    background-image: url("max/icon.png"), url("min/hover.png");
+}
+.square:active{
+    background-image: url("max/icon_pressed.png"), url("min/pressed.png");
+}
+.dash{
+    background-image: url("min/icon.png"), url("min/normal.png");
+}
+.dash:hover{
+    background-image: url("min/icon.png"), url("min/hover.png");
+}
+.dash:active{
+    background-image: url("min/icon_pressed.png"), url("min/pressed.png");
+}
+.dash:hover, .square:hover{
+    z-index: 999;
+}
+.x:hover{
+    z-index: 999;
+}
+.start-menu{
+    padding: 7px;
+    background-color: #98B4D0;
+}
+.maximised .buttons{
+    margin-right: 3px;
+}
+.closing{
+    display: none !important;
+}
+.topleft, .topright, .bottomleft, .bottomright, .top, .left, .right, .bottom{
+    position: absolute;
+}
+.maximised .topleft, .maximised .topright, .maximised .bottomleft, .maximised .bottomright, .maximised .top, .maximised .left, .maximised .right, .maximised .bottom{
+    display: none;
+}
+.topleft, .topright, .bottomleft, .bottomright{
+    width: 7px;
+    height: 7px;
+    z-index: 1;
+}
+.top, .bottom{
+    width: 100%;
+    height: 7px;
+    cursor: n-resize;
+}
+.left, .right{
+    height: 100%;
+    width: 7px;
+    cursor: w-resize;
+}
+.left, .topleft, .bottomleft{
+    left: 0;
+}
+.right, .topright, .bottomright{
+    right: 0;
+}
+.topleft, .top, .topright{
+    top: 0;
+}
+.bottomleft, .bottom, .bottomright{
+    bottom: 0;
+}
+.topleft, .bottomright{
+    cursor: nw-resize;
+}
+.topright, .bottomleft{
+    cursor: ne-resize;
+}
+input[type="checkbox"]{
+    display: none;
+}
+input[type="checkbox"] + label{
+    background-image: url("checkbox/unchecked/normal.png");
+    background-position-y: center;
+}
+input[type="checkbox"]:hover + label{
+    background-image: url("checkbox/unchecked/hover.png");
+    background-position-y: center;
+}
+input[type="checkbox"]:active + label{
+    background-image: url("checkbox/unchecked/pressed.png");
+    background-position-y: center;
+}
+input[type="checkbox"]:checked + label{
+    background-image: url("checkbox/checked/normal.png");
+    background-position-y: center;
+}
+input[type="checkbox"]:checked:hover + label{
+    background-image: url("checkbox/checked/hover.png");
+    background-position-y: center;
+}
+input[type="checkbox"]:checked:active + label{
+    background-image: url("checkbox/checked/pressed.png");
+    background-position-y: center;
+}
+label{
+    padding-left: 13px;
+    height: 13px;
+    display: inline-block;
+    background-repeat: no-repeat;
+}
+
+
+/* ::-webkit-scrollbar{
+    width: 17px;
+}
+::-webkit-scrollbar-thumb{
+    background-image: url("./scrollbars/vertical/normal.png");
+    width: 17px;
+    height: 22px;
+    background-size: 100% 100%;
+} */
+
+
+
+footer{
+    height: 40px;
+    max-height: 40px;
+    display: flex;
+    justify-content: end;
+    box-sizing: border-box;
+    padding: 8px;
+    background-color: transparent;
+}
+selecticon{
+    height: 19px;
+    width: 10px;
+    background-image: url("../dropdown.png");
+    margin-right: 5px;
+    margin-top: 2px;
+    pointer-events: none;
+}
+button, select{
+    border: none;
+    background-color: transparent;
+    position: relative;
+    z-index: 100;
+}
+button::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: -1;
+}
+.select::after{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border: 6px solid transparent;
+    border-image: url(button/normal.png);
+    border-image-slice: 6 fill;
+    z-index: 99;
+}
+.select{
+    display: flex;
+    height: 19px;
+}
+selecticon{
+    z-index: 100;
+    background-image: url(dropdown.png);
+    width: 17px;
+    height: 19px;
+    margin: 0;
+    display: block;
+}
+button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
+    border-image-source: url(button/disabled.png);
+    opacity: 1;
+}
+button:hover::after, .select:hover::after{
+    border-image-source: url(button/hover.png);
+}
+button:active::after, .select:active::after{
+    border-image-source: url(button/pressed.png);
+}
+.context-menu{
+    font-size: 12px;
+    background-color: #ece9d8;
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    width: max-content;
+    border: 1px solid gray;
+}
+.context-menu-option:hover{
+    background-color: rgb(58, 127, 255);
+}
+.tabbody{
+    background-color: transparent;
+}
+.tabbody footer{
+    background-color: transparent;
+}
+.sunken-panel{
+    border: 1px solid gray;
+}
+article[role=tabpanel]{
+    background-color: white;
+}
+input[type=text], input[type=text]:focus{
+    border-radius: 0;
+    border: 1px solid rgb(127,157,185);
+}
+.x img, .dash img, .square img{
+    display: none;
+}
+.wrapper::after{
+    content: "start";
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    padding-left: 25px;
+    background-image: url(icon.png);
+    background-repeat: no-repeat;
+    height: 20px;
+    font-size: 17px;
+    font-family: 'segoeuii';
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    line-height: 20px;
+}
+.taskbar-btn{
+    display: none;
+}
+.window-tray{
+    border-image: url(taskbar_btn.png) 5 fill;
+    height: calc(var(--taskbar-height) - 5px);
+    margin: 3px;
+    margin-bottom: 2px;
+    margin-right: 0;
+}
+.window-tray:hover{
+    border-image: url(taskbar_btn_hover.png) 5 fill;
+}
+.window-tray:active, .window-tray.focus{
+    border-image: url(taskbar_btn_focus.png) 5 fill;
+}
+.wrapper{
+    border-image-source: url(start/normal.png);
+    border-image-slice: 0 20 0 20 fill;
+    border-right: 20px solid transparent;
+    border-left: 20px solid transparent;
+    width: 59px;
+    height: 33px;
+}
+.taskbar-left .wrapper, .taskbar-right .wrapper{
+    width: 21px;
+    height: 33px;
+}
+.taskbar-left .wrapper::after, .taskbar-right .wrapper::after{
+    content: "";
+    padding-left: 0;
+    margin-left: -20px;
+    width: 20px;
+}
+.wrapper:hover{
+    border-image-source: url(start/hover.png);
+}
+.wrapper:active{
+    border-image-source: url(start/pressed.png);
+}
+.sunken-panel{
+    background-color: white;
+}
+tr > th{
+    background-color: #ece9d8;
+    background-image: none;
+    padding: 2px;
+}
+button[role="tab"]{
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background-image: none;
+    background-color: rgb(240,240,240);
+}
+button[role="tab"][aria-selected="true"]{
+    background-color: white;
+}
+button[role="tab"]:hover, button[role="tab"][aria-selected="true"]{
+    border-top: 1px solid #e68b2c;
+    box-shadow: inset 0 2px #ffc73c;
+    background-image: none;
+}
+fieldset{
+    border-color: #d0d0bf;
+}
+.taskbar-up .taskbar::after, .taskbar-left .taskbar::after{
+    transform: rotate(180deg);
+}
+.taskbar-left .taskbar::after, .taskbar-right .taskbar::after{
+    border-image: url(taskbar-vertical.png) 0 6 fill;
+    height: 100%;
+    width: calc(100% - 12px);
+    border-top: 0 solid transparent;
+    border-bottom: 0 solid transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    background: none;
+}
+.taskbar-right .right-bar, .taskbar-left .right-bar{
+    padding-top: 0;
+    background: none;
+    margin-bottom: 0;
+}
+.right-bar{
+    position: relative;
+}
+.right-bar::after{
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    border: 5px solid transparent;
+    border-image: url(right_bar.png) 5 fill;
+    z-index: -1;
+}
+.start-menu{
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+    background-image: none;
+    background-color: white;
+}
+.left-start{
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+.right-start{
+    background-color: #D3E5FA;
+    border-left: 1px solid #95BDEE;
+    flex-grow: 1;
+}
+.start-option-right{
+    color: #0A246A;
+}
+.menubar{
+    background-image: none;
+}
+.menubar .element:hover::after, .menubar .element:active::after, .menubar .active::after{
+    display: none;
+}
+.menubar .element:hover{
+    background-color: #0043CF;
+    color: white;
+}
+fieldset legend{
+    color: #0046D5;
+}
+.progress-bar-filled::after{
+    display: none;
+}
+.progress-bar-filled{
+    display: none;
+}
+.progress-bar-filled-container{
+    position: relative;
+    margin-left: 0;
+}
+.progress-bar-filled-container::after{
+    background-image: url(progressbar_filled.png);
+    background-size: 10px 100%;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 2px);
+    top: 2px;
+    content: "";
+    display: block;
+}
+.progress-bar{
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-image: url(progressbar.png) 9 4 9 4 fill;
+    height: calc(100% - 18px);
+}
+.progress-bar{
+    width: calc(100% - 8px);
+}
+.progress-bar-marquee::after{
+    background-image: url(progressbar_filled.png);
+    background-size: 10px 100%;
+    height: calc(100% + 12px);
+    top: 2px;
+    border-image: none;
+    border: none;
+    background-repeat: repeat-x;
+    animation: marquee 3s linear infinite;
+}
+.taskbar{
+    overflow: hidden;
+}
+.select{
+    border: 1px solid rgb(127,157,185);
+    background-color: white;
+}
+.select::after{
+    display: none;
+}
+select{
+    min-height: 19px;
+    height: 19px;
+}

@@ -32,7 +32,11 @@ const bcwd = {
 async function loadbcwdApp(cafile, args){
     if (!args) args = []
     let bcwdApp = await (await fs.readFile(cafile)).text()
-    console.log(bcwdApp)
-    eval(bcwdApp)
-    main(args)
+    const result = await runbcwdScript(bcwdApp, args)
+    return result
+}
+async function runbcwdScript(bcwdscript, args){
+    eval(bcwdscript)
+    const result = await main(args)
+    return result
 }

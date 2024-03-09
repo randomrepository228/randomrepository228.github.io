@@ -1,0 +1,9 @@
+{
+    "width": 612, 
+    "height": 388, 
+    "title": "Create link",
+    "icon": "icon.png",
+    "window": true,
+    "xOnly": true,
+    "noResize": true
+}

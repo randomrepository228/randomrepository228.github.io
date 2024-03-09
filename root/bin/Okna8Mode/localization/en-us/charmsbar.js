@@ -17,7 +17,7 @@ var LOCALE_charmsbar = [
     "About",
     "About",
     "Search",
-    `<h1>This function is unavaible</h1><p>This function is not realized in this version of Okna8.</p><div class="buttons"><button style="margin- right: 0;" onclick='CloseMetroDialog("__ID__")'>Cancel</button></div>`,
+    `<h1>This function is unavailable</h1><p>This function is not realized in this version of Okna8.</p><div class="buttons"><button style="margin- right: 0;" onclick='CloseMetroDialog("__ID__")'>Cancel</button></div>`,
     `<p>This app may not be localized to your language</p><div class="buttons"><button style="margin-right: 0;" onclick='CloseMetroDialog("__ID__")'>Close</button></div>`,
     "Background color",
     "Accent color",
@@ -32,5 +32,20 @@ var LOCALE_charmsbar = [
     `<h1>Creating an account</h1><p>Enter username.</p><input type="text" id="OchenKrutoyInputHaha" placeholder="For example: Igor"><div class="buttons" style="margin-top:60px"><button onclick='if($("#OchenKrutoyInputHaha").val() != ""){CreateUser($("#OchenKrutoyInputHaha").val());CloseMetroDialog("__ID__");setTimeout(()=>{shutdown(\`l\`)},100)}'>Next</button><button onclick='CloseMetroDialog("__ID__")' style="margin-right: 0;">Cancel</button></div>`,
     'Update now',
     'Update ready for install',
-    'Click here to reboot and install update'
+    'Click here to reboot and install update',
+    {
+        'desktop': [
+            'Desktop',
+            'Control panel',
+            'Personalize',
+            'Info about PC',
+            'Help'
+        ],
+        'start': [
+            'Start',
+            'Personalize',
+            'Tiles',
+            'Help'
+        ]
+    }
 ]

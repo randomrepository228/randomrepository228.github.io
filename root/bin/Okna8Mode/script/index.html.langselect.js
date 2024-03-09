@@ -13,7 +13,7 @@ $(document).ready(() => {
         <select name="langselector" id="" style="margin-left: 40px">
             <option value="ru-ru" style="color:black">Русский язык (ru-ru)</option>
             <option value="en-us" style="color:black">English language (en-us)</option>
-            <option value="uk-ua" style="color:black">Українська мова (uk-ua)</option>
+            <!--<option value="uk-ua" style="color:black">Українська мова (uk-ua)</option>-->
             <!--<option value="other" style="color:black">Другой / Other</option>-->
         </select> <br> <br>
         <button id="start" onclick="SetLang()">Continue</button>

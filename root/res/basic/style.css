@@ -184,22 +184,22 @@ input[type="checkbox"]{
     display: none;
 }
 input[type="checkbox"] + label{
-    background-image: url("../checkbox/unchecked/normal.png");
+    background-image: url("../basic-aero/checkbox/unchecked/normal.png");
 }
 input[type="checkbox"]:hover + label{
-    background-image: url("../checkbox/unchecked/hover.png");
+    background-image: url("../basic-aero/checkbox/unchecked/hover.png");
 }
 input[type="checkbox"]:active + label{
-    background-image: url("../checkbox/unchecked/pressed.png");
+    background-image: url("../basic-aero/checkbox/unchecked/pressed.png");
 }
 input[type="checkbox"]:checked + label{
-    background-image: url("../checkbox/checked/normal.png");
+    background-image: url("../basic-aero/checkbox/checked/normal.png");
 }
 input[type="checkbox"]:checked:hover + label{
-    background-image: url("../checkbox/checked/hover.png");
+    background-image: url("../basic-aero/checkbox/checked/hover.png");
 }
 input[type="checkbox"]:checked:active + label{
-    background-image: url("../checkbox/checked/pressed.png");
+    background-image: url("../basic-aero/checkbox/checked/pressed.png");
 }
 label{
     padding-left: 13px;
@@ -255,7 +255,7 @@ button::after{
     left: 0;
     box-sizing: border-box;
     border: 6px solid transparent;
-    border-image: url(../button/normal.png);
+    border-image: url(../basic-aero/button/normal.png);
     border-image-slice: 6 fill;
     z-index: -1;
 }
@@ -269,7 +269,7 @@ button::after{
     left: 0;
     box-sizing: border-box;
     border: 6px solid transparent;
-    border-image: url(../button/normal.png);
+    border-image: url(../basic-aero/button/normal.png);
     border-image-slice: 6 fill;
     z-index: 99;
 }
@@ -284,14 +284,14 @@ selecticon{
     display: block;
 }
 button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
-    border-image-source: url(../button/disabled.png);
+    border-image-source: url(../basic-aero/button/disabled.png);
     opacity: 1;
 }
 button:hover::after, .select:hover::after{
-    border-image-source: url(../button/hover.png);
+    border-image-source: url(../basic-aero/button/hover.png);
 }
 button:active::after, .select:active::after{
-    border-image-source: url(../button/pressed.png);
+    border-image-source: url(../basic-aero/button/pressed.png);
 }
 .context-menu{
     font-size: 12px;

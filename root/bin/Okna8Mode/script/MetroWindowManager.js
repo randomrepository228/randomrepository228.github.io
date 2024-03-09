@@ -5,6 +5,7 @@ var closeStart, openStart
 setTimeout(() => {
     closeStart = () => {
         DisplayCharmsContent('desktop')
+        $('.Section-Windows').removeClass('SectionWindowsHidden')
         $('.tilesContainer').removeClass('min')
         $('.metrowindow').css('display', 'none')
         document.getElementById('startbutton').contentWindow.postMessage('desktop-opened', '*')
@@ -19,6 +20,7 @@ setTimeout(() => {
         setTimeout(() => {
             if (startIsOpened != 1) {
                 $('.startScreen').css('display', 'none')
+                displayStartTiles()
             }
         }, 200)
     }
@@ -26,6 +28,7 @@ setTimeout(() => {
     openStart = () => {
         DisplayCharmsContent('start')
         $('.tilesContainer').css('animation', '')
+        $('.startScreen > .apps').css('animation', '')
         document.getElementById('startbutton').contentWindow.postMessage('start-opened', '*')
         document.getElementById('StartbuttonCharmsbar').contentWindow.postMessage('start-opened', '*')
         startIsOpened = 1
@@ -36,7 +39,7 @@ setTimeout(() => {
         $('#startButtonOnDesktop').removeClass('startButtonOnDesktop')
         StartScreenAnimation()
         $('.startScreen').css('animation', 'fadeani 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards')
-        $('.startScreen').css('display', 'block')
+        document.getElementById('startScreen').style.display = 'block'
         $('.tiles').css('animation', 'none')
         $('#startscreen_Start-label, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('opacity', '0')
         $('#startscreen_Start-label, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('animation', 'fadeani 2s 0.1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards')
@@ -49,18 +52,13 @@ setTimeout(() => {
             openStart()
         }
     }
-
-    if (localStorage.getItem('OKNA8_user_' + currentUser + '_GoToDesktopInsteadOfStartscreen') == 'true') {
-        closeStart()
-    } else {
-        openStart()
-    }
 }, 1000)
 
 function metro_open_fromstartscreen(appname, color, position, tiletype, headername, path) {
     $('.tilesContainer').removeClass('min')
     RemoveFocusFromWindows()
     if (openedApps.indexOf(appname) >= 0) {
+        $('.Section-Windows').addClass('SectionWindowsHidden')
         $('.metrowindow').css('display', 'none')
         $('#metrowindow_' + appname).css('display', 'block')
         document.getElementById('startbutton').contentWindow.postMessage('app-opened', '*')
@@ -83,6 +81,7 @@ function metro_open_fromstartscreen(appname, color, position, tiletype, headerna
         }, 500)
     } else {
         openedApps.push(appname)
+        $('.Section-Windows').addClass('SectionWindowsHidden')
         $('#startscreen_Start-label, .tilesContainer > div, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('animation', 'none')
         $('#startscreen_Start-label, .tilesContainer > div, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('transition', 'cubic-bezier(0.1, 0.9, 0.2, 1) 0.5s')
         $('#startscreen_Start-label, .tilesContainer > div, .btn_down, #start_avatar, #start_powerbtn, #start_searchbtn, .startScreen > .tiles > div > .downButton').css('opacity', '0')
@@ -127,7 +126,7 @@ function metro_open_fromstartscreen(appname, color, position, tiletype, headerna
             $('.tilesContainer > .tile').css('transform', 'translateX(0px)')
             $('#metrowindow_' + appname + ' .metroAppHeader').attr('id', 'metrowindow_' + appname + '_header')
         }, 1000)
-        $('.desktop-taskbar .openedWindows').append('<div id="TaskbarOpenedWindow_Metro_' + appname + '" onclick="metro_open(\'' + appname + '\')"><div></div><img draggable="false" src="apps/classic/desktop/' + path + '/headericon.png" alt=""></div>')
+        $('.desktop-taskbar .openedWindows').append('<div id="TaskbarOpenedWindow_Metro_' + appname + '" onclick="metro_open(\'' + appname + '\')"><div></div><img draggable="false" src="apps/classic/desktop/' + path + '/AppLogo.png" alt=""></div>')
     }
 }
 
@@ -135,6 +134,7 @@ function metro_open(appname, color, headername, path) {
     RemoveFocusFromWindows()
     $('.tilesContainer').removeClass('min')
     if (openedApps.indexOf(appname) >= 0) {
+        $('.Section-Windows').addClass('SectionWindowsHidden')
         $('.metrowindow').css('display', 'none')
         $('#metrowindow_' + appname).css('display', 'block')
         document.getElementById('startbutton').contentWindow.postMessage('app-opened', '*')
@@ -152,6 +152,7 @@ function metro_open(appname, color, headername, path) {
             $('.startScreen').css('display', 'none')
         }, 500)
     } else {
+        $('.Section-Windows').addClass('SectionWindowsHidden')
         $('.metrowindow').css('display', 'none')
         openedApps.push(appname)
         $('.AppSplashContainerV2 .SplashV2').css('background', color)

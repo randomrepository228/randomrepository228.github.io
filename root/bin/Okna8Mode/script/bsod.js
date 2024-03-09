@@ -1,0 +1,1 @@
+$('#bsodText').html(LOCALE_bsod[1])

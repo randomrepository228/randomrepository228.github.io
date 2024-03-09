@@ -32,5 +32,20 @@ var LOCALE_charmsbar = [
     `<h1>Создание учётной записи</h1><p>Введите имя, под которым будет входить пользователь компьютера в свою учётную запись.</p><input type="text" id="OchenKrutoyInputHaha" placeholder="Например: Игорь"><div class="buttons" style="margin-top:60px"><button onclick='if($("#OchenKrutoyInputHaha").val() != ""){CreateUser($("#OchenKrutoyInputHaha").val());CloseMetroDialog("__ID__");setTimeout(()=>{shutdown(\`l\`)},100)}'>Далее</button><button onclick='CloseMetroDialog("__ID__")' style="margin-right: 0;">Отмена</button></div>`,
     'Обновить',
     'Обновление готово к установке',
-    'Нажмите здесь, чтобы установить обновление'
+    'Нажмите здесь, чтобы установить обновление',
+    {
+        'desktop': [
+            'Рабочий стол',
+            'Панель управления',
+            'Персонализация',
+            'Сведения о компьютере',
+            'Справка'
+        ],
+        'start': [
+            'Пуск',
+            'Персонализация',
+            'Плитки',
+            'Справка'
+        ]
+    }
 ]
