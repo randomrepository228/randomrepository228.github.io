@@ -51,14 +51,14 @@ function AddWindow(window, ispopup, options, id, elem){
             <div class="x" onclick="closeWindow(${id})"><img src="./res/aero/buttons/close/icon.png"></div>
         </div>
     </div>
-    ${options.noResize ? `` : `<div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'left', 'top')" class="topleft"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="topright"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="bottomleft"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="bottomright"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="top"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="left"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="right"></div>
-    <div ontouchstart="event.preventDefault();windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="bottom"></div>`}
+    ${options.noResize ? `` : `<div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'left', 'top')" class="resizer topleft"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'right', 'top')" class="resizer topright"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'left', 'bottom')" onmousedown="windowResize(event, this, 'left', 'bottom')" class="resizer bottomleft"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'bottom')" onmousedown="windowResize(event, this, 'right', 'bottom')" class="resizer bottomright"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'top')" onmousedown="windowResize(event, this, 'top')" class="resizer top"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'left')" onmousedown="windowResize(event, this, 'left')" class="resizer left"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="resizer right"></div>
+    <div ontouchstart="event.preventDefault();windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="resizer bottom"></div>`}
     `
     let content = document.createElement("div")
     content.className = "content" + (options.noGUI ? 'nostyle' : '')
