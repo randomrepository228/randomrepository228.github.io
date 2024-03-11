@@ -169,7 +169,7 @@ function desktopInit(){
     loadApp("sfc", undefined, "/silent")
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240309!</h1>What's new?<br><ul><li>New theme: Luna</li></ul>")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240311!</h1>What's new?<br><ul><li>Fixed window resize!</li></ul>")
         localStorage.prevver = localStorage.ver
         return;
     }
