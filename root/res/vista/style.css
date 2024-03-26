@@ -155,7 +155,7 @@ input[type="checkbox"]:checked:active + label{
     flex-grow: 1;
     padding: 1px;
 }
-.maximised .content{
+.maximisedm .content, .maximised .content{
     border-radius: 0px;
     border-left: none;
     border-right: none;

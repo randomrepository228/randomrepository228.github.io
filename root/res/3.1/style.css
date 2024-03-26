@@ -118,7 +118,7 @@ body{
     position: fixed;
     box-shadow: none !important;
 }
-.maximised .content{
+.maximisedm .content, .maximised .content{
     border-radius: 0px;
     border: none !important;
     outline: none !important;

@@ -146,14 +146,31 @@ function contextMenuOff(e){
     contextMenuElement.style.display = "none";
 }
 
-function desktopInit(){
+async function desktopInit(){
+    if (!(await fs.exists("config/associations"))) await fs.writeFile("config/associations", JSON.stringify({
+        ".png": {desc: "PNG image", program: "app:paint"},
+        ".webp": {desc: "WEBP image", program: "app:paint"},
+        ".gif": {desc: "GIF image", program: "app:paint"},
+        ".bmp": {desc: "BMP image", program: "app:paint"},
+        ".jpg": {desc: "JPEG image", program: "app:paint"},
+        ".jpeg": {desc: "JPEG image", program: "app:paint"},
+        ".ca": {desc: "bcwd application", program: "command:loadbcwdApp"},
+        ".txt": {desc: "Text file", program: "app:notepad"},
+        ".md": {desc: "Markdown file", program: "app:notepad"},
+        ".mp4": {desc: "MP4 video", program: "app:wmplayer"},
+        ".avi": {desc: "AVI video", program: "app:wmplayer"},
+        ".webm": {desc: "WEBM video", program: "app:wmplayer"},
+        ".wav": {desc: "WAVE audio", program: "app:wmplayer"},
+        ".mp3": {desc: "MP3 audio", program: "app:wmplayer"},
+        ".ogg": {desc: "Vorbis audio", program: "app:wmplayer"},
+        ".flac": {desc: "FLAC audio", program: "app:wmplayer"},
+        ".html": {desc: "HTML document", program: "app:iexplore"},
+        ".htm": {desc: "HTML document", program: "app:iexplore"},
+    }))
+    // document.querySelector(".logonui-users-container").style.display = "none";
+    // document.querySelector(".logonui-status").style.display = "";
+    document.querySelector(".logonui").style.display = "none";
     if (init) return
-    try{
-        winload.remove()
-    }
-    catch(e){
-        console.log("Winload not found. skipped")
-    }
     if (window.move){
         addEventListener("mousemove", move); 
         addEventListener("touchmove", move);
@@ -167,27 +184,65 @@ function desktopInit(){
     document.querySelector(".explorer").style.display = "";
     document.oncontextmenu = (e) => e.preventDefault()
     loadApp("sfc", undefined, "/silent")
+    initShellIcons()
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240311!</h1>What's new?<br><ul><li>Fixed window resize!</li></ul>")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240326!</h1>What's new?<br><ul><li>Google is no longer a homepage for Internet Explorer</li><li>Added URL bar to Internet explorer</li><li>fixed top level redirects in Internet explorer</li><li>Tighter integration with windows</li><li>Added style for unfocused windows</li></ul>")
         localStorage.prevver = localStorage.ver
         return;
     }
 }
 
+function showLogonUI(){
+    try{
+        winload.remove()
+    }
+    catch(e){
+        console.log("Winload not found. skipped")
+    }
+    document.querySelector(".logonui").style.display = ""
+    dispatchEvent(new CustomEvent("fsloaded"))
+    fs.checkSystemFolder()
+    preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
+    "res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
+    "res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
+    "res/aero/buttons/close/glow.png", "res/aero/buttons/close/hover.png", "res/aero/buttons/min/normal.png", "res/aero/buttons/min/hover.png", 
+    "res/aero/buttons/min/pressed.png", "res/aero/buttons/min/icon.png", "res/aero/buttons/max/hover.png", "res/aero/buttons/max/normal.png", 
+    "res/aero/buttons/max/pressed.png", "res/aero/buttons/max/icon.png", "res/aero/buttons/glow.png", "res/aero/style.css", "res/aero/window_aura.png",
+    "res/aero/window_aura_mirror.png", "res/aero/window_side.png", "res/button/hover.png", "res/button/normal.png", "res/button/pressed.png", 
+    "res/button/disabled.png", "res/button/default.png", "res/checkbox/unchecked/hover.png", "res/checkbox/unchecked/normal.png", 
+    "res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
+    "res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
+    "res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg", "boot.webm"]
+    preload.forEach(async a => {
+        console.log(a, preload)
+        const exists = await fs.exists(a)
+        console.log(exists, a)
+        if (!exists){
+            console.log("so")
+            await fs.downloadFiles([a])
+        }
+    })
+}
+
 document.onreadystatechange = () => {
     if (document.readyState == "complete") isLoaded = true
-    if (localStorage.fastBoot == "true" || localStorage.verboseBoot == "true" || bootAnimationEnded ) desktopInit()
+    if (localStorage.fastBoot == "true" || localStorage.verboseBoot == "true" || bootAnimationEnded ) showLogonUI()
 }
 
 bootAnimation.addEventListener("ended", e => {
-    if (isLoaded) desktopInit()
+    if (isLoaded) showLogonUI()
     bootAnimationEnded = true;
     bootAnimation.currentTime = 3.02;
     bootAnimation.play()
     doesntloadwinload.style.display = "block"
 })
-function shutdown(){
+function shutdown(a){
+    console.log(a)
+    if (a == "r"){
+        logoff();
+        return
+    }
     document.body.style.backgroundColor = "black"
     document.body.innerHTML = '<div style="position: absolute; left: 50vw; top: 50vh; transform: translate(-50%, -50%); color: white">It is now safe to turn off your computer</div>'
     wallpaper.innerHTML = 
@@ -252,10 +307,18 @@ Dumping physical memory to disk:  <span id="bsodCounter" style="font-family: 'bs
     }, 200)
 }
 function logoff(){
-    document.querySelector(".explorer").style.display = "none"
+    shell.style.display = "none"
     document.querySelector(".logonui").style.display = "block"
     windows.innerHTML = ""
-    trays.innerHTML = ""
+    leftBar.innerHTML = ""
+    startMenu(false)
+    new Audio('./media/Windows Logoff Sound.flac').play(); 
+}
+function login(user, password){
+    // document.querySelector('.logonui').style.display = 'none'; 
+    // shell.style.display = 'block'
+    // new Audio('./media/Windows Logon Sound.flac').play(); 
+    if (!init) desktopInit();
 }
 function html2canvas(html, canvas){
 

@@ -4,13 +4,30 @@
         <title>Internet Explorer</title>
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <link rel="stylesheet" href="../../sys/windows.css" id="theme">
         <link rel="stylesheet" href="style.css">
+        <script src="../../sys/windowEvents.js"></script>
     </head>
+    <script>
+        function changeTheme(a){
+            theme.href = "../../res/" + a + "/style.css"
+        }
+        changeTheme(localStorage.theme)
+        onmessage = (e) => {
+            const commands = e.data.split("|")
+            if (commands[0] == "theme" && commands.length == 2)
+                changeTheme(commands[1])
+        }
+        let thisWindow = frameElement.parentElement.parentElement.parentElement
+    </script>
     <body>
         <div class="ieheader">
             <div class="travelButtons">
                 <div class="back"></div>
                 <div class="next"></div>
+            </div>
+            <div class="url-bars">
+                <input type="text" name="urlbar" id="urlbar" onkeydown="urlbarEnter(event)">
             </div>
         </div>
         <div class="tabs">
@@ -20,7 +37,20 @@
         </div>
         <div class="frames">
         </div>
+        <div class="header topbar-ext" ondblclick="parent.maximise(thisWindow)"></div>
         <script>
+            function urlbarEnter(event){
+                if(event.key === 'Enter'){
+                    for (a of document.querySelectorAll('.frame')){
+                        if (a.style.display == 'block'){
+                            if (!(urlbar.value.startsWith("http://") || urlbar.value.startsWith("https://"))){
+                                urlbar.value = "https://" + urlbar.value
+                            }
+                            a.children[0].src = urlbar.value
+                        }
+                    }
+                }
+            }
             var FrameMaxID = 1
             let tab;
             function ActivateTab(FrameID) {
@@ -43,8 +73,8 @@
                     <div class="tab active" onclick="ActivateTab('${NewFrameID}')" id="Tab_${NewFrameID}"><div></div></div>
                 `
                 document.querySelector('.frames').innerHTML += `
-                    <div class="frame" style="display:block" id="Frame_${NewFrameID}">
-                        <iframe onload="console.log(event)" src="https://google.com/" frameborder="0"></iframe>
+                    <div class="frame content" style="display:block" id="Frame_${NewFrameID}">
+                        <iframe onload="console.log(event)" src="about:blank" frameborder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
                     </div>
                 `
             }
@@ -74,7 +104,6 @@
             }
         </script>
         <script>
-            let thisWindow = frameElement.parentElement.parentElement.parentElement
             parent.showWindow("./bin/iexplore/icon.png", thisWindow.getAttribute("windowid"));
         </script>
     </body>

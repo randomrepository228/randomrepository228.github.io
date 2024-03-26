@@ -17,8 +17,11 @@ input[type="checkbox"]:checked:active + label{
     background-image: url("../basic-aero/checkbox/checked/pressed.png");
 }
 .dash{
-    background-image: url("./buttons/min/normal.png");
+    background-image: url("./buttons/min/inactive.png");
     width: 29px;
+}
+.focus .dash{
+    background-image: url("./buttons/min/normal.png");
 }
 .x::after{
     margin-left: -1px;
@@ -61,9 +64,12 @@ input[type="checkbox"]:checked:active + label{
     width: 52px;
 }
 .x{
-    background-image: url("./buttons/close/normal.png");
+    background-image: url("./buttons/close/inactive.png");
     width: 49px;
     z-index: 5;
+}
+.focus .x{
+    background-image: url("./buttons/close/normal.png");
 }
 .x:hover{
     background-image: url("./buttons/close/hover.png");
@@ -81,8 +87,11 @@ input[type="checkbox"]:checked:active + label{
     background-image: url("./buttons/close/lonepressed.png");
 }
 .square{
-    background-image: url("./buttons/max/normal.png");
+    background-image: url("./buttons/max/inactive.png");
     width: 29px;
+}
+.focus .square{
+    background-image: url("./buttons/max/normal.png");
 }
 .square:hover{
     background-image: url("./buttons/max/hover.png");
@@ -107,10 +116,13 @@ input[type="checkbox"]:checked:active + label{
     background-color: hsla(209, 68%, 50%, 0.15);
     backdrop-filter: blur(3px);
     border: 1px solid black;
-    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png");
-    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px;
-    background-size: auto, auto, 100% 30%;
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png"), url(reflection.png);
+    --aero-reflections-left: 0;
+    --aero-reflections-top: 0;
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, left var(--aero-reflections-left) top var(--aero-reflections-top);
+    background-size: auto, auto, 100% 30%, 100vw 100vh;
     background-repeat: no-repeat, no-repeat;
+    background-attachment: local, local, local, fixed;
     border-radius: 8px;
 }
 /* ::-webkit-scrollbar{
@@ -124,6 +136,16 @@ input[type="checkbox"]:checked:active + label{
 } */
 .window{
     padding-top: 0;
+    background-image: url(reflection.png);
+    background-position: left var(--aero-reflections-left) top var(--aero-reflections-top);
+    background-size: 100vw 100vh;
+}
+.window.focus{
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png"), url(reflection.png);
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, left var(--aero-reflections-left) top var(--aero-reflections-top);
+    background-size: auto, auto, 100% 30%, 100vw 100vh;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: local, local, local, fixed;
 }
 .topbar{
     display: flex;
@@ -149,13 +171,13 @@ input[type="checkbox"]:checked:active + label{
     flex-direction: column;
     justify-content: space-between;
     background-color: white;
-    box-shadow: inset 0px 0px 0px 1px rgb(29, 55, 81);
-    border: 1px solid rgba(255,255,255,0.7);
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.7), inset 0px 0px 0px 2px rgb(29, 55, 81);
     border-radius: 2px;
     flex-grow: 1;
-    padding: 1px;
+    padding: 2px;
+    box-sizing: border-box;
 }
-.maximised .content{
+.maximisedm .content, .maximised .content{
     border-radius: 0px;
     border-left: none;
     border-right: none;
@@ -336,4 +358,17 @@ input:focus, textarea:focus{
 }
 article[role=tabpanel]{
     background-color: white;
+}
+.taskbar{
+    background-image: url(reflection.png);
+    background-size: 100vw 100vh;
+    background-position: bottom;
+}
+.start-menu{
+    background-image: url("reflection.png"), url("../start_menu.png");
+    background-size: 100vw 100vh, 100% 100%;
+    background-position: left 0 bottom calc(0px - var(--taskbar-height)), left top;
+}
+.dock-br{
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, right 8px bottom calc(var(--taskbar-height) - 8px);
 }

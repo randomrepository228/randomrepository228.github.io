@@ -26,10 +26,9 @@ fs.downloadFiles = async (files) => {
 fs.checkSystemFolder = async function(){
     const transaction = db.transaction("rootfs", "readwrite")
     const initialfs = transaction.objectStore("rootfs");
-    const request = initialfs.get("sys/.")
+    const request = initialfs.get("config/.")
     request.onsuccess = (e) => {
         if(request.result) return;
-        initialfs.clear()
         const systemFiles = [
             {path: "bin/.", data: ""}, 
             {path: "bin/bsod/.", data: ""}, 
@@ -58,7 +57,8 @@ fs.checkSystemFolder = async function(){
             {path: "Profileimgs/.", data: ""},
             {path: "res/.", data: ""},
             {path: "shell/.", data: ""},
-            {path: "Winda.old/.", data: ""}
+            {path: "Winda.old/.", data: ""},
+            {path: "config/.", data: ""}
         ]
         systemFiles.forEach((file) => initialfs.add(file)); 
         let programs = []
@@ -155,7 +155,10 @@ fs.moveFile = function(initialFilePath, filePath){
             result.path = filePath
             const query = initialfs.put(result, initialFilePath)
             query.onerror = (e) => resolve(2)
-            query.onsuccess = (e) => resolve(0)
+            query.onsuccess = (e) => {
+                resolve(0)
+                dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
+            }
         }
         query.onerror = (e) => resolve(1)
     })
@@ -171,7 +174,10 @@ fs.copyFile = function(initialFilePath, filePath){
             result.path = filePath
             const query = initialfs.put(result)
             query.onerror = (e) => resolve(2)
-            query.onsuccess = (e) => resolve(0)
+            query.onsuccess = (e) => {
+                resolve(0)
+                dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
+            }
         }
         query.onerror = (e) => resolve(1)
     })
@@ -205,6 +211,13 @@ fs.watchFile = function(filePath){
     return new Promise((resolve, reject) => {
         addEventListener("filechange", (e) => {
             if (e.detail.filename == filePath) resolve()
+        }, {once: true})
+    })
+}
+fs.watchDir = function(filePath){
+    return new Promise((resolve, reject) => {
+        addEventListener("filechange", (e) => {
+            if (e.detail.filename.startsWith(filePath)) resolve()
         }, {once: true})
     })
 }
@@ -307,28 +320,6 @@ fs.searchHTML = async function(path, searchString){
 }
 request.onsuccess = async (e) => {
     db = e.target.result;
-    dispatchEvent(new CustomEvent("fsloaded"))
-    fs.checkSystemFolder()
-    preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
-    "res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
-    "res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
-    "res/aero/buttons/close/glow.png", "res/aero/buttons/close/hover.png", "res/aero/buttons/min/normal.png", "res/aero/buttons/min/hover.png", 
-    "res/aero/buttons/min/pressed.png", "res/aero/buttons/min/icon.png", "res/aero/buttons/max/hover.png", "res/aero/buttons/max/normal.png", 
-    "res/aero/buttons/max/pressed.png", "res/aero/buttons/max/icon.png", "res/aero/buttons/glow.png", "res/aero/style.css", "res/aero/window_aura.png",
-    "res/aero/window_aura_mirror.png", "res/aero/window_side.png", "res/button/hover.png", "res/button/normal.png", "res/button/pressed.png", 
-    "res/button/disabled.png", "res/button/default.png", "res/checkbox/unchecked/hover.png", "res/checkbox/unchecked/normal.png", 
-    "res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
-    "res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
-    "res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg", "boot.webm"]
-    preload.forEach(async a => {
-        console.log(a, preload)
-        const exists = await fs.exists(a)
-        console.log(exists, a)
-        if (!exists){
-            console.log("so")
-            await fs.downloadFiles([a])
-        }
-    })
     // fs.writeFile("secret.txt", "IFRAME ЗЛО!")
 };
 request.onupgradeneeded = (e) => {

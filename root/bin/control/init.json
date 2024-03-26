@@ -4,5 +4,6 @@
     "title": "Winda Control Panel",
     "icon": "icon.png",
     "window": true,
-    "noGUI": true
+    "noGUI": true,
+    "titleBarHeight": 30
 }

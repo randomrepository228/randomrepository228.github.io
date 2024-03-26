@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <link rel="stylesheet" href="./aero/style.css" id="controlTheme">
         <script>
@@ -59,214 +60,216 @@
             <div class="adressbar"><div onclick="closeSection()">Control Panel</div></div>
             <input type="text" id="searchbox" placeholder="Search in control panel">
         </div>
-        <div class="content">
-            <div class="icons">
-                <div class="icon" ondblclick="openSection('main')"><img src="Icon1666.png" onerror="this.style.opacity = '0'">System</div>
-                <div class="icon" ondblclick="openSection('personalize')"><img src="Icon1689.png" onerror="this.style.opacity = '0'">Personalize</div>
-            </div>
-            <div class="main" style="display: none" id="System">
-                <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
-                <label for="verboseBoot">Verbose boot</label><br>
-                <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
-                <label for="fastBoot">Fast boot (Skip boot animation)</label><br>
-                <input type="checkbox" name="maximiseWindows" id="maximiseWindows" onchange="localStorage.maximiseWindows = this.checked ? 'true' : 'false'">
-                <label for="maximiseWindows">Maximise windows on start</label><br>
-                <input type="checkbox" name="maximiseTransparency" id="maximiseTransparency" onchange="localStorage.maximiseTransparency = this.checked ? 'true' : 'false';parent.refreshTransparency()">
-                <label for="maximiseTransparency">Maximised windows not transparent</label><br>
-                <input type="checkbox" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.checked ? 'true' : 'false';parent.refreshDpi()">
-                <label for="dpiscale">Do not scale based on system DPI</label><br>
-                <input type="checkbox" name="aerosnap" id="aerosnap" onchange="localStorage.aerosnap = this.checked ? 'true' : 'false';">
-                <label for="aerosnap">Turn off aero snap</label><br>
-                <!-- <input type="range" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.value">
-                <label for="dpiscale">Maximised windows transparent</label> -->
-            </div>
-            <div class="personalize" style="display: none" id="Personalize">
-                <div class="controlContent" id="ControlContentPersonalize">
-                    <link rel="stylesheet" href="Personalize.css">
-                    <div class="cont" style="padding-bottom: 0; height: calc(100vh - 56px)">
-                        <h1>Изменение изображения и звука на компьютере</h1>
-                        <p>Выберите тему, чтобы одновременно изменить фон рабочего стола, цвет, звуки и заставку.</p>
-                        <div class="themesContainer">
-                            <p>Темы Aero (1)</p>
-                            <div class="themelist">
-                                <div class="theme" ondblclick="top.changeTheme('aero')">
-                                    <div class="images">
-                                        <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
-                                        <img class="img1" src="602.png" style="border-radius: 7px; background-color: rgba(136, 227, 255, 0.5);">
-                                    </div>
-                                    <p>Windows 7</p>
-                                </div>
-                            </div>
-                            <p>Базовые (упрощенные) темы и темы с высокой контрастностью</p>
-                            <div class="themelist">
-                                <div class="theme" ondblclick="top.changeTheme('basic')">
-                                    <div class="images">
-                                        <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
-                                        <img class="img1" src="603.png">
-                                    </div>
-                                    <p>Windows 7 (Упрощенная)</p>
-                                </div>
-                                <div class="theme" ondblclick="top.changeTheme('classic')">
-                                    <div class="images">
-                                        <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
-                                        <img class="img1" src="604.png">
-                                    </div>
-                                    <p>Классическая</p>
-                                </div>
-                                <div class="theme" ondblclick="top.changeTheme('luna')">
-                                    <div class="images">
-                                        <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
-                                        <img class="img1" src="605.png">
-                                    </div>
-                                    <p>Luna</p>
-                                </div>
-                            </div>
-                        </div>
-                        <table style="width: 100%;" id="ControlContentPersonalization_Table">
-                            <tbody>
-                                <tr style="height: 70px">
-                                    <td onclick="openSection('wallpaper')"><img src="../../img/img0.jpg" alt="" id="wallpaperpreview" style="max-height: 56px; max-width: 100px;"></td>
-                                    <td><img src="602.png" alt="" style="height: 48px; width: 48px; border-radius: 5px; background-color: rgb(190, 240, 255);"></td>
-                                    <td><img src="nosounds.png" alt=""></td>
-                                    <td><img src="noscreensaver.png" alt=""></td>
-                                </tr>
-                                <tr>
-                                    <td><a onclick="openSection('wallpaper')">Фон рабочего стола</a></td>
-                                    <td><a>Цвет</a></td>
-                                    <td><a>Звуки</a></td>
-                                    <td><a>Заставка</a></td>
-                                </tr>
-                                <tr>
-                                    <td><p></p></td>
-                                    <td><p>Автоматически</p></td>
-                                    <td><p>Отсутствуют</p></td>
-                                    <td><p>Отсутствует</p></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="maint">
+            <div class="content">
+                <div class="icons">
+                    <div class="icon" ondblclick="openSection('main')"><img src="Icon1666.png" onerror="this.style.opacity = '0'">System</div>
+                    <div class="icon" ondblclick="openSection('personalize')"><img src="Icon1689.png" onerror="this.style.opacity = '0'">Personalize</div>
                 </div>
-            </div>
-            <div class="wallpaper" style="display: none;" id="Wallpaper">
-                <div class="cont" style="padding-bottom: 0; height: calc(100vh - 105px)">
-                    <h1>Выберите фоновый рисунок рабочего стола</h1>
-                    <p>Выберите изображение, чтобы использовать его в качестве фонового изображения рабочего стола.</p>
-                    <div class="wallpaperselect">
-                        <div>
-                            Расположение изображения:
-                            <div class="select">
-                                <select name="wallpaperSelect">
-                                    <option value="windows">Фоны рабочего стола Windows</option>
-                                </select>
-                                <selecticon></selecticon>
+                <div class="main" style="display: none" id="System">
+                    <input type="checkbox" name="verboseBoot" id="verboseBoot" onchange="localStorage.verboseBoot = this.checked ? 'true' : 'false'">
+                    <label for="verboseBoot">Verbose boot</label><br>
+                    <input type="checkbox" name="fastBoot" id="fastBoot" onchange="localStorage.fastBoot = this.checked ? 'true' : 'false'">
+                    <label for="fastBoot">Fast boot (Skip boot animation)</label><br>
+                    <input type="checkbox" name="maximiseWindows" id="maximiseWindows" onchange="localStorage.maximiseWindows = this.checked ? 'true' : 'false'">
+                    <label for="maximiseWindows">Maximise windows on start</label><br>
+                    <input type="checkbox" name="maximiseTransparency" id="maximiseTransparency" onchange="localStorage.maximiseTransparency = this.checked ? 'true' : 'false';parent.refreshTransparency()">
+                    <label for="maximiseTransparency">Maximised windows not transparent</label><br>
+                    <input type="checkbox" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.checked ? 'true' : 'false';parent.refreshDpi()">
+                    <label for="dpiscale">Do not scale based on system DPI</label><br>
+                    <input type="checkbox" name="aerosnap" id="aerosnap" onchange="localStorage.aerosnap = this.checked ? 'true' : 'false';">
+                    <label for="aerosnap">Turn off aero snap</label><br>
+                    <!-- <input type="range" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.value">
+                    <label for="dpiscale">Maximised windows transparent</label> -->
+                </div>
+                <div class="personalize" style="display: none" id="Personalize">
+                    <div class="controlContent" id="ControlContentPersonalize">
+                        <link rel="stylesheet" href="Personalize.css">
+                        <div class="cont" style="padding-bottom: 0; height: calc(100vh - 56px)">
+                            <h1>Изменение изображения и звука на компьютере</h1>
+                            <p>Выберите тему, чтобы одновременно изменить фон рабочего стола, цвет, звуки и заставку.</p>
+                            <div class="themesContainer">
+                                <p>Темы Aero (1)</p>
+                                <div class="themelist">
+                                    <div class="theme" ondblclick="top.changeTheme('aero')">
+                                        <div class="images">
+                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img1" src="602.png" style="border-radius: 7px; background-color: rgba(136, 227, 255, 0.5);">
+                                        </div>
+                                        <p>Windows 7</p>
+                                    </div>
+                                </div>
+                                <p>Базовые (упрощенные) темы и темы с высокой контрастностью</p>
+                                <div class="themelist">
+                                    <div class="theme" ondblclick="top.changeTheme('basic')">
+                                        <div class="images">
+                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img1" src="603.png">
+                                        </div>
+                                        <p>Windows 7 (Упрощенная)</p>
+                                    </div>
+                                    <div class="theme" ondblclick="top.changeTheme('classic')">
+                                        <div class="images">
+                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img1" src="604.png">
+                                        </div>
+                                        <p>Классическая</p>
+                                    </div>
+                                    <div class="theme" ondblclick="top.changeTheme('luna')">
+                                        <div class="images">
+                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img1" src="605.png">
+                                        </div>
+                                        <p>Luna</p>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="file" id="wallpaperFile" name="wallpaperfile" accept=".png, .jpg, .bmp, .gif, .webp">
-                            <button><label for="wallpaperFile">Обзор...</label></button>
+                            <table style="width: 100%;" id="ControlContentPersonalization_Table">
+                                <tbody>
+                                    <tr style="height: 70px">
+                                        <td onclick="openSection('wallpaper')"><img src="../../img/img0.jpg" alt="" id="wallpaperpreview" style="max-height: 56px; max-width: 100px;"></td>
+                                        <td><img src="602.png" alt="" style="height: 48px; width: 48px; border-radius: 5px; background-color: rgb(190, 240, 255);"></td>
+                                        <td><img src="nosounds.png" alt=""></td>
+                                        <td><img src="noscreensaver.png" alt=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a onclick="openSection('wallpaper')">Фон рабочего стола</a></td>
+                                        <td><a>Цвет</a></td>
+                                        <td><a>Звуки</a></td>
+                                        <td><a>Заставка</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p></p></td>
+                                        <td><p>Автоматически</p></td>
+                                        <td><p>Отсутствуют</p></td>
+                                        <td><p>Отсутствует</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="themesContainer" id="images"></div>
-                    <p>Позиция картинки:</p>
-                    <div class="select" style="height: 50px;">
-                        <select name="wallpaperStretch" style="height: 50px;" onchange="top.setWallpaperStretch(this.value)">
-                            <option value="fill">Заполнить</option>
-                            <option value="fit">Вместить</option>
-                            <option value="stretch" default>Растянуть&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                            <option value="tile">Замостить</option>
-                            <option value="center">Центр</option>
-                        </select>
-                        <selecticon style="height: 50px; background-position: center; background-repeat: no-repeat;"></selecticon>
-                    </div>
                 </div>
-                <footer>
-                    <button default onclick="saveChanges()">Сохранить изменения</button>
-                    <button onclick="cancel()">Отмена</button>
-                </footer>
-            </div>
-            </div>
-            <script>
-                let originalwallpaper = localStorage.wallpaper
-                let originalwallpaperstretch = localStorage.wallpaperstretch
-                function saveChanges(){
+                <div class="wallpaper" style="display: none;" id="Wallpaper">
+                    <div class="cont" style="padding-bottom: 0; height: calc(100vh - 105px)">
+                        <h1>Выберите фоновый рисунок рабочего стола</h1>
+                        <p>Выберите изображение, чтобы использовать его в качестве фонового изображения рабочего стола.</p>
+                        <div class="wallpaperselect">
+                            <div>
+                                Расположение изображения:
+                                <div class="select">
+                                    <select name="wallpaperSelect">
+                                        <option value="windows">Фоны рабочего стола Windows</option>
+                                    </select>
+                                    <selecticon></selecticon>
+                                </div>
+                                <input type="file" id="wallpaperFile" name="wallpaperfile" accept=".png, .jpg, .bmp, .gif, .webp">
+                                <button><label for="wallpaperFile">Обзор...</label></button>
+                            </div>
+                        </div>
+                        <div class="themesContainer" id="images"></div>
+                        <p>Позиция картинки:</p>
+                        <div class="select" style="height: 50px;">
+                            <select name="wallpaperStretch" style="height: 50px;" onchange="top.setWallpaperStretch(this.value)">
+                                <option value="fill">Заполнить</option>
+                                <option value="fit">Вместить</option>
+                                <option value="stretch" default>Растянуть&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                <option value="tile">Замостить</option>
+                                <option value="center">Центр</option>
+                            </select>
+                            <selecticon style="height: 50px; background-position: center; background-repeat: no-repeat;"></selecticon>
+                        </div>
+                    </div>
+                    <footer>
+                        <button default onclick="saveChanges()">Сохранить изменения</button>
+                        <button onclick="cancel()">Отмена</button>
+                    </footer>
+                </div>
+                </div>
+                <script>
                     let originalwallpaper = localStorage.wallpaper
                     let originalwallpaperstretch = localStorage.wallpaperstretch
-                }
-                function cancel(){
-                    top.changeWallpaper(originalwallpaper)
-                    top.setWallpaperStretch(originalwallpaperstretch)
-                }
-                wallpaperpreview.src = localStorage.wallpaper
-                function openSection(sectionName, back){
-                    let section = document.querySelector('.' + sectionName)
-                    if (!section.style.display) return
-                    for (a of document.querySelector('.content').children) a.style.display = 'none';
-                    section.style.display = ''
-                    if (back) document.querySelector('.adressbar').lastElementChild.remove()
-                    else document.querySelector('.adressbar').innerHTML += `<div onclick="openSection('${sectionName}', true)">${section.id}</div>`;
-                }
-                function closeSection(){
-                    for (a of document.querySelector('.content').children)
-                        a.style.display = 'none'
-                    document.querySelector('.icons').style.display = '';
-                    document.querySelector('.adressbar').innerHTML = '<div onclick="closeSection()">Control Panel</div>'
-                    openedSection = false;
-                    openedSubSection = false;
-                }
-                function getFileName(){
-                    var i = str.lastIndexOf('.');
-                    if (i != -1) {
-                        str = str.substr(0, i);
+                    function saveChanges(){
+                        let originalwallpaper = localStorage.wallpaper
+                        let originalwallpaperstretch = localStorage.wallpaperstretch
                     }
-                }
-                function handleWallpaper() {
-                    const file = wallpaperFile.files[0];
-                    const reader = new FileReader();
-                    reader.addEventListener("load", () => {
-                        console.log("dsfdsfdsf")
-                        top.changeWallpaper(reader.result)
-                    });
+                    function cancel(){
+                        top.changeWallpaper(originalwallpaper)
+                        top.setWallpaperStretch(originalwallpaperstretch)
+                    }
+                    wallpaperpreview.src = localStorage.wallpaper
+                    function openSection(sectionName, back){
+                        let section = document.querySelector('.' + sectionName)
+                        if (!section.style.display) return
+                        for (a of document.querySelector('.content').children) a.style.display = 'none';
+                        section.style.display = ''
+                        if (back) document.querySelector('.adressbar').lastElementChild.remove()
+                        else document.querySelector('.adressbar').innerHTML += `<div onclick="openSection('${sectionName}', true)">${section.id}</div>`;
+                    }
+                    function closeSection(){
+                        for (a of document.querySelector('.content').children)
+                            a.style.display = 'none'
+                        document.querySelector('.icons').style.display = '';
+                        document.querySelector('.adressbar').innerHTML = '<div onclick="closeSection()">Control Panel</div>'
+                        openedSection = false;
+                        openedSubSection = false;
+                    }
+                    function getFileName(){
+                        var i = str.lastIndexOf('.');
+                        if (i != -1) {
+                            str = str.substr(0, i);
+                        }
+                    }
+                    function handleWallpaper() {
+                        const file = wallpaperFile.files[0];
+                        const reader = new FileReader();
+                        reader.addEventListener("load", () => {
+                            console.log("dsfdsfdsf")
+                            top.changeWallpaper(reader.result)
+                        });
 
-                    if (file) reader.readAsDataURL(file);
-                }
-                var request = new XMLHttpRequest();
-                let logonSound = '../../media/Windows Logon Sound.flac'
-                request.onreadystatechange = function() {
-                    if (request.readyState == 4){
-                        if(request.status == 200){
-                            const info = JSON.parse(request.responseText)
-                            for(a of info.packs){
-                                let b = document.createElement("div")
-                                b.className = "themelist"
-                                images.innerHTML += "<p>" + a + '</p>'
-                                for(c of info[a]){
-                                    b.innerHTML += `
+                        if (file) reader.readAsDataURL(file);
+                    }
+                    var request = new XMLHttpRequest();
+                    let logonSound = '../../media/Windows Logon Sound.flac'
+                    request.onreadystatechange = function() {
+                        if (request.readyState == 4){
+                            if(request.status == 200){
+                                const info = JSON.parse(request.responseText)
+                                for(a of info.packs){
+                                    let b = document.createElement("div")
+                                    b.className = "themelist"
+                                    images.innerHTML += "<p>" + a + '</p>'
+                                    for(c of info[a]){
+                                        b.innerHTML += `
 <div class="wallpaperitem" ondblclick="parent.changeWallpaper('./img/img${c}.jpg');new Audio(logonSound).play()">
     <div class="images">
         <img class="img2" src="../../img/img${c}_thumb.png">
     </div>
 </div>`
+                                    }
+                                    images.appendChild(b)
                                 }
-                                images.appendChild(b)
                             }
                         }
                     }
-                }
-                request.open("GET", "../../img/info.json", true);
-                request.send();
-                wallpaperFile.addEventListener("change", handleWallpaper);
-                document.querySelector("select").value = localStorage.theme
-                verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
-                fastBoot.checked = localStorage.fastBoot == "true" ? true : false
-                maximiseWindows.checked = localStorage.maximiseWindows == "true" ? true : false
-                dpiscale.checked = localStorage.dpiscale == "true" ? true : false
-                aerosnap.checked = localStorage.aerosnap == "true" ? true : false
-                // useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
-                // dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
-                const args = frameElement.getAttribute("args")
-                if (args != "undefined"){
-                    openSection(args)
-                }
-                parent.showWindow("./bin/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
-            </script>
+                    request.open("GET", "../../img/info.json", true);
+                    request.send();
+                    wallpaperFile.addEventListener("change", handleWallpaper);
+                    document.querySelector("select").value = localStorage.theme
+                    verboseBoot.checked = localStorage.verboseBoot == "true" ? true : false
+                    fastBoot.checked = localStorage.fastBoot == "true" ? true : false
+                    maximiseWindows.checked = localStorage.maximiseWindows == "true" ? true : false
+                    dpiscale.checked = localStorage.dpiscale == "true" ? true : false
+                    aerosnap.checked = localStorage.aerosnap == "true" ? true : false
+                    // useSmallTaskbar.checked = localStorage.useSmallTaskbar == "true" ? true : false
+                    // dontGroupIcons.checked = localStorage.dontGroupIcons == "true" ? true : false
+                    const args = frameElement.getAttribute("args")
+                    if (args != "undefined"){
+                        openSection(args)
+                    }
+                    parent.showWindow("./bin/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+                </script>
+            </div>
         </div>
     </body>
 </html>

@@ -10,6 +10,26 @@
     z-index: 4;
     padding: 7px;
     padding-top: 0;
+    box-shadow: 1px 1px white inset;
+    border: 1px solid black;
+    background-image: linear-gradient(to bottom, #BFCDDB, #D7E4F2), url("./window_side.png");
+    background-color: #D7E4F2;
+    background-position: left 0 top 0, left 0 top 20%;
+    background-size: 100% 27px, 100% 30%;
+    background-repeat: no-repeat, repeat-x;
+}
+.focus.window{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    touch-action: none;
+    resize: both;
+    z-index: 4;
+    padding: 7px;
+    padding-top: 0;
     box-shadow: -1px -1px rgba(0, 255, 255, 1) inset, 1px 1px white inset;
     border: 1px solid black;
     background-image: linear-gradient(to bottom, #98B4D0, #B9D1EA), url("./window_side.png");
@@ -62,7 +82,7 @@
     position: fixed;
     box-shadow: none !important;
 }
-.maximised .content{
+.maximisedm .content, .maximised .content{
     border-radius: 0px;
     border: none !important;
     outline: none !important;
@@ -103,27 +123,44 @@ html, body{
 body{
     position: fixed;
 }
-.dash, .square{
-    background-image: url("./buttons/min/normal.png");
+.x img, .dash img, .square img{
+    display: none;
+}
+.x, .dash, .square{
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.dash{
+    background-image: url("./buttons/min/icon.png"), url("./buttons/min/normal.png");
+    width: 32px;
+}
+.square{
+    background-image: url("./buttons/max/icon.png"), url("./buttons/min/normal.png");
     width: 32px;
 }
 .x{
-    background-image: url("./buttons/close/normal.png");
+    background-image: url("./buttons/close/icon.png"), url("./buttons/close/normal.png");
     width: 28px;
     border-bottom-right-radius: 3px;
     z-index: 5;
 }
 .x:hover{
-    background-image: url("./buttons/close/hover.png");
+    background-image: url("./buttons/close/icon.png"), url("./buttons/close/hover.png");
 }
 .x:active{
-    background-image: url("./buttons/close/pressed.png");
+    background-image: url("./buttons/close/icon.png"), url("./buttons/close/pressed.png");
 }
-.square:hover, .dash:hover{
-    background-image: url("./buttons/min/hover.png");
+.square:hover{
+    background-image: url("./buttons/max/icon.png"), url("./buttons/min/hover.png");
 }
-.square:active, .dash:active{
-    background-image: url("./buttons/min/pressed.png");
+.dash:hover{
+    background-image: url("./buttons/min/icon.png"), url("./buttons/min/hover.png");
+}
+.square:active{
+    background-image: url("./buttons/max/icon.png"), url("./buttons/min/pressed.png");
+}
+.dash:active{
+    background-image: url("./buttons/min/icon.png"), url("./buttons/min/pressed.png");
 }
 .dash:hover, .square:hover{
     z-index: 999;

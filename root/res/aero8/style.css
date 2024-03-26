@@ -136,7 +136,7 @@ input[type="checkbox"]:checked:active + label{
     background-color: white;
     flex-grow: 1;
 }
-.maximised .content{
+.maximisedm .content, .maximised .content{
     border-radius: 0px;
     border: none !important;
     outline: none !important;

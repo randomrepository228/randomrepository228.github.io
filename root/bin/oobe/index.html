@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             html { 
@@ -25,7 +26,7 @@
                 margin-bottom: 0px;
             }
             footer{
-                position: absolute;
+                position: fixed;
                 left: 0;
                 bottom: 0;
                 right: 0;
@@ -45,22 +46,37 @@
         </script>
     </head>
     <body>
-        <center>
-            <h1>Winda7</h1>
-            <p>Choose a user name for your account and name your computer to distinguish it on the network</p><br>
-            <p>Type a username (For example, kitaes):</p>
-            <input type="text" id="username">
-            <p>Type a computer name:</p>
-            <input type="text" id="pcname">
-        </center>
-        <footer>
-            <button onclick="openSection('password'); localStorage.pcname = pcname.value">Next</button>
-        </footer>
+        <div class="content">
+            <div class="username">
+                <center>
+                    <h1>Winda7</h1>
+                    <p>Choose a user name for your account and name your computer to distinguish it on the network</p><br>
+                    <p>Type a username (For example, kitaes):</p>
+                    <input type="text" id="username">
+                    <p>Type a computer name:</p>
+                    <input type="text" id="pcname">
+                </center>
+                <footer>
+                    <button onclick="openSection('password'); localStorage.pcname = pcname.value; localStorage.user0name = username.value">Next</button>
+                </footer>
+            </div>
+            <div class="password" style="display: none;">
+                <h2>Set a password for your account</h2>
+                <footer>
+                    <button onclick="openSection('password'); localStorage.pcname = pcname.value; localStorage.user0name = username.value">Next</button>
+                </footer>
+            </div>
+        </div>
         <script>
+            function openSection(sectionName, back){
+                let section = document.querySelector('.' + sectionName)
+                if (!section.style.display) return
+                for (a of document.querySelector('.content').children) a.style.display = 'none';
+                section.style.display = ''
+            }
             let thisWindow = frameElement.parentElement.parentElement.parentElement
-            thisWindow.style.top = "50%"
-            thisWindow.style.left = "50%"
-            thisWindow.style.transform = "translate(-50%, -50%)"
+            thisWindow.style.top = "calc(50% - 175px)"
+            thisWindow.style.left = "calc(50% - 300px)"
             parent.showWindow("./bin/ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
             parent.document.querySelector(":root").style.setProperty("--wallpaper", "url(./res/login.jpg)")
             parent.changeTheme("basic")

@@ -296,7 +296,8 @@ body{
     height: 22px;
     background-size: 100% 100%;
 } */
-.window{
+.window {
+    background: linear-gradient(90deg, grey, #b5b5b5);
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -304,6 +305,8 @@ body{
     touch-action: none;
     resize: both;
     z-index: 4;
+}
+.window.focus{
     background: linear-gradient(90deg, rgb(10, 36, 106), rgb(166, 202, 240));
 }
 .maximised{
@@ -343,7 +346,7 @@ body{
     position: fixed;
     box-shadow: none !important;
 }
-.maximised .content{
+.maximisedm .content, .maximised .content{
     border-radius: 0px;
     border: none !important;
     outline: none !important;
@@ -676,9 +679,6 @@ th{
     padding: 3px 2px 3px 3px
 }
 
-/* .topbar.inactive {
-    background: linear-gradient(90deg, grey, #b5b5b5)
-} */
 
 left {
     color: #fff;

@@ -23,12 +23,12 @@ html{
     z-index: 1;
 }
 .top, .bottom{
-    width: 100%;
+    width: calc(100% - 7px);
     height: 7px;
     cursor: n-resize;
 }
 .left, .right{
-    height: 100%;
+    height: calc(100% - 7px);
     width: 7px;
     cursor: w-resize;
 }
@@ -214,10 +214,10 @@ select:focus{
     background-color: transparent;
 }
 .start-option:hover{
-    background-image: url("../res/startmenuitemleft/hover/left.png"), url("../res/startmenuitemleft/hover/right.png"), url("../res/startmenuitemleft/hover/center.png");
+    background-image: url("../res/basic-aero/startmenuitemleft/hover/left.png"), url("../res/basic-aero/startmenuitemleft/hover/right.png"), url("../res/basic-aero/startmenuitemleft/hover/center.png");
 }
 .start-option-right:hover{
-    background-image: url("../res/startmenuitemright/hover/left.png"), url("../res/startmenuitemright/hover/right.png"), url("../res/startmenuitemright/hover/center.png");
+    background-image: url("../res/basic-aero/startmenuitemright/hover/left.png"), url("../res/basic-aero/startmenuitemright/hover/right.png"), url("../res/basic-aero/startmenuitemright/hover/center.png");
 }
 select{
     appearance: none;
@@ -276,8 +276,11 @@ input:focus{
 }
 .menubar {
     width: 100vw;
-    height: 19px;
+    min-height: 19px;
     background-image: url("../res/menubar.png");
+    background-size: 100% min(19px, 100%);
+    background-color: #E1E6F6;
+    background-repeat: no-repeat;
     font-size: 0;
 }
 
@@ -287,6 +290,7 @@ input:focus{
     border: 1px transparent solid;
     padding: 1px 7px;
     position: relative;
+    height: 19px;
 }
 .menubar .element:hover::after{
     display: block;
@@ -628,4 +632,8 @@ button[role="tab"][aria-selected="true"]{
 }
 footer > button{
     margin-left: 5px;
+}
+h2{
+    color: rgb(0,51,153);
+    font-weight: 400;
 }

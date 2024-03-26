@@ -62,68 +62,68 @@ function dragTaskbar(){
     addEventListener("touchend", (e) => removeEventListener("touchmove", mouseMoveEvent), {once: true})
 }
 shell.innerHTML = `
-<div class="icons" id="icons" 
-    oncontextmenu="contextMenu(event, [
-        ['', 'Refresh', () => reloadIcons()], 
-        ['', 'Personalize', () => loadApp('control', '', 'personalize')], 
-        ['', 'New text document', () => fs.writeFile('usr/SYSTEM/desktop/New Text Document.txt', '', true)]
-    ], event.clientX, event.clientY)" 
-    ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
-<bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
-<div class="taskbar"
-    onmousedown="dragTaskbar()"
-    oncontextmenu="if (!event.target.classList.contains('startbutton')) contextMenu(event, [
-        ['', 'Task manager', () => loadApp('taskmgr')],
-        ['', 'Properties', () => loadApp('taskbarproperties')]
-    ], event.clientX, event.clientY)">
-    <div class="wrapper startbutton" onmousedown="if(event.which === 1) startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()"
+    <div class="icons" id="icons" 
         oncontextmenu="contextMenu(event, [
-            ['', 'Properties', () => loadApp('taskbarproperties')],
-            ['', 'Open file explorer', () => loadApp('explorer-file-manager')]
+            ['', 'Refresh', () => reloadIcons()], 
+            ['', 'Personalize', () => loadApp('control', '', 'personalize')], 
+            ['', 'New text document', () => fs.writeFile('usr/SYSTEM/desktop/New Text Document.txt', '', true)]
+        ], event.clientX, event.clientY)" 
+        ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
+    <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
+    <div class="taskbar"
+        onmousedown="dragTaskbar()"
+        oncontextmenu="if (!event.target.classList.contains('startbutton')) contextMenu(event, [
+            ['', 'Task manager', () => loadApp('taskmgr')],
+            ['', 'Properties', () => loadApp('taskbarproperties')]
         ], event.clientX, event.clientY)">
-        <img class="taskbar-btn startbutton" src="./res/taskbar-btn.png"></img>
-        <div class="taskbar-btn-orb startbutton"></div>
-    </div>
-    <div class="left-bar" id="leftBar"></div>
-    <div class="right-bar">
-        <div id="trayicons">
-            <div class="trayicon n2">
-                <div style="width: 24px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(2))"></div>
-                <iframe src="./bin/update/tray.html" windowid="2" name="Winda Update" frameborder="0" style="width: 24px"></iframe>
+        <div class="wrapper startbutton" onmousedown="if(event.which === 1) startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()"
+            oncontextmenu="contextMenu(event, [
+                ['', 'Properties', () => loadApp('taskbarproperties')],
+                ['', 'Open file explorer', () => loadApp('explorer-file-manager')]
+            ], event.clientX, event.clientY)">
+            <img class="taskbar-btn startbutton" src="./res/taskbar-btn.png"></img>
+            <div class="taskbar-btn-orb startbutton"></div>
+        </div>
+        <div class="left-bar" id="leftBar"></div>
+        <div class="right-bar">
+            <div id="trayicons">
+                <div class="trayicon n2">
+                    <div style="width: 24px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(2))"></div>
+                    <iframe src="./bin/update/tray.html" windowid="2" name="Winda Update" frameborder="0" style="width: 24px"></iframe>
+                </div>
+                <div class="trayicon n1">
+                    <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(1))"></div>
+                    <iframe src="./bin/clock/tray.html" class="monochrome" windowid="1" name="Clock" frameborder="0" style="width: 79px"></iframe>
+                </div>
             </div>
-            <div class="trayicon n1">
-                <div style="width: 79px; margin-bottom: -40px; height: 40px;" onclick="showTray(getTray(1))"></div>
-                <iframe src="./bin/clock/tray.html" class="monochrome" windowid="1" name="Clock" frameborder="0" style="width: 79px"></iframe>
+            <div class="show-desktop" onclick="minimiseAll()"></div>
+        </div>
+    </div>
+    <div class="start-menu winapi_transparent">
+        <div class="left-start">
+            <div class="left-start-main">
+                <div class="allprogramsbutton" onclick="showAllPrograms()">All programs</div>
+            </div>
+            <div class="allprograms">
+                <div class="scrollable"></div>
+                <div class="allprogramsbutton" onclick="hideAllPrograms()">Back</div>
             </div>
         </div>
-        <div class="show-desktop" onclick="minimiseAll()"></div>
-    </div>
-</div>
-<div class="start-menu winapi_transparent">
-    <div class="left-start">
-        <div class="left-start-main">
-            <div class="allprogramsbutton" onclick="showAllPrograms()">All programs</div>
+        <div class="right-start">
+            <div class="rstop">
+                <div class="start-option-right">SYSTEM</div>
+                <div class="start-option-right" onclick="loadApp('control');startMenu(false, document.querySelector('.taskbar').querySelector('.wrapper'))">Control Panel</div>
+            </div>
+            <div class="select">
+                <select name="startMenuSessionActionSelect" onchange="if(this.value == 'shutdown') shutdown(); if(this.value == 'logoff') logoff(); this.value = 'none'">
+                    <option value="none" disabled selected hidden>Shutdown</option>
+                    <option value="shutdown">Shutdown</option>
+                    <option value="logoff">Log off</option>
+                </select>
+                <selecticon></selecticon>
+            </div>
         </div>
-        <div class="allprograms">
-            <div class="scrollable"></div>
-            <div class="allprogramsbutton" onclick="hideAllPrograms()">Back</div>
-        </div>
-    </div>
-    <div class="right-start">
-        <div class="rstop">
-            <div class="start-option-right">SYSTEM</div>
-            <div class="start-option-right" onclick="loadApp('control');startMenu(false, document.querySelector('.taskbar').querySelector('.wrapper'))">Control Panel</div>
-        </div>
-        <div class="select">
-            <select name="startMenuSessionActionSelect" onchange="if(this.value == 'shutdown') shutdown(); if(this.value == 'logoff') logoff(); this.value = 'none'">
-                <option value="none" disabled selected hidden>Shutdown</option>
-                <option value="shutdown">Shutdown</option>
-                <option value="logoff">Log off</option>
-            </select>
-            <selecticon></selecticon>
-        </div>
-    </div>
-</div>`
+    </div>`
 function showAllPrograms(){
     const leftStart = document.querySelector(".left-start")
     leftStart.style.height = leftStart.getBoundingClientRect().height + "px"
@@ -217,10 +217,14 @@ async function reloadIcons(){
         createIcon(new Icon(e, fileURL, `parent.loadApp('${app}', undefined, 'usr/SYSTEM/desktop/${e}')`), `usr/SYSTEM/desktop/${e}`)
     })
 }
-addEventListener("fsloaded", () => {
+let iconReloadLoop = 0;
+function initShellIcons(){
     reloadIcons()
-    setInterval(reloadIcons, 1000)
-})
+    iconReloadLoop = setInterval(reloadIcons, 1000)
+}
+function stopShellIcons(){
+    clearInterval(iconReloadLoop)
+}
 JSON.parse(localStorage.appList).forEach((e) => {
     addStartMenuEntryProgramLeft(new Icon(appListLocale[e], "./bin/" + e + "/icon.png", "parent.loadApp('" + e + "')"))
 })

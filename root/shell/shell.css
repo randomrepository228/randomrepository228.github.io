@@ -148,19 +148,13 @@ bottomright{
     border-image: url("../res/taskbar_btn.png") 5 fill;
     min-width: 60px;
     justify-content: center;
-}
-.window-tray.focus{
-    /* background-image: url("../res/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
-    /* background-position: left 0, center;
-    background-size: 100% 100%, 100% 100%;
-    background-repeat: no-repeat; */
-    background-image: url("../res/taskbar_btn_focus.png");
+    box-sizing: border-box;
 }
 .window-tray:hover{
-    /* background-image: url("../res/taskbar_btn.png"), radial-gradient(circle, rgba(255,253,175,1) 0%, rgba(251,255,91,1) 35%, rgba(255,235,78,0.4) 100%); */
-    background-position: left 0, center;
-    background-size: 100% 100%, 100% 100%;
-    background-repeat: no-repeat;
+    border-image: url("../res/taskbar_btn_hover.png") 5 fill;
+}
+.window-tray.focus, .window-tray:active{
+    border-image: url("../res/taskbar_btn_focus.png") 5 fill;
 }
 .window-tray img{
     height: 30px;
@@ -271,10 +265,6 @@ bottomright{
     display: flex;
     flex-direction: row;
 }
-.window-tray.focus{
-    background-image: none;
-    border-image: url("../res/taskbar_btn_focus.png") 5 fill;
-}
 .window-tray > p{
     display: none;
 }
@@ -300,7 +290,7 @@ bottomright{
     white-space: nowrap;
 }
 .allprograms .start-option:hover{
-    background-image: url("../res/startmenuitemleft/hover/left.png"), url("../res/startmenuitemleft/hover/right.png"), url("../res/startmenuitemleft/hover/center.png");
+    background-image: url("../res/basic-aero/startmenuitemleft/hover/left.png"), url("../res/basic-aero/startmenuitemleft/hover/right.png"), url("../res/basic-aero/startmenuitemleft/hover/center.png");
     background-position: left, right, 4px;
     background-repeat: no-repeat;
     background-size: 4px 100%, 4px 100%, calc(100% - 8px) 100%;
@@ -312,7 +302,7 @@ bottomright{
     margin-right: 5px;
 }
 .allprogramsbutton:hover{
-    background-image: url("../res/startmenuitemleft/hover/left.png"), url("../res/startmenuitemleft/hover/right.png"), url("../res/startmenuitemleft/hover/center.png");
+    background-image: url("../res/basic-aero/startmenuitemleft/hover/left.png"), url("../res/basic-aero/startmenuitemleft/hover/right.png"), url("../res/basic-aero/startmenuitemleft/hover/center.png");
     background-position: left, right, 4px;
     background-repeat: no-repeat;
     background-size: 4px 100%, 4px 100%, calc(100% - 8px) 100%;

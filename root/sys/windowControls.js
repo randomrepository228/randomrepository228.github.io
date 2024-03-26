@@ -1,12 +1,13 @@
 
-function windowMouseDown(event, elem, a, noResize){
+function windowMouseDown(event, elem, a, noResize, windowelem){
     if(event.target != elem) return;
     if (event.type == "touchstart" || event.target.classList.contains("topbar") || event.target.classList.contains("resizer") || event.target.id == "icons" || event.target.tagName == "IFRAME"){
         event.preventDefault();
     }
     let touch = false;
     let evName;
-    if(!elem.getAttribute("notray")) setActive(elem.parentElement);
+    if (!windowelem) windowelem = elem.parentElement
+    if(!elem.getAttribute("notray")) setActive(windowelem);
     loop.drag = true;
     iframeignore.innerHTML = "ignore{display:block !important}"
     if (event.touches) {
@@ -46,6 +47,10 @@ function windowMouseDown(event, elem, a, noResize){
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
         if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
             activewindow.className = activewindow.className.replace(" maximised", "");
+            try{
+                activewindow.querySelector("iframe").contentWindow.minimise()
+            }
+            catch(e){console.error(e)}
             activewindow.className = activewindow.className.replace("snap-right ", "")
             activewindow.className = activewindow.className.replace("snap-left ", "")
             activewindow.style.top = "-10px";
@@ -84,9 +89,9 @@ function windowResize(event, elem, ...actions){
         activewindow.className = activewindow.className.replace("snap-left ", "")
     }
     if (!touch)
-        document.addEventListener("mouseup", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
+        addEventListener("mouseup", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
     else
-        document.addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
+        addEventListener("touchend", () => {resized = 0; for (a of actions) loop[a] = false; iframeignore.innerHTML = ""}, {once: true});
 }
 function move(e){
     if (!activewindow) return
@@ -98,6 +103,10 @@ function move(e){
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
         if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
             activewindow.className = activewindow.className.replace(" maximised", "");
+            try{
+                activewindow.querySelector("iframe").contentWindow.minimise()
+            }
+            catch(e){console.error(e)}
             activewindow.className = activewindow.className.replace("snap-right ", "")
             activewindow.className = activewindow.className.replace("snap-left ", "")
             activewindow.style.top = "-10px";
@@ -127,6 +136,11 @@ function move(e){
         activewindow.style.bottom = null;
         activewindow.style.right = null;
     }
+    if (!loop.drag && !loop.top && !loop.left) return
+    if (activewindow.style.left.startsWith("-")) activewindow.style.setProperty("--aero-reflections-left", activewindow.style.left.slice(1))
+    else activewindow.style.setProperty("--aero-reflections-left", "-" + activewindow.style.left)
+    if (activewindow.style.top.startsWith("-")) activewindow.style.setProperty("--aero-reflections-top", activewindow.style.top.slice(1))
+    else activewindow.style.setProperty("--aero-reflections-top", "-" + activewindow.style.top)
 }
 function snapLeft(window){
     if (localStorage.aerosnap == "true") return
@@ -140,10 +154,17 @@ addEventListener("resize", resizeHandler)
 function maximiseWindow(window){
     if (window.className.search("maximised") == -1){
         window.className += " maximised"
+        try{
+            window.querySelector("iframe").contentWindow.maximise()
+        } catch(e){console.error(e)}
         window.className = window.className.replace("snap-right ", "")
         window.className = window.className.replace("snap-left ", "")
     }
-    else
+    else{
+        try{
+            window.querySelector("iframe").contentWindow.minimise()
+        } catch(e){console.error(e)}
         window.className = window.className.replace(" maximised", "")
+    }
 }
 maximise = maximiseWindow

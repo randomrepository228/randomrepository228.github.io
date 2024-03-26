@@ -30,17 +30,19 @@ function AddWindow(window, ispopup, options, id, elem){
         if (!(options.bottom || options.top))
             newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - options.height) + "px"
     }
-    if (options.bottom)
-        newWindow.style.bottom = options.bottom
-    if (options.right)
-        newWindow.style.right = options.right
+    if (!newWindow.style.left) newWindow.style.left = "0px";
+    if (!newWindow.style.top) newWindow.style.top = "0px";
+    if (newWindow.style.left.startsWith("-")) newWindow.style.setProperty("--aero-reflections-left", newWindow.style.left.slice(1))
+    else newWindow.style.setProperty("--aero-reflections-left", "-" + newWindow.style.left)
+    if (newWindow.style.top.startsWith("-")) newWindow.style.setProperty("--aero-reflections-top", newWindow.style.top.slice(1))
+    else newWindow.style.setProperty("--aero-reflections-top", "-" + newWindow.style.top)
     newWindow.style.display = "none"
     if(options.alwaysontop) newWindow.className += " alwaysontop"
     if(options.alwaysbehind) newWindow.className += " alwaysbehind"
     if(options.classes) newWindow.className += options.classes
     newWindow.innerHTML =
     `
-    <div ${options.fullscreen ? 'style="display: none;"' : ''}class="topbar ${options.noGUI ? 'noncont' : ''}" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
+    <div style="${options.fullscreen ? 'display: none;' : ''}--titlebar-ext-height: ${options.titleBarHeight ? options.titleBarHeight : 0}px"class="topbar ${options.noGUI ? 'noncont' : ''}" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
         <left>
             <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
             <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
@@ -60,6 +62,8 @@ function AddWindow(window, ispopup, options, id, elem){
     <div ontouchstart="event.preventDefault();windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="resizer right"></div>
     <div ontouchstart="event.preventDefault();windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="resizer bottom"></div>`}
     `
+    newWindow.setAttribute("onmousedown", "setActive(this)")
+    newWindow.setAttribute("ontouchstart", "event.preventDefault();setActive(this)")
     let content = document.createElement("div")
     content.className = "content" + (options.noGUI ? 'nostyle' : '')
     if (options.minWidth) content.style.minWidth = options.minWidth + 'px'
@@ -176,9 +180,21 @@ function resizeHandler(e){
     broadcast("getscrheight|" + innerHeight, "*")
 }
 function setActive(window, noTray){
+    if (activewindow) {
+        activewindow.className = activewindow.className.replace(" focus", "")
+        try{
+            activewindow.querySelector("iframe").contentWindow.unfocus()
+        }
+        catch(e){console.error(e)}
+    }
     for(element of document.querySelectorAll(".window"))
         element.style.zIndex = 0;
     activewindow = window;
+    if (!activewindow.classList.contains("focus")) activewindow.className += " focus"
+    try{
+        activewindow.querySelector("iframe").contentWindow.focus()
+    }
+    catch(e){console.error(e)}
     activewindow.style.zIndex = 1;
     if (noTray) return
     try{

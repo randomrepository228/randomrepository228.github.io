@@ -4,5 +4,6 @@
     "title": "Internet Explorer",
     "icon": "icon.png",
     "window": true,
-    "noGUI": true
+    "noGUI": true,
+    "titleBarHeight": 55
 }

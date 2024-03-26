@@ -121,6 +121,7 @@
         <link rel="stylesheet" href="./sys/windows.css">
         <link rel="stylesheet" href="./shell/shell.css">
         <link rel="stylesheet" href="./res/aero/style.css" id="theme">
+        <link rel="stylesheet" href="./sys/logonui.css">
         <link rel="stylesheet" href="" id="smalltaskbar">
         <link rel="stylesheet" href="" id="groupicons">
         <script defer onload="log(this.getAttribute('src'))" src="sys/jszip.js"></script>
@@ -131,6 +132,7 @@
         <script defer onload="log(this.getAttribute('src'))" src="shell/shell.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/trayManager.js"></script>
         <script defer onload="log(this.getAttribute('src'))" src="sys/bcwdss.js"></script>
+        <script defer onload="log(this.getAttribute('src'))" src="sys/bcrypt.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no" id="dpiscale">
         <style>
             @media (max-aspect-ratio: 1/1) {
@@ -177,7 +179,20 @@
             <div class="context-menu-option context-menu-part">(No options available)</div>
         </div>
         <div id="changethemesplash"></div>
-        <div class="logonui" style="display: none"></div>
+        <div class="logonui" style="display: none">
+            <div class="logonui-users-container">
+                <div class="user" onclick="login()">
+                    <div class="user-profile-container">
+                        <img src="Profileimgs/user.png">
+                    </div>
+                    SYSTEM
+                </div>
+            </div>
+            <div class="logonui-status" style="display: none;">
+                <img src="res/loading.png">
+                <p class="logonui-status-text">Welcome</p>
+            </div>
+        </div>
         <div class="explorer taskbar-bottom" id="shell" style="display: none;"></div>
         <script>
             console.log(localStorage.dontGroupIcons == "true")
