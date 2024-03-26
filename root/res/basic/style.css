@@ -131,18 +131,27 @@ body{
     background-repeat: no-repeat;
 }
 .dash{
-    background-image: url("./buttons/min/icon.png"), url("./buttons/min/normal.png");
+    background-image: url("./buttons/min/icon.png"), url("./buttons/min/inactive.png");
     width: 32px;
 }
 .square{
-    background-image: url("./buttons/max/icon.png"), url("./buttons/min/normal.png");
+    background-image: url("./buttons/max/icon.png"), url("./buttons/min/inactive.png");
     width: 32px;
 }
 .x{
-    background-image: url("./buttons/close/icon.png"), url("./buttons/close/normal.png");
+    background-image: url("./buttons/close/icon.png"), url("./buttons/close/inactive.png");
     width: 28px;
     border-bottom-right-radius: 3px;
     z-index: 5;
+}
+.focus .dash{
+    background-image: url("./buttons/min/icon.png"), url("./buttons/min/normal.png");
+}
+.focus .square{
+    background-image: url("./buttons/max/icon.png"), url("./buttons/min/normal.png");
+}
+.focus .x{
+    background-image: url("./buttons/close/icon.png"), url("./buttons/close/normal.png");
 }
 .x:hover{
     background-image: url("./buttons/close/icon.png"), url("./buttons/close/hover.png");
