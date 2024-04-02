@@ -54,7 +54,7 @@
         </style>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
     </head>
-    <body>
+    <body class="control">
         <div class="navbar topbar-ext">
             <div class="nav"><div class="backnext"><button class="back" onclick="closeSection()"></button><button disabled class="next"></button></div></div>
             <div class="adressbar"><div onclick="closeSection()">Control Panel</div></div>
@@ -80,7 +80,7 @@
                     <input type="checkbox" name="aerosnap" id="aerosnap" onchange="localStorage.aerosnap = this.checked ? 'true' : 'false';">
                     <label for="aerosnap">Turn off aero snap</label><br>
                     <!-- <input type="range" name="dpiscale" id="dpiscale" onchange="localStorage.dpiscale = this.value">
-                    <label for="dpiscale">Maximised windows transparent</label> -->
+                    <label for="dpiscale">Maximised windows transparent</label><br> -->
                 </div>
                 <div class="personalize" style="display: none" id="Personalize">
                     <div class="controlContent" id="ControlContentPersonalize">
@@ -230,7 +230,6 @@
                         if (file) reader.readAsDataURL(file);
                     }
                     var request = new XMLHttpRequest();
-                    let logonSound = '../../media/Windows Logon Sound.flac'
                     request.onreadystatechange = function() {
                         if (request.readyState == 4){
                             if(request.status == 200){
@@ -241,7 +240,7 @@
                                     images.innerHTML += "<p>" + a + '</p>'
                                     for(c of info[a]){
                                         b.innerHTML += `
-<div class="wallpaperitem" ondblclick="parent.changeWallpaper('./img/img${c}.jpg');new Audio(logonSound).play()">
+<div class="wallpaperitem" ondblclick="parent.changeWallpaper('./img/img${c}.jpg')">
     <div class="images">
         <img class="img2" src="../../img/img${c}_thumb.png">
     </div>

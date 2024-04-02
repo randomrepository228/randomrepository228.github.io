@@ -196,47 +196,47 @@ body{
     background-position: center;
     background-repeat: no-repeat;
 }
+.x .cbutton-glyph, .dash .cbutton-glyph, .square .cbutton-glyph{
+    width: 13px;
+    height: 13px;
+    background-image: url(./buttons.png);
+    background-position-y: -84px;
+}
+.x:active .cbutton-glyph, .dash:active .cbutton-glyph, .square:active .cbutton-glyph{
+    background-position-y: -97px;
+}
+.square .cbutton-glyph{
+    background-position-x: -13px;
+}
+.dash .cbutton-glyph{
+    background-position-x: -26px;
+}
+.topbar > .buttons > div{
+    background-position-y: -63px;
+    background-repeat: no-repeat;
+    background-image: url(./buttons.png);
+    width: 21px;
+    height: 21px;
+}
+.dash, .square{
+    background-position-x: -21px;
+}
 .x{
-    background-image: url("close/icon.png"), url("close/inactive.png");
+    background-position-x: 0;
 }
-.focus .x{
-    background-image: url("close/icon.png"), url("close/normal.png");
+.focus .topbar > .buttons > div{
+    background-position-y: 0px;
 }
-.x:hover{
-    background-image: url("close/icon.png"), url("close/hover.png");
+.topbar > .buttons > div:hover{
+    background-position-y: -21px;
 }
-.x:active{
-    background-image: url("close/icon_pressed.png"), url("close/pressed.png");
+.topbar > .buttons > div:active{
+    background-position-y: -42px;
 }
-.square{
-    background-image: url("max/icon.png"), url("min/inactive.png");
-}
-.focus .square{
-    background-image: url("max/icon.png"), url("min/normal.png");
-}
-.square:hover{
-    background-image: url("max/icon.png"), url("min/hover.png");
-}
-.square:active{
-    background-image: url("max/icon_pressed.png"), url("min/pressed.png");
-}
-.dash{
-    background-image: url("min/icon.png"), url("min/inactive.png");
-}
-.focus .dash{
-    background-image: url("min/icon.png"), url("min/normal.png");
-}
-.dash:hover{
-    background-image: url("min/icon.png"), url("min/hover.png");
-}
-.dash:active{
-    background-image: url("min/icon_pressed.png"), url("min/pressed.png");
-}
-.dash:hover, .square:hover{
-    z-index: 999;
-}
-.x:hover{
-    z-index: 999;
+.topbar > .buttons > div[disabled], 
+.topbar > .buttons > div[disabled]:hover, 
+.topbar > .buttons > div[disabled]:active{
+    background-position-y: -63px;
 }
 .start-menu{
     padding: 7px;
@@ -291,34 +291,33 @@ input[type="checkbox"]{
     display: none;
 }
 input[type="checkbox"] + label{
-    background-image: url("checkbox/unchecked/normal.png");
-    background-position-y: center;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
-input[type="checkbox"]:hover + label{
-    background-image: url("checkbox/unchecked/hover.png");
-    background-position-y: center;
-}
-input[type="checkbox"]:active + label{
-    background-image: url("checkbox/unchecked/pressed.png");
-    background-position-y: center;
-}
-input[type="checkbox"]:checked + label{
-    background-image: url("checkbox/checked/normal.png");
-    background-position-y: center;
-}
-input[type="checkbox"]:checked:hover + label{
-    background-image: url("checkbox/checked/hover.png");
-    background-position-y: center;
-}
-input[type="checkbox"]:checked:active + label{
-    background-image: url("checkbox/checked/pressed.png");
-    background-position-y: center;
-}
-label{
-    padding-left: 13px;
-    height: 13px;
+input[type="checkbox"] + label:before{
+    background-image: url("checkbox.png");
+    background-position-y: 0;
+    background-position-x: 0;
+    content: "";
     display: inline-block;
-    background-repeat: no-repeat;
+    width: 13px;
+    height: 13px;
+    margin-right: 3px;
+}
+input[type="checkbox"]:hover + label:before{
+    background-position-y: -13px;
+}
+input[type="checkbox"]:active + label:before{
+    background-position-y: -26px;
+}
+input[type="checkbox"]:checked + label:before{
+    background-position-x: -13px;
+}
+input[type="checkbox"][disabled] + label:before, 
+input[type="checkbox"][disabled]:hover + label:before, 
+input[type="checkbox"][disabled]:active + label:before{
+    background-position-y: -39px;
 }
 
 
@@ -436,9 +435,6 @@ input[type=text], input[type=text]:focus{
     border-radius: 0;
     border: 1px solid rgb(127,157,185);
 }
-.x img, .dash img, .square img{
-    display: none;
-}
 .wrapper::after{
     content: "start";
     font-weight: bold;
@@ -475,11 +471,8 @@ input[type=text], input[type=text]:focus{
     border-image: url(taskbar_btn_focus.png) 5 fill;
 }
 .wrapper{
-    border-image-source: url(start/normal.png);
-    border-image-slice: 0 20 0 20 fill;
-    border-right: 20px solid transparent;
-    border-left: 20px solid transparent;
-    width: 59px;
+    background-image: url(start.png);
+    width: 99px;
     height: 33px;
 }
 .taskbar-left .wrapper, .taskbar-right .wrapper{
@@ -493,10 +486,10 @@ input[type=text], input[type=text]:focus{
     width: 20px;
 }
 .wrapper:hover{
-    border-image-source: url(start/hover.png);
+    background-position-y: -33px
 }
 .wrapper:active{
-    border-image-source: url(start/pressed.png);
+    background-position-y: -66px
 }
 .sunken-panel{
     background-color: white;
@@ -506,16 +499,16 @@ tr > th{
     background-image: none;
     padding: 2px;
 }
-button[role="tab"]{
+.button[role="tab"]{
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     background-image: none;
     background-color: rgb(240,240,240);
 }
-button[role="tab"][aria-selected="true"]{
+.button[role="tab"][aria-selected="true"]{
     background-color: white;
 }
-button[role="tab"]:hover, button[role="tab"][aria-selected="true"]{
+.button[role="tab"]:hover, .button[role="tab"][aria-selected="true"]{
     border-top: 1px solid #e68b2c;
     box-shadow: inset 0 2px #ffc73c;
     background-image: none;

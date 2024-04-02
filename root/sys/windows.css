@@ -1,3 +1,6 @@
+:root{
+    --logonui-background: url(../res/login.jpg);
+}
 body{
     margin: 0;
     background-color: transparent;
@@ -53,8 +56,7 @@ html{
 input[type="checkbox"]{
     display: none;
 }
-label{
-    padding-left: 16px;
+input[type="checkbox"] + label{
     height: 16px;
     display: inline-block;
     background-repeat: no-repeat;
@@ -161,7 +163,7 @@ button, select{
     background-repeat: no-repeat;
     background-size: auto 100%, auto 100%, calc(100% - 8px) 100%;
     border: 0;
-    font-size: inherit;
+    font-size: 11px;
 }
 select{
     width: calc(100% - 16px);
@@ -188,7 +190,6 @@ select{
 }
 option{
     font-family: 'segoeui', sans-serif, system-ui;
-    font-size: 11px;
 }
 select:focus{
     outline: none;
@@ -275,18 +276,16 @@ input:focus{
     pointer-events: auto;
 }
 .menubar {
-    width: 100vw;
+    width: 100%;
     min-height: 19px;
     background-image: url("../res/menubar.png");
     background-size: 100% min(19px, 100%);
     background-color: #E1E6F6;
     background-repeat: no-repeat;
-    font-size: 0;
 }
 
 .menubar .element {
     display: inline-block;
-    font-size: 12px;
     border: 1px transparent solid;
     padding: 1px 7px;
     position: relative;
@@ -325,9 +324,6 @@ input:focus{
 }
 .detail{
     width: fit-content;
-}
-button:disabled{
-    opacity: 0.5;
 }
 ignore{
     height: 100%;
@@ -368,24 +364,28 @@ ignore{
     margin-top: auto;
 }
 .minimised{
-    opacity: 0 !important;
+    opacity: 0;
     pointer-events: none;
 }
 .logonui{
     width: 100%;
     height: 100%;
-    background-image: url(../res/login.jpg);
+    background-image: var(--logonui-background);
     background-size: 100% 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-.tabs button{
+.tabs .button{
     background-image: none;
     border: 1px solid rgb(137,140,149);
     border-bottom: 0;
+    box-sizing: border-box;
 }
-.tabs button::before{
+.tabs .button::before{
     display: none;
 }
-.tabs button[aria-selected=true]{
+.tabs .button[aria-selected=true]{
     padding-bottom: 2px;
 }
 .tabs article{
@@ -399,7 +399,7 @@ menu[role=tablist]{
 .tabs{
     margin: 5px;
 }
-button[role=tab]::after{
+.button[role=tab]::after{
     display: none;
 }
 .nogui, .nogui > .content{
@@ -574,10 +574,7 @@ legend{
     display: flex;
     justify-content: space-between;
 }
-button, select{
-    font-size: 12px;
-}
-button[role="tab"], button[role="tab"]:active{
+.button[role="tab"], .button[role="tab"]:active{
     min-width: fit-content;
     min-height: 16px;
     outline: none;
@@ -588,7 +585,7 @@ button[role="tab"], button[role="tab"]:active{
     margin-top: 3px;
     z-index: 0;
 }
-button[role="tab"][aria-selected=true]{
+.button[role="tab"][aria-selected=true]{
     height: 22px;
     padding-left: 7px;
     margin-right: -3px;
@@ -610,24 +607,28 @@ menu[role=tablist] {
     position: relative;
     text-indent: 0
 }
-button[role="tab"][disabled]{
-    background-color: #C9CACB;
-}
-button[role="tab"]{
+.button[role="tab"]{
     background-image: url(../res/tabitem.png);
     background-size: 100% 100%;
     background-color: white;
+    padding-left: 3px;
+    padding-right: 3px;
 }
-button[role="tab"]:hover{
+.button[role="tab"]:hover{
     border-color: #3C7FB1;
     background-image: url(../res/tabitem_hover.png);
 }
-button[role="tab"][aria-selected="true"]:hover{
+.button[role="tab"][aria-selected="true"]:hover{
     border: 1px solid rgb(137,140,149);
     border-bottom: none;
     background-image: none;
 }
-button[role="tab"][aria-selected="true"]{
+.button[role="tab"][disabled], .button[role="tab"][disabled]:hover{
+    border-color: rgb(137,140,149);
+    background-color: #C9CACB;
+    background-image: none;
+}
+.button[role="tab"][aria-selected="true"]{
     background-image: none;
 }
 footer > button{

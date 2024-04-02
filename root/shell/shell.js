@@ -66,7 +66,7 @@ shell.innerHTML = `
         oncontextmenu="contextMenu(event, [
             ['', 'Refresh', () => reloadIcons()], 
             ['', 'Personalize', () => loadApp('control', '', 'personalize')], 
-            ['', 'New text document', () => fs.writeFile('usr/SYSTEM/desktop/New Text Document.txt', '', true)]
+            ['', 'New text document', async() => {const input = await inputbox('New file', 'Enter a filename:'); if (input) fs.writeFile('usr/SYSTEM/desktop/' + input, '', true)}]
         ], event.clientX, event.clientY)" 
         ondrop="dropHandler(event);" ondragover="event.preventDefault()"></div>
     <bottomright>Winda7<br><div id="explorerbottomrightinfo">Build VERSION</div></bottomright>
@@ -204,8 +204,8 @@ async function reloadIcons(){
             app = "wmplayer"
             fileURL = "bin/explorer-file-manager/media.png"
         }
-        else if (f.endsWith(".ca")){
-            createIcon(new Icon(e, "bin/explorer-file-manager/file.png", `loadbcwdApp('usr/SYSTEM/desktop/${e}')`), `usr/SYSTEM/desktop/${e}`)
+        else if (f.endsWith(".ca") || f.endsWith(".js")){
+            createIcon(new Icon(e, "bin/explorer-file-manager/file.png", `loadScript('usr/SYSTEM/desktop/${e}')`), `usr/SYSTEM/desktop/${e}`)
             return
         }
         else {

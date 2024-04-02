@@ -1,19 +1,20 @@
+localStorage.ver = "0.9.0"
 loop = {drag: false, top: false, left: false, right: false, bottom: false};
-prevx = 150;
-prevy = 150;
-let lastx;
-let lasty;
-let prevwidth;
-let prevheight;
-let origx;
-let origy;
-let activewindow;
-let activetray;
-let isLoaded = false;
-let bootAnimationEnded = false;
-let init = false;
-let currentUser = "SYSTEM";
-class Winda7Window {
+window.prevx = 150;
+window.prevy = 150;
+window.lastx = 0;
+window.lasty = 0;
+window.prevwidth = 0;
+window.prevheight = 0;
+window.origx = 0;
+window.origy = 0;
+window.activewindow = 0;
+window.activetray = 0;
+window.isLoaded = false;
+window.bootAnimationEnded = false;
+window.init = false;
+window.currentUser = "SYSTEM";
+window.Winda7Window = class{
     constructor(x, y, width, height, title, innerhtml, icon) {
         this.height = height;
         this.width = width;
@@ -24,7 +25,7 @@ class Winda7Window {
         this.icon = icon
     }
 }
-class Tray {
+window.Tray = class{
     constructor(width, height, innerhtml, title) {
         this.height = height;
         this.width = width;
@@ -32,7 +33,7 @@ class Tray {
         this.title = title
     }
 }
-class TrayIcon {
+window.TrayIcon = class{
     constructor(width, innerhtml) {
         this.width = width;
         this.innerhtml = innerhtml;
@@ -154,7 +155,7 @@ async function desktopInit(){
         ".bmp": {desc: "BMP image", program: "app:paint"},
         ".jpg": {desc: "JPEG image", program: "app:paint"},
         ".jpeg": {desc: "JPEG image", program: "app:paint"},
-        ".ca": {desc: "bcwd application", program: "command:loadbcwdApp"},
+        ".ca": {desc: "bcwd application", program: "command:loadScript"},
         ".txt": {desc: "Text file", program: "app:notepad"},
         ".md": {desc: "Markdown file", program: "app:notepad"},
         ".mp4": {desc: "MP4 video", program: "app:wmplayer"},
@@ -167,62 +168,49 @@ async function desktopInit(){
         ".html": {desc: "HTML document", program: "app:iexplore"},
         ".htm": {desc: "HTML document", program: "app:iexplore"},
     }))
-    // document.querySelector(".logonui-users-container").style.display = "none";
-    // document.querySelector(".logonui-status").style.display = "";
-    document.querySelector(".logonui").style.display = "none";
+    changeWallpaper(localStorage.wallpaper, true, true).then(() => {
+        document.querySelector(".logonui").style.display = "none"
+        document.querySelector(".logonui-users-container").style.display = "";
+        document.querySelector(".logonui-status").style.display = "none";
+        document.querySelector(".explorer").style.display = "";
+        loadApp("sfc", undefined, "/silent")
+    })
+    setWallpaperStretch(localStorage.wallpaperstretch)
+    document.querySelector(".logonui-users-container").style.display = "none";
+    document.querySelector(".logonui-status").style.display = "";
     if (init) return
-    if (window.move){
-        addEventListener("mousemove", move); 
-        addEventListener("touchmove", move);
-    }
-    else{
+    if (!window.move){
         msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
     }
-    addEventListener("mousedown", (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}); 
-    addEventListener("touchstart", (e) => {if (!e.target.classList.contains('context-menu-part')) {e.preventDefault(); contextMenuOff()}});
-    addEventListener("click", (e) => {if (e.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()})
-    document.querySelector(".explorer").style.display = "";
+    cmoffcmd = (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}
+    addEventListener("mousedown", cmoffcmd); 
+    addEventListener("touchstart", cmoffcmd);
+    addEventListener("click", (e) => {if(!e.target.parentElement) return; if (e.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()})
     document.oncontextmenu = (e) => e.preventDefault()
-    loadApp("sfc", undefined, "/silent")
     initShellIcons()
     init = true
     if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 20240326!</h1>What's new?<br><ul><li>Google is no longer a homepage for Internet Explorer</li><li>Added URL bar to Internet explorer</li><li>fixed top level redirects in Internet explorer</li><li>Tighter integration with windows</li><li>Added style for unfocused windows</li></ul>")
+        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 0.9.0!</h1>What's new?<br><ul><li>Semi-integration with filesystem</li><li>Welcome and change theme screen</li><li>fixed close button being red when it's the only button</li><li>Texture file optimization</li><li>Added file dialog</li><li>Added new boot manager!</li></ul>")
         localStorage.prevver = localStorage.ver
         return;
     }
 }
 
-function showLogonUI(){
+async function showLogonUI(){
     try{
-        winload.remove()
+        bootloader.remove()
     }
     catch(e){
         console.log("Winload not found. skipped")
     }
+    let file = await fs.readFile("res/login.jpg")
+    const logonui = URL.createObjectURL(file)
+    document.querySelector(".logonui").style.setProperty("--logonui-background", `url(${logonui})`)
     document.querySelector(".logonui").style.display = ""
-    dispatchEvent(new CustomEvent("fsloaded"))
-    fs.checkSystemFolder()
-    preload = ["res/dropdown.png", "res/hide_windows.png", "res/hide_windows_hover.png", "res/hide_windows_pressed.png", "res/icon.jpg", "res/login.jpg", 
-    "res/start_menu.png", "res/table-top.png", "res/taskbar-btn.png", "res/taskbar_btn.png", "res/taskbar_btn_focus.png", 
-    "res/aero/buttons/close/hover.png", "res/aero/buttons/close/normal.png", "res/aero/buttons/close/pressed.png", "res/aero/buttons/close/icon.png", 
-    "res/aero/buttons/close/glow.png", "res/aero/buttons/close/hover.png", "res/aero/buttons/min/normal.png", "res/aero/buttons/min/hover.png", 
-    "res/aero/buttons/min/pressed.png", "res/aero/buttons/min/icon.png", "res/aero/buttons/max/hover.png", "res/aero/buttons/max/normal.png", 
-    "res/aero/buttons/max/pressed.png", "res/aero/buttons/max/icon.png", "res/aero/buttons/glow.png", "res/aero/style.css", "res/aero/window_aura.png",
-    "res/aero/window_aura_mirror.png", "res/aero/window_side.png", "res/button/hover.png", "res/button/normal.png", "res/button/pressed.png", 
-    "res/button/disabled.png", "res/button/default.png", "res/checkbox/unchecked/hover.png", "res/checkbox/unchecked/normal.png", 
-    "res/checkbox/unchecked/pressed.png", "res/checkbox/checked/hover.png", "res/checkbox/checked/normal.png", "res/checkbox/checked/pressed.png", 
-    "res/aero/buttons/close/lonenormal.png", "res/aero/buttons/close/lonepressed.png", "res/aero/buttons/close/lonehover.png", 
-    "res/selectionBig/hover/left.png", "res/selectionBig/hover/center.png", "res/selectionBig/hover/right.png", "img/img0.jpg", "boot.webm"]
-    preload.forEach(async a => {
-        console.log(a, preload)
-        const exists = await fs.exists(a)
-        console.log(exists, a)
-        if (!exists){
-            console.log("so")
-            await fs.downloadFiles([a])
-        }
-    })
+    if (window.move){
+        addEventListener("mousemove", move); 
+        addEventListener("touchmove", move);
+    }
 }
 
 document.onreadystatechange = () => {
@@ -230,13 +218,13 @@ document.onreadystatechange = () => {
     if (localStorage.fastBoot == "true" || localStorage.verboseBoot == "true" || bootAnimationEnded ) showLogonUI()
 }
 
-bootAnimation.addEventListener("ended", e => {
+try{bootAnimation.addEventListener("ended", e => {
     if (isLoaded) showLogonUI()
     bootAnimationEnded = true;
     bootAnimation.currentTime = 3.02;
     bootAnimation.play()
-    doesntloadwinload.style.display = "block"
-})
+})}
+catch(e){}
 function shutdown(a){
     console.log(a)
     if (a == "r"){
@@ -314,11 +302,13 @@ function logoff(){
     startMenu(false)
     new Audio('./media/Windows Logoff Sound.flac').play(); 
 }
-function login(user, password){
-    // document.querySelector('.logonui').style.display = 'none'; 
-    // shell.style.display = 'block'
-    // new Audio('./media/Windows Logon Sound.flac').play(); 
-    if (!init) desktopInit();
+async function login(user, password){
+    if (!init) await desktopInit();
+    else{
+        document.querySelector(".logonui").style.display = "none";
+        document.querySelector(".explorer").style.display = "";
+    }
+    new Audio('./media/Windows Logon Sound.flac').play(); 
 }
 function html2canvas(html, canvas){
 
@@ -342,7 +332,7 @@ function html2canvas(html, canvas){
 
     tempImg.src = svgObjectUrl;
 }
-async function changeWallpaper(wallpaperpath, nochange){
+async function changeWallpaper(wallpaperpath, nochange, nosplash){
     if (wallpaperpath.length > 4000000) {
         msgbox("Storage", "Wallpaper is very big and may be causing problems with your saved data. Custom wallpapers are not ported to FS yet. Size: " + Math.round(wallpaperpath.length / 10000) / 100 * 2 + "MB")
         return
@@ -362,6 +352,30 @@ async function changeWallpaper(wallpaperpath, nochange){
     // }
     try{
         if (!nochange) localStorage.wallpaper = wallpaperpath
+        if (wallpaperpath.startsWith("./img/")){
+            if (!nosplash){
+                changethemesplash.style.display = "block"
+            }
+            let file = await fs.downloadFile(wallpaperpath)
+            if (!file.length){
+                file = await fs.readFile(wallpaperpath)
+                console.log(file)
+            }
+            else{
+                file = file[0]
+            }
+            console.log(file)
+            const url = URL.createObjectURL(file)
+            wallpaperpath = url
+            if (!nosplash){
+                let audio = new Audio('../media/Windows Logon Sound.flac')
+                audio.oncanplay = () => {
+                    audio.play()
+                    changethemesplash.style.display = ""
+                }
+                audio.play()
+            }
+        }
         wallpaper.innerHTML = 
         `
         :root{
@@ -370,7 +384,7 @@ async function changeWallpaper(wallpaperpath, nochange){
         `
     }
     catch(e) {
-        msgbox("Storage", "Not enough storage available for this operation.")
+        msgbox("Wallpaper error", e)
     }
 }
 function setWallpaperStretch(stretchmode){
@@ -394,20 +408,10 @@ function setWallpaperStretch(stretchmode){
     background-repeat: repeat !important;
 }`
 }
-changeWallpaper(localStorage.wallpaper, true)
-setWallpaperStretch(localStorage.wallpaperstretch)
 function refreshTransparency(){
     maximisetransparency.innerHTML = localStorage.maximiseTransparency == "true" && localStorage.theme == "aero" ? ".maximised{background-color: black !important; backdrop-filter: none !important}" : ""
 }
 function refreshDpi(){
     dpiscale.setAttribute("content", `width=device-width, initial-scale=${localStorage.dpiscale == "true" ? 0.5 : 1}, user-scalable=no`)
 }
-// (async () => {
-//     const data = await JSZip.loadAsync(await (await fetch("bin.zip")).arrayBuffer())
-//     for (let [key, value] of Object.entries(data.files)){
-//         if (key.endsWith("/"))
-//             key += "."
-//         await fs.writeFile(key, new Blob([await value.async("arraybuffer")]))
-//     }
-// })()
 refreshDpi()

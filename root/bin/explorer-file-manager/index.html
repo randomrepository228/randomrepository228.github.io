@@ -7,61 +7,7 @@
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
         <script src="../../sys/windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
-        <style>
-            .files{
-                display: flex;
-                flex-wrap: wrap;
-                flex-direction: row;
-                overflow: auto;
-                height: 100%;
-                align-content: flex-start;
-                flex-grow: 1;
-            }
-            .file{
-                height: 96px;
-                position: relative;
-                width: 76px;
-            }
-            .file > p{
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                text-align: center;
-                margin: 0;
-                top: 48px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                line-height: 16px;
-                word-wrap: break-word;
-            }
-            p > marked{
-                display: inline;
-                background-color: rgba(255,255,0,0.5);
-            }
-            .file > img{
-                max-width: 48px;
-                max-height: 48px;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                top: 24px;
-                position: absolute;
-            }
-            footer{
-                flex-direction: column; 
-                max-height: 100px; 
-                height: 100px; 
-                justify-content: space-between; 
-            }
-            .content{
-                display: flex !important;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-            .main{
-                height: 100%;
-            }
-        </style>
+        <link rel="stylesheet" href="../explorer-file-manager/style.css">
         <link rel="stylesheet" href="../control/aero/style.css" id="explorerTheme">
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <script>
@@ -79,7 +25,7 @@
             }
         </script>
     </head>
-    <body>
+    <body class="explorer-file-manager control">
         <div class="navbar topbar-ext">
             <div class="nav"><div class="backnext"><button class="back" onclick="back()"></button><button disabled class="next"></button></div></div>
             <div class="adressbar"></div>
@@ -183,6 +129,11 @@
                         a = currentPath + "/" + a
                         file.innerHTML += `<img src="file.png">`
                         file.setAttribute("ondblclick", `parent.loadApp('iexplore', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
+                    else if (a.toLowerCase().endsWith(".ca") || a.toLowerCase().endsWith(".js")){
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="file.png">`
+                        file.setAttribute("ondblclick", `parent.loadScript('${a.replace("\'", "\\\'")}')`)
                     }
                     else {
                         a = currentPath + "/" + a

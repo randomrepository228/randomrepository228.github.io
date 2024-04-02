@@ -46,7 +46,7 @@ input[type="checkbox"]:checked:active + label{
 .x:active{
     background-color: #8B0A14;
 }
-.x img, .dash img, .square img{
+.x .cbutton-glyph, .dash .cbutton-glyph, .square .cbutton-glyph{
     display: none;
 }
 .winapi_transparent{

@@ -1,11 +1,13 @@
 import os
 from zipfile import ZipFile, ZIP_DEFLATED
 import base64
+import re
 with ZipFile("install.zip", 'w') as zip_object:
     for fn, _, file_names in os.walk("."):
         folder_name = fn.replace("\\", "/")
-        if ("jspaint" in folder_name): continue
+        if ("bin/" in folder_name): continue
         if ("Winda.old" in folder_name): continue
+        if ("fonts" in folder_name): continue
         for filename in file_names:
             if (filename.endswith(".py")): continue
             if ("install.zip" in filename): continue

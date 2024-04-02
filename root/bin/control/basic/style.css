@@ -3,24 +3,22 @@
     width: 100%;
     display: block;
 }
-.navbar{
+.control .navbar{
     height: 30px;
     display: flex;
     align-items: center;
 }
-.nav {
+.control .nav {
     width: 68px;
-    position: fixed;
-    top:0;left:0;
 }
 
-.nav > .backnext {
+.control .nav > .backnext {
     width: 68px;
     height: 30px;
     position: relative;
 }
 
-.nav > .backnext > .back {
+.control .nav > .backnext > .back {
     min-width: 30px;
     height: 30px;
     background-image: url(../../explorer/back.png);
@@ -28,7 +26,7 @@
     border: none;
     box-shadow: none;
 }
-.nav > .backnext > .next {
+.control .nav > .backnext > .next {
     min-width: 30px;
     height: 30px;
     background-image: url(../../explorer/next.png);
@@ -37,15 +35,15 @@
     box-shadow: none;
 }
 
-.nav > .backnext > *::after{
+.control .nav > .backnext > *::after{
     display: none;
 }
 
-.nav > .backnext > .next:disabled, .nav > .backnext > .back:disabled{
+.control .nav > .backnext > .next:disabled, .nav > .backnext > .back:disabled{
     opacity: 1;
 }
 
-#searchbox {
+.control #searchbox {
     width: 194px;
     padding: 2.5px 4px;
     border-radius: 0;
@@ -57,24 +55,23 @@
     margin-right: 3px;
 }
 
-#searchbox:focus {
+.control #searchbox:focus {
     outline: none;
 }
 
-.adressbar {
+.control .adressbar {
     width: calc(100vw - 235px);
     min-width: 150px;
     background-color: rgba(255,255,255,0.7);
     font-size: 0;
     height: 20px;
-    margin-left: 70px;
     margin-right: 10px;
     box-sizing: border-box;
     padding: 1px;
     overflow: hidden;
 }
 
-.adressbar > div {
+.control .adressbar > div {
     font-size: 12px;
     display: inline-block;
     border: 1px transparent solid;
@@ -83,11 +80,11 @@
     height: 14px;
 }
 
-.adressbar > div:hover {
+.control .adressbar > div:hover {
     border: 1px rgb(112,192,231) solid;
     background-color: rgba(112,192,231,0.2);
 }
-.adressbar, #searchbox{
+.control .adressbar, #searchbox{
     box-shadow: inset 0px 0px 0px 1px rgb(29, 55, 81);
     border: 1px solid rgba(255,255,255,0.7);
     border-radius: 2px;

@@ -12,7 +12,7 @@
     padding-top: 0;
     box-shadow: 1px 1px white inset;
     border: 1px solid black;
-    background-image: linear-gradient(to bottom, #BFCDDB, #D7E4F2), url("./window_side.png");
+    background-image: linear-gradient(to bottom, #BFCDDB, #D7E4F2), url("../basic-aero/window_side.png");
     background-color: #D7E4F2;
     background-position: left 0 top 0, left 0 top 20%;
     background-size: 100% 27px, 100% 30%;
@@ -32,7 +32,7 @@
     padding-top: 0;
     box-shadow: -1px -1px rgba(0, 255, 255, 1) inset, 1px 1px white inset;
     border: 1px solid black;
-    background-image: linear-gradient(to bottom, #98B4D0, #B9D1EA), url("./window_side.png");
+    background-image: linear-gradient(to bottom, #98B4D0, #B9D1EA), url("../basic-aero/window_side.png");
     background-color: #B9D1EA;
     background-position: left 0 top 0, left 0 top 20%;
     background-size: 100% 27px, 100% 30%;
@@ -123,59 +123,45 @@ html, body{
 body{
     position: fixed;
 }
-.x img, .dash img, .square img{
-    display: none;
+.x .cbutton-glyph, .dash .cbutton-glyph, .square .cbutton-glyph{
+    width: 13px;
+    height: 13px;
+    background-image: url(./buttons.png);
+    background-position-y: -85px;
 }
-.x, .dash, .square{
-    background-position: center;
+.square .cbutton-glyph{
+    background-position-x: -13px;
+}
+.dash .cbutton-glyph{
+    background-position-x: -26px;
+}
+.topbar > .buttons > div{
+    background-position-y: -68px;
     background-repeat: no-repeat;
-}
-.dash{
-    background-image: url("./buttons/min/icon.png"), url("./buttons/min/inactive.png");
-    width: 32px;
-}
-.square{
-    background-image: url("./buttons/max/icon.png"), url("./buttons/min/inactive.png");
-    width: 32px;
-}
-.x{
-    background-image: url("./buttons/close/icon.png"), url("./buttons/close/inactive.png");
+    background-image: url(./buttons.png);
     width: 28px;
-    border-bottom-right-radius: 3px;
-    z-index: 5;
 }
-.focus .dash{
-    background-image: url("./buttons/min/icon.png"), url("./buttons/min/normal.png");
+.dash, .square{
+    background-position-x: -28px;
 }
-.focus .square{
-    background-image: url("./buttons/max/icon.png"), url("./buttons/min/normal.png");
+.focus .topbar > .buttons > div{
+    background-position-y: 0px;
 }
-.focus .x{
-    background-image: url("./buttons/close/icon.png"), url("./buttons/close/normal.png");
+.topbar > .buttons > div:hover{
+    background-position-y: -17px;
 }
-.x:hover{
-    background-image: url("./buttons/close/icon.png"), url("./buttons/close/hover.png");
+.topbar > .buttons > div:active{
+    background-position-y: -34px;
 }
-.x:active{
-    background-image: url("./buttons/close/icon.png"), url("./buttons/close/pressed.png");
+.focus .topbar > .buttons > div[disabled], 
+.focus .topbar > .buttons > div[disabled]:hover, 
+.focus .topbar > .buttons > div[disabled]:active{
+    background-position-y: -51px;
 }
-.square:hover{
-    background-image: url("./buttons/max/icon.png"), url("./buttons/min/hover.png");
-}
-.dash:hover{
-    background-image: url("./buttons/min/icon.png"), url("./buttons/min/hover.png");
-}
-.square:active{
-    background-image: url("./buttons/max/icon.png"), url("./buttons/min/pressed.png");
-}
-.dash:active{
-    background-image: url("./buttons/min/icon.png"), url("./buttons/min/pressed.png");
-}
-.dash:hover, .square:hover{
-    z-index: 999;
-}
-.x:hover{
-    z-index: 999;
+.topbar > .buttons > div[disabled], 
+.topbar > .buttons > div[disabled]:hover, 
+.topbar > .buttons > div[disabled]:active{
+    background-position-y: -68px;
 }
 .start-menu{
     padding: 7px;
@@ -230,25 +216,35 @@ input[type="checkbox"]{
     display: none;
 }
 input[type="checkbox"] + label{
-    background-image: url("../basic-aero/checkbox/unchecked/normal.png");
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
-input[type="checkbox"]:hover + label{
-    background-image: url("../basic-aero/checkbox/unchecked/hover.png");
+input[type="checkbox"] + label:before{
+    background-image: url("../basic-aero/checkbox.png");
+    background-position-y: 0;
+    background-position-x: 0;
+    content: "";
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin-right: 3px;
 }
-input[type="checkbox"]:active + label{
-    background-image: url("../basic-aero/checkbox/unchecked/pressed.png");
+input[type="checkbox"]:hover + label:before{
+    background-position-y: -13px;
 }
-input[type="checkbox"]:checked + label{
-    background-image: url("../basic-aero/checkbox/checked/normal.png");
+input[type="checkbox"]:active + label:before{
+    background-position-y: -26px;
 }
-input[type="checkbox"]:checked:hover + label{
-    background-image: url("../basic-aero/checkbox/checked/hover.png");
+input[type="checkbox"]:checked + label:before{
+    background-position-x: -13px;
 }
-input[type="checkbox"]:checked:active + label{
-    background-image: url("../basic-aero/checkbox/checked/pressed.png");
+input[type="checkbox"][disabled] + label:before, 
+input[type="checkbox"][disabled]:hover + label:before, 
+input[type="checkbox"][disabled]:active + label:before{
+    background-position-y: -39px;
 }
 label{
-    padding-left: 13px;
     height: 13px;
     display: inline-block;
     background-repeat: no-repeat;
@@ -290,11 +286,10 @@ button, select{
     position: relative;
     z-index: 100;
 }
-button::after{
+button::after, .select::after{
     background-color: transparent;
     height: 100%;
     width: 100%;
-    display: block;
     content: "";
     position: absolute;
     top: 0;
@@ -303,21 +298,9 @@ button::after{
     border: 6px solid transparent;
     border-image: url(../basic-aero/button/normal.png);
     border-image-slice: 6 fill;
-    z-index: -1;
 }
-.select::after{
-    background-color: transparent;
-    height: 100%;
-    width: 100%;
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
-    border: 6px solid transparent;
-    border-image: url(../basic-aero/button/normal.png);
-    border-image-slice: 6 fill;
-    z-index: 99;
+button::after{
+    z-index: -1;
 }
 .select{
     display: flex;
@@ -364,4 +347,7 @@ button:active::after, .select:active::after{
 }
 article[role=tabpanel]{
     background-color: white;
+}
+input[type=text]{
+    margin: 1px;
 }

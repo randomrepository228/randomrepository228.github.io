@@ -30,7 +30,6 @@ body{
     border: 1px solid transparent;
     outline: 1px solid transparent;
     border-radius: 3px;
-    font-size: 12px;
     box-sizing: border-box;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7), 1px 1px 4px rgba(0,0,0,0.7);
 }
@@ -209,7 +208,6 @@ bottomright{
 .start-option{
     display: flex;
     align-items: center;
-    font-size: 13px;
     border: 1px solid transparent;
     padding: 2px;
     border-radius: 3px;
@@ -219,7 +217,6 @@ bottomright{
     align-items: center;
     width: calc(100% - 8px);
     height: 30px;
-    font-size: 12px;
     border: 1px solid transparent;
     border-radius: 3px;
     color: white;
@@ -284,7 +281,6 @@ bottomright{
     height: 22px;
     padding: 0;
     box-sizing: border-box;
-    font-size: 12px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

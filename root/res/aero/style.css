@@ -1,50 +1,45 @@
 input[type="checkbox"] + label{
-    background-image: url("../basic-aero/checkbox/unchecked/normal.png");
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
-input[type="checkbox"]:hover + label{
-    background-image: url("../basic-aero/checkbox/unchecked/hover.png");
+input[type="checkbox"] + label:before{
+    background-image: url("../basic-aero/checkbox.png");
+    background-position-y: 0;
+    background-position-x: 0;
+    content: "";
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin-right: 3px;
 }
-input[type="checkbox"]:active + label{
-    background-image: url("../basic-aero/checkbox/unchecked/pressed.png");
+input[type="checkbox"]:hover + label:before{
+    background-position-y: -13px;
 }
-input[type="checkbox"]:checked + label{
-    background-image: url("../basic-aero/checkbox/checked/normal.png");
+input[type="checkbox"]:active + label:before{
+    background-position-y: -26px;
 }
-input[type="checkbox"]:checked:hover + label{
-    background-image: url("../basic-aero/checkbox/checked/hover.png");
+input[type="checkbox"]:checked + label:before{
+    background-position-x: -13px;
 }
-input[type="checkbox"]:checked:active + label{
-    background-image: url("../basic-aero/checkbox/checked/pressed.png");
+input[type="checkbox"][disabled] + label:before, 
+input[type="checkbox"][disabled]:hover + label:before, 
+input[type="checkbox"][disabled]:active + label:before{
+    background-position-y: -39px;
 }
-.dash{
-    background-image: url("./buttons/min/inactive.png");
-    width: 29px;
-}
-.focus .dash{
-    background-image: url("./buttons/min/normal.png");
-}
-.x::after{
+.x::before{
     margin-left: -1px;
     width: 69px;
-    height: 37px;
-    box-sizing: content-box;
-    background-image: url("./buttons/close/glow.png");
-    background-size: 100% 100%;
-    display: block;
-    content: "";
-    position: absolute;
-    z-index: 99999;
-    pointer-events: none;
-    opacity: 0;
-    transition: 0.3s;
+    background-image: url(close_glow.png);
 }
-.square::after, .dash::after{
+.square::before, .dash::before{
     margin-left: 1px;
     width: 52px;
+    background-image: url(glow.png);
+}
+.x::before, .dash::before, .square::before{
     height: 37px;
     box-sizing: content-box;
-    background-image: url("./buttons/glow.png");
-    background-size: 100% 100%;
     display: block;
     content: "";
     position: absolute;
@@ -52,71 +47,63 @@ input[type="checkbox"]:checked:active + label{
     pointer-events: none;
     opacity: 0;
     transition: 0.1s ease-in-out;
+    background-size: 100% 100%;
 }
-.square:hover::after, .square:active::after, .dash:hover::after, .dash:active::after, .x:active::after, .x:hover::after{
+.square:hover::before, .square:active::before, .dash:hover::before, .dash:active::before, .x:active::before, .x:hover::before{
     opacity: 1;
+    z-index: 99999;
 }
-.square[disabled]::after, .dash[disabled]::after, .x[disabled]::after{
-    display: none;
-}
-.square:hover::after, .square:active::after{
+.square:hover::before, .square:active::before{
     margin-left: -1px;
     width: 52px;
 }
 .x{
-    background-image: url("./buttons/close/inactive.png");
     width: 49px;
     z-index: 5;
 }
-.focus .x{
-    background-image: url("./buttons/close/normal.png");
+.topbar > .buttons > div{
+    background-image: url("./buttons.png");
+    background-position-y: -80px;
 }
-.x:hover{
-    background-image: url("./buttons/close/hover.png");
+.focus .topbar > .buttons > div{
+    background-position-y: 0px;
 }
-.x:active{
-    background-image: url("./buttons/close/pressed.png");
+.topbar > .buttons > div:hover{
+    background-position-y: -20px;
+}
+.topbar > .buttons > div:active{
+    background-position-y: -40px;
 }
 .x:only-child{
-    background-image: url("./buttons/close/lonenormal.png");
-}
-.x:only-child:hover{
-    background-image: url("./buttons/close/lonehover.png");
-}
-.x:only-child:active{
-    background-image: url("./buttons/close/lonepressed.png");
+    background-position-x: -49px;
 }
 .square{
-    background-image: url("./buttons/max/inactive.png");
+    background-position-x: -98px;
     width: 29px;
 }
-.focus .square{
-    background-image: url("./buttons/max/normal.png");
+.dash{
+    background-position-x: -127px;
+    width: 29px;
 }
-.square:hover{
-    background-image: url("./buttons/max/hover.png");
+.focus .topbar > .buttons > div[disabled], 
+.focus .topbar > .buttons > div[disabled]:hover, 
+.focus .topbar > .buttons > div[disabled]:active{
+    background-position-y: -60px;
 }
-.square:active{
-    background-image: url("./buttons/max/pressed.png");
+.topbar > .buttons > div[disabled], 
+.topbar > .buttons > div[disabled]:hover, 
+.topbar > .buttons > div[disabled]:active{
+    background-position-y: -80px;
 }
-.square[disabled]:hover{
-    background-image: url("./buttons/max/normal.png");
-}
-.square[disabled]:active{
-    background-image: url("./buttons/max/normal.png");
-}
-.dash:hover{
-    background-image: url("./buttons/min/hover.png");
-}
-.dash:active{
-    background-image: url("./buttons/min/pressed.png");
+.topbar > .buttons > div[disabled]:hover::before, .topbar > .buttons > div[disabled]:active::before{
+    display: none;
 }
 .winapi_transparent{
     padding: 5px;
     background-color: hsla(209, 68%, 50%, 0.15);
     backdrop-filter: blur(3px);
     border: 1px solid black;
-    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png"), url(reflection.png);
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("../basic-aero/window_side.png"), url(reflection.png);
     --aero-reflections-left: 0;
     --aero-reflections-top: 0;
     background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, left var(--aero-reflections-left) top var(--aero-reflections-top);
@@ -141,7 +128,7 @@ input[type="checkbox"]:checked:active + label{
     background-size: 100vw 100vh;
 }
 .window.focus{
-    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("./window_side.png"), url(reflection.png);
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("../basic-aero/window_side.png"), url(reflection.png);
     background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, left var(--aero-reflections-left) top var(--aero-reflections-top);
     background-size: auto, auto, 100% 30%, 100vw 100vh;
     background-repeat: no-repeat, no-repeat;
@@ -232,7 +219,7 @@ button, select{
     position: relative;
     z-index: 100;
 }
-button::after{
+button::after, .select::after{
     background-color: transparent;
     height: 100%;
     width: 100%;
@@ -245,29 +232,15 @@ button::after{
     border: 6px solid transparent;
     border-image: url(../basic-aero/button/normal.png);
     border-image-slice: 6 fill;
-    z-index: -1;
 }
-.select::after{
-    background-color: transparent;
-    height: 100%;
-    width: 100%;
-    display: block;
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
-    border: 6px solid transparent;
-    border-image: url(../basic-aero/button/normal.png);
-    border-image-slice: 6 fill;
-    z-index: 99;
+button::after{
+    z-index: -1;
 }
 selecticon{
     z-index: 100;
 }
 button:disabled::after, button:disabled:hover::after, button:disabled:active::after{
     border-image-source: url(../basic-aero/button/disabled.png);
-    opacity: 1;
 }
 button:hover::after, button[default]:hover::after, .select:hover::after{
     border-image-source: url(../basic-aero/button/hover.png);
@@ -371,4 +344,23 @@ article[role=tabpanel]{
 }
 .dock-br{
     background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, right 8px bottom calc(var(--taskbar-height) - 8px);
+}
+input[type=text]{
+    margin: 1px;
+}
+.x .cbutton-glyph, .dash .cbutton-glyph, .square .cbutton-glyph{
+    height: 10px;
+    width: 12px;
+    background-image: url(buttons.png);
+    background-position-x: -156px;
+    margin-top: -2px;
+}
+.x .cbutton-glyph{
+    width: 11px;
+}
+.square .cbutton-glyph{
+    background-position-y: -10px;
+}
+.dash .cbutton-glyph{
+    background-position-y: -20px;
 }

@@ -23,7 +23,7 @@
     margin-bottom: 20px;
 }
 .logonui .user:hover > .user-profile-container{
-    background-image: url(../res/logonui-user_hover.png);
+    background-position-y: -80px;
 }
 .logonui .user-profile-container img{
     height: 46px;

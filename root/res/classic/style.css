@@ -1466,7 +1466,7 @@ table>tbody>tr>* {
     border: none;
     padding: 2px;
 }
-button[role="tab"], button[role="tab"]:active{
+.button[role="tab"], .button[role="tab"]:active{
     box-shadow: inset 1px 1px #fff, inset -1px 0px rgb(64, 64, 64), inset -2px 0px rgb(128,128,128);
     border: none;
     background-image: none;
@@ -1483,7 +1483,7 @@ button[role="tab"], button[role="tab"]:active{
     margin-top: 3px;
     z-index: 0;
 }
-button[role="tab"][aria-selected=true]{
+.button[role="tab"][aria-selected=true]{
     height: 22px;
     padding-left: 7px;
     margin-right: -3px;
@@ -1493,10 +1493,10 @@ button[role="tab"][aria-selected=true]{
     z-index: 1;
     border: 0;
 }
-button[role="tab"][aria-selected=true]:hover{
+.button[role="tab"][aria-selected=true]:hover{
     border: 0;
 }
-button[role="tab"]:hover{
+.button[role="tab"]:hover{
     background-image: none;
 }
 menu[role="tablist"]{

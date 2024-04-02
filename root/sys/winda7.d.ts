@@ -3,7 +3,7 @@ declare module 'winda7' {
         class Winda7Window {
             constructor(x: Number, y: Number, width: Number, height: Number, title: String, innerhtml: String, icon: String);
         }
-        function AddWindow(window: Winda7Window, 
+        function AddWindow(window: {title: String, }, 
                            ispopup: Boolean, 
                            options: Object, 
                            id: Number, 

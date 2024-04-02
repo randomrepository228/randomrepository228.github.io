@@ -30,3 +30,28 @@ function unfocus(){
         a.parentElement.className = a.parentElement.className.replace(" focus", "")
     }
 }
+function tabHandler(elem){
+    for (a of elem.firstElementChild.children){
+        if (!a.hasAttribute("disabled")){
+            a.setAttribute('onmousedown', 
+               `for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
+                    a.style.display = "none"
+                };
+                this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
+                for (a of this.parentElement.parentElement.querySelectorAll(".button\[role=tab]")) {
+                    a.setAttribute("aria-selected", "")
+                }
+                this.parentElement.parentElement.querySelector\(".button\[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
+            a.setAttribute('ontouchstart', 
+               `event.preventDefault();
+                for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
+                    a.style.display = "none"
+                };
+                this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
+                for (a of this.parentElement.parentElement.querySelectorAll(".button\[role=tab]")) {
+                    a.setAttribute("aria-selected", "")
+                }
+                this.parentElement.parentElement.querySelector\(".button\[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
+        }
+    }
+}

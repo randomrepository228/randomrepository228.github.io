@@ -1,6 +1,7 @@
 const request = indexedDB.open("SystemDrive", 3);
 fs = {}
 let db;
+isFsLoaded = false
 fs.toPath = function(path){
     path = path.replace("\\", "/")
     if(path.startsWith(".")) path = path.replace(".", "")
@@ -13,20 +14,27 @@ function sleep(milliseconds){
 }
 fs.downloadFiles = async (files) => {
     files.forEach(async path => {
-        console.log(path)
-        const response = await (await fetch("./" + path)).blob()
-        console.log(response)
         if (!(await fs.exists(path))) {
+            const response = await (await fetch("./" + path)).blob()
             const match = path.match(/(.+\/).+/)
             if (match) if (match.length == 2) if(!await fs.exists(match[1] + ".")) await fs.writeFile(match[1] + ".", "")
             await fs.writeFile(path, response)
         }
     })
 }
+fs.downloadFile = async (path) => {
+    if (!(await fs.exists(path))) {
+        const response = await (await fetch("./" + path)).blob()
+        const match = path.match(/(.+\/).+/)
+        if (match) if (match.length == 2) if(!await fs.exists(match[1] + ".")) await fs.writeFile(match[1] + ".", "")
+        await fs.writeFile(path, response)
+        return response
+    }
+}
 fs.checkSystemFolder = async function(){
     const transaction = db.transaction("rootfs", "readwrite")
     const initialfs = transaction.objectStore("rootfs");
-    const request = initialfs.get("config/.")
+    const request = initialfs.get("bin/savedialog.js")
     request.onsuccess = (e) => {
         if(request.result) return;
         const systemFiles = [
@@ -70,7 +78,7 @@ fs.checkSystemFolder = async function(){
                 programs.push(a.replace(/(.+)\./, "$1index.html"))
             }
         }
-        console.log(programs)
+        programs.push("bin/savedialog.js")
         fs.downloadFiles(programs)
     };
 }
@@ -94,6 +102,7 @@ fs.readdir = function(path){
             keys.onsuccess = (e) => {
                 const allkeys = e.target.result
                 let filteredkeys = [];
+                let filteredfolders = [];
                 for(a of allkeys){
                     if(a.startsWith(path)){
                         let foldername = a
@@ -103,12 +112,19 @@ fs.readdir = function(path){
                         if(foldername.startsWith("/")){
                             foldername = foldername.replace("/", "")
                         }
-                        if(foldername.match(/([^\/]*\/?\.?)/)[1] == foldername){
-                            filteredkeys.push(foldername)
+                        console.log(foldername,foldername.match(/([^\/]*\/?\.?)/)[1])
+                        if (foldername.match(/([^\/]*\/?\.?)/)[1] == foldername){
+                            if (foldername.endsWith("/")){}
+                            else if (foldername.endsWith("/.")){
+                                filteredfolders.push(foldername)
+                            }
+                            else{
+                                filteredkeys.push(foldername)
+                            }
                         }
                     }
                 }
-                resolve(filteredkeys)
+                resolve(filteredfolders.concat(filteredkeys))
             }
         }
     })
@@ -123,8 +139,8 @@ fs.readFile = function(filePath){
             resolve(undefined)
         }
         request.onsuccess = (e) => {
-            console.log(e.target.result)
-            resolve(e.target.result.data)
+            if(e.target.result) resolve(e.target.result.data)
+            else resolve(undefined)
         }
     })
 }
@@ -182,10 +198,12 @@ fs.copyFile = function(initialFilePath, filePath){
         query.onerror = (e) => resolve(1)
     })
 }
-fs.writeFile = async function(filePath, data, newFile){
+fs.writeFile = function(filePath, data, newFile){ return new Promise(async (resolve, reject) => {
+    if (!filePath) return 0
     if(typeof data != "object") data = new Blob([data])
     filePath = fs.toPath(filePath)
     let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
+    console.log(fileName)
     if (!(!newFile || (newFile && !await fs.exists(filePath)))) {
         let i = 2;
         while (true){
@@ -203,10 +221,10 @@ fs.writeFile = async function(filePath, data, newFile){
     request.onsuccess = async (e) => {
         initialfs.put({path: filePath, data: data})
         dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
-        return 0
+        resolve(0)
     };
-    request.onerror = (e) => {return 1}
-}
+    request.onerror = (e) => {resolve(1)}
+})}
 fs.watchFile = function(filePath){
     return new Promise((resolve, reject) => {
         addEventListener("filechange", (e) => {
@@ -320,7 +338,8 @@ fs.searchHTML = async function(path, searchString){
 }
 request.onsuccess = async (e) => {
     db = e.target.result;
-    // fs.writeFile("secret.txt", "IFRAME ЗЛО!")
+    isFsLoaded = true
+    dispatchEvent(new CustomEvent("fsloaded"))
 };
 request.onupgradeneeded = (e) => {
     db = e.target.result;

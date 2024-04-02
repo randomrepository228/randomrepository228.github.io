@@ -54,10 +54,10 @@
     <body>
         <section class="tabs">
             <menu role="tablist" aria-label="Tabs Template">
-              <button role="tab" aria-controls="tab-A" aria-selected="true">Tab A</button>
-              <button role="tab" aria-controls="tab-B">Tab B</button>
-              <button role="tab" aria-controls="tab-C">Tab C</button>
-              <button role="tab" aria-controls="tab-D" disabled>Tab D</button>
+              <div class="button" role="tab" aria-controls="tab-A" aria-selected="true">Tab A</div>
+              <div class="button" role="tab" aria-controls="tab-B">Tab B</div>
+              <div class="button" role="tab" aria-controls="tab-C">Tab C</div>
+              <div class="button" role="tab" aria-controls="tab-D" disabled>Tab D</div>
             </menu>
             <article role="tabpanel" id="tab-A">Tab A is active</article>
             <article role="tabpanel" id="tab-B" hidden>Tab B is active</article>
@@ -79,30 +79,7 @@
         <div class="progress-bar-container" style="width: 500px; height: 23px; margin: 5px;">
             <div class="progress-bar progress-bar-marquee"></div>
         </div>
-        <script>
-            function tabHandler(elem){
-                for (a of elem.firstElementChild.children){
-                    a.setAttribute('onmousedown', 
-                       `for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
-                            a.style.display = "none"
-                        };
-                        this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
-                        for (a of this.parentElement.parentElement.querySelectorAll("button[role=tab]")) {
-                            a.setAttribute("aria-selected", "")
-                        }
-                        this.parentElement.parentElement.querySelector("button[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
-                    a.setAttribute('ontouchstart', 
-                       `event.preventDefault();
-                        for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
-                            a.style.display = "none"
-                        };
-                        this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
-                        for (a of this.parentElement.parentElement.querySelectorAll("button[role=tab]")) {
-                            a.setAttribute("aria-selected", "")
-                        }
-                        this.parentElement.parentElement.querySelector("button[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
-                }
-            }
+        <script> 
             tabHandler(document.querySelector(".tabs"))
             let thisWindow = frameElement.parentElement.parentElement.parentElement
             parent.showWindow("./bin/bsod/icon.png", thisWindow.getAttribute("windowid"));

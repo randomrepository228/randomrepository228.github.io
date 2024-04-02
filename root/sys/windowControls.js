@@ -1,4 +1,3 @@
-
 function windowMouseDown(event, elem, a, noResize, windowelem){
     if(event.target != elem) return;
     if (event.type == "touchstart" || event.target.classList.contains("topbar") || event.target.classList.contains("resizer") || event.target.id == "icons" || event.target.tagName == "IFRAME"){
@@ -22,8 +21,7 @@ function windowMouseDown(event, elem, a, noResize, windowelem){
     if (!touch) evName = "mouseup"
     else evName = "touchend"
     document.addEventListener(evName, e => {
-        let minsnap = 10
-        let minsnapx = 0
+        let minsnap = 25
         loop.drag = false; 
         iframeignore.innerHTML = "none"
         if (e.clientX){
@@ -35,20 +33,20 @@ function windowMouseDown(event, elem, a, noResize, windowelem){
             let wndwidth = activewindow.getBoundingClientRect().width
             if (clientX + wndwidth > innerWidth) clientX += wndwidth
             clientY = +activewindow.style.top.substring(0, activewindow.style.top.length - 2);
-            minsnap = 1
-            minsnapx = wndwidth / -4
+            minsnap = 50
         }
         if (!noResize){
-            if (clientX < minsnap + minsnapx) {snapLeft(activewindow); return}
-            if (clientX > innerWidth - minsnap - minsnapx) {snapRight(activewindow); return}
-            if (clientY < minsnap) maximise(activewindow)
+            console.log(lastx, lasty)
+            if (lastx < minsnap) {snapLeft(activewindow); return}
+            if (lastx > innerWidth - minsnap) {snapRight(activewindow); return}
+            if (lasty < minsnap) maximise(activewindow)
         }
         if (!localStorage.noContentMove) return
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
         if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
             activewindow.className = activewindow.className.replace(" maximised", "");
             try{
-                activewindow.querySelector("iframe").contentWindow.minimise()
+                if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.minimise()
             }
             catch(e){console.error(e)}
             activewindow.className = activewindow.className.replace("snap-right ", "")
@@ -99,12 +97,14 @@ function move(e){
     let activewindowcontent = activewindow.querySelector("text")
     let pheight = activewindowcontent.parentElement.style.minHeight;
     if (e.touches) e = e.touches[0]
+    lastx = e.clientX
+    lasty = e.clientY
     if(loop.drag){
         activewindow.style.top = `${Math.trunc(e.clientY - prevy)}px`
         if(activewindow.classList.contains("maximised") || activewindow.classList.contains("snap-right") || activewindow.classList.contains("snap-left")) {
             activewindow.className = activewindow.className.replace(" maximised", "");
             try{
-                activewindow.querySelector("iframe").contentWindow.minimise()
+                if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.minimise()
             }
             catch(e){console.error(e)}
             activewindow.className = activewindow.className.replace("snap-right ", "")
@@ -137,10 +137,12 @@ function move(e){
         activewindow.style.right = null;
     }
     if (!loop.drag && !loop.top && !loop.left) return
-    if (activewindow.style.left.startsWith("-")) activewindow.style.setProperty("--aero-reflections-left", activewindow.style.left.slice(1))
-    else activewindow.style.setProperty("--aero-reflections-left", "-" + activewindow.style.left)
-    if (activewindow.style.top.startsWith("-")) activewindow.style.setProperty("--aero-reflections-top", activewindow.style.top.slice(1))
-    else activewindow.style.setProperty("--aero-reflections-top", "-" + activewindow.style.top)
+    let top = +(activewindow.style.top.slice(0, activewindow.style.top.length - 2))
+    let left = +(activewindow.style.left.slice(0, activewindow.style.left.length - 2))
+    if (activewindow.style.left.startsWith("-")) activewindow.style.setProperty("--aero-reflections-left", -(left - (left / 8)) + "px")
+    else activewindow.style.setProperty("--aero-reflections-left", "-" + (left - (left / 8)) + "px")
+    if (activewindow.style.top.startsWith("-")) activewindow.style.setProperty("--aero-reflections-top", -(top - (top / 8)) + "px")
+    else activewindow.style.setProperty("--aero-reflections-top", "-" + (top - (top / 8)) + "px")
 }
 function snapLeft(window){
     if (localStorage.aerosnap == "true") return

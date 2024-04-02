@@ -4,7 +4,7 @@ function snapLeft(window){}
 function snapRight(window){}
 function maximiseWindow(window){}
 maximise = maximiseWindow
-function AddWindow(window, ispopup, options, id, elem){
+function AddWindow(window, ispopup, options, id, elem, onclose){
     newWindow = document.createElement("div")
     newWindow.className = `n${id} window winapi_shadow winapi_transparent`
     if (typeof options.top == "number") options.top += "px"
@@ -48,9 +48,9 @@ function AddWindow(window, ispopup, options, id, elem){
             <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title}</p>
         </left>
         <div class="buttons">
-            ${options.xOnly ? `` : `<div class="dash" ${options.noTray ? 'disabled' : 'onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"'}><img src="./res/aero/buttons/min/icon.png"></div>
-            <div class="square" ${options.noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><img src="./res/aero/buttons/max/icon.png"></div>`}
-            <div class="x" onclick="closeWindow(${id})"><img src="./res/aero/buttons/close/icon.png"></div>
+            ${options.xOnly ? `` : `<div class="dash" ${options.noTray ? 'disabled' : 'onclick="minimizeWindow(this.parentElement.parentElement.parentElement)"'}><div class="cbutton-glyph"></div></div>
+            <div class="square" ${options.noResize ? 'disabled' : 'onclick="maximise(this.parentElement.parentElement.parentElement)"'}><div class="cbutton-glyph"></div></div>`}
+            ${options.noX ? `` : `<div class="x"><div class="cbutton-glyph"></div></div>`}
         </div>
     </div>
     ${options.noResize ? `` : `<div ontouchstart="event.preventDefault();windowResize(event, this, 'right', 'top')" onmousedown="windowResize(event, this, 'left', 'top')" class="resizer topleft"></div>
@@ -62,10 +62,11 @@ function AddWindow(window, ispopup, options, id, elem){
     <div ontouchstart="event.preventDefault();windowResize(event, this, 'right')" onmousedown="windowResize(event, this, 'right')" class="resizer right"></div>
     <div ontouchstart="event.preventDefault();windowResize(event, this, 'bottom')" onmousedown="windowResize(event, this, 'bottom')" class="resizer bottom"></div>`}
     `
+    newWindow.querySelector(".x").onclick = () => closeWindow(id, onclose)
     newWindow.setAttribute("onmousedown", "setActive(this)")
-    newWindow.setAttribute("ontouchstart", "event.preventDefault();setActive(this)")
+    newWindow.setAttribute("ontouchstart", "setActive(this)")
     let content = document.createElement("div")
-    content.className = "content" + (options.noGUI ? 'nostyle' : '')
+    content.className = "content" + (options.noGUI || options.noBorder ? 'nostyle' : '')
     if (options.minWidth) content.style.minWidth = options.minWidth + 'px'
     if (options.minHeight) content.style.minHeight = options.minHeight + `px`
     content.appendChild(document.createElement("ignore"))
@@ -75,7 +76,7 @@ function AddWindow(window, ispopup, options, id, elem){
     if (typeof elem == "object") text.appendChild(elem)
     else{
         text.innerHTML = window.innerhtml
-        if (ispopup) text.innerHTML += `<footer><button onclick="closeWindow(${id})">OK</button></div>`
+        if (ispopup) text.innerHTML += `<footer><button onclick="closeWindow(${id})">OK</div></button>`
     }
     content.appendChild(text)
     newWindow.appendChild(content)
@@ -84,7 +85,7 @@ function AddWindow(window, ispopup, options, id, elem){
         showWindow(options.okna8 ? "../" + window.icon : window.icon, id)
     }
     broadcast("newprocess|" + id)
-    return {id: id, elem: text, title: newWindow.querySelector("left").lastElementChild}
+    return {id: id, elem: text, title: newWindow.querySelector("left").lastElementChild, window: newWindow}
 }
 function broadcast(message){
     for (a of windows.children){
@@ -125,26 +126,28 @@ async function msgbox(title, content, buttons){
     return new Promise((resolve, reject) => {
         const id = getId()
         let msgboxContent = document.createElement("div")
-        msgboxContent.style.height = "100%"
+        msgboxContent.style.minWidth = "93px"
+        msgboxContent.style.minHeight = "93px"
         let msgboxElem = document.createElement("div")
-        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px); overflow-y: auto;")
+        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px)")
         msgboxElem.innerHTML = content
         let footer = document.createElement("footer")
-        footer.style.position = "absolute"
-        footer.style.left = "0"
-        footer.style.right = "0"
-        footer.style.bottom = "0"
         for (btn of buttons){
             console.log(btn)
             let button = document.createElement("button")
-            button.innerHTML = btn
+            button.innerText = btn
             const str = (' ' + btn)
             button.onclick = () => {resolve(str.slice(1)); closeWindow(id)}
             footer.appendChild(button)
         }
         msgboxContent.appendChild(msgboxElem)
         msgboxContent.appendChild(footer)
-        AddWindow(new Winda7Window(0, 0, 0, 0, title, undefined, ""), false, {width: 500, height: 200, left: (window.innerWidth/2)-250, top: (window.innerHeight/2)-150, noSelfOpen: true}, id, msgboxContent)
+        msgboxContent.style.height = "100%"
+        let wnd = AddWindow(new Winda7Window(0, 0, 0, 0, title, undefined, ""), false, {left: (window.innerWidth/2)-50, top: (window.innerHeight/2)-50, noSelfOpen: true, xOnly: true, noResize: true}, id, msgboxContent, () => resolve("")).window
+        const dimensions = wnd.getBoundingClientRect()
+        const half = {width: dimensions.width / 2, height: dimensions.height / 2}
+        wnd.style.left = (window.innerWidth/2)-half.width + "px"
+        wnd.style.top = (window.innerHeight/2)-half.height + "px"
         new Audio(sounds.msgbox).play()
     })
 }
@@ -152,26 +155,27 @@ async function inputbox(title, content, defaultValue){
     return new Promise((resolve, reject) => {
         const id = getId()
         let msgboxContent = document.createElement("div")
-        msgboxContent.style.height = "100%"
+        msgboxContent.style.minWidth = "93px"
+        msgboxContent.style.minHeight = "93px"
         let msgboxElem = document.createElement("div")
-        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px); overflow-y: auto;")
+        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px)")
         msgboxElem.innerHTML = content + "<br><br>"
         let inputBox = document.createElement("input")
         inputBox.type = "text"
         inputBox.value = defaultValue ? defaultValue : ''
         msgboxElem.appendChild(inputBox)
         let footer = document.createElement("footer")
-        footer.style.position = "absolute"
-        footer.style.left = "0"
-        footer.style.right = "0"
-        footer.style.bottom = "0"
         let okbutton = document.createElement("button")
         okbutton.innerHTML = "OK"
         okbutton.onclick = () => {resolve(inputBox.value); closeWindow(id)}
         footer.appendChild(okbutton)
         msgboxContent.appendChild(msgboxElem)
         msgboxContent.appendChild(footer)
-        AddWindow(new Winda7Window(0, 0, 0, 0, title, undefined, ""), false, {width: 500, height: 200, left: (window.innerWidth/2)-250, top: (window.innerHeight/2)-150, noSelfOpen: true}, id, msgboxContent)
+        let wnd = AddWindow(new Winda7Window(0, 0, 0, 0, title, undefined, ""), false, {left: (window.innerWidth/2)-50, top: (window.innerHeight/2)-50, noSelfOpen: true, xOnly: true, noResize: true}, id, msgboxContent, () => resolve("")).window
+        const dimensions = wnd.getBoundingClientRect()
+        const half = {width: dimensions.width / 2, height: dimensions.height / 2}
+        wnd.style.left = (window.innerWidth/2)-half.width + "px"
+        wnd.style.top = (window.innerHeight/2)-half.height + "px"
         new Audio(sounds.msgbox).play()
     })
 }
@@ -183,7 +187,7 @@ function setActive(window, noTray){
     if (activewindow) {
         activewindow.className = activewindow.className.replace(" focus", "")
         try{
-            activewindow.querySelector("iframe").contentWindow.unfocus()
+            if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.unfocus()
         }
         catch(e){console.error(e)}
     }
@@ -192,7 +196,7 @@ function setActive(window, noTray){
     activewindow = window;
     if (!activewindow.classList.contains("focus")) activewindow.className += " focus"
     try{
-        activewindow.querySelector("iframe").contentWindow.focus()
+        if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.focus()
     }
     catch(e){console.error(e)}
     activewindow.style.zIndex = 1;
@@ -239,7 +243,7 @@ function showWindow(icon, num, doNotShowTray){
     }
     catch(e){}
     setActive(wnd)
-    for (windoww of document.querySelectorAll(`.n${num}.window`))
+    for (let windoww of document.querySelectorAll(`.n${num}.window`))
         windoww.style.display = ""
     startMenu(false)
 }
@@ -338,7 +342,8 @@ function getAllWindows(){
     }
     return openedwindows
 }
-function closeWindow(id){
+async function closeWindow(id, callback){
+    if (callback) await callback()
     let window = getWnd(id)
     if (!window) window = getTray(id)
     function timeout(){
