@@ -1,4 +1,3 @@
-localStorage.ver = "0.9.0"
 loop = {drag: false, top: false, left: false, right: false, bottom: false};
 window.prevx = 150;
 window.prevy = 150;

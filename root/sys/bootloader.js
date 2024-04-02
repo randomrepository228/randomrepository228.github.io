@@ -1,3 +1,4 @@
+localStorage.ver = "0.9.0.1"
 async function boot(){
     let isSystemInstalled = await fs.exists("ver")
     if (!isSystemInstalled) await fs.writeFile("ver", localStorage.ver)
@@ -6,7 +7,7 @@ async function boot(){
     bootloader.style.overflow = "hidden";
     bootloader.style.backgroundColor = "black";
     bootloader.style.position = "relative";
-    if(localStorage.verboseBoot == "true") bootloader.innerHTML = `
+    if(localStorage.verboseBoot == "true" || !isSystemInstalled) bootloader.innerHTML = `
     <div style="height: 100%;">
         <cntr style="color: black">${isSystemInstalled ? 'Loading Winda files' : 'Installing Winda'}</cntr><br>
         <div id="verboseBoot"></div>
@@ -23,9 +24,9 @@ async function boot(){
         <p style="font-size: 20px; color: white; margin: 0; margin-top: 50px;">Loading Winda</p><br>
         <p style="font-size: 20px; color: gray; margin-left: 0; position: absolute; bottom: 20px; left: 50vw; transform: translateX(-50%);">By kitaes</p>
     </div>`
-    if(localStorage.verboseBoot != "true") bootloader.style.padding = "0"
+    if(!(localStorage.verboseBoot != "true" && !isSystemInstalled)) bootloader.style.padding = "0"
     async function log(path, noText){
-        if(localStorage.verboseBoot == "true") if(verboseBoot){
+        if(localStorage.verboseBoot == "true" || !isSystemInstalled) if(verboseBoot){
             if (noText){
                 console.log(path + "<br>")
                 verboseBoot.innerHTML += path + "<br>"
