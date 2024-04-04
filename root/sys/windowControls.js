@@ -1,3 +1,11 @@
+function snapLeft(window){
+    if (localStorage.aerosnap == "true") return
+    window.className = window.className.replace("", "snap-left ")
+}
+function snapRight(window){
+    if (localStorage.aerosnap == "true") return
+    window.className = window.className.replace("", "snap-right ")
+}
 function windowMouseDown(event, elem, a, noResize, windowelem){
     if(event.target != elem) return;
     if (event.type == "touchstart" || event.target.classList.contains("topbar") || event.target.classList.contains("resizer") || event.target.id == "icons" || event.target.tagName == "IFRAME"){
@@ -36,7 +44,6 @@ function windowMouseDown(event, elem, a, noResize, windowelem){
             minsnap = 50
         }
         if (!noResize){
-            console.log(lastx, lasty)
             if (lastx < minsnap) {snapLeft(activewindow); return}
             if (lastx > innerWidth - minsnap) {snapRight(activewindow); return}
             if (lasty < minsnap) maximise(activewindow)
@@ -143,14 +150,6 @@ function move(e){
     else activewindow.style.setProperty("--aero-reflections-left", "-" + (left - (left / 8)) + "px")
     if (activewindow.style.top.startsWith("-")) activewindow.style.setProperty("--aero-reflections-top", -(top - (top / 8)) + "px")
     else activewindow.style.setProperty("--aero-reflections-top", "-" + (top - (top / 8)) + "px")
-}
-function snapLeft(window){
-    if (localStorage.aerosnap == "true") return
-    window.className = window.className.replace("", "snap-left ")
-}
-function snapRight(window){
-    if (localStorage.aerosnap == "true") return
-    window.className = window.className.replace("", "snap-right ")
 }
 addEventListener("resize", resizeHandler)
 function maximiseWindow(window){

@@ -638,3 +638,9 @@ h2{
     color: rgb(0,51,153);
     font-weight: 400;
 }
+left p{
+    width: 0;
+}
+left{
+    overflow: hidden;
+}

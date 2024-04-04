@@ -1,7 +1,6 @@
-localStorage.ver = "0.9.0.1"
 async function boot(){
     let isSystemInstalled = await fs.exists("ver")
-    if (!isSystemInstalled) await fs.writeFile("ver", localStorage.ver)
+    if (isSystemInstalled) if ((await (await fs.readFile("ver")).text()) != "0.9.0.2") isSystemInstalled = false
     bootloader.style.width = "100%";
     bootloader.style.height = "100%";
     bootloader.style.overflow = "hidden";
@@ -46,7 +45,7 @@ async function boot(){
         const evalCode = await file.text()
         console.log(evalCode)
         try{
-            window.eval(evalCode)
+            (1,eval)(evalCode)
             log(a)
         }
         catch(e){
@@ -93,7 +92,6 @@ async function boot(){
                     n++
                     document.querySelector(".nfiles-extracted").innerText = n
                 }
-                console.log(folders)
                 for (let a of folders){
                     await fs.writeFile(a, "")
                 }
@@ -107,14 +105,12 @@ async function boot(){
         req.open("GET", "install.zip", true);
         req.send();
     }
-    for (const a of bootFiles){
-        if (bootFileContents[a]){
-            execScript(bootFileContents[a], a)
-        }
-        else{
+    else{
+        for (const a of bootFiles){
             const file = await fs.readFile(a)
             execScript(file, a)
         }
+        dispatchEvent(new CustomEvent("sysloaded"))
     }
 }
 addEventListener("fsloaded", () => boot())

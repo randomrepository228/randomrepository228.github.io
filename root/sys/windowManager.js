@@ -121,7 +121,7 @@ function getTray(id){
 function idToWindow(id){
     return document.querySelectorAll(`.n${id}`)[1]
 }
-async function msgbox(title, content, buttons){
+async function msgbox(title, content, buttons, type){
     if (!buttons) buttons = ['OK']
     return new Promise((resolve, reject) => {
         const id = getId()
@@ -129,11 +129,29 @@ async function msgbox(title, content, buttons){
         msgboxContent.style.minWidth = "93px"
         msgboxContent.style.minHeight = "93px"
         let msgboxElem = document.createElement("div")
-        msgboxElem.setAttribute("style", "padding: 20px; height: calc(100% - 80px)")
-        msgboxElem.innerHTML = content
+        msgboxElem.setAttribute("style", "padding: 10px; height: calc(100% - 40px); display: flex;")
+        if (type){
+            const msgboxImage = document.createElement("img")
+            msgboxImage.src = "./res/icons/" + type.slice(0, 3) + ".png"
+            msgboxImage.style.height = "32px"
+            msgboxElem.appendChild(msgboxImage)
+            if (type == "error"){
+                new Audio("./media/Windows Critical Stop.flac").play()
+            }
+            if (type == "info"){
+                new Audio("./media/Windows Error.flac").play()
+            }
+            if (type == "warning"){
+                new Audio("./media/Windows Exclamation.flac").play()
+            }
+        }
+        const text = document.createElement("div")
+        text.innerHTML = content
+        text.style.margin = "8px"
+        text.style.marginBottom = "8px"
+        msgboxElem.appendChild(text)
         let footer = document.createElement("footer")
         for (btn of buttons){
-            console.log(btn)
             let button = document.createElement("button")
             button.innerText = btn
             const str = (' ' + btn)
@@ -148,7 +166,6 @@ async function msgbox(title, content, buttons){
         const half = {width: dimensions.width / 2, height: dimensions.height / 2}
         wnd.style.left = (window.innerWidth/2)-half.width + "px"
         wnd.style.top = (window.innerHeight/2)-half.height + "px"
-        new Audio(sounds.msgbox).play()
     })
 }
 async function inputbox(title, content, defaultValue){
@@ -205,7 +222,6 @@ function setActive(window, noTray){
         for(element of leftBar.children)
             element.className = element.className.replace(" focus", "")
         let e = leftBar.querySelector(`.n${activewindow.getAttribute("windowid")}`)
-        console.log(e.className)
         e.className = e.className + " focus"
     }
     catch(e){console.log(e)}
@@ -302,7 +318,6 @@ onmessage = (e) => {
         else if (commands[0] == "theme")
             changeTheme(commands[1])
         else if (commands[0] == "dontgroupicons"){
-            console.log("e")
             localStorage.dontGroupIcons = commands[1]
             if (commands[1] != "true"){
                 groupicons.href = ""
@@ -312,7 +327,6 @@ onmessage = (e) => {
             }
         }
         else if (commands[0] == "usesmalltaskbar"){
-            console.log("e")
             localStorage.useSmallTaskbar = commands[1]
             if (commands[1] == "true"){
                 smalltaskbar.href = "./shell/small_taskbar_icons.css"

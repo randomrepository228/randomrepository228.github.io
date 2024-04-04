@@ -112,7 +112,6 @@ fs.readdir = function(path){
                         if(foldername.startsWith("/")){
                             foldername = foldername.replace("/", "")
                         }
-                        console.log(foldername,foldername.match(/([^\/]*\/?\.?)/)[1])
                         if (foldername.match(/([^\/]*\/?\.?)/)[1] == foldername){
                             if (foldername.endsWith("/")){}
                             else if (foldername.endsWith("/.")){
@@ -203,7 +202,6 @@ fs.writeFile = function(filePath, data, newFile){ return new Promise(async (reso
     if(typeof data != "object") data = new Blob([data])
     filePath = fs.toPath(filePath)
     let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
-    console.log(fileName)
     if (!(!newFile || (newFile && !await fs.exists(filePath)))) {
         let i = 2;
         while (true){

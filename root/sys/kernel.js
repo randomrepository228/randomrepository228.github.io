@@ -1,4 +1,5 @@
-loop = {drag: false, top: false, left: false, right: false, bottom: false};
+localStorage.ver = "0.9.0.2"
+window.loop = {drag: false, top: false, left: false, right: false, bottom: false};
 window.prevx = 150;
 window.prevy = 150;
 window.lastx = 0;
@@ -95,7 +96,7 @@ async function loadApp(packageName, path, args, id){
                 }
             }
             else{
-                msgbox(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`)
+                msgbox(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`, undefined, "error")
             }
         }
     }
@@ -173,29 +174,24 @@ async function desktopInit(){
         document.querySelector(".logonui-status").style.display = "none";
         document.querySelector(".explorer").style.display = "";
         loadApp("sfc", undefined, "/silent")
+        if (init) return
+        if (!window.move){
+            msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
+        }
+        init = true
+        if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
+            msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 0.9.0.2!</h1>What's new?<br><ul><li>Semi-integration with filesystem</li><li>Welcome and change theme screen</li><li>fixed close button being red when it's the only button</li><li>Texture file optimization</li><li>Added file dialog</li><li>Added new boot manager!</li><li>Added different types of message boxes</li></ul>")
+            localStorage.prevver = localStorage.ver
+            return;
+        }
     })
     setWallpaperStretch(localStorage.wallpaperstretch)
     document.querySelector(".logonui-users-container").style.display = "none";
     document.querySelector(".logonui-status").style.display = "";
-    if (init) return
-    if (!window.move){
-        msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
-    }
-    cmoffcmd = (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}
-    addEventListener("mousedown", cmoffcmd); 
-    addEventListener("touchstart", cmoffcmd);
-    addEventListener("click", (e) => {if(!e.target.parentElement) return; if (e.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()})
-    document.oncontextmenu = (e) => e.preventDefault()
     initShellIcons()
-    init = true
-    if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-        msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 0.9.0!</h1>What's new?<br><ul><li>Semi-integration with filesystem</li><li>Welcome and change theme screen</li><li>fixed close button being red when it's the only button</li><li>Texture file optimization</li><li>Added file dialog</li><li>Added new boot manager!</li></ul>")
-        localStorage.prevver = localStorage.ver
-        return;
-    }
 }
 
-async function showLogonUI(){
+async function showLogonUI(_){
     try{
         bootloader.remove()
     }
@@ -207,14 +203,17 @@ async function showLogonUI(){
     document.querySelector(".logonui").style.setProperty("--logonui-background", `url(${logonui})`)
     document.querySelector(".logonui").style.display = ""
     if (window.move){
-        addEventListener("mousemove", move); 
-        addEventListener("touchmove", move);
+        addEventListener("mousemove", window.move); 
+        addEventListener("touchmove", window.move);
     }
-}
-
-document.onreadystatechange = () => {
-    if (document.readyState == "complete") isLoaded = true
-    if (localStorage.fastBoot == "true" || localStorage.verboseBoot == "true" || bootAnimationEnded ) showLogonUI()
+    else{
+        msgbox("Window manager", "Window manager not found ok?", undefined, "error")
+    }
+    cmoffcmd = (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}
+    addEventListener("mousedown", cmoffcmd); 
+    addEventListener("touchstart", cmoffcmd);
+    addEventListener("click", (e) => {if(!e.target.parentElement) return; if (e.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()})
+    document.oncontextmenu = (e) => e.preventDefault()
 }
 
 try{bootAnimation.addEventListener("ended", e => {
@@ -358,12 +357,10 @@ async function changeWallpaper(wallpaperpath, nochange, nosplash){
             let file = await fs.downloadFile(wallpaperpath)
             if (!file.length){
                 file = await fs.readFile(wallpaperpath)
-                console.log(file)
             }
             else{
                 file = file[0]
             }
-            console.log(file)
             const url = URL.createObjectURL(file)
             wallpaperpath = url
             if (!nosplash){
@@ -414,3 +411,4 @@ function refreshDpi(){
     dpiscale.setAttribute("content", `width=device-width, initial-scale=${localStorage.dpiscale == "true" ? 0.5 : 1}, user-scalable=no`)
 }
 refreshDpi()
+addEventListener("sysloaded", showLogonUI)

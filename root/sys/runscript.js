@@ -2,9 +2,7 @@ const bcwd = {
     window: {
         open: async (window) => {
             const id = getId()
-            console.log(id)
             const window2 = AddWindow(new Winda7Window(0,0,0,0,window.title, "", false), false, {noSelfOpen: true, width: window.width, height: window.height, window: true}, id, window.elem)
-            console.log(window2)
             return {
                 waitForClose: async () => {while(document.querySelector(".window.n" + id)) {await sleep(1000); return}}, 
                 id: id, 

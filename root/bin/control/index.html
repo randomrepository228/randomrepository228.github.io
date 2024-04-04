@@ -86,10 +86,10 @@
                     <div class="controlContent" id="ControlContentPersonalize">
                         <link rel="stylesheet" href="Personalize.css">
                         <div class="cont" style="padding-bottom: 0; height: calc(100vh - 56px)">
-                            <h1>Изменение изображения и звука на компьютере</h1>
-                            <p>Выберите тему, чтобы одновременно изменить фон рабочего стола, цвет, звуки и заставку.</p>
+                            <h1>Change the visuals and sounds on your computer</h1>
+                            <p>Click on theme to change the desktop background, window color, sounds, and screensaver all at once</p>
                             <div class="themesContainer">
-                                <p>Темы Aero (1)</p>
+                                <p>Aero Themes (1)</p>
                                 <div class="themelist">
                                     <div class="theme" ondblclick="top.changeTheme('aero')">
                                         <div class="images">
@@ -99,21 +99,21 @@
                                         <p>Windows 7</p>
                                     </div>
                                 </div>
-                                <p>Базовые (упрощенные) темы и темы с высокой контрастностью</p>
+                                <p>Basic and high contrast Themes (3)</p>
                                 <div class="themelist">
                                     <div class="theme" ondblclick="top.changeTheme('basic')">
                                         <div class="images">
                                             <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="603.png">
                                         </div>
-                                        <p>Windows 7 (Упрощенная)</p>
+                                        <p>Windows 7 (Basic)</p>
                                     </div>
                                     <div class="theme" ondblclick="top.changeTheme('classic')">
                                         <div class="images">
                                             <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="604.png">
                                         </div>
-                                        <p>Классическая</p>
+                                        <p>Classic</p>
                                     </div>
                                     <div class="theme" ondblclick="top.changeTheme('luna')">
                                         <div class="images">
@@ -133,16 +133,16 @@
                                         <td><img src="noscreensaver.png" alt=""></td>
                                     </tr>
                                     <tr>
-                                        <td><a onclick="openSection('wallpaper')">Фон рабочего стола</a></td>
-                                        <td><a>Цвет</a></td>
-                                        <td><a>Звуки</a></td>
-                                        <td><a>Заставка</a></td>
+                                        <td><a onclick="openSection('wallpaper')">Desktop Background</a></td>
+                                        <td><a>Window Color</a></td>
+                                        <td><a>Sounds</a></td>
+                                        <td><a>Screen Saver</a></td>
                                     </tr>
                                     <tr>
                                         <td><p></p></td>
-                                        <td><p>Автоматически</p></td>
-                                        <td><p>Отсутствуют</p></td>
-                                        <td><p>Отсутствует</p></td>
+                                        <td><p>Sky</p></td>
+                                        <td><p>None</p></td>
+                                        <td><p>None</p></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -151,37 +151,37 @@
                 </div>
                 <div class="wallpaper" style="display: none;" id="Wallpaper">
                     <div class="cont" style="padding-bottom: 0; height: calc(100vh - 105px)">
-                        <h1>Выберите фоновый рисунок рабочего стола</h1>
-                        <p>Выберите изображение, чтобы использовать его в качестве фонового изображения рабочего стола.</p>
+                        <h1>Choose your desktop background</h1>
+                        <p>Click a picture to make it your desktop background</p>
                         <div class="wallpaperselect">
                             <div>
-                                Расположение изображения:
-                                <div class="select">
+                                Picture location:
+                                <span class="select">
                                     <select name="wallpaperSelect">
-                                        <option value="windows">Фоны рабочего стола Windows</option>
+                                        <option value="windows">Windows Desktop Backgrounds</option>
                                     </select>
                                     <selecticon></selecticon>
-                                </div>
+                                </span>
                                 <input type="file" id="wallpaperFile" name="wallpaperfile" accept=".png, .jpg, .bmp, .gif, .webp">
-                                <button><label for="wallpaperFile">Обзор...</label></button>
+                                <button><label for="wallpaperFile">Browse...</label></button>
                             </div>
                         </div>
                         <div class="themesContainer" id="images"></div>
-                        <p>Позиция картинки:</p>
+                        <p>Picture position:</p>
                         <div class="select" style="height: 50px;">
                             <select name="wallpaperStretch" style="height: 50px;" onchange="top.setWallpaperStretch(this.value)">
-                                <option value="fill">Заполнить</option>
-                                <option value="fit">Вместить</option>
-                                <option value="stretch" default>Растянуть&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                                <option value="tile">Замостить</option>
-                                <option value="center">Центр</option>
+                                <option value="fill">Fill</option>
+                                <option value="fit">Fit</option>
+                                <option value="stretch" default>Stretch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                <option value="tile">Tile</option>
+                                <option value="center">Center</option>
                             </select>
                             <selecticon style="height: 50px; background-position: center; background-repeat: no-repeat;"></selecticon>
                         </div>
                     </div>
                     <footer>
-                        <button default onclick="saveChanges()">Сохранить изменения</button>
-                        <button onclick="cancel()">Отмена</button>
+                        <button default onclick="saveChanges()">Save changes</button>
+                        <button onclick="cancel()">Cancel</button>
                     </footer>
                 </div>
                 </div>
