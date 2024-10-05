@@ -1,7 +1,0 @@
-{
-    "width": 300, 
-    "height": 50,
-    "title": "Clock",
-    "icon": "",
-    "tray": {"big": true, "width": 24}
-}

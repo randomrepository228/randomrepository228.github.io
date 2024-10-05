@@ -1,129 +1,52 @@
-localStorage.ver = "0.9.0.2"
+localStorage.ver = "Prerelease"
 window.loop = {drag: false, top: false, left: false, right: false, bottom: false};
-window.prevx = 150;
-window.prevy = 150;
-window.lastx = 0;
-window.lasty = 0;
-window.prevwidth = 0;
-window.prevheight = 0;
-window.origx = 0;
-window.origy = 0;
 window.activewindow = 0;
 window.activetray = 0;
 window.isLoaded = false;
 window.bootAnimationEnded = false;
 window.init = false;
 window.currentUser = "SYSTEM";
-window.Winda7Window = class{
-    constructor(x, y, width, height, title, innerhtml, icon) {
-        this.height = height;
-        this.width = width;
-        this.x = x;
-        this.y = y;
-        this.title = title;
-        this.innerhtml = innerhtml;
-        this.icon = icon
-    }
-}
-window.Tray = class{
-    constructor(width, height, innerhtml, title) {
-        this.height = height;
-        this.width = width;
-        this.innerhtml = innerhtml;
-        this.title = title
-    }
-}
-window.TrayIcon = class{
-    constructor(width, innerhtml) {
-        this.width = width;
-        this.innerhtml = innerhtml;
-    }
-}
+window.allWindows = [];
+window.winda = {
+    playSound: async (sound) => {
+        const file = await fs.readFile(sound)
+        if (!file) return
+        const url = URL.createObjectURL(file)
+        let audio = new Audio(url)
+        audio.volume = (+localStorage.volume) / 100
+        audio.addEventListener("ended", () => {
+            URL.revokeObjectURL(url)
+        })
+        audio.play()
+    },
+    changeTheme: (a) => {
+        localStorage.theme = a
+        theme.href = "./res/" + a + "/style.css"
+        for (let i = 0; i < frames.length; i++) {
+            frames[i].postMessage("theme|" + a, "*")
+        }
+    },
+    pidCounter: 0
+};
+window.processList = []
+window.lastPID = 0
+window.windowInfo = []
 if (!localStorage.theme) localStorage.theme = "aero"
 theme.href = "./res/" + localStorage.theme + "/style.css"
+if (!localStorage.volume) localStorage.volume = 50
 if (!localStorage.wallpaper) localStorage.wallpaper = "./img/img0.jpg"
 if (!localStorage.wallpaperstretch) localStorage.wallpaperstretch = "stretch"
 if (!localStorage.sounds) localStorage.sounds = '{"msgbox": "./media/Windows Exclamation.flac"}'
 sounds = JSON.parse(localStorage.sounds)
-function connectScript(path) {
-    let script = document.createElement('script')
-    script.src = path
-    document.head.append(script)
-}
-function changeTheme(a){
-    if (a != "aero" && localStorage.maximiseTransparency){
-        localStorage.maximiseTransparency = "false"
-        refreshTransparency()
-    }
-    localStorage.theme = a
-    theme.href = "./res/" + a + "/style.css"
-    for (let i = 0; i < frames.length; i++) {
-        frames[i].postMessage("theme|" + a, "*")
-    }
-}
-function getId(){
-    const randNum = Math.round(Math.random() * 99999)
-    let id;
-    for(let i = randNum;;i++){
-        let idCollision = false
-        for(const a of document.querySelectorAll("*[windowid]"))
-            if(a.getAttribute("windowid") == i.toString())
-                idCollision = true
-        if (!idCollision)
-            return i
-    }
-}
-async function loadApp(packageName, path, args, id){
-    if (!path) path = "bin/"
-    path += packageName + "/"
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-        if (request.readyState == 4){
-            if(request.status == 200){
-                const info = JSON.parse(request.responseText)
-                if (typeof id == "undefined") id = getId()
-                if (info.window){
-                    AddWindow(new Winda7Window(info.x, info.y, info.width, info.height, info.title, 
-                        `<iframe src="${path}index.html" args="${args}" frameborder="0" onload="sendInfo(this)">`, 
-                        path + info.icon, true), undefined, info, id)
-                }
-                else if (info.tray) {
-                    addTray(id, new TrayIcon(info.tray.width, 
-                        `<iframe src="${path.replace("../bin", "..", 1)}tray.html" ${info.tray.monochrome ? 'class="monochrome"' : ''} 
-                        windowid="${id}" name="${info.title}" frameborder="0" sandbox="allow-scripts allow-same-origin" style="width: ${info.tray.width}px"></iframe>`, info.title), 
-                        new Tray(info.width, info.height, `<iframe src="${path}index.html" frameborder="0"></iframe>`, info.title)
-                    )
-                }
-            }
-            else{
-                msgbox(packageName, `Winda can't find ${packageName}. Make sure you typed the name correctly, and then try again`, undefined, "error")
-            }
-        }
-    }
-    request.open("GET", path + "init.json", true);
-    request.send();
-}
-
-async function loadAppNoInfo(packageName, path, name, args){
-    if (!path) path = "bin/"
-    path += packageName + "/"
-    const id = getId()
-    AddWindow(new Winda7Window(50, 50, window.innerWidth - 100, window.innerHeight - 100, name, `<iframe src="${path}index.html" args="${args}" sandbox="allow-scripts allow-same-origin" frameborder="0">`, '', true), undefined, {"window": true, "noSelfOpen": true, "title": packageName}, id)
-}
-async function loadOkna8App(packageName, path, name, args){
-    if (!path) path = "bin/"
-    path += packageName + "/"
-    const id = getId()
-    AddWindow(new Winda7Window(0, 0, 0, 0, name, `<iframe src="${path}index.html" args="${args}" frameborder="0">`, '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised"}, id)
-}
-function contextMenu(e, content, x, y, contextMenuType){
-    let contextMenuElem;
-    if (contextMenuType) contextMenuElem = contextMenuElement2
-    else contextMenuElem = contextMenuElement
-    if (e.preventDefault){
+let ctmContainer = document.createElement("div")
+window.contextMenuElement = ctmContainer
+document.body.appendChild(ctmContainer)
+function contextMenu(e, content, x, y, pd){
+    let contextMenuElement = document.createElement("div")
+    contextMenuElement.className = "context-menu context-menu-part"
+    if (e.preventDefault && !pd){
         e.preventDefault()
     }
-    contextMenuElement.innerHTML = ""
     if (content){
         for (const a of content){
             let contextMenuOption = document.createElement("div")
@@ -137,82 +60,32 @@ function contextMenu(e, content, x, y, contextMenuType){
         contextMenuElement.innerHTML += `<div class="context-menu-option context-menu-part"><img src="" onerror="this.style.opacity = 0;" class="context-menu-part"><div class="context-menu-part">(No options available)</div></div>`
     }
     contextMenuElement.style.display = "flex";
+    ctmContainer.appendChild(contextMenuElement)
     const boundClientRect = contextMenuElement.getBoundingClientRect()
-    if (x > innerWidth - boundClientRect.width) x = innerWidth - boundClientRect.width
-    if (y > innerHeight  - boundClientRect.height) y = innerHeight - boundClientRect.height
-    contextMenuElement.style.left = `${x}px`
-    contextMenuElement.style.top = `${y}px`
+    if (x > innerWidth - boundClientRect.width) contextMenuElement.style.right = innerWidth - x + 'px'
+    else contextMenuElement.style.left = x + 'px'
+    if (y > innerHeight  - boundClientRect.height) contextMenuElement.style.bottom = innerHeight - y + 'px'
+    else contextMenuElement.style.top = y + 'px'
+    return 0
 }
 function contextMenuOff(e){
-    contextMenuElement.style.display = "none";
-}
-
-async function desktopInit(){
-    if (!(await fs.exists("config/associations"))) await fs.writeFile("config/associations", JSON.stringify({
-        ".png": {desc: "PNG image", program: "app:paint"},
-        ".webp": {desc: "WEBP image", program: "app:paint"},
-        ".gif": {desc: "GIF image", program: "app:paint"},
-        ".bmp": {desc: "BMP image", program: "app:paint"},
-        ".jpg": {desc: "JPEG image", program: "app:paint"},
-        ".jpeg": {desc: "JPEG image", program: "app:paint"},
-        ".ca": {desc: "bcwd application", program: "command:loadScript"},
-        ".txt": {desc: "Text file", program: "app:notepad"},
-        ".md": {desc: "Markdown file", program: "app:notepad"},
-        ".mp4": {desc: "MP4 video", program: "app:wmplayer"},
-        ".avi": {desc: "AVI video", program: "app:wmplayer"},
-        ".webm": {desc: "WEBM video", program: "app:wmplayer"},
-        ".wav": {desc: "WAVE audio", program: "app:wmplayer"},
-        ".mp3": {desc: "MP3 audio", program: "app:wmplayer"},
-        ".ogg": {desc: "Vorbis audio", program: "app:wmplayer"},
-        ".flac": {desc: "FLAC audio", program: "app:wmplayer"},
-        ".html": {desc: "HTML document", program: "app:iexplore"},
-        ".htm": {desc: "HTML document", program: "app:iexplore"},
-    }))
-    changeWallpaper(localStorage.wallpaper, true, true).then(() => {
-        document.querySelector(".logonui").style.display = "none"
-        document.querySelector(".logonui-users-container").style.display = "";
-        document.querySelector(".logonui-status").style.display = "none";
-        document.querySelector(".explorer").style.display = "";
-        loadApp("sfc", undefined, "/silent")
-        if (init) return
-        if (!window.move){
-            msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
-        }
-        init = true
-        if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-            msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 0.9.0.2!</h1>What's new?<br><ul><li>Semi-integration with filesystem</li><li>Welcome and change theme screen</li><li>fixed close button being red when it's the only button</li><li>Texture file optimization</li><li>Added file dialog</li><li>Added new boot manager!</li><li>Added different types of message boxes</li></ul>")
-            localStorage.prevver = localStorage.ver
-            return;
-        }
-    })
-    setWallpaperStretch(localStorage.wallpaperstretch)
-    document.querySelector(".logonui-users-container").style.display = "none";
-    document.querySelector(".logonui-status").style.display = "";
-    initShellIcons()
+    ctmContainer.innerHTML = ""
 }
 
 async function showLogonUI(_){
-    try{
-        bootloader.remove()
-    }
-    catch(e){
-        console.log("Winload not found. skipped")
-    }
-    let file = await fs.readFile("res/login.jpg")
-    const logonui = URL.createObjectURL(file)
-    document.querySelector(".logonui").style.setProperty("--logonui-background", `url(${logonui})`)
-    document.querySelector(".logonui").style.display = ""
+    bootloader.style.display = "none"
+    loadScript("bin/logonui.js")
     if (window.move){
-        addEventListener("mousemove", window.move); 
-        addEventListener("touchmove", window.move);
+        window.addEventListener("mousemove", window.move); 
+        window.addEventListener("touchmove", window.move);
     }
     else{
         msgbox("Window manager", "Window manager not found ok?", undefined, "error")
     }
     cmoffcmd = (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}
-    addEventListener("mousedown", cmoffcmd); 
-    addEventListener("touchstart", cmoffcmd);
-    addEventListener("click", (e) => {if(!e.target.parentElement) return; if (e.target.parentElement.parentElement !== contextMenuElement) contextMenuOff()})
+    window.addEventListener("mousedown", cmoffcmd); 
+    window.addEventListener("touchstart", cmoffcmd);
+    window.addEventListener("click", (e) => {if(!e.target.parentElement) return; if (e.target.classList.contains("context-menu-part")) contextMenuOff()})
     document.oncontextmenu = (e) => e.preventDefault()
 }
 
@@ -231,12 +104,7 @@ function shutdown(a){
     }
     document.body.style.backgroundColor = "black"
     document.body.innerHTML = '<div style="position: absolute; left: 50vw; top: 50vh; transform: translate(-50%, -50%); color: white">It is now safe to turn off your computer</div>'
-    wallpaper.innerHTML = 
-    `
-    :root{
-        --wallpaper: none
-    }
-    `
+    document.body.style.setProperty("--wallpaper", "none")
 }
 function displayBSOD(reason){
     if (!reason) reason = "NULL"
@@ -270,12 +138,7 @@ Collecting data for crash dump ...
 Initializing disk for crash dump ...
 Beginning dump of physical memory. 
 Dumping physical memory to disk:  <span id="bsodCounter" style="font-family: 'bsod'; line-height: 100%">0</span>`
-    wallpaper.innerHTML = 
-    `
-    :root{
-        --wallpaper: none
-    }
-    `
+    document.body.style.setProperty("--wallpaper", "none")
     document.body.setAttribute("style", "background-color: navy; white-space: pre-wrap; line-height: 100%; font-size: min(3vh, 2.02vw); color: white; font-family: 'bsod'; word-break: break-word;")
     removeEventListener("resize", resizeHandler)
     bsodProgress = 0;
@@ -294,19 +157,64 @@ Dumping physical memory to disk:  <span id="bsodCounter" style="font-family: 'bs
 }
 function logoff(){
     shell.style.display = "none"
-    document.querySelector(".logonui").style.display = "block"
-    windows.innerHTML = ""
+    findWindowBy("title", "LogonUI").style.display = ""
+    for (let a of windows.children){
+        if (!a.id) return
+        windows.children[a].remove()
+    }
     leftBar.innerHTML = ""
     startMenu(false)
-    new Audio('./media/Windows Logoff Sound.flac').play(); 
+    winda.playSound('./media/Windows Logoff Sound.flac'); 
+}
+async function desktopInit(){
+    if (!(await fs.exists("config/associations"))) await fs.writeFile("config/associations", JSON.stringify({
+        ".png": {desc: "PNG image", program: "app:paint"},
+        ".webp": {desc: "WEBP image", program: "app:paint"},
+        ".gif": {desc: "GIF image", program: "app:paint"},
+        ".bmp": {desc: "BMP image", program: "app:paint"},
+        ".jpg": {desc: "JPEG image", program: "app:paint"},
+        ".jpeg": {desc: "JPEG image", program: "app:paint"},
+        ".ca": {desc: "bcwd application", program: "command:loadScript"},
+        ".txt": {desc: "Text file", program: "app:notepad"},
+        ".md": {desc: "Markdown file", program: "app:notepad"},
+        ".mp4": {desc: "MP4 video", program: "app:wmplayer"},
+        ".avi": {desc: "AVI video", program: "app:wmplayer"},
+        ".webm": {desc: "WEBM video", program: "app:wmplayer"},
+        ".wav": {desc: "WAVE audio", program: "app:wmplayer"},
+        ".mp3": {desc: "MP3 audio", program: "app:wmplayer"},
+        ".ogg": {desc: "Vorbis audio", program: "app:wmplayer"},
+        ".flac": {desc: "FLAC audio", program: "app:wmplayer"},
+        ".html": {desc: "HTML document", program: "app:iexplore"},
+        ".htm": {desc: "HTML document", program: "app:iexplore"},
+    }))
+    changeWallpaper(localStorage.wallpaper, true, true).then(() => {
+        findWindowBy("title", "LogonUI").context.hide();
+        document.querySelector(".logonui-users-container").style.display = "";
+        document.querySelector(".logonui-status").style.display = "none";
+        loadScript("bin/shell.js")
+        if (init) return
+        if (!window.move){
+            msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
+        }
+        init = true
+        if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
+            msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 0.9.0.2!</h1>What's new?<br><ul><li>Semi-integration with filesystem</li><li>Welcome and change theme screen</li><li>fixed close button being red when it's the only button</li><li>Texture file optimization</li><li>Added file dialog</li><li>Added new boot manager!</li><li>Added different types of message boxes</li></ul>")
+            localStorage.prevver = localStorage.ver
+            return;
+        }
+    })
+    setWallpaperStretch(localStorage.wallpaperstretch)
+    document.querySelector(".logonui-users-container").style.display = "none";
+    document.querySelector(".logonui-status").style.display = "";
+    // initShellIcons()
 }
 async function login(user, password){
     if (!init) await desktopInit();
     else{
-        document.querySelector(".logonui").style.display = "none";
+        findWindowBy("title", "LogonUI").context.hide();
         document.querySelector(".explorer").style.display = "";
     }
-    new Audio('./media/Windows Logon Sound.flac').play(); 
+    winda.playSound('./media/Windows Logon Sound.flac'); 
 }
 function html2canvas(html, canvas){
 
@@ -350,17 +258,11 @@ async function changeWallpaper(wallpaperpath, nochange, nosplash){
     // }
     try{
         if (!nochange) localStorage.wallpaper = wallpaperpath
-        if (wallpaperpath.startsWith("./img/")){
+        if (wallpaperpath.startsWith("./") && !boot.params.debug){
             if (!nosplash){
                 changethemesplash.style.display = "block"
             }
             let file = await fs.downloadFile(wallpaperpath)
-            if (!file.length){
-                file = await fs.readFile(wallpaperpath)
-            }
-            else{
-                file = file[0]
-            }
             const url = URL.createObjectURL(file)
             wallpaperpath = url
             if (!nosplash){
@@ -372,12 +274,7 @@ async function changeWallpaper(wallpaperpath, nochange, nosplash){
                 audio.play()
             }
         }
-        wallpaper.innerHTML = 
-        `
-        :root{
-            --wallpaper: url("${wallpaperpath}")
-        }
-        `
+        document.body.style.backgroundImage = "url(" + wallpaperpath + ")"
     }
     catch(e) {
         msgbox("Wallpaper error", e)
@@ -385,30 +282,38 @@ async function changeWallpaper(wallpaperpath, nochange, nosplash){
 }
 function setWallpaperStretch(stretchmode){
     localStorage.wallpaperstretch = stretchmode
-    if (stretchmode == "center")
-        stretch.innerHTML = ``
+    if (stretchmode == "center"){
+        document.body.style.backgroundSize = ""
+        document.body.style.backgroundRepeat = ""
+    }
     else if (stretchmode == "fill")
-        stretch.innerHTML = `body{
-    background-size: cover;
-}`
+        document.body.style.backgroundSize = "cover"
     else if (stretchmode == "fit")
-        stretch.innerHTML = `body{
-    background-size: contain;
-}`
+        document.body.style.backgroundSize = "contain"
     else if (stretchmode == "stretch")
-        stretch.innerHTML = `body{
-    background-size: 100% 100%;
-}`
+        document.body.style.backgroundSize = "100% 100%"
     else if (stretchmode == "tile")
-        stretch.innerHTML = `body{
-    background-repeat: repeat !important;
-}`
+    document.bodys.style.backgroundRepeat = "repeat"
 }
-function refreshTransparency(){
-    maximisetransparency.innerHTML = localStorage.maximiseTransparency == "true" && localStorage.theme == "aero" ? ".maximised{background-color: black !important; backdrop-filter: none !important}" : ""
-}
-function refreshDpi(){
-    dpiscale.setAttribute("content", `width=device-width, initial-scale=${localStorage.dpiscale == "true" ? 0.5 : 1}, user-scalable=no`)
-}
-refreshDpi()
+window.changethemesplash = document.createElement("div")
+changethemesplash.id = "changethemesplash"
+document.body.appendChild(changethemesplash)
 addEventListener("sysloaded", showLogonUI)
+let zHold = false
+addEventListener("keydown", (e) => {
+    if (e.altKey){
+        e.preventDefault()
+        if (e.key.toLowerCase() === "r") loadApp("run")
+        if (e.key.toLowerCase() === "e") loadApp("explorer-file-manager")
+        if (e.key.toLowerCase() === "z") zHold = true
+        if (e.key.toLowerCase() === "tab") {}
+    }
+})
+class Icon {
+    constructor(title, image, action) {
+        this.action = action;
+        this.image = image;
+        this.title = title;
+    }
+}
+boot.log("Welcome to Winda7\n(c) kitaes, 2024\n")

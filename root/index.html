@@ -1,132 +1,17 @@
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
-        <script>
-            let preload = [];
-            async function log(path, noText){
-                try{
-                    if(localStorage.verboseBoot == "true") if(verboseBoot){
-                        if (noText)
-                            verboseBoot.innerHTML += path + "<br>"
-                        else
-                            verboseBoot.innerHTML += "Loaded: " + path + "<br>"
-                        verboseBoot.scrollTo(0, verboseBoot.scrollHeight);
-                    }
-                }
-                catch(e){
-                    setTimeout((e) => log(path, noText), 50)
-                }
-            }
-        </script>
-        <style id="taskbarheight">
-            :root{
-                --taskbar-height: 40px
-            }
-        </style>
-        <script src="./sys/ver.js"></script>
-        <style>
-        #bootloader:first-child p{
-            margin-left: 20px;
-        }
-        #bootloader:first-child{
-            font-size: inherit;
-            text-shadow: none;
-            font-family: monospace !important;
-        }
-        #bootloader:first-child{
-            margin: 0;
-            background-color: black;
-            color: white;
-            font-size: 20px;
-            padding: 5px 20px;
-            box-sizing: border-box;
-            font-family: monospace !important;
-        }
-        #bootloader:first-child cntr{
-            background-color: rgb(200,200,200);
-            text-align: center;
-            position: absolute;
-            width: calc(100% - 40px);
-            margin-bottom: 30px;
-            color: black
-        }
-        #bootloader:first-child cntr *{
-            color: inherit;
-        }
-        #bootloader:first-child grey{
-            color: rgb(150,150,150)
-        }
-        #bootloader:first-child .first{
-            margin-top: 30px;
-        }
-        #bootloader:first-child option{
-            margin-left: 30px;
-        }
-        #bootloader:first-child .selected{
-            background-color: rgb(200,200,200);
-            color: black;
-        }
-        #bootloader:first-child .bottom{
-            position: absolute;
-            bottom: 0;
-            display: flex;
-            justify-content: space-between;
-            color: black;
-            height: fit-content !important;
-        }
-        #bootloader:first-child left, #bootloader:first-child right{
-            margin: 0 20px;
-            height: fit-content !important;
-            text-shadow: none;
-        }
-        #verboseBoot{
-            color: white;
-            height: calc(100% - 70px);
-            overflow: hidden;
-        }
-        body{
-            font-family: 'segoeui', sans-serif, system-ui;
-            margin: 0;
-            background-color: black;
-            background-image: var(--wallpaper);
-            overflow: hidden;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        </style>
-        <title>Windows simulator</title>
-        <style id="wallpaper">
-            :root{
-                --wallpaper: none
-            }
-        </style>
-        <style id="stretch">
-            body{
-                background-size: 100% 100%;
-            }
-        </style>
-        <style>
-        </style>
-        <style id="maximisetransparency"></style>
-        <style id="iframeignore"></style>
-        <script src="./bin/applist.js"></script>
+        <title>Winda7</title>
         <meta name="title" content="Winda7">
         <meta property="og:title" content="Winda7">
-        <meta name="description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
-        <meta property="og:description" content="Winda7 is lightweight windows 7 simulator written in html, css, and js">
-        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <meta property="og:description" content="Winda7 is lightweight OS running in browser, which is made in JS">
+        <link rel="icon" href="icon.png" type="image/png"> 
         <link rel="stylesheet" href="./fonts/fonts.css">
         <link rel="stylesheet" href="./sys/windows.css">
         <link rel="stylesheet" href="./shell/shell.css">
         <link rel="stylesheet" href="./res/aero/style.css" id="theme">
-        <link rel="stylesheet" href="./sys/logonui.css">
-        <link rel="stylesheet" href="" id="smalltaskbar">
-        <link rel="stylesheet" href="" id="groupicons">
         <script defer src="sys/bootloader.js"></script>
-        <script defer src="sys/fs.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no" id="dpiscale">
         <style>
             @media (max-aspect-ratio: 1/1) {
                 #verboseBoot{
@@ -136,54 +21,8 @@
         </style>
     </head>
     <body>
-        <div style="width: 100%; height: 100%">
-            <div id="bootloader"></div>
-        </div>
-        <div class="context-menu context-menu-part" id="contextMenuElement">
-            <div class="context-menu-option context-menu-part">(No options available)</div>
-        </div>
-        <div class="context-menu context-menu-part" id="contextMenuElement2">
-            <div class="context-menu-option context-menu-part">(No options available)</div>
-        </div>
-        <div id="changethemesplash"></div>
-        <div class="logonui" style="display: none">
-            <div class="logonui-users-container">
-                <div class="user" onclick="login()">
-                    <div class="user-profile-container">
-                        <img src="Profileimgs/user.png">
-                    </div>
-                    SYSTEM
-                </div>
-            </div>
-            <div class="logonui-status" style="display: none;">
-                <img src="res/loading.png">
-                <p class="logonui-status-text">Welcome</p>
-            </div>
-        </div>
-        <div class="explorer taskbar-bottom" id="shell" style="display: none;"></div>
-        <script>
-            console.log(localStorage.dontGroupIcons == "true")
-            if (!(localStorage.dontGroupIcons == "true"))
-                groupicons.href = ""
-            else
-                groupicons.href = './shell/dont_group_icons.css'
-            if (localStorage.useSmallTaskbar == "true")
-                smalltaskbar.href = "./shell/small_taskbar_icons.css"
-            else
-                smalltaskbar.href = ''
-        </script>
-        <div id="windows" class="taskbar-bottom"></div>
-        <div id="trays" class="taskbar-bottom">
-            <div class="dock-br winapi_transparent winapi_shadow n1 tray" windowid="1" name="Clock" style="display: none; width: 322px; height: 280px;">
-                <div class="content">
-                    <iframe src="./bin/clock/index.html" frameborder="0"></iframe>
-                </div>
-            </div>
-            <div class="dock-br winapi_transparent winapi_shadow n2 tray" windowid="2" name="Winda Update" style="display: none; width: 300px; height: 100px;">
-                <div class="content">
-                    <iframe src="./bin/update/index.html" frameborder="0"></iframe>
-                </div>
-            </div>
+        <div id="bootloader" style="position: absolute; pointer-events: none">
+            <div id="verboseBoot" style="color: white; font-family: monospace; font-size: 15px; white-space: pre-wrap;"><noscript>Turn on Javascript to boot Winda7</noscript></div>
         </div>
     </body>
 </html>

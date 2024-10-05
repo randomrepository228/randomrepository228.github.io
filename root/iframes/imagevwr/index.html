@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <style>
+            html, body{
+                user-select: none;
+                overflow: auto;
+                margin: 0;
+            }
+            img{
+                max-width: 100vw;
+                max-height: 100vh;
+                cursor: zoom-in; 
+            }
+            .slide{
+                height: 100%;
+                width: 100%;
+                overflow: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            /* .slide{
+                overflow: hidden;
+            } */
+        </style>
+    </head>
+    <body>
+        <div class="slide">
+            <img id="image" draggable="false">
+        </div>
+        <script>
+            document.body.style.height = innerHeight + "px"
+            addEventListener("resize", () => document.body.style.height = innerHeight + "px")
+            const args = frameElement.getAttribute("args")
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            if (!args){
+                thisWindow.remove()
+            }
+            image.src = args
+            let currentZoom = 1; 
+            let prevZoom = 1;
+            let minZoom = 1; 
+            let maxZoom = 3; 
+            let stepSize = 0.1;
+
+            const slider = document.querySelector('.slide');
+            
+            let container = slider; 
+            
+            function zoomImage(direction) { 
+                let newZoom = currentZoom + direction * stepSize; 
+            
+                if (newZoom < minZoom || newZoom > maxZoom) { 
+                    return; 
+                } 
+            
+                currentZoom = newZoom; 
+            
+                let image = document.querySelector('img'); 
+                console.log(image)
+                image.style.transform = 'scale(' + currentZoom + ')'; 
+            }
+            container.addEventListener('wheel', function (event) { 
+                let direction = event.deltaY > 0 ? -1 : 1; 
+                zoomImage(direction); 
+            });
+            function onScale(el, callback) {
+                let hypo = undefined;
+                el.addEventListener('touchmove', function(event) {
+                    if (event.targetTouches.length === 2) {
+                        let hypo1 = Math.hypot((event.targetTouches[0].pageX - event.targetTouches[1].pageX),
+                            (event.targetTouches[0].pageY - event.targetTouches[1].pageY));
+                        if (hypo === undefined) {
+                            hypo = hypo1;
+                        }
+                        callback(hypo1/hypo);
+                    }
+                }, false);
+            
+            
+                el.addEventListener('touchend', function(event) {
+                    hypo = undefined;
+                }, false);
+            }
+            onScale(container, (e) => {
+                image.style.transform = "scale(" + e + ")"
+            })
+
+            // let mouseDown = false;
+            // let startX, scrollLeft, startY, scrollTop;
+            // const startDragging = (e) => {
+            //     mouseDown = true;
+            //     startX = e.pageX - slider.offsetLeft;
+            //     startY = e.pageY - slider.parentElement.parentElement.offsetTop;
+            //     scrollLeft = slider.scrollLeft;
+            //     scrollTop = slider.parentElement.parentElement.scrollTop;
+            // }
+            // const stopDragging = (e) => {
+            //     mouseDown = false;
+            // }
+            // const move = (e) => {
+            //     e.preventDefault();
+            //     if(!mouseDown) { return; }
+            //     const x = e.pageX - slider.offsetLeft;
+            //     const scrollX = x - startX;
+            //     const y = e.pageY - slider.parentElement.parentElement.offsetTop;
+            //     const scrollY = y - startY;
+            //     slider.scrollLeft = scrollLeft - scrollX;
+            //     slider.parentElement.parentElement.scrollTop = scrollTop - scrollY;
+            //     console.log(scrollTop - scrollY, slider.scrollTop)
+            // }
+            // slider.addEventListener('mousemove', move, false);
+            // slider.addEventListener('mousedown', startDragging, false);
+            // slider.addEventListener('mouseup', stopDragging, false);
+            // slider.addEventListener('mouseleave', stopDragging, false);
+            parent.showWindow("./iframes/ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

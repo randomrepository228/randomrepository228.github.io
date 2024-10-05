@@ -1,0 +1,31 @@
+window.Winda7Window = class{
+    constructor(width, height, title, content, config, icon, id) {
+        this.height = height;
+        this.width = width;
+        this.title = title; 
+        this.content = content;
+        this.config = config;
+        this.icon = icon
+        if (id) this.id = id
+        else this.id = getId()
+        // insert window creation code here
+    }
+    close(){
+
+    }
+    minimise(){
+
+    }
+    unminimise(){
+
+    }
+    maximise(){
+    
+    }
+    restore(){
+
+    }
+    show(){
+        
+    }
+}

@@ -1,16 +1,19 @@
-const request = indexedDB.open("SystemDrive", 3);
 fs = {}
 let db;
+ramdisk = []
 isFsLoaded = false
+function sleep(milliseconds){
+    return new Promise(res => setTimeout(res, milliseconds))
+}
+boot.log("Filesystem type: IndexedDB\n")
+if (window.indexedDB){
+const request = indexedDB.open("C_drive", 1);
 fs.toPath = function(path){
     path = path.replace("\\", "/")
     if(path.startsWith(".")) path = path.replace(".", "")
     if(path.endsWith("/")) path = path.substring(0, path.length - 1)
     if(path.startsWith("/")) path = path.replace("/", "")
     return path
-}
-function sleep(milliseconds){
-    return new Promise(res => setTimeout(res, milliseconds))
 }
 fs.downloadFiles = async (files) => {
     files.forEach(async path => {
@@ -30,56 +33,16 @@ fs.downloadFile = async (path) => {
         await fs.writeFile(path, response)
         return response
     }
+    const file = await fs.readFile(path)
+    return file
 }
 fs.checkSystemFolder = async function(){
     const transaction = db.transaction("rootfs", "readwrite")
     const initialfs = transaction.objectStore("rootfs");
     const request = initialfs.get("bin/savedialog.js")
     request.onsuccess = (e) => {
-        if(request.result) return;
-        const systemFiles = [
-            {path: "bin/.", data: ""}, 
-            {path: "bin/bsod/.", data: ""}, 
-            {path: "bin/calc/.", data: ""}, 
-            {path: "bin/changelog/.", data: ""}, 
-            {path: "bin/clock/.", data: ""}, 
-            {path: "bin/control/.", data: ""}, 
-            {path: "bin/dvd/.", data: ""}, 
-            {path: "bin/ExampleApp/.", data: ""}, 
-            {path: "bin/explorer/.", data: ""}, 
-            {path: "bin/iexplore/.", data: ""}, 
-            {path: "bin/Okna8Mode/.", data: ""}, 
-            {path: "bin/regedit/.", data: ""}, 
-            {path: "bin/run/.", data: ""}, 
-            {path: "bin/sfc/.", data: ""}, 
-            {path: "bin/taskmgr/.", data: ""}, 
-            {path: "bin/update/.", data: ""}, 
-            {path: "bin/winver/.", data: ""}, 
-            {path: "sys/.", data: ""}, 
-            {path: "usr/.", data: ""}, 
-            {path: "usr/SYSTEM/.", data: ""},
-            {path: "usr/SYSTEM/desktop/.", data: ""},
-            {path: "fonts/.", data: ""},
-            {path: "img/.", data: ""},
-            {path: "media/.", data: ""},
-            {path: "Profileimgs/.", data: ""},
-            {path: "res/.", data: ""},
-            {path: "shell/.", data: ""},
-            {path: "Winda.old/.", data: ""},
-            {path: "config/.", data: ""}
-        ]
-        systemFiles.forEach((file) => initialfs.add(file)); 
-        let programs = []
-        for (a in systemFiles){
-            a = systemFiles[a].path
-            if (a.startsWith("bin/") && a.endsWith("/.") && a.length > 5){
-                programs.push(a.replace(/(.+)\./, "$1init.json"))
-                programs.push(a.replace(/(.+)\./, "$1icon.png"))
-                programs.push(a.replace(/(.+)\./, "$1index.html"))
-            }
-        }
-        programs.push("bin/savedialog.js")
-        fs.downloadFiles(programs)
+        if(request.result) return true;
+        return false
     };
 }
 fs.getStorage = async function(){
@@ -96,6 +59,7 @@ fs.readdir = function(path){
         const request = initialfs.get(path + "/.")
         request.onerror = (e) => {
             resolve(undefined)
+            console.error(e)
         }
         request.onsuccess = (e) => {
             const keys = initialfs.getAllKeys()
@@ -223,6 +187,35 @@ fs.writeFile = function(filePath, data, newFile){ return new Promise(async (reso
     };
     request.onerror = (e) => {resolve(1)}
 })}
+fs.appendFile = function(filePath, data){ return new Promise(async (resolve, reject) => {
+    if (!filePath) return 0
+    if(typeof data != "object") data = new Blob([data])
+    filePath = fs.toPath(filePath)
+    let fileName = filePath.match(/\/(?:.(?!\/))+$/g)
+    if (!await fs.exists(filePath)) {
+        const transaction = db.transaction("rootfs", "readwrite")
+        const initialfs = transaction.objectStore("rootfs");
+        const request = initialfs.get(filePath.replace(fileName, "/."))
+        request.onsuccess = async (e) => {
+            initialfs.put({path: filePath, data: data})
+            dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
+            resolve(0)
+        };
+        request.onerror = (e) => {resolve(1)}
+    }
+    else{
+        const newFileContents = await fs.readFile(filePath)
+        const transaction = db.transaction("rootfs", "readwrite")
+        const initialfs = transaction.objectStore("rootfs");
+        const request = initialfs.get(filePath.replace(fileName, "/."))
+        request.onsuccess = async (e) => {
+            initialfs.put({path: filePath, data: new Blob([newFileContents, data])})
+            dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
+            resolve(0)
+        };
+        request.onerror = (e) => {resolve(1)}
+    }
+})}
 fs.watchFile = function(filePath){
     return new Promise((resolve, reject) => {
         addEventListener("filechange", (e) => {
@@ -338,6 +331,9 @@ request.onsuccess = async (e) => {
     db = e.target.result;
     isFsLoaded = true
     dispatchEvent(new CustomEvent("fsloaded"))
+    await fs.writeFile("usr/.", "")
+    await fs.writeFile("usr/SYSTEM/.", "")
+    await fs.writeFile("usr/SYSTEM/desktop/.", "")
 };
 request.onupgradeneeded = (e) => {
     db = e.target.result;
@@ -346,4 +342,20 @@ request.onupgradeneeded = (e) => {
         objstore.createIndex("data", "data", { unique: false})
         fs.checkSystemFolder()
     }
+}
+fs.waitUntilInit = (e) => new Promise((res, rej) => {
+    if (isFsLoaded) res()
+    addEventListener("fsloaded", res, {once: true})
+})
+}
+// use localStorage
+else{
+if (!window.localStorage) {
+    alert("Local Storage permission rejected.")
+    document.body.innerHTML = "<h1>Local Storage permission rejected.</h1>"
+}
+localStorage.fs_systemdrv = '[{path: "usr/.", data: ""}, {path: "usr/SYSTEM/.", data: ""}, {path: "usr/SYSTEM/desktop/.", data: ""}'
+fs.waitUntilInit = async() => {}
+isFsLoaded = true
+dispatchEvent(new CustomEvent("fsloaded"))
 }

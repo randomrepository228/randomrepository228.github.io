@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            html{
+                background-color: black;
+                color: lightgray;
+                font-family: 'fixedsys';
+                font-size: 16px;
+                line-height: 16px;
+                position: fixed;
+            }
+            body{
+                margin: 0;
+                white-space: nowrap;
+            }
+            #consoleoutput, #consoleinput{
+                white-space: pre;
+                font-family: 'fixedsys';
+                background-color: transparent;
+                color: lightgray;
+                outline: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+                white-space: pre;
+            }
+            #consoleinput:focus, #consoleinput:focus-visible{
+                outline: none;
+            }
+            #consoleinput{
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                width: 100%;
+            }
+            body > div{
+                overflow-y: scroll;
+                overflow-x: hidden
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+        </script>
+    </head>
+    <body>
+        <div>
+            <span id="consoleoutput"></span><input id="consoleinput" name="consoleinput" maxlength="500">
+        </div>
+        <script>
+            let currentPath = ""
+            let currentInputString = ""
+            consoleinput.value = ""
+            function print(string, end){
+                if (!end) end = "\n"
+                consoleoutput.innerHTML += string + end
+                document.body.children[0].scrollTo(0, document.body.children[0].scrollHeight);
+            }
+            const enterpressed = new CustomEvent("enterpressed")
+            window.onkeydown = function(e){
+                if (e.keyCode === 13) dispatchEvent(enterpressed)
+            }
+            function input(string){ return new Promise((res, rej) => {
+                currentInputString = string
+                consoleinput.style.display = ""
+                consoleoutput.innerHTML += string.replace("\n", "")
+                document.body.children[0].scrollTo(0, document.body.children[0].scrollHeight);
+                addEventListener("enterpressed", (e) => {
+                    print(consoleinput.value)
+                    document.body.children[0].scrollTo(0, document.body.children[0].scrollHeight);
+                    const inp = consoleinput.value
+                    consoleinput.value = ""
+                    consoleinput.style.display = "none"
+                    res(inp)
+                }, {once: true})
+                consoleinput.focus()
+            })}
+            (async () => {
+            print(`Winda7 [Build ${localStorage.ver}]`)
+            print("(c) kitaes, 2024. All rights reserved")
+            for(;;) {
+                let tinp = (await input(currentPath + "/>")).split(" ");
+                let inp = [];
+                for (a of tinp){
+                    inp.push(a.toLowerCase().replace("\\", "/"))
+                }
+                if (inp[0].toLowerCase() === "help"){
+                    print("Command Prompt Help")
+                    print("help - Show this")
+                    print("dir - Display current directory")
+                    print("cls - Clears screen")
+                    print("echo - Outputs text")
+                }
+                else if (inp[0] === "dir"){
+                    let results = await parent.fs.readdir(currentPath)
+                    for (a of results){
+                        if (a.endsWith("/.")){
+                            a = "(DIR) " + a.replace("/.", "")
+                        }
+                        else{
+                            a = "      " + a.replace("/.", "")
+                        }
+                        print(a)
+                    }
+                }
+                else if (inp[0] === "cls"){
+                    consoleoutput.innerHTML = ""
+                }
+                else if (inp[0] === "echo."){
+                    print()
+                }
+                else if (inp[0] === "echo"){
+                    if (inp[1] === undefined){
+                        print("Echo help")
+                        print("echo [TEXT]")
+                    }
+                    else{
+                        print(inp[1])
+                    }
+                }
+                else if (inp[0] === "cd.."){
+                    if (currentPath && !currentPath.includes("/")){
+                        currentPath = ""
+                        continue
+                    }
+                    const match = currentPath.match(/(.*)\//)
+                    if (match){
+                        currentPath = match[1]
+                    }
+                }
+                else if (!inp[0] || inp[0] == "cd."){}
+                else if (inp[0] == "cd/"){currentPath = ""}
+                else if (inp[0] === "cd"){
+                    if (inp[1] === "."){
+                        continue
+                    }
+                    if (inp[1] === ".."){
+                        if (currentPath && !currentPath.includes("/")){
+                            currentPath = ""
+                            continue
+                        }
+                        const match = currentPath.match(/(.*)\//)
+                        if (match){
+                            currentPath = match[1]
+                        }
+                    }
+                    if (inp[1] === undefined) {
+                        print("ERROR: folder is not specified")
+                        continue
+                    }
+                    const newPath = currentPath ? currentPath + "/" + inp[1] : inp[1]
+                    if (await parent.fs.exists(newPath + "/.")){
+                        currentPath = newPath
+                    }
+                    else{
+                        print("ERROR: that folder does not exist." + newPath)
+                    }
+                }
+                else {
+                    print("Command is not found. type \"help\" for help")
+                }
+            }
+            })()
+            let thisWindow = frameElement.parentElement.parentElement.parentElement // главное окно
+            parent.showWindow("./iframes/ExampleApp/icon.png", thisWindow.getAttribute("windowid")); // показывает окно
+            // thisWindow.children[0].children[0].lastElementChild.innerHTML - название окна
+            // thisWindow.style.left - позиция снизу
+            // thisWindow.style.top - позиция сверху
+            // thisWindow.style.width - ширина окна
+            // thisWindow.style.height - высота окна
+        </script>
+    </body>
+</html>

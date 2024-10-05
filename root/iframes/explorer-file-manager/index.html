@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <link rel="stylesheet" href="../explorer-file-manager/style.css">
+        <link rel="stylesheet" href="../control/aero/style.css" id="explorerTheme">
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            const supportedthemes = ["classic", "aero", "basic"]
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+                if (!supportedthemes.includes(a)) a = supportedthemes[0]
+                explorerTheme.href = "../control/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
+    </head>
+    <body class="explorer-file-manager control">
+        <div class="navbar topbar-ext">
+            <div class="nav"><div class="backnext"><button class="back" onclick="back()"></button><button disabled class="next"></button></div></div>
+            <div class="adressbar"></div>
+            <input type="text" id="searchbox" placeholder="Search in file explorer" onchange="parent.fs.searchHTML(currentPath, this.value).then(renderDir);">
+        </div>
+        <div class="main">
+            <div class="content">
+                <div class="menubar">
+                    <div class="element">View</div>
+                </div>
+                <div class="files" oncontextmenu="(e) => { console.log('e')
+                    e.stopPropagation(); 
+                    parent.console.log('e')
+                    const elemoffset = frameElement.getBoundingClientRect();
+                    console.log(elemoffset)
+                    parent.contextMenu(e, [
+                        ['', 'Refresh', () => openFolder(currentFolder)]
+                    ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
+                }"></div>
+                <footer style="display: none">
+                    <div>
+                        <div style="display: flex; align-items: center;">
+                            Filename:&nbsp;
+                            <input type="text" name="" id="" style="flex-grow: 1">
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            File type:&nbsp;
+                            <div class="select" style="flex-grow: 1">
+                                <select name="" id="">
+                                    <option value="">
+                                        SELECT PLACEHOLDER
+                                    </option>
+                                </select>
+                                <selecticon></selecticon>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end">
+                        <button onclick="saveFile()">
+                            Save
+                        </button>
+                        <button onclick="frameElement.parentElement.parentElement.parentElement.remove()">
+                            Cancel
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script>
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            
+            if(!parent.fs){
+                parent.msgbox("Winda Explorer", "FS is not found. Turn it on in Control Panel or do a System File check")
+                thisWindow.remove()
+            }
+            parent.showWindow("./iframes/explorer-file-manager/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+        <script>
+            let currentPath = ""
+            let currentFolder = ""
+            async function renderDir(files, fpath){
+                currentFolder = fpath
+                document.querySelector(".files").innerHTML = ""
+                for (a of files){
+                    if (a == ".") continue
+                    htmlPath = a
+                    a = a.replace("<marked>", "").replace("</marked>", "")
+                    let file = document.createElement("div")
+                    file.className = "file"
+                    let isfile = true
+                    if (a.startsWith("/")) {
+                        a = a.replace("/", "")
+                        htmlPath = htmlPath.replace("/", "")
+                    }
+                    if (a.endsWith("/.")){
+                        a = a.replace("/.", "")
+                        htmlPath = htmlPath.replace("/.", "")
+                        isfile = false
+                        file.innerHTML += `<img src="folder.png">`
+                        a = currentPath + "/" + a
+                        file.setAttribute("ondblclick", `openFolder("${a}")`)
+                    }
+                    else if (a.toLowerCase().endsWith(".png") || a.toLowerCase().endsWith(".jpg") || a.toLowerCase().endsWith(".gif") || a.toLowerCase().endsWith(".bmp") || a.toLowerCase().endsWith(".webp")){
+                        let length = 3;
+                        if (a.toLowerCase().endsWith(".webp")) length = 4
+                        a = currentPath + "/" + a
+                        let b;
+                        if(a.startsWith("/")) b = a.replace("/", "")
+                        const contents = await parent.fs.readFile(b)
+                        const url = URL.createObjectURL(new Blob([contents], {type: "image/" + a.substring(a.length - length, a.length)}))
+                        console.log(url)
+                        file.innerHTML += `<img src="${url}">`
+                        file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
+                    else if (a.toLowerCase().endsWith(".flac") || a.toLowerCase().endsWith(".wav") || a.toLowerCase().endsWith(".mp3") || a.toLowerCase().endsWith(".mp4") || a.toLowerCase().endsWith(".avi") || a.toLowerCase().endsWith(".ogg") || a.toLowerCase().endsWith(".webm")){
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="media.png">`
+                        file.setAttribute("ondblclick", `parent.loadApp('wmplayer', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
+                    else if (a.toLowerCase().endsWith(".html")){
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="file.png">`
+                        file.setAttribute("ondblclick", `parent.loadApp('iexplore', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
+                    else if (a.toLowerCase().endsWith(".ca") || a.toLowerCase().endsWith(".js")){
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="file.png">`
+                        file.setAttribute("ondblclick", `parent.loadScript('${a.replace("\'", "\\\'")}')`)
+                    }
+                    else {
+                        a = currentPath + "/" + a
+                        file.innerHTML += `<img src="file.png">`
+                        file.setAttribute("ondblclick", `parent.loadApp('notepad', undefined, '${a.replace("\'", "\\\'")}')`)
+                    }
+                    const newfpath = (' ' + a).substring(1)
+                    file.oncontextmenu = (e) => {
+                        e.stopPropagation(); 
+                        const elemoffset = frameElement.getBoundingClientRect();
+                        console.log(newfpath)
+                        parent.contextMenu(e, [
+                            ['', 'Delete', () => parent.fs.deleteFile(newfpath).then(openFolder(currentPath))],
+                            ['./iframes/notepad/icon.png', 'Open with Notepad', () => parent.loadApp("notepad", "", newfpath)]
+                        ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
+                    }
+                    file.innerHTML += htmlPath
+                    document.querySelector(".files").append(file)
+                }
+            }
+            async function openFolder(folderPath){
+                currentPath = folderPath
+                let folderNames = folderPath.split("/")
+                document.querySelector('.adressbar').innerHTML = ""
+                document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('')">/</div>`
+                let path = ""
+                for (a of folderPath.split("/")){
+                    if(!a) continue
+                    path += "/" + a
+                    document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('${path}')">${a}/</div>`
+                }
+                let files = await parent.fs.readdir(folderPath)
+                renderDir(files, folderPath)
+            }
+            function back(){
+                currentPath = ""
+                openFolder("")
+            }
+            openFolder("")
+        </script>
+    </body>
+</html>

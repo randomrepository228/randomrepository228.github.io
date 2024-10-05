@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calculator Test</title>
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" id="theme" href="../../res/aero/style.css">
+        <link rel="stylesheet" id="localTheme" href="aero.css">
+        <script src="../../sys/windowEvents.js"></script>
+        <script src="calc.js"></script>
+    </head>
+    <body>
+        <script>
+            const supportedthemes = ["aero", "classic"]
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+                if (!supportedthemes.includes(a)) a = supportedthemes[0]
+                localTheme.href = a + ".css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
+        <div class="menubar">
+            <div class="element">View</div>
+            <div class="element">Edit</div>
+            <div class="element">Help</div>
+        </div>
+        <div class="calcPage" id="CalcPageStandart">
+            <div class="output">
+                <div class="string">0</div>
+                <div class="stringSmall"></div>
+            </div>
+            <div class="row row1">
+                <button>MC</button>
+                <button>MR</button>
+                <button>MS</button>
+                <button>M+</button>
+                <button>M-</button>
+            </div>
+            <div class="row row2">
+                <button onclick="AddSym('d')">←</button>
+                <button onclick="AddSym('CE')">CE</button>
+                <button onclick="AddSym('C')">C</button>
+                <button onclick="AddSym('+-')">±</button>
+                <button>√</button>
+            </div>
+            <div class="row row3">
+                <button onclick="AddSym(7)">7</button>
+                <button onclick="AddSym(8)">8</button>
+                <button onclick="AddSym(9)">9</button>
+                <button onclick="AddSym('/')">/</button>
+                <button>%</button>
+            </div>
+            <div class="row row4">
+                <button onclick="AddSym(4)">4</button>
+                <button onclick="AddSym(5)">5</button>
+                <button onclick="AddSym(6)">6</button>
+                <button onclick="AddSym('*')">*</button>
+                <button>1/𝑥</button>
+            </div>
+            <div class="row row5">
+                <button onclick="AddSym(1)">1</button>
+                <button onclick="AddSym(2)">2</button>
+                <button onclick="AddSym(3)">3</button>
+                <button onclick="AddSym('-')">-</button>
+                <button onclick="AddSym('=')">=</button>
+            </div>
+            <div class="row row6">
+                <button onclick="AddSym(0)">0</button>
+                <button onclick="AddSym(',')">,</button>
+                <button onclick="AddSym('+')">+</button>
+            </div>
+        </div>
+        <script>      
+            var WindowID
+            var LOCALE_winver = []
+            parent.showWindow("./iframes/calc/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

@@ -135,7 +135,7 @@ declare module 'winda7' {
 //     try{
 //         leftBar.innerHTML += `
 //         <div class="n${num} window-tray" windowid="${num}" onclick="windowSelectHandler(document.querySelector('.n${num}.window'))">
-//             <img src="${icon}" onerror="this.src = './bin/ExampleApp/icon.png'">
+//             <img src="${icon}" onerror="this.src = './iframes/ExampleApp/icon.png'">
 //             <p>${wnd.firstElementChild.firstElementChild.lastElementChild.innerHTML}</p>
 //         </div>`
 //         if(localStorage.theme == "aero"){

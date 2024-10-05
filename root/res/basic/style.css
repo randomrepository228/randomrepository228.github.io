@@ -342,12 +342,70 @@ button:active::after, .select:active::after{
 .tabbody footer{
     background-color: transparent;
 }
-.sunken-panel{
-    border: 1px solid gray;
-}
 article[role=tabpanel]{
     background-color: white;
 }
 input[type=text]{
     margin: 1px;
+}
+input, textarea{
+    border: 1px solid rgb(227, 233, 239);
+    border-top-color: rgb(171, 173, 179);
+    border-radius: 2px;
+}
+input:focus, textarea:focus{
+    border: 1px solid rgb(183, 217, 237);
+    border-top-color: rgb(61, 123, 173);
+}
+.window-tray{
+    position: relative;
+}
+.window-tray::after{
+    background-image: radial-gradient(ellipse at bottom 0 left var(--tray-hover-left), hsl(var(--hue),100%,90%), hsla(var(--hue),100%,70%, 0.7), hsla(var(--hue),100%,70%, 0));
+    border: 2px solid hsl(var(--hue),100%,70%);
+    background-size: 100% 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -2px;
+    top: -2px;
+    z-index: -1;
+    transition: 0.2s ease-in-out;
+    opacity: 0;
+}
+.window-tray:hover::after{
+    opacity: 1;
+}
+.wrapper{
+    position: relative;
+}
+.wrapper::after{
+    content: "";
+    position: absolute;
+    display: block;
+    bottom: calc(50% - 27px);
+    left: calc(50% - 27px);
+    width: 54px;
+    height: 54px;
+    background-image: url(../../res/taskbar-btn.png);
+    background-position: center 0;
+    background-repeat: no-repeat;
+}
+.wrapper:hover::after{
+    background-position: center -54px;
+}
+.wrapper.focus::after{
+    background-position: center -108px;
+}
+.taskbar-bottom .wrapper::after, .taskbar-top .wrapper::after{
+    top: calc(50% - 24px);
+}
+.window-tray:active > p{
+    margin-bottom: 10px;
+}
+.window-tray:active > img{
+    margin-top: 2px;
+    margin-left: 1px;
 }

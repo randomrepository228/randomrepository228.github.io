@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../res/script/WindowsCommunication.js"></script>
+        <link rel="stylesheet" href="../../../res/style/fonts.css">
+        <link rel="stylesheet" href="ribbonUI.css">
+        <script src="./ribbonUI.js"></script>
+        <style>
+            html, body{
+                margin: 0;
+            }
+            .resize-handler{
+                position: absolute;
+                cursor: se-resize;
+                width: 20px;
+                height: 20px;
+            }
+            .resize-handler div{
+                width: 3px;
+                height: 3px;
+                background-color: white;
+                border: 1px solid rgb(85,85,85);
+                pointer-events: none;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            let modal = document.createElement("div")
+            modal.className = "modal"
+            let modalText = document.createElement("div")
+            modal.appendChild(modalText)
+            let okButton = document.createElement("div")
+            let ribbon = new ui.RibbonUI.ribbon()
+            let ribbonSection = new ui.RibbonUI.section("Home")
+            let currentMode = 1
+            ribbonSection.addSubSection({name: "Tools", items: [
+                {type: "button", text: "Pencil", image: "./ribbon/pix.png", onclick: () => currentMode = 1},
+                {type: "button", text: "Fill", image: "./ribbon/pix.png", onclick: () => currentMode = 2},
+                {type: "button", text: "Erase", image: "./ribbon/pix.png", onclick: () => currentMode = 3}
+            ]})
+            let colors = ribbonSection.addSubSection({name: "Colors", items: [
+                {type: "color-button", text: "Color 1", image: "./ribbon/pix.png", uid: "kitaes-paint-color1", 
+                    onchange: (e) => {
+                        e.target.nextElementSibling.querySelector("img").style.backgroundColor = e.target.value
+                    }},
+                {type: "color-button", text: "Color 2", image: "./ribbon/pix.png", uid: "kitaes-paint-color2", 
+                    onchange: (e) => {
+                        e.target.nextElementSibling.querySelector("img").style.backgroundColor = e.target.value
+                    }}
+            ]})
+            ribbon.addSection(ribbonSection)
+            document.body.appendChild(ribbon.elem)
+            let canvas = document.createElement("canvas")
+            canvas.width = 200
+            canvas.height = 200
+            document.body.appendChild(canvas)
+            const offset = canvas.getBoundingClientRect()
+            let resizeHandler = document.createElement("div")
+            resizeHandler.className = "resize-handler"
+            resizeHandler.style.left = canvas.width + offset.x + "px"
+            resizeHandler.style.top = canvas.height + offset.y + "px"
+            resizeHandler.innerHTML = "<div></div>"
+            document.body.appendChild(resizeHandler)
+            let ctx = canvas.getContext("2d")
+            ctx.beginPath();
+            ctx.rect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ffffff"
+            ctx.fill();
+            let isHover = false
+            let prevX = -1
+            let prevY = -1
+            let resize = false
+            function getPixel(pixelData, x, y) {
+                if (x < 0 || y < 0 || x >= pixelData.width || y >= pixelData.height) {
+                    return -1;
+                } else {
+                   return pixelData.data[y * pixelData.width + x];
+                }
+            }
+            function fill(x, y, fillColor) {
+                if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return
+                const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+                const pixelData = {
+                    width: imageData.width,
+                    height: imageData.height,
+                    data: new Uint32Array(imageData.data.buffer),
+                };
+                const targetColor = getPixel(pixelData, x, y)
+                if (targetColor !== fillColor) {
+                    const pixelsToCheck = [x, y];
+                    while (pixelsToCheck.length > 0) {
+                        const y = pixelsToCheck.pop()
+                        const x = pixelsToCheck.pop()
+                        const currentColor = getPixel(pixelData, x, y);
+                        if (currentColor === targetColor) {
+                            pixelData.data[y * pixelData.width + x] = fillColor;
+                            pixelsToCheck.push(x + 1, y);
+                            pixelsToCheck.push(x - 1, y);
+                            pixelsToCheck.push(x, y + 1);
+                            pixelsToCheck.push(x, y - 1);
+                        }
+                    }
+                    ctx.putImageData(imageData, 0, 0);
+                }
+            }
+            function distanceBetween(point1, point2) {
+                return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2))
+            }
+            function angleBetween(point1, point2) {
+                return Math.atan2(point2.x - point1.x, point2.y - point1.y)
+            }
+            function resizeCanvas(w,h){
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+                canvas.width = w
+                canvas.height = h
+                ctx.putImageData(imageData, 0, 0)
+            }
+            addEventListener("mousemove", e => {
+                if (resize) {
+                    resizeCanvas(e.clientX - offset.x, e.clientY - offset.y)
+                    resizeHandler.style.left = e.clientX + "px"
+                    resizeHandler.style.top = e.clientY + "px"
+                }
+                if (!isHover || !currentMode) return
+                if (currentMode === 1) {
+                    clientX = e.clientX - offset.x
+                    clientY = e.clientY - offset.y
+                    ctx.beginPath();
+                    if (prevX < 0 || prevY < 0) {
+                        ctx.beginPath();
+                        ctx.rect(clientX, clientY, 1, 1);
+                        ctx.fillStyle = "#000000"
+                        ctx.fill();
+                    }
+                    else{
+                        let pos = canvas.getBoundingClientRect()
+                        const dist = distanceBetween({x: prevX, y: prevY}, {x: clientX, y: clientY})
+                        const angle = angleBetween({x: prevX, y: prevY}, {x: clientX, y: clientY})
+                        for (let i = 0; i < dist; i += 1) {
+                            const x = Math.round(prevX + (Math.sin(angle) * i) - 1)
+                            const y = Math.round(prevY + (Math.cos(angle) * i) - 1)
+                            if (x <= canvas.width && y <= canvas.height){
+                                ctx.beginPath();
+                                ctx.rect(x, y, 1, 1);
+                                ctx.fillStyle = "#000000"
+                                ctx.fill();
+                            }
+                        }
+                        ctx.closePath()
+                    }
+                    ctx.fill();
+                    prevX = e.clientX - offset.x
+                    prevY = e.clientY - offset.y
+                }
+                if (currentMode === 3) {
+                    clientX = e.clientX - offset.x
+                    clientY = e.clientY - offset.y
+                    if (prevX < 0 || prevY < 0) {
+                        ctx.beginPath();
+                        ctx.rect(clientX - 2, clientY - 2, 7, 7);
+                        ctx.fillStyle = "#ffffff"
+                        ctx.fill();
+                    }
+                    else{
+                        let pos = canvas.getBoundingClientRect()
+                        const dist = distanceBetween({x: prevX, y: prevY}, {x: clientX, y: clientY})
+                        const angle = angleBetween({x: prevX, y: prevY}, {x: clientX, y: clientY})
+                        for (let i = 0; i < dist; i += 1) {
+                            const x = Math.round(prevX + (Math.sin(angle) * i) - 1)
+                            const y = Math.round(prevY + (Math.cos(angle) * i) - 1)
+                            if (x <= canvas.width && y <= canvas.height){
+                                ctx.beginPath();
+                                ctx.rect(x - 2, y - 2, 7, 7);
+                                ctx.fillStyle = "#ffffff"
+                                ctx.fill();
+                            }
+                        }
+                        ctx.closePath()
+                    }
+                    prevX = e.clientX - offset.x
+                    prevY = e.clientY - offset.y
+                }
+            })
+            addEventListener("mousedown", e => {
+                if (e.target.className === "resize-handler") {
+                    resize = true
+                    return
+                }
+                isHover = true
+                if (currentMode === 2) {
+                    fill(e.clientX - offset.x, e.clientY - offset.y, 0xFF0000FF);
+                }
+            })
+            addEventListener("mouseup", () => {
+                resize = false
+                isHover = false
+                prevX = -1
+                prevY = -1
+            })
+            window.addEventListener('message', function (event) {
+                if (event.data.startsWith('YourID-')) {
+                    sendToTop('SetWindowHeader' + WindowID + '|Paint')  
+                    sendToTop('SetWindowIcon' + WindowID + '|../mods/apps/kitaes-paint/icon.png')        
+                }
+            })
+        </script>
+    </body>
+</html>

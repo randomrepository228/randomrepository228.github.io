@@ -360,8 +360,15 @@ body{
 .dock-br{
     margin: 0;
 }
-iframe.monochrome{
-    filter: invert();
+.w-cl-time{
+    color: black;
+}
+.tray .content{
+    background-color: white;
+}
+.tray{
+    border: 1px solid black;
+    padding-top: 0;
 }
 footer{
     height: var(--taskbar-height);
@@ -500,7 +507,7 @@ input[type=submit], .x, .square, .dash, .window-tray, .wrapper {
     height: calc(100% - 5px);
     min-width: 51px;
     max-width: 151px;
-    margin-top: 5px;
+    margin-top: 4px;
     margin-left: 2px;
     border-image: none !important;
     border: none !important;
@@ -633,9 +640,13 @@ input[type=submit]:disabled {
 }
 
 .window, .start-menu {
-    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff, inset -3px -3px #fff, inset 3px 3px #fff;
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff, inset -3px -3px #c0c0c0, inset 3px 3px #c0c0c0;
     padding: 3px;
     border-radius: 0;
+}
+.window.resize {
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff, inset -4px -4px #c0c0c0, inset 4px 4px #c0c0c0;
+    padding: 4px;
 }
 .content, .start-menu{
     background: silver;
@@ -690,7 +701,7 @@ left {
     flex-grow: 1;
     height: 15px;
 }
-.topbar{
+.window > .topbar{
     height: 15px;
 }
 
@@ -1335,13 +1346,6 @@ menu[role=tablist].multirows>li {
     text-align: center
 }
 
-.sunken-panel {
-    border: 2px groove transparent;
-    border-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='5' height='5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='gray' d='M0 0h4v1H0z'/%3E%3Cpath fill='gray' d='M0 0h1v4H0z'/%3E%3Cpath fill='%230a0a0a' d='M1 1h2v1H1z'/%3E%3Cpath fill='%230a0a0a' d='M1 1h1v2H1z'/%3E%3Cpath fill='%23fff' d='M0 4h5v1H0z'/%3E%3Cpath fill='%23fff' d='M4 0h1v5H4z'/%3E%3Cpath fill='%23dfdfdf' d='M3 1h1v3H3z'/%3E%3Cpath fill='%23dfdfdf' d='M1 3h3v1H1z'/%3E%3C/svg%3E") 2;
-    box-sizing: border-box;
-    overflow: auto
-}
-
 .sunken-panel,
 table {
     background-color: #fff
@@ -1504,4 +1508,7 @@ menu[role="tablist"]{
 }
 menu[role="tablist"]{
     height: 23px;
+}
+textarea, .sunken-panel{
+    margin: 2px;
 }

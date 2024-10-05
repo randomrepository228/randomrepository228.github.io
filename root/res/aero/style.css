@@ -98,17 +98,17 @@ input[type="checkbox"][disabled]:active + label:before{
 .topbar > .buttons > div[disabled]:hover::before, .topbar > .buttons > div[disabled]:active::before{
     display: none;
 }
-.winapi_transparent{
+.aero{
     padding: 5px;
     background-color: hsla(209, 68%, 50%, 0.15);
     backdrop-filter: blur(3px);
     border: 1px solid black;
-    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("../basic-aero/window_side.png"), url(reflection.png);
-    --aero-reflections-left: 0;
-    --aero-reflections-top: 0;
-    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, left var(--aero-reflections-left) top var(--aero-reflections-top);
-    background-size: auto, auto, 100% 30%, 100vw 100vh;
-    background-repeat: no-repeat, no-repeat;
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("../basic-aero/window_side.png"), url("../basic-aero/window_side.png"), url(reflection.png);
+    --aero-left: 0px;
+    --aero-top: 0px;
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, right 0 top 30px, left var(--aero-left) top var(--aero-top);
+    background-size: auto, auto, 5px 30%, 5px 30%, 100vw 100vh;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
     background-attachment: local, local, local, fixed;
     border-radius: 8px;
 }
@@ -124,33 +124,35 @@ input[type="checkbox"][disabled]:active + label:before{
 .window{
     padding-top: 0;
     background-image: url(reflection.png);
-    background-position: left var(--aero-reflections-left) top var(--aero-reflections-top);
+    background-position: left var(--aero-left) top var(--aero-top);
     background-size: 100vw 100vh;
 }
 .window.focus{
-    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("../basic-aero/window_side.png"), url(reflection.png);
-    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, left var(--aero-reflections-left) top var(--aero-reflections-top);
-    background-size: auto, auto, 100% 30%, 100vw 100vh;
-    background-repeat: no-repeat, no-repeat;
+    background-image: url("./window_aura.png"), url("./window_aura_mirror.png"), url("../basic-aero/window_side.png"), url("../basic-aero/window_side.png"), url(reflection.png);
+    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, right 0 top 30px, left calc(var(--aero-left) * 0.875) top calc(var(--aero-top) * 0.875);
+    background-size: auto, auto, 5px 30%, 5px 30%, 100vw 100vh;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
     background-attachment: local, local, local, fixed;
 }
-.topbar{
+.window > .topbar{
     display: flex;
     justify-content: space-between;
     height: 27px;
     margin-left: 3px;
 }
-.topbar .buttons{
+.window > .topbar .buttons{
     display: flex;
     height: 20px;
     z-index: 5;
 }
-.topbar > .buttons > *{
+.window > .topbar > .buttons > *{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    margin: 0;
 }
-.topbar > .buttons > * > img{
+.window > .topbar > .buttons > * > img{
     margin-bottom: 2px;
 }
 .content{
@@ -184,7 +186,8 @@ input[type="checkbox"][disabled]:active + label:before{
     0% {transform: perspective(400px) rotateX(-5deg) scale(0.9); opacity: 0}
     100% {transform: none; opacity: 1}
 }
-.closing{
+.window.closing{
+    display: flex;
     animation-name: close;
     animation-duration: 0.4s;
     animation-fill-mode: forwards;
@@ -259,7 +262,7 @@ iframe {
     width: 100%;
 }
 
-.winapi_shadow{
+.shadow{
     box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5), 0px 0px 8px 5px rgba(0, 0, 0, 0.65);
 }
 .maximised{
@@ -282,6 +285,10 @@ left img{
     height: 15px !important;
     margin: 3px;
 }
+@keyframes fadein{
+    0%{opacity: 0;}
+    100%{opacity: 1;}
+}
 .context-menu{
     font-size: 12px;
     background-color: rgb(241, 241, 241);
@@ -291,6 +298,7 @@ left img{
     width: max-content;
     border: 1px solid rgb(151, 151, 151);
     box-shadow: 5px 5px 2px -3px rgba(0,0,0,0.5), inset 28px 0px 0px 0px rgb(241, 241, 241), inset 29px 0px 0px 0px rgb(226,227,227), inset 30px 0px 0px 0px rgb(255, 255, 255);
+    animation: 0.15s ease-out fadein;
 }
 .context-menu-option:hover{
     background-color: rgba(0,255,255,0.3);
@@ -310,6 +318,7 @@ left img{
     border-bottom-left-radius: 0;
     background-image: url("../start_menu.png");
     background-size: 100% 100%;
+    background-color: hsla(209, 68%, 50%, 0.25);
 }
 .tabbody{
     background-color: rgb(240, 240, 240);
@@ -326,9 +335,6 @@ input:focus, textarea:focus{
     border: 1px solid rgb(183, 217, 237);
     border-top-color: rgb(61, 123, 173);
 }
-.sunken-panel{
-    border: 1px solid gray;
-}
 article[role=tabpanel]{
     background-color: white;
 }
@@ -336,14 +342,6 @@ article[role=tabpanel]{
     background-image: url(reflection.png);
     background-size: 100vw 100vh;
     background-position: bottom;
-}
-.start-menu{
-    background-image: url("reflection.png"), url("../start_menu.png");
-    background-size: 100vw 100vh, 100% 100%;
-    background-position: left 0 bottom calc(0px - var(--taskbar-height)), left top;
-}
-.dock-br{
-    background-position: left -1px top -1px, right -1px top -1px, left 0 top 30px, right 8px bottom calc(var(--taskbar-height) - 8px);
 }
 input[type=text]{
     margin: 1px;
@@ -367,4 +365,175 @@ input[type=text]{
 left {
     margin-left: -8px;
     padding-left: 8px;
+}
+#snapOutline{
+    display: block;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    left: var(--snap-left);
+    top: var(--snap-top);
+    border: 1px solid black;
+    background-image: url(reflection.png);
+    background-color: transparent;
+    --aero-left: -4px;
+    --aero-top: -4px;
+    background-position: left var(--aero-left) top var(--aero-top);
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+    border-radius: 8px;
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5);
+    z-index: 1;
+}
+#snapOutline.right{
+    --aero-left: calc(-50% - 4px);
+}
+#snapOutline.left, #snapOutline.right, #snapOutline.full{
+    opacity: 1;
+    transition: 0.2s linear;
+    height: calc(100% - var(--taskbar-height) - 12px);
+    top: 5px;
+}
+@keyframes dissapear {
+    0%{opacity: 1;}
+    100%{opacity: 0;}
+}
+#snapEffect{
+    position: absolute;
+    left: calc(var(--snap-left) - 33px);
+    top: calc(var(--snap-top) - 33px);
+    width: 65px;
+    height: 65px;
+    background-image: url(snap.png);
+    z-index: 2;
+    animation: dissapear 0.24s step-end forwards;
+}
+#snapOutline + #snapEffect{
+    display: none;
+}
+#snapOutline.right + #snapEffect{
+    display: block;
+    left: auto;
+    right: -33px;
+}
+#snapOutline.full + #snapEffect{
+    display: block;
+    top: -33px;
+}
+#snapOutline.left + #snapEffect{
+    display: block;
+    left: -33px;
+}
+#snapOutline.right + #snapEffect{
+    display: block;
+    left: auto;
+    right: -33px;
+}
+.window-tray{
+    position: relative;
+}
+.window-tray::after{
+    background-image: radial-gradient(ellipse at bottom 0 left var(--tray-hover-left), hsl(var(--hue),100%,90%), hsla(var(--hue),100%,70%, 0.7), hsla(var(--hue),100%,70%, 0));
+    border: 2px solid hsl(var(--hue),100%,70%);
+    background-size: 100% 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -2px;
+    top: -2px;
+    z-index: -1;
+    transition: 0.2s ease-in-out;
+    opacity: 0;
+}
+.window-tray:hover::after{
+    opacity: 1;
+}
+.wrapper{
+    position: relative;
+}
+.wrapper::after{
+    content: "";
+    position: absolute;
+    display: block;
+    bottom: calc(50% - 27px);
+    left: calc(50% - 27px);
+    width: 54px;
+    height: 54px;
+    background-image: url(../../res/taskbar-btn.png);
+    background-position: center 0;
+    background-repeat: no-repeat;
+}
+.wrapper:hover::after{
+    background-position: center -54px;
+}
+.wrapper.focus::after{
+    background-position: center -108px;
+}
+.taskbar-bottom .wrapper::after, .taskbar-top .wrapper::after{
+    top: calc(50% - 24px);
+    left: 0;
+}
+.window-tray:active > p{
+    margin-bottom: 10px;
+}
+.window-tray:active > img{
+    margin-top: 2px;
+    margin-left: 1px;
+}
+.trayicon > div::after{
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: 14px solid transparent;
+    border-top: 14px solid transparent;
+    border-image-slice: 14 2 14 2 fill;
+    display: block;
+    content: "";
+    height: 12px;
+    width: calc(100% - 6px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    border-image-source: url(../tray.png);
+}
+.trayicon > div:hover::after{
+    opacity: 1;
+}
+.trayicon > div:active::after{
+    border-image-source: url(../tray_pressed.png);
+}
+.trayicon.n1{
+    margin-left: 3px;
+}
+.trayicon.n1 > div::after{
+    display: none;
+}
+.trayicon.n1 > div:hover::after, .trayicon.n1 > div:active::after{
+    transition: none;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 14px solid transparent;
+    border-top: 14px solid transparent;
+    border-image-slice: 14 3 14 3 fill;
+    display: block;
+    content: "";
+    height: 12px;
+    width: calc(100% - 6px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.trayicon.n1 > div:hover::after{
+    border-image-source: url(../basic-aero/clock_hover.png);
+}
+.trayicon.n1 > div:active::after{
+    border-image-source: url(../basic-aero/clock_pressed.png);
+}
+.tray{
+    background-size: auto, auto, 100% 30%,0px 30%, 100vw 100vh;
 }

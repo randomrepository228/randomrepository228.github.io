@@ -1,0 +1,91 @@
+.ribbon-ui{
+    font-size: 11px;
+}
+.ribbon-ui.ribbon{
+    width: 100%;
+}
+.ribbon-ui.ribbon > div{
+    width: 100%;
+}
+.ribbon-ui.tab-bar{
+    background-color: #DFE9F5;
+    height: 24px;
+    box-shadow: inset 0px -1px 0px 0px #BAC9DB;
+    display: flex;
+}
+.ribbon-ui.info-bar{
+    padding-left: 5px;
+    height: 92px;
+    background-image: url(ribbon/infobar.png);
+    display: flex;
+}
+.ribbon-ui.tab{
+    border: 5px solid transparent;
+    border-image: url(./ribbon/tab.png) 5 fill;
+    text-align: center;
+    height: 14px;
+    line-height: 14px;
+    padding: 0 10px;
+}
+.ribbon-ui.tab:hover{
+    border-image: url(./ribbon/tab_hover.png) 5 fill;
+}
+.ribbon-ui.tab[active]{
+    border-image: url(./ribbon/tab_active.png) 5 fill;
+}
+.ribbon-ui.tab[active]:hover{
+    border-image: url(./ribbon/tab_active_hover.png) 5 fill;
+}
+.ribbon-ui.section{
+    height: 100%;
+    display: flex;
+}
+.ribbon-ui.sub-section{
+    position: relative;
+    background-image: url(./ribbon/separator.png);
+    background-repeat: no-repeat;
+    background-position: right 3px top 0;
+    padding-right: 10px;
+    height: 100%;
+    padding-top: 4px;
+}
+.ribbon-ui.sub-section-name{
+    width: 100%;
+    text-align: center;
+    color: gray;
+}
+.ribbon-ui.ribbon-item{
+    height: 75px;
+}
+.ribbon-ui.ribbon-item.button{
+    border: 3px solid transparent;
+    height: 65px;
+    display: flex;
+    flex-direction: column;
+    min-width: 38px;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 65px;
+}
+.ribbon-ui.ribbon-item.button:hover{
+    border-image: url(ribbon/item_hover.png) 3 fill;
+}
+.ribbon-ui.ribbon-item.button:active{
+    border-image: url(ribbon/item_pressed.png) 3 fill;
+}
+.ribbon-ui.ribbon-item.button img{
+    width: 32px;
+    height: 32px;
+}
+canvas{
+    background-color: white;
+}
+body{
+    background-color: gray;
+}
+.ribbon-ui.ribbon-container{
+    display: flex;
+}
+input[type=color].ribbon-ui{
+    display: none;
+}

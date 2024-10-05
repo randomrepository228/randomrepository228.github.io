@@ -16,3 +16,9 @@
 :root{
     --taskbar-height: 28px;
 }
+.w-cl-time .tdate{
+    display: none;
+}
+.w-cl-time{
+    left: 23px;
+}

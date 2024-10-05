@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            body{
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+            }
+            .top-run, .center-run{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 15px;
+            }
+            img{
+                height: 32px;
+                height: 32px;
+                margin-right: 15px;
+            }
+            .center-run{
+                margin: 0 15px;
+            }
+            .center-run > div{
+                margin-right: 15px;
+            }
+            input{
+                width: 100%;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    </head>
+    <body>
+        <script>
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
+        <div class="top-run">
+            <div class="left-run">
+                <img src="icon.png">
+            </div>
+            <div class="right-run">
+                Type the name of a program, and Winda will open it for you.
+            </div>
+        </div>
+        <div class="center-run">
+            <div>
+                Open:
+            </div>
+            <input type="text" id="program" placeholder="">
+        </div>
+        <footer>
+            <button onclick="parent.loadApp(program.value.split(' ')[0], undefined, program.value.split(' ').slice(1).join('|')); parent.closeWindow(frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'))">OK</button>
+            <button onclick="parent.closeWindow(frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'))">Cancel</button>
+        </footer>
+        <script>
+            parent.showWindow("./iframes/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'));
+            document.querySelector("input").focus()
+        </script>
+    </body>
+</html>

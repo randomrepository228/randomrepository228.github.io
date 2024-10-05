@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            body {
+                overflow: auto; 
+                display: flex;
+                flex-direction: column;
+            }
+            textarea, textarea:hover{
+                min-width: 100%;
+                box-sizing: border-box;
+                margin: 0;
+                flex-grow: 1;
+                outline: none;
+                color: black;
+                background-color: white;
+                font-size: 15px;
+                line-height: 100%;
+                resize: none;
+                white-space: pre-wrap;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+            const args = frameElement.getAttribute("args")
+            let isMouseDown = false;
+            const menuBarConstructor = (arr, elem) => {
+                parent.contextMenuOff()
+                const rect = elem.getBoundingClientRect(); 
+                const frameRect = frameElement.getBoundingClientRect(); 
+                parent.contextMenu(event, arr, rect.x + frameRect.x, rect.y + rect.height + frameRect.y)
+                for (a of elem.parentElement.children){
+                    a.className = a.className.replace(" active", "")
+                }
+                if (!elem.classList.contains("active")) elem.className += " active"
+            }
+            const fileTabContextMenu = (e, elem) => {
+                menuBarConstructor([
+                    ['', 'Save', async () => {
+                        if (await parent.fs.writeFile(args, textarea.value)) parent.msgbox('error', 'Cannot write to a file')
+                    }], 
+                ], elem)
+            }
+            const formatTabContextMenu = (e, elem) => {
+                menuBarConstructor([
+                    ['', 'Word wrap', () => 
+                        textarea.style.whiteSpace == 'pre-wrap' ? 
+                        textarea.style.whiteSpace = 'pre' : 
+                        textarea.style.whiteSpace = 'pre-wrap'
+                    ]
+                ], elem)
+            }
+            function windowMouseDown(e){
+                if(!e.target.parentElement || !e.target.parentElement.classList.contains('menubar')) {
+                    isMouseDown = false; 
+                    if(!e.target.classList.contains('context-menu-part')) {
+                        parent.contextMenuOff();
+                        for (a of document.querySelector(".menubar").children){
+                            a.className = a.className.replace(" active", "")
+                        }
+                    }
+                }
+            }
+            parent.contextMenuElement.addEventListener("click", (e) => {
+                isMouseDown = false;
+                for (a of document.querySelector(".menubar").children){
+                    a.className = a.className.replace(" active", "")
+                }
+            })
+            parent.addEventListener('mousedown', windowMouseDown)
+            parent.addEventListener('touchstart', (e) => {
+                e.preventDefault()
+                windowMouseDown(e);
+            })
+        </script>
+    </head>
+    <body onmousedown="windowMouseDown(event)">
+        <div class="menubar">
+            <div class="element" onmousedown="isMouseDown = true;fileTabContextMenu(event, this)"
+                                 onmouseover="if (isMouseDown)   fileTabContextMenu(event, this)">File</div>
+            <div class="element" onmousedown="isMouseDown = true;formatTabContextMenu(event, this)"
+                                 onmouseover="if (isMouseDown)   formatTabContextMenu(event, this)">Format</div>
+        </div>
+        <textarea name="textarea" id="textarea" spellcheck="false" wrap="off" onmousedown="parent.contextMenuOff()"></textarea>
+        <script>
+            if(args) (async () => {
+                const filecontent = (await parent.fs.readFile(args))
+                if (typeof filecontent == "string") textarea.value = filecontent
+                else {
+                    try{
+                        textarea.value = await filecontent.text()
+                    }
+                    catch(e){
+                        textarea.value = new TextDecoder().decode(filecontent)
+                    }
+                }
+            })()
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            parent.showWindow("./iframes/notepad/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

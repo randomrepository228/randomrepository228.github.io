@@ -31,6 +31,8 @@
     left: 17px;
     top: 16px;
     position: absolute;
+    object-fit: cover;
+    object-position: 0 0;
 }
 .logonui .logonui-status{
     display: flex;

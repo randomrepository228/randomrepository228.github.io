@@ -33,6 +33,12 @@
 .focus .content::after{
     border-image: url(window.png) 0 5 5 5;
 }
+.tray .content{
+    padding: 0;
+}
+.tray .content::after{
+    border: none;
+}
 .content{
     box-sizing: border-box;
     padding: 5px;
@@ -425,13 +431,10 @@ button:active::after, .select:active::after{
 .tabbody footer{
     background-color: transparent;
 }
-.sunken-panel{
-    border: 1px solid gray;
-}
 article[role=tabpanel]{
     background-color: white;
 }
-input[type=text], input[type=text]:focus{
+input[type=text], input[type=text]:focus, textarea, textarea:focus{
     border-radius: 0;
     border: 1px solid rgb(127,157,185);
 }
@@ -453,9 +456,6 @@ input[type=text], input[type=text]:focus{
     color: white;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
     line-height: 20px;
-}
-.taskbar-btn{
-    display: none;
 }
 .window-tray{
     border-image: url(taskbar_btn.png) 5 fill;
@@ -490,9 +490,6 @@ input[type=text], input[type=text]:focus{
 }
 .wrapper:active{
     background-position-y: -66px
-}
-.sunken-panel{
-    background-color: white;
 }
 tr > th{
     background-color: #ece9d8;
@@ -571,6 +568,7 @@ fieldset{
 }
 .menubar{
     background-image: none;
+    background-color: #EFEBDE;
 }
 .menubar .element:hover::after, .menubar .element:active::after, .menubar .active::after{
     display: none;
@@ -636,4 +634,7 @@ fieldset legend{
 select{
     min-height: 19px;
     height: 19px;
+}
+.nogui .content::after{
+    display: none;
 }

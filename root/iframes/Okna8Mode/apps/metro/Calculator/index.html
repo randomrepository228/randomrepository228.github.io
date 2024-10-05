@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="../../../style/main.css">
+    <link rel="stylesheet" href="../../../style/charmsbar.css">
+    <link rel="stylesheet" href="../../../style/fonts.css">
+    <div class="metrosplash" id="metrosplash" style="background-color: rgb(0,138,0);"><img src="AppSplash.png" alt=""></div>
+    <link rel="stylesheet" href="calc.css">
+    <script>
+        var res = '../../../';
+        var locale = localStorage.getItem('OKNA8_locale');
+        var localepath = res + 'localization/' + locale + '/';
+        function addScript(src){
+            var script = document.createElement('script');
+            script.src = src;
+            script.async = false; 
+            document.head.appendChild(script);
+        }
+        addScript(localepath + 'apps/calc.js')
+        addScript('localization.js')
+    </script>
+    
+</head>
+<body style="background-color: rgb(24,0,82)" >
+    <div class="app" style="background-color: rgb(29,29,29); width: 100vw; max-width: 130vh;">
+        <div class="modeselect"><a id="link_mode_standart">Стандартный</a><a id="link_mode_engineer">Инженерный</a><a id="link_mode_converter">Конвертер</a></div>
+        <div class="mode modecalc">
+            <div class="output">
+                <h2></h2>
+                <h1>0</h1>
+            </div>
+            <div class="leftsection">
+                <div class="btn"><div style="position: absolute; width: 100%; padding-top:1.6vh;font-size: 4vh; text-align: center; color:grey;font-weight: 300;">M</div></div>
+                <div class="btn"><div style="position: absolute; width: 100%; padding-top:1vh;font-size: 5vh; text-align: center; color:grey;font-weight: 300;">±</div></div>
+                <div class="btn"><div style="position: absolute; width: 100%; padding-top:1.6vh;font-size: 4vh; text-align: center; color:grey;font-weight: 300;">√</div></div>
+                <div class="btn"><div style="position: absolute; width: 100%; padding-top:1.6vh;font-size: 4vh; text-align: center; color:grey;font-weight: 300;">%</div></div>
+                <div class="btn"><div style="position: absolute; width: 100%; padding-top:2.4vh;font-size: 3vh; text-align: center; color:grey;font-weight: 300;">1/x</div></div>
+            </div>
+            <div class="rightsection">
+                <div class="sect sect1">
+                    <div class="btn" onclick="ce()"><div style="position: absolute; width: 100%; padding-top:1.6vh;font-size: 4vh; text-align: center; color:grey;font-weight: 300;">CE</div></div>
+                    <div class="btn" onclick="add('7')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">7</div></div>
+                    <div class="btn" onclick="add('4')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">4</div></div>
+                    <div class="btn" onclick="add('1')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">1</div></div>
+                    <div class="btn" onclick="add('0')" style="width: calc(200% + 6px)"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">0</div></div>
+                </div>
+                <div class="sect sect2">
+                    <div class="btn" onclick="c()"><div style="position: absolute; width: 100%; padding-top:1.6vh;font-size: 4vh; text-align: center; color:grey;font-weight: 300;">C</div></div>
+                    <div class="btn" onclick="add('8')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">8</div></div>
+                    <div class="btn" onclick="add('5')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">5</div></div>
+                    <div class="btn" onclick="add('2')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">2</div></div>
+                </div>
+                <div class="sect sect3">
+                    <div class="btn" onclick="bk()"><div style="position: absolute; width: 100%; padding-top: 1.5vh;font-size: 4vh; text-align: center; color:grey;font-weight: 300;"></div></div>
+                    <div class="btn" onclick="add('9')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">9</div></div>
+                    <div class="btn" onclick="add('6')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">6</div></div>
+                    <div class="btn" onclick="add('3')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">3</div></div>
+                    <div class="btn" onclick="add('.')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">,</div></div>
+                </div>
+                <div class="sect sect4">
+                    <div class="btn" onclick="setAction('/')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; color:grey;font-weight: 300;">÷</div></div>
+                    <div class="btn" onclick="setAction('*')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; color:grey;font-weight: 300;">×</div></div>
+                    <div class="btn" onclick="setAction('-')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; color:grey;font-weight: 300;">-</div></div>
+                    <div class="btn" onclick="setAction('+')"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; color:grey;font-weight: 300;">+</div></div>
+                    <div class="btn resultbtn" onclick="calc()"><div style="position: absolute; width: 100%; font-size: 6vh; text-align: center; font-weight: 300;">=</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="calc.js"></script>
+    <script src="../../../script/jquery.js"></script>
+    <script src="../../../script/charmsbar.js"></script>
+    <script>
+        window.onload = function(){
+            setTimeout(()=>{
+                $('.metrosplash').addClass('metrosplashhideani');
+                setTimeout(function(){
+                    $('.metrosplash').addClass('hidden')
+                },200)
+            },400)
+        }
+    </script>
+ </body>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <style>
+            html { 
+                overflow: auto; 
+            } 
+            body {
+                overflow: auto; 
+            }
+            .main{
+                margin: 25px;
+                margin-top: 10px;
+                margin-bottom: 0;
+                height: calc(100vh - 65px);
+            }
+            footer{
+                position: absolute;
+                bottom: 0;
+                width: 100vw;
+            }
+            textarea{
+                appearance: none;
+                resize: none;
+                border: 1px solid gray;
+                border-radius: 3px;
+                font-size: 12px;
+                width: 100%;
+                height: calc(100% - 20px);
+            }
+            textarea:focus{
+                outline: none;
+            }
+        </style>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+        </script>
+    </head>
+    <body>
+        <section class="tabs">
+            <menu role="tablist" aria-label="Tabs Template">
+              <div class="button" role="tab" aria-controls="tab-A" aria-selected="true">Tab A</div>
+              <div class="button" role="tab" aria-controls="tab-B">Tab B</div>
+              <div class="button" role="tab" aria-controls="tab-C">Tab C</div>
+              <div class="button" role="tab" aria-controls="tab-D" disabled>Tab D</div>
+            </menu>
+            <article role="tabpanel" id="tab-A">Tab A is active</article>
+            <article role="tabpanel" id="tab-B" hidden>Tab B is active</article>
+            <article role="tabpanel" id="tab-C" hidden>Tab C is active</article>
+            <article role="tabpanel" id="tab-D" hidden>Tab D is inactive</article>
+        </section>
+        <fieldset>
+            <legend>Example fieldset</legend>
+            Example Text
+        </fieldset>
+        <div id="segoe_slboot"></div>
+        <div class="progress-bar-container" style="width: 500px; height: 23px; margin: 5px;">
+                <div class="progress-bar">
+                    <div class="progress-bar-filled-container" style="width: 300px;">
+                        <div class="progress-bar-filled" style="width: 300px"></div>
+                    </div>
+                </div>
+            </div>
+        <div class="progress-bar-container" style="width: 500px; height: 23px; margin: 5px;">
+            <div class="progress-bar progress-bar-marquee"></div>
+        </div>
+        <script> 
+            tabHandler(document.querySelector(".tabs"))
+            let thisWindow = frameElement.parentElement.parentElement.parentElement
+            parent.showWindow("./iframes/bsod/icon.png", thisWindow.getAttribute("windowid"));
+        </script>
+    </body>
+</html>

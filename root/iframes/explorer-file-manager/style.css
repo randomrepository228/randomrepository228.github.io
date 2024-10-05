@@ -1,0 +1,39 @@
+.explorer-file-manager .content{
+    background-color: white;
+}
+.explorer-file-manager .files{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    overflow: auto;
+    height: 100%;
+    align-content: flex-start;
+    flex-grow: 1;
+}
+.explorer-file-manager .file{
+    height: 96px;
+    position: relative;
+    width: 76px;
+}
+.explorer-file-manager p > marked{
+    display: inline;
+    background-color: rgba(255,255,0,0.5);
+}
+.explorer-file-manager .file > img{
+    max-width: 48px;
+    max-height: 48px;
+}
+.explorer-file-manager footer{
+    flex-direction: column; 
+    max-height: 100px; 
+    height: 100px; 
+    justify-content: space-between; 
+}
+.explorer-file-manager .content{
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.explorer-file-manager .main{
+    height: 100%;
+}

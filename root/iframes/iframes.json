@@ -1,0 +1,230 @@
+{
+    "bsod": {
+        "width": 600,
+        "height": 350,
+        "title": "Blue Screen of Death",
+        "icon": "icon.png",
+        "window": true
+    },
+    "calc": {
+        "width": 212,
+        "height": 284,
+        "title": "Calculator",
+        "icon": "icon.png",
+        "window": true,
+        "noResize": true
+    },
+    "changelog": {
+        "width": 500,
+        "height": 500,
+        "title": "Changelog",
+        "icon": "icon.png",
+        "window": true
+    },
+    "cmd": {
+        "width": 500,
+        "height": 500,
+        "title": "Command Prompt",
+        "icon": "icon.png",
+        "window": true
+    },
+    "control": {
+        "width": 500,
+        "height": 500,
+        "title": "Winda Control Panel",
+        "icon": "icon.png",
+        "window": true,
+        "noGUI": true,
+        "titleBarHeight": 30
+    },
+    "dvd": {
+        "width": 400,
+        "height": 200,
+        "title": "DVD",
+        "icon": "",
+        "window": true,
+        "xOnly": true,
+        "noResize": true
+    },
+    "ExampleApp": {
+        "width": 500,
+        "height": 500,
+        "title": "Example App",
+        "icon": "icon.png",
+        "window": true
+    },
+    "explorer-file-manager": {
+        "width": 500,
+        "height": 500,
+        "title": "Winda Explorer",
+        "icon": "icon.png",
+        "window": true,
+        "noGUI": true,
+        "titleBarHeight": 30
+    },
+    "explorer-icons": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "title": "Windows Explorer",
+        "icon": "../explorer/icon.png",
+        "window": true,
+        "noTray": true,
+        "noResize": true,
+        "NoGUI": true,
+        "customPos": true,
+        "alwaysbehind": true
+    },
+    "explorer-start-menu": {
+        "height": 40,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "title": "Windows Explorer",
+        "icon": "icon.png",
+        "window": true,
+        "noTray": true,
+        "noResize": true,
+        "NoGUI": true,
+        "customPos": true,
+        "alwaysontop": true
+    },
+    "fileproperties": {
+        "width": 600,
+        "height": 350,
+        "title": "Properties: ",
+        "icon": "icon.png",
+        "window": true
+    },
+    "iexplore": {
+        "width": 500,
+        "height": 500,
+        "title": "Internet Explorer",
+        "icon": "icon.png",
+        "window": true,
+        "noGUI": true,
+        "titleBarHeight": 55
+    },
+    "imagevwr": {
+        "width": 500,
+        "height": 500,
+        "title": "Image viewer",
+        "icon": "icon.png",
+        "window": true
+    },
+    "jspaint": {
+        "width": 500,
+        "height": 500,
+        "title": "JSPaint",
+        "icon": "icon.png",
+        "window": true
+    },
+    "monaco": {
+        "width": 500,
+        "height": 500,
+        "title": "Monaco Editor",
+        "icon": "icon.png",
+        "window": true
+    },
+    "newlink": {
+        "width": 612,
+        "height": 388,
+        "title": "Create link",
+        "icon": "icon.png",
+        "window": true,
+        "xOnly": true,
+        "noResize": true
+    },
+    "notepad": {
+        "width": 500,
+        "height": 500,
+        "title": "Notepad",
+        "icon": "icon.png",
+        "window": true
+    },
+    "Okna8Mode": {
+        "width": 300,
+        "height": 500,
+        "title": "Okna 8 Mode",
+        "icon": "icon.png",
+        "window": true,
+        "noSelfOpen": true
+    },
+    "oobe": {
+        "width": 600,
+        "height": 350,
+        "title": "Set Up Winda7",
+        "icon": "icon.png",
+        "window": true,
+        "noResize": true
+    },
+    "paint": {
+        "width": 500,
+        "height": 500,
+        "title": "Paint",
+        "icon": "icon.png",
+        "window": true
+    },
+    "regedit": {
+        "width": 500,
+        "height": 500,
+        "title": "Registry Editor",
+        "icon": "icon.png",
+        "window": true
+    },
+    "run": {
+        "width": 429,
+        "height": 176,
+        "title": "Run",
+        "icon": "icon.png",
+        "window": true,
+        "xOnly": true,
+        "noResize": true,
+        "bottom": 10,
+        "left": 10
+    },
+    "sfc": {
+        "width": 380,
+        "height": 400,
+        "title": "System program checker",
+        "icon": "icon.png",
+        "window": true,
+        "xOnly": true,
+        "noResize": true
+    },
+    "taskbarproperties": {
+        "width": 410,
+        "height": 423,
+        "title": "Taskbar and start menu properties",
+        "icon": "icon.png",
+        "window": true,
+        "xOnly": true,
+        "noResize": true,
+        "bottom": 0,
+        "left": 0
+    },
+    "taskmgr": {
+        "width": 500,
+        "height": 500,
+        "title": "Task Manager",
+        "icon": "icon.png",
+        "window": true
+    },
+    "winver": {
+        "width": 500,
+        "height": 500,
+        "title": "About \"Windows\"",
+        "icon": "icon.png",
+        "window": true
+    },
+    "wmplayer": {
+        "width": 236,
+        "height": 236,
+        "minWidth": 236,
+        "minHeight": 236,
+        "title": "Winda Media Player",
+        "icon": "",
+        "window": true
+    }
+}

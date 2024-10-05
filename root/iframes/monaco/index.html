@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../sys/windows.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <script src="../../sys/windowEvents.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <script>
+            function changeTheme(a){
+                theme.href = "../../res/" + a + "/style.css"
+            }
+            changeTheme(localStorage.theme)
+            onmessage = (e) => {
+                const commands = e.data.split("|")
+                if (commands[0] == "theme" && commands.length == 2)
+                    changeTheme(commands[1])
+            }
+            require = { paths: { 'vs': 'vs' } };
+        </script>
+        <script src="vs/loader.js"></script>
+        <script src="vs/editor/editor.main.nls.js"></script>
+        <script src="vs/editor/editor.main.js"></script>
+        <style>
+            #main{
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main"></div>
+        <script defer>
+            document.addEventListener("readystatechange", (event) => {
+                if (document.readyState === "complete"){
+                    monaco.editor.create(main, {
+                        value: [
+                            'function x() {',
+                            '\tconsole.log("Hello world!");',
+                            '}'
+                        ].join('\n'),
+                        language: 'javascript',
+                        theme: "vs-dark",
+                        fixedOverflowWidgets: true
+                    });
+                    let thisWindow = frameElement.parentElement.parentElement.parentElement
+                    parent.showWindow("./iframes/ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
+                }
+            });
+        </script>
+    </body>
+</html>

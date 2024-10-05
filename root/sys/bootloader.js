@@ -1,70 +1,46 @@
-async function boot(){
-    let isSystemInstalled = await fs.exists("ver")
-    if (isSystemInstalled) if ((await (await fs.readFile("ver")).text()) != "0.9.0.2") isSystemInstalled = false
-    bootloader.style.width = "100%";
-    bootloader.style.height = "100%";
-    bootloader.style.overflow = "hidden";
-    bootloader.style.backgroundColor = "black";
-    bootloader.style.position = "relative";
-    if(localStorage.verboseBoot == "true" || !isSystemInstalled) bootloader.innerHTML = `
-    <div style="height: 100%;">
-        <cntr style="color: black">${isSystemInstalled ? 'Loading Winda files' : 'Installing Winda'}</cntr><br>
-        <div id="verboseBoot"></div>
-        <cntr class="bottom"  style="color: black">
-            <left>Please wait...</left>
-            <right></right>
-        </cntr>
-    </div>`
-    else bootloader.innerHTML = `
-    <div style="text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50% + 100px); top: calc(50% - 100px); width: 100%;">
-        <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
-            <source src="boot.webm" type="video/webm">
-        </video>
-        <p style="font-size: 20px; color: white; margin: 0; margin-top: 50px;">Loading Winda</p><br>
-        <p style="font-size: 20px; color: gray; margin-left: 0; position: absolute; bottom: 20px; left: 50vw; transform: translateX(-50%);">By kitaes</p>
-    </div>`
-    if(!(localStorage.verboseBoot != "true" && !isSystemInstalled)) bootloader.style.padding = "0"
-    async function log(path, noText){
-        if(localStorage.verboseBoot == "true" || !isSystemInstalled) if(verboseBoot){
-            if (noText){
-                console.log(path + "<br>")
-                verboseBoot.innerHTML += path + "<br>"
-            }
-            else{
-                console.log("Loaded: " + path + "<br>")
-                verboseBoot.innerHTML += "Loaded: " + path + "<br>"
-            }
-            verboseBoot.scrollTo(0, verboseBoot.scrollHeight);
-        }
-    }
-    const bootFiles = ["sys/kernel.js", "sys/runscript.js", "sys/windowManager.js", "sys/windowControls.js", "shell/shell.js", "sys/trayManager.js", "sys/bcrypt.js"]
-    let bootFileContents = {}
-    async function execScript(file, a){
+const boot = {
+    log: function(msg){
+        console.log(msg)
+        verboseBoot.innerText += msg
+        verboseBoot.scrollTo(0, verboseBoot.scrollHeight);
+    },
+    logHTML: function(msg){
+        console.log(msg)
+        verboseBoot.innerHTML += msg
+        verboseBoot.scrollTo(0, verboseBoot.scrollHeight);
+    },
+    exec: async function(file, a){
         if (!a) a = ""
         if (!file) console.log(a + " is not found")
         const evalCode = await file.text()
-        console.log(evalCode)
         try{
             (1,eval)(evalCode)
-            log(a)
         }
         catch(e){
-            log(`${a} Failed to load`, true)
-            console.log(e)
+            boot.log(`${a} Failed to load`)
+            boot.log(e)
+            console.error(e)
+            return 1
         }
-    }
-    if (!isSystemInstalled){
-        log("Downloading files: <span class=\"bootloader-download-progress\">0</span>%", true)
+    },
+    execFile: async function(a){
+        const file = await fs.readFile(a)
+        if (await boot.exec(file, a)){
+            hasSystemError = true
+        }
+    },
+    installImage: async function(imagePath){
+        boot.logHTML("Downloading files: <span class=\"bootloader-download-progress\">0</span>%\n", true)
         let file = false;
         var req = new XMLHttpRequest();
         req.responseType = 'arraybuffer';
         req.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
                 file = req.response;
-                log("Loading JSZip...", true)
+                boot.log("Loading JSZip...\n", true)
                 let jszip = await fs.exists("sys/jszip.js")
                 if (!jszip){
-                    log("JSZip is not found, downloading JSZip...", true)
+                    boot.log("JSZip is not found, downloading JSZip...\n", true)
                     jszip = await (await fetch("sys/jszip.js")).text()
                     // await fs.writeFile("sys/jszip.js", jszip)
                 }
@@ -74,7 +50,7 @@ async function boot(){
                 eval(jszip)
                 const data = await JSZip.loadAsync(file)
                 const entries = Object.entries(data.files)
-                log(`Extracting files: <span class="nfiles-extracted">0</span>/${entries.length}`, true)
+                boot.logHTML(`Extracting files: <span class="nfiles-extracted">0</span>/${entries.length}\n`, true)
                 let n = 0
                 let folders = []
                 for (let [key, value] of entries){
@@ -85,9 +61,6 @@ async function boot(){
                             folders.push(match)
                     }
                     const fileContents = new Blob([await value.async("arraybuffer")])
-                    if (bootFiles.includes(key)){
-                        bootFileContents[key] = fileContents
-                    }
                     await fs.writeFile(key, fileContents)
                     n++
                     document.querySelector(".nfiles-extracted").innerText = n
@@ -95,22 +68,72 @@ async function boot(){
                 for (let a of folders){
                     await fs.writeFile(a, "")
                 }
-                window.location.reload()
             }
         };
         req.onprogress = function(e) {
             console.log(e.loaded, e.total)
             document.querySelector(".bootloader-download-progress").innerText = Math.floor((e.loaded / e.total) * 1000) / 10
         };
-        req.open("GET", "install.zip", true);
+        if (boot.params.cachekiller){
+            req.open("GET", "install.zip?" + Math.random().toString().replace(".", "e"), true);
+        }
+        else{
+            req.open("GET", "install.zip");
+        }
         req.send();
-    }
-    else{
+    },
+    params: Object.fromEntries(new URLSearchParams(location.search)),
+    init: async function(){
+        function loadScriptOnline(src){ 
+            return new Promise(async (resolve, reject) => {
+                let i = document.createElement('script')
+                i.src = src
+                document.body.append(i)
+                i.onload = resolve
+                i.onerror = () => {
+                    boot.log(`${src} Failed to load`, true)
+                    boot.log(e, true)
+                    console.error(e)
+                    reject()
+                }
+            })
+        }
+        if(localStorage.verboseBoot == "false") bootloader.innerHTML = `
+        <div style="text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50% + 100px); top: calc(50% - 100px); width: 100%;">
+            <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
+                <source src="boot.webm" type="video/webm">
+            </video>
+            <p style="font-size: 20px; color: white; margin: 0; margin-top: 50px;">Loading Winda</p><br>
+            <p style="font-size: 20px; color: gray; margin-left: 0; position: absolute; bottom: 20px; left: 50vw; transform: translateX(-50%);">By kitaes</p>
+        </div>`
+        boot.log("Loading Filesystem\n")
+        await loadScriptOnline("sys/fs.js")
+        await fs.waitUntilInit()
+        let isSystemInstalled = await fs.exists("ver")
+        if (isSystemInstalled) if ((await (await fs.readFile("ver")).text()) != "1.0") isSystemInstalled = false
+        const bootFiles = ["sys/kernel.js", "sys/runscript.js", "sys/windowManager.js"]
+        if (boot.params.debug) {
+            boot.log("Debug mode is on, using online files\n")
+            for (const a of bootFiles){
+                let src;
+                if (boot.params.cachekiller){
+                    await loadScriptOnline(a + "?" + Math.random().toString().replace(".", "e"))
+                }
+                else{
+                    await loadScriptOnline(a)
+                }
+            }
+            dispatchEvent(new CustomEvent("sysloaded"))
+            return
+        }
+        if (!isSystemInstalled){
+            await boot.installImage()
+        }
         for (const a of bootFiles){
-            const file = await fs.readFile(a)
-            execScript(file, a)
+            await boot.execFile(a)
         }
         dispatchEvent(new CustomEvent("sysloaded"))
     }
 }
-addEventListener("fsloaded", () => boot())
+Object.freeze(boot)
+boot.init()
