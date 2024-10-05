@@ -343,6 +343,31 @@ async function main(args){
             addItem(e.window)
         }
     })
+    taskbar.querySelector(".startbutton").onclick = () => {
+        const layout = document.createElement("div")
+        JSON.parse(localStorage.appList).forEach((e) => {
+            const el = document.createElement("div")
+            el.innerText = e
+            el.onclick = () => loadApp(e)
+            layout.append(el)
+            //addStartMenuEntryProgramLeft(new Icon(appListLocale[e], "./iframes/" + e + "/icon.png", "parent.loadApp('" + e + "')"))
+        })
+        const wnd = new Winda7Window({
+            title: "Choose an app", 
+            icon: "icon.png", 
+            id: getId(), 
+            layout: {
+                titlebar: {
+                    buttons: {
+                        close: true
+                    }
+                },
+                cont: layout
+            },
+            aero: true
+        })
+        wnd.show()
+    }
     const taskbarWnd = new Winda7Window({
         bottom: 0,
         left: 0,
