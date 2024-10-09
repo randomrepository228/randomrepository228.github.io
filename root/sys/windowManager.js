@@ -226,7 +226,7 @@ window.Winda7Window = class{
         }
         setTimeout(timeout, 300)
         if (this.windowElem.classList.contains("show")){
-            wm.windows.filter((a) => a === this)
+            wm.windows.splice(wm.windows.indexOf(this), 1)
             const ev = new Event("windowchange")
             ev.window = this
             ev.remove = true
