@@ -165,12 +165,12 @@ async function main(args){
 <div class="right-bar">
     <div id="trayicons">
         <div class="trayicon n2">
-            <div style="width: 24px;" onclick="showTray(getTray(2))">
+            <div style="width: 24px;" onclick="// showTray(getTray(2))">
                 <div class="icn-wrp"></div>
             </div>
         </div>
         <div class="trayicon n1">
-            <div style="width: 75px;" onclick="showTray(getTray(1))">
+            <div style="width: 75px;" onclick="// showTray(getTray(1))">
                 <div class="w-cl-time">
                     <div class="ttime"></div>
                     <div class="tweekday"></div>
@@ -268,7 +268,6 @@ async function main(args){
         }
     }
     for (let a of wm.windows) {
-        console.log(a)
         if (a.title.startsWith("Winda Shell")) continue
         addItem(a)
     }
@@ -303,7 +302,7 @@ async function main(args){
     }
     function hideAllPrograms(){
         const leftStart = startMenuEl.querySelector(".left-start")
-        leftStart.style.height = undefined
+        leftStart.style.height = "unset"
         leftStart.querySelector(".left-start-main").style.display = "block"
         leftStart.querySelector(".allprograms").style.display = "none"
     }
@@ -358,7 +357,6 @@ async function main(args){
             </div>
         </div>`
     const allProgramsButton = startMenuEl.querySelector(".left-start-main").querySelector(".allprogramsbutton")
-    console.log(allProgramsButton)
     allProgramsButton.onclick = () => showAllPrograms()
     startMenuEl.querySelectorAll(".allprogramsbutton")[1].onclick = () => hideAllPrograms()
     startMenuEl.querySelector(".action").onclick = () => shutdown()
@@ -382,7 +380,6 @@ async function main(args){
     })
     const startButton = taskbar.querySelector(".wrapper")
     winda.shell.startMenu = function(open){
-        console.log("who")
         if (open) contextMenuOff();
         let elem = taskbar.querySelector(".wrapper")
         const SMAction1 = "winda.shell.startMenu(false)"
@@ -424,7 +421,13 @@ async function main(args){
     function stopShellIcons(){
         clearInterval(iconReloadLoop)
     }
-    const appListLocale = {"calc": "Calculator", "wmplayer": "Winda Media player", "clock": "Clock", "changelog": "Changelog", "control": "Control Panel", "ExampleApp": "Example app", "Okna8Mode": "Okna 8 Mode", "regedit": "Registry Editor", "run": "Run", "sfc": "System file checker", "taskmgr": "Task manager", "dvd": "DVD Logo", "bsod": "Blue screen of death", "iexplore": "Internet Explorer", "winver": "winver", "paint": "Paint", "explorer-file-manager": "Winda Explorer", "notepad": "Notepad"}
+    addEventListener("windowfocus", (e) => {
+        if (e.window.title !== "Winda Shell Start Menu" && e.window.title !== "Winda Shell Taskbar"){
+            if (isStartMenuOpen) winda.shell.startMenu(false)
+        }
+    })
+    localStorage.appList = JSON.stringify(["calc", "changelog", "control", "ExampleApp", "Okna8Mode", "regedit", "run", "sfc", "taskmgr", "dvd", "bsod", "iexplore", "winver", "notepad", "wmplayer", "paint", "explorer-file-manager"])
+    const appListLocale = {"calc": "Calculator", "wmplayer": "Winda Media player", "changelog": "Changelog", "control": "Control Panel", "ExampleApp": "Example app", "Okna8Mode": "Okna 8 Mode", "regedit": "Registry Editor", "run": "Run", "sfc": "System file checker", "taskmgr": "Task manager", "dvd": "DVD Logo", "bsod": "Blue screen of death", "iexplore": "Internet Explorer", "winver": "winver", "paint": "Paint", "explorer-file-manager": "Winda Explorer", "notepad": "Notepad"}
     JSON.parse(localStorage.appList).forEach((e) => {
         addStartMenuEntryProgramLeft({title: appListLocale[e], image: "./iframes/" + e + "/icon.png", action: "parent.loadApp('" + e + "')"})
     })

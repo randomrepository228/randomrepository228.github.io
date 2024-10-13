@@ -612,7 +612,6 @@ left{
     width: 75px;
     text-align: center;
     color: white;
-    line-clamp: 3; 
     overflow: hidden;
     padding-bottom: 28px;
     height: 100px;

@@ -16,7 +16,6 @@ function main(args){ return new Promise(async(res, rej) => {
 </div>
 <button style="position: absolute; bottom: 10px; right: 10px" onclick="bootloader.style.display = ''">bootlog</button>`
     let file = await fs.readFile("res/login.jpg")
-    console.log(file)
     let logonui
     if (file) logonui = URL.createObjectURL(file)
     else logonui = "./res/login.jpg"

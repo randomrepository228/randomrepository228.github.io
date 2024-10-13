@@ -29,7 +29,8 @@ const boot = {
             hasSystemError = true
         }
     },
-    installImage: async function(imagePath){
+    installImage: function(imagePath){ return new Promise(async(res, rej) => {
+        if (!imagePath) imagePath = "install.zip"
         boot.logHTML("Downloading files: <span class=\"bootloader-download-progress\">0</span>%\n", true)
         let file = false;
         var req = new XMLHttpRequest();
@@ -68,20 +69,20 @@ const boot = {
                 for (let a of folders){
                     await fs.writeFile(a, "")
                 }
+                res()
             }
         };
         req.onprogress = function(e) {
-            console.log(e.loaded, e.total)
             document.querySelector(".bootloader-download-progress").innerText = Math.floor((e.loaded / e.total) * 1000) / 10
         };
         if (boot.params.cachekiller){
-            req.open("GET", "install.zip?" + Math.random().toString().replace(".", "e"), true);
+            req.open("GET", imagePath + "?" + Math.random().toString().replace(".", "e"), true);
         }
         else{
-            req.open("GET", "install.zip");
+            req.open("GET", imagePath);
         }
         req.send();
-    },
+    })},
     params: Object.fromEntries(new URLSearchParams(location.search)),
     init: async function(){
         function loadScriptOnline(src){ 
@@ -110,7 +111,7 @@ const boot = {
         await loadScriptOnline("sys/fs.js")
         await fs.waitUntilInit()
         let isSystemInstalled = await fs.exists("ver")
-        if (isSystemInstalled) if ((await (await fs.readFile("ver")).text()) != "1.0") isSystemInstalled = false
+        if (isSystemInstalled) if ((await (await fs.readFile("ver")).text()) != await (await fetch("./ver")).text()) isSystemInstalled = false
         const bootFiles = ["sys/kernel.js", "sys/runscript.js", "sys/windowManager.js"]
         if (!isSystemInstalled){
             await boot.installImage()

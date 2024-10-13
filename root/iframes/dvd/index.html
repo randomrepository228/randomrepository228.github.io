@@ -31,8 +31,6 @@
         <script src="../../sys/api.js"></script>
         <script>
             let mainwindow = frameElement.parentElement.parentElement.parentElement
-            win.setTop("0px")
-            win.setLeft("0px")
             let posx = 5;
             let posy = 5;
             direction = {top: false, right: true, left: false, bottom: true}
@@ -43,6 +41,8 @@
                         changeTheme(commands[1])
                     if (commands[0] == "id"){
                         win.id = +commands[1];
+                        win.setTop("0px")
+                        win.setLeft("0px")
                         win.show("../run/icon.png");
                         waitForOutput("scrwidth")
                         waitForOutput("scrheight")

@@ -135,7 +135,6 @@ async function cMain(print, input, consoleoutput, args){
                 print("Command is not found. type \"help\" for help")
                 continue
             }
-            console.log(path)
             eval(await (await fs.readFile(path)).text())
             try{
                 await cMain(print, input, consoleoutput, [...inp.slice(1)])

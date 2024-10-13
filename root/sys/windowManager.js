@@ -28,13 +28,6 @@ window.Winda7Window = class{
         let newWindow = document.createElement("div")
         newWindow.id = options.id
         if (!options.layout) throw new Error("can't create a window without window info")
-        newWindow.classList.toggle("window")
-        if (options.aero) {
-            newWindow.classList.toggle("aero")
-        }
-        if (options.aero || options.shadow) {
-            newWindow.classList.toggle("shadow")
-        }
         if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.classList.toggle("maximised")
         if (options.ispopup){
             newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
@@ -61,8 +54,8 @@ window.Winda7Window = class{
         if(options.alwaysbehind) newWindow.className += " alwaysbehind"
         if(!options.noResize) newWindow.className += " resize"
         if(options.ignoreWorkingArea) newWindow.style.position = "fixed"
-        newWindow.onmousedown = () => setActive(newWindow)
-        newWindow.ontouchstart = () => setActive(newWindow)
+        newWindow.onmousedown = () => this.focus()
+        newWindow.ontouchstart = () => this.focus()
         let cont = document.createElement("div")
         let text = document.createElement("text")
         if (options.layout instanceof HTMLElement) {
@@ -79,7 +72,6 @@ window.Winda7Window = class{
                 const mouseDown = "windowMouseDown(event, this, this.parentElement, 1)"
                 titleBar.setAttribute("onmousedown", mouseDown)
                 titleBar.setAttribute("ontouchstart", mouseDown)
-                console.log(options.layout)
                 if (!options.layout.hideTitle){
                     const titlebarLeft = document.createElement("left")
                     async function setIcon(){
@@ -184,6 +176,13 @@ window.Winda7Window = class{
         if (!height) height = options.height
         text.style.width = width + "px"
         text.style.height = height + "px"
+        newWindow.classList.toggle("window")
+        if (options.aero) {
+            newWindow.classList.toggle("aero")
+        }
+        if (options.aero || options.shadow) {
+            newWindow.classList.toggle("shadow")
+        }
         cont.appendChild(text)
         newWindow.appendChild(cont)
         windows.append(newWindow)
@@ -193,18 +192,17 @@ window.Winda7Window = class{
         this.frame = text
         this.windowElem.frame = text
         this.title = options.title;
+        this.focus()
     }
     async close(){
         let window = this.windowElem
         if (this.onclose) await this.onclose()
         async function timeout(){
-            console.log("ok")
             if (this.closeCallback) await this.closeCallback()
             window.remove()
             broadcast("processdied|" + this.id)
         }
         if (!window.classList.contains("window")){
-            console.log("ok")
             await timeout()
             return
         }
@@ -288,6 +286,9 @@ window.Winda7Window = class{
         let e = leftBar.querySelector(`.n${activewindow.id}`)
         e.className = e.className + " focus"
         } catch(e){}
+        const ev = new Event("windowfocus")
+        ev.window = this
+        dispatchEvent(ev)
     }
     set title(t){
         try{this.titleElem.innerText = t} catch(e){}
@@ -325,7 +326,6 @@ function findWindowBy(type, val){
 //     smalltaskbar.href = ''
 windows.style.backgroundSize = "100% 100%"
 function AddWindow(window, ispopup, options, id, elem, onclose){
-    console.log(id)
     let newWindow = document.createElement("div")
     newWindow.id = id
     newWindow.className = `window shadow aero`
@@ -595,7 +595,7 @@ function showWindow(icon, num, doNotShowTray){
     wnd.style.display = ""
     if (doNotShowTray) try{
         setActive(wnd, true)
-        startMenu(false)
+        winda.shell.startMenu(false)
         return;
     }
     catch(e){}
@@ -605,10 +605,9 @@ function showWindow(icon, num, doNotShowTray){
     event.icon = icon
     setActive(wnd)
     wnd.style.display = ""
-    startMenu(false)
+    winda.shell.startMenu(false)
 }
 onmessage = (e) => {
-    console.log(e.data)
     const commands = e.data.split("|")
     if (commands.length > 1){
         let wnd;
@@ -634,10 +633,8 @@ onmessage = (e) => {
         }
         let frame;
         if (wnd){
-            console.log(wnd.lastElementChild)
             frame = wnd.lastElementChild.children[0].children[0].contentWindow
         }
-        console.log(commands[0])
         if (commands[0] == "close")
             closeWindow(commands[1])
         else if (commands[0] == "max")
@@ -675,7 +672,6 @@ function getAllWindows(){
 async function closeWindow(id){
     let window = getWnd(id)
     if (window.onclose) await window.onclose()
-    console.log(window)
     if (!window) window = getTray(id)
     function timeout(){
         window.remove()
@@ -726,7 +722,6 @@ function minimiseWindow(window){
     } else {
         setInactive()
         window.className += " minimised"
-        console.log(window.classList[0])
         if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(0deg)", 
@@ -1016,7 +1011,6 @@ ui.FileView = class{
                 file.innerHTML += `<img src="${ui.icons.folder}">`
                 a = this.currentFolder + "/" + a
                 file.onclick = function(){this.showContents(a)}
-                console.log(file, file.onclick)
             }
             else if (a.toLowerCase().endsWith(".png") || a.toLowerCase().endsWith(".jpg") || a.toLowerCase().endsWith(".gif") || a.toLowerCase().endsWith(".bmp") || a.toLowerCase().endsWith(".webp")){
                 let length = 3;
@@ -1026,7 +1020,6 @@ ui.FileView = class{
                 if(a.startsWith("/")) b = a.replace("/", "")
                 const contents = await parent.fs.readFile(b)
                 const url = URL.createObjectURL(new Blob([contents], {type: "image/" + a.substring(a.length - length, a.length)}))
-                console.log(url)
                 file.innerHTML += `<img src="${url}">`
                 file.setAttribute("ondblclick", `loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
             }

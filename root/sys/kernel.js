@@ -97,7 +97,6 @@ try{bootAnimation.addEventListener("ended", e => {
 })}
 catch(e){}
 function shutdown(a){
-    console.log(a)
     if (a == "r"){
         logoff();
         return
@@ -163,7 +162,7 @@ function logoff(){
         windows.children[a].remove()
     }
     leftBar.innerHTML = ""
-    startMenu(false)
+    winda.shell.startMenu(false)
     winda.playSound('./media/Windows Logoff Sound.flac'); 
 }
 async function desktopInit(){

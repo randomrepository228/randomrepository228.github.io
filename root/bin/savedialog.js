@@ -54,7 +54,6 @@ function main(args){ return new Promise((res, rej) => {
                 if(a.startsWith("/")) b = a.replace("/", "")
                 const contents = await parent.fs.readFile(b)
                 const url = URL.createObjectURL(new Blob([contents], {type: "image/" + a.substring(a.length - length, a.length)}))
-                console.log(url)
                 file.innerHTML += `<img src="${url}">`
                 file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
             }
@@ -82,7 +81,6 @@ function main(args){ return new Promise((res, rej) => {
             file.oncontextmenu = (e) => {
                 e.stopPropagation(); 
                 const elemoffset = frameElement.getBoundingClientRect();
-                console.log(newfpath)
                 parent.contextMenu(e, [
                     ['', 'Delete', () => parent.fs.deleteFile(newfpath).then(openFolder(currentPath))],
                     ['./iframes/notepad/icon.png', 'Open with Notepad', () => parent.loadApp("notepad", "", newfpath)]

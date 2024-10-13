@@ -1,5 +1,4 @@
 async function main(args){
-    console.log(this)
     args = [await loadScript("bin/savedialog.js")]
     const id = getId()
     const el = document.createElement("div")
