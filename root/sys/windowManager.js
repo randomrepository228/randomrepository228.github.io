@@ -24,6 +24,7 @@ window.Winda7Window = class{
         this.options = options;
         this.id = options.id;
         this.icon = options.icon;
+        this.shown = false;
         let newWindow = document.createElement("div")
         newWindow.id = options.id
         if (!options.layout) throw new Error("can't create a window without window info")
@@ -38,7 +39,6 @@ window.Winda7Window = class{
         if (options.ispopup){
             newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
             newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
-            this.show
         }
         else{
             if (typeof options.top === "number") newWindow.style.top = options.top += "px"
@@ -165,7 +165,6 @@ window.Winda7Window = class{
                 (function(i){
                 let el = document.createElement("div")
                 const action = (e) => {
-                    e.preventDefault();
                     windowMouseDown(e, el, newWindow, i)
                 }
                 el.ontouchstart = el.onmousedown = action
@@ -226,7 +225,7 @@ window.Winda7Window = class{
         }
         setTimeout(timeout, 300)
         if (this.windowElem.classList.contains("show")){
-            wm.windows.filter((a) => a === this)
+            wm.windows.splice(wm.windows.indexOf(this), 1) 
             const ev = new Event("windowchange")
             ev.window = this
             ev.remove = true
@@ -252,6 +251,7 @@ window.Winda7Window = class{
         wm.windows.push(this)
         const ev = new Event("windowchange")
         ev.window = this
+        this.shown = true
         ev.remove = false   
         dispatchEvent(ev)
     }
@@ -261,9 +261,33 @@ window.Winda7Window = class{
             wm.windows.splice(wm.windows.indexOf(this), 1)
             const ev = new Event("windowchange")
             ev.window = this
+            this.shown = false
             ev.remove = true
             dispatchEvent(ev)
         }
+    }
+    focus(){
+        if (activewindow) {
+            activewindow.className = activewindow.className.replace(" focus", "")
+            activewindow.style.zIndex = 0;
+        }
+        for (let a of wm.windows){
+            if (!a.id) continue
+            a.windowElem.style.zIndex = 0;
+        }
+        activewindow = this.windowElem;
+        if (!activewindow.classList.contains("focus")) activewindow.className += " focus"
+        try{
+            if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.focus()
+        }
+        catch(e){console.error(e)}
+        activewindow.style.zIndex = 1;
+        try{
+        for(element of leftBar.children)
+            element.className = element.className.replace(" focus", "")
+        let e = leftBar.querySelector(`.n${activewindow.id}`)
+        e.className = e.className + " focus"
+        } catch(e){}
     }
     set title(t){
         try{this.titleElem.innerText = t} catch(e){}
@@ -404,7 +428,7 @@ function AddWindow(window, ispopup, options, id, elem, onclose){
     newWindow.appendChild(content)
     windows.append(newWindow)
     if(ispopup || options.noSelfOpen || options.okna8){
-        showWindow(options.okna8 ? "../" + window.icon : window.icon, id, options.noTray)
+        this.show()
     }
     broadcast("newprocess|" + id)
     return {id: id, elem: text, title: newWindow.querySelector("left").lastElementChild, window: newWindow}
@@ -567,7 +591,6 @@ function hovereffect(e, elem){
 }
 function showWindow(icon, num, doNotShowTray){
     num = +num
-    if (shownBefore.includes(num)) return
     let wnd = getWnd(num)
     wnd.style.display = ""
     if (doNotShowTray) try{
@@ -583,7 +606,6 @@ function showWindow(icon, num, doNotShowTray){
     setActive(wnd)
     wnd.style.display = ""
     startMenu(false)
-    shownBefore.push(num)
 }
 onmessage = (e) => {
     console.log(e.data)
@@ -612,7 +634,8 @@ onmessage = (e) => {
         }
         let frame;
         if (wnd){
-            frame = wnd.lastElementChild.children[1].children[0].contentWindow
+            console.log(wnd.lastElementChild)
+            frame = wnd.lastElementChild.children[0].children[0].contentWindow
         }
         console.log(commands[0])
         if (commands[0] == "close")

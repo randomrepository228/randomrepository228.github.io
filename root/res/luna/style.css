@@ -1,6 +1,5 @@
 .window{
     position: absolute;
-    display: flex;
     flex-direction: column;
     justify-content: space-around;
     touch-action: none;

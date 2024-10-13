@@ -112,6 +112,9 @@ const boot = {
         let isSystemInstalled = await fs.exists("ver")
         if (isSystemInstalled) if ((await (await fs.readFile("ver")).text()) != "1.0") isSystemInstalled = false
         const bootFiles = ["sys/kernel.js", "sys/runscript.js", "sys/windowManager.js"]
+        if (!isSystemInstalled){
+            await boot.installImage()
+        }
         if (boot.params.debug) {
             boot.log("Debug mode is on, using online files\n")
             for (const a of bootFiles){
@@ -125,9 +128,6 @@ const boot = {
             }
             dispatchEvent(new CustomEvent("sysloaded"))
             return
-        }
-        if (!isSystemInstalled){
-            await boot.installImage()
         }
         for (const a of bootFiles){
             await boot.execFile(a)

@@ -313,7 +313,6 @@ left img{
     bottom: var(--taskbar-height);
     width: 505px;
     height: max-content;
-    display: none;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-image: url("../start_menu.png");

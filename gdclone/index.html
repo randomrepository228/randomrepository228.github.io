@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GD clone</title>
+    <style>
+        html{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            overflow: hidden;
+        }
+        #canvas, .click-to-play{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .click-to-play{
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            z-index: 99999;
+        }
+        .click-to-play div{
+            width: 100%;
+            text-align: center;
+            font-size: 50px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="click-to-play" onclick="startGame()">
+        <div>
+            Click to play
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script>
+        sounds = {
+            play: new Audio("./playSound_01.ogg")
+        }
+        const groundLevel = 200
+        const maxVelocity = 10
+        const playerSize = 1
+        let prevDeltaTime = 0
+        let isMouseDown = false
+        let player = {x: 0, y: 0, velocity: 0, dual: false, reverseGravity: false, mode: 0, ground: true, started: false}
+        let ctx = canvas.getContext("2d")
+        function drawBG(){
+            ctx.fillStyle = "#ffffff"
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+        }
+        function drawGround(){
+            ctx.fillStyle = "#000fff"
+            ctx.fillRect(0, canvas.height - groundLevel, canvas.width, groundLevel)
+        }
+        function drawPlayer(){
+            ctx.fillStyle = "#0fffff"
+            ctx.fillRect(player.x, canvas.height - groundLevel - 50 - player.y, playerSize * 50, playerSize * 50)
+        }
+        function gameLoop(deltaTime){
+            if (player.started){
+                player.x += 0.3 * (deltaTime - prevDeltaTime)
+                player.y += player.velocity
+                if (player.y < 0) {
+                    player.y = 0
+                    player.velocity = 0
+                    player.ground = true
+                }
+                if (isMouseDown && player.ground){
+                    player.velocity = maxVelocity
+                    player.ground = false
+                }
+            }
+            if (player.velocity !== 0) {
+                player.ground = false
+                if (!player.reverseGravity){
+                    if (player.velocity > -maxVelocity) {
+                        player.velocity -= 0.03 * (deltaTime - prevDeltaTime)
+                    }
+                }
+            }
+            drawBG()
+            drawGround()
+            drawPlayer()
+            prevDeltaTime = deltaTime
+            requestAnimationFrame(gameLoop)
+        }
+        addEventListener("mousedown", () => {
+            isMouseDown = true
+        })
+        addEventListener("mouseup", () => {
+            isMouseDown = false
+        })
+        gameLoop()
+        function startGame(){
+            document.querySelector(".click-to-play").remove()
+            sounds.play.play()
+            player.started = true
+        }
+        document.body.style.height = innerHeight + "px"
+        canvas.width = innerWidth
+        canvas.height = innerHeight
+        addEventListener("resize", () => {
+            document.body.style.height = innerHeight + "px"
+            canvas.width = innerWidth
+            canvas.height = innerHeight
+        })
+    </script>
+</body>
+</html>

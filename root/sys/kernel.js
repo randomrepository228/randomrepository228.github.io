@@ -1,4 +1,4 @@
-localStorage.ver = "Prerelease"
+localStorage.ver = "Prerelease 2"
 window.loop = {drag: false, top: false, left: false, right: false, bottom: false};
 window.activewindow = 0;
 window.activetray = 0;
@@ -104,7 +104,7 @@ function shutdown(a){
     }
     document.body.style.backgroundColor = "black"
     document.body.innerHTML = '<div style="position: absolute; left: 50vw; top: 50vh; transform: translate(-50%, -50%); color: white">It is now safe to turn off your computer</div>'
-    document.body.style.setProperty("--wallpaper", "none")
+    document.body.style.backgroundImage = "none"
 }
 function displayBSOD(reason){
     if (!reason) reason = "NULL"
@@ -197,8 +197,23 @@ async function desktopInit(){
             msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
         }
         init = true
+        const msg = document.createElement("div")
+        const title = document.createElement("h1")
+        title.innerText = "Welcome to " + localStorage.ver + "!"
+        msg.append(title)
+        const changeList = document.createElement("ul")
+        function addNew(text){
+            const newChange = document.createElement("li") 
+            newChange.innerText = text
+            changeList.append(newChange)
+        }
+        addNew("Fixed many bugs")
+        addNew("New API")
+        addNew("File open and file save dialog")
+        addNew("Command prompt")
+        msg.append(changeList)
         if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-            msgbox("New update", "<h1 style=\"margin: 0\">Welcome to 0.9.0.2!</h1>What's new?<br><ul><li>Semi-integration with filesystem</li><li>Welcome and change theme screen</li><li>fixed close button being red when it's the only button</li><li>Texture file optimization</li><li>Added file dialog</li><li>Added new boot manager!</li><li>Added different types of message boxes</li></ul>")
+            msgbox("New update", msg.innerHTML)
             localStorage.prevver = localStorage.ver
             return;
         }

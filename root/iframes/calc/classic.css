@@ -135,4 +135,5 @@ body {
 }
 button{
     padding: 0 !important;
+    white-space: nowrap;
 }

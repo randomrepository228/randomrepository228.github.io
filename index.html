@@ -6,11 +6,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        @font-face {
-            font-family: 'segoeui';
-            src: url(./segoeuil.ttf);
-            font-weight: 300;
-        }
         *{
             box-sizing: border-box;
         }
@@ -24,155 +19,80 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            background-color: rgb(30,30,30);
+        }
+        .menu{
             animation: 0.7s cubic-bezier(0.1, 0.9, 0.2, 1) fadein forwards;
-        }
-        html {
-            background-color: darkgreen;
-            margin: 0;
-        }
-        .tiles{
-            margin-left: 50px;
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            box-shadow: inset 0px 0px 0px 1px rgb(190, 190, 190), 0px 0px 20px 20px rgb(0, 78, 83);
             display: flex;
-            overflow: hidden;
             flex-direction: column;
         }
-        .title{
-            color: white;
-            margin: 5vw;
-            font-weight: 300;
-            font-family: 'Segoe UI', 'segoeui', sans-serif;
-            font-size: min(5vh, 10vw);
-            margin-top: 5vh;
-            margin-bottom: 5vh;
-        }
-        .hugetile, .mediumtile, .smalltile{
-            border: 3px solid var(--primary-color);
-            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+        .menuitem{
+            flex-grow: 1;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(180deg, rgba(30,30,30,1) 0%, rgba(50,50,50,1) 100%);
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            padding-left: 5%;
             position: relative;
-            display: block;
         }
-        .hugetile p, .mediumtile p, .smalltile p{
+        .menuitem::after{
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             position: absolute;
-            bottom: 5px;
-            left: 5px;
-            margin: 0;
-            font-size: 15px;
+            background-color: rgba(0,255,255,0.1);
+            z-index: 0;
+            opacity: 0;
+            transition: 0.2s ease-in-out;
+        }
+        .menuitem:hover::after{
+            opacity: 1;
+        }
+        .menuitem img{
+            height: min(50%, 10vh);
+            padding-right: 5%;
+            z-index: 1;
+        }
+        p{
             color: white;
-        }
-        .hugetile img, .mediumtile img, .smalltile img{
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 100%;
-            max-height: 100%;
-        }
-        .hugetile img{
-            max-width: 50%;
-            max-height: 50%;
-        }
-        .hugetile{
-            width: calc(32.33vh);
-            height: calc(32.33vh);
-            margin: 0.5vh;
-        }
-        .mediumtile{
-            width: calc(15.66vh);
-            height: calc(15.66vh);
-            margin: 0.5vh;
-        }
-        .mediumtilecontainer{
-            width: calc(16.66vh);
-            height: calc(16.66vh);
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-        }
-        .smalltile{
-            width: calc(7.33vh);
-            height: calc(7.33vh);
-            margin: 0.5vh;
-        }
-        .talltilecontainer{
-            display: flex;
-            flex-direction: row;
-        }
-        @keyframes open{
-            0% {transform: perspective(500px) rotate3d(0, 1, 0, 180deg);}
-            100% {
-                transform: perspective(500px) rotate3d(0, 1, 0, 360deg);
-                width: 100vw;
-                height: 100vh;
-                top: 0;
-                left: 0; 
-                border: 0px solid transparent;
-            }
-        }
-        .opening{
-            animation: open 0.5s ease-out forwards;
-        }
-        @media (max-width: 768px) {
-            .hugetile{
-                width: calc(64.66vw);
-                height: calc(64.66vw);
-                margin: 1vw;
-            }
-            .mediumtile{
-                width: calc(31.33vw);
-                height: calc(31.33vw);
-                margin: 1vw;
-            }
-            .mediumtilecontainer{
-                width: calc(33.33vw);
-                height: calc(33.33vw);
-            }
-            .smalltile{
-                width: calc(14.66vw);
-                height: calc(14.66vw);
-                margin: 1vw;
-            }
-            .tiles{
-                margin: 0;
-                flex-direction: row;
-            }
-            .title{
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
-            .talltilecontainer{
-                display: block;
-            }
+            text-decoration: none;
+            font-size: 20px;
+            z-index: 1;
         }
     </style>
 </head>
 
 <body>
-    <h1 class="title">
-        Какой-то сайт, я хз
-    </h1>
-    <div class="tiles">
-        <a class="hugetile" style="--primary-color: cyan; --secondary-color: rgb(0, 220, 220)" href="./root/">
+    <div class="menu">
+        <a class="menuitem" href="./root/">
             <img src="winda7.png">
             <p>Winda7</p>
         </a>
-        <div class="talltilecontainer">
-            <a class="mediumtile" style="--primary-color: gray; --secondary-color: rgb(110, 110, 110)" href="./snake/">
-                <img src="losingtrail.png">
-                <p>Losing trail</p>
-            </a>
-            <div class="mediumtilecontainer">
-                <a class="smalltile" style="--primary-color: blue; --secondary-color: rgb(0, 0, 220)" href="./user-agent/">
-                    <img src="useragent.png">
-                </a>
-                <a class="smalltile" style="--primary-color: red; --secondary-color: rgb(220, 0, 0)" href="./counter/">
-                    <img src="cps.png">
-                </a>
-            </div>
-        </div>
+        <a class="menuitem" href="./snake/">
+            <img src="losingtrail.png">
+            <p>Losing trail</p>
+        </a>
+        <a class="menuitem" href="./user-agent/">
+            <img src="useragent.png">
+        </a>
+        <a class="menuitem" href="./counter/">
+            <img src="cps.png">
+        </a>
     </div>
     <script>
         document.body.style.height = innerHeight + "px"
         addEventListener("resize", () => document.body.style.height = innerHeight + "px")
+        let visibleElem
         let links = document.querySelectorAll("a")
         function openSite(elem){
             elem.style.position = "absolute"
@@ -184,8 +104,9 @@
             let elemtext = elem.querySelector("p")
             if (elemtext) elemtext.style.display = "none"
             document.body.style.visibility = "hidden"
+            visibleElem = elem
             elem.style.visibility = "visible"
-            elem.className += " opening"
+            elem.classList.toggle("opening")
         }
         for (a of links){
             a.setAttribute("onclick", "openSite(this)")

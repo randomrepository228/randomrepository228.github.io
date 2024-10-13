@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
-        <script src="../../sys/windowEvents.js"></script>
+        <script src="../windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <link rel="stylesheet" href="./aero/style.css" id="controlTheme">
         <script>
@@ -89,7 +89,7 @@
                             <div class="themesContainer">
                                 <p>Aero Themes (1)</p>
                                 <div class="themelist">
-                                    <div class="theme" ondblclick="top.changeTheme('aero')">
+                                    <div class="theme" ondblclick="parent.winda.changeTheme('aero')">
                                         <div class="images">
                                             <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="602.png" style="border-radius: 7px; background-color: rgba(136, 227, 255, 0.5);">
@@ -99,21 +99,21 @@
                                 </div>
                                 <p>Basic and high contrast Themes (3)</p>
                                 <div class="themelist">
-                                    <div class="theme" ondblclick="top.changeTheme('basic')">
+                                    <div class="theme" ondblclick="parent.winda.changeTheme('basic')">
                                         <div class="images">
                                             <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="603.png">
                                         </div>
                                         <p>Windows 7 (Basic)</p>
                                     </div>
-                                    <div class="theme" ondblclick="top.changeTheme('classic')">
+                                    <div class="theme" ondblclick="parent.winda.changeTheme('classic')">
                                         <div class="images">
                                             <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="604.png">
                                         </div>
                                         <p>Classic</p>
                                     </div>
-                                    <div class="theme" ondblclick="top.changeTheme('luna')">
+                                    <div class="theme" ondblclick="parent.winda.changeTheme('luna')">
                                         <div class="images">
                                             <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="605.png">
@@ -263,7 +263,6 @@
                     if (args != "undefined"){
                         openSection(args)
                     }
-                    parent.showWindow("./iframes/control/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute("windowid"));
                 </script>
             </div>
         </div>

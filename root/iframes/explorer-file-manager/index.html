@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
-        <script src="../../sys/windowEvents.js"></script>
+        <script src="../windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <link rel="stylesheet" href="../explorer-file-manager/style.css">
         <link rel="stylesheet" href="../control/aero/style.css" id="explorerTheme">
@@ -81,7 +81,6 @@
                 parent.msgbox("Winda Explorer", "FS is not found. Turn it on in Control Panel or do a System File check")
                 thisWindow.remove()
             }
-            parent.showWindow("./iframes/explorer-file-manager/icon.png", thisWindow.getAttribute("windowid"));
         </script>
         <script>
             let currentPath = ""

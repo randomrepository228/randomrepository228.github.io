@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
-        <script src="../../sys/windowEvents.js"></script>
+        <script src="../windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             body{
@@ -67,7 +67,6 @@
             <button onclick="parent.closeWindow(frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'))">Cancel</button>
         </footer>
         <script>
-            parent.showWindow("./iframes/run/icon.png", frameElement.parentElement.parentElement.parentElement.getAttribute('windowid'));
             document.querySelector("input").focus()
         </script>
     </body>

@@ -299,7 +299,6 @@ body{
 .window {
     background: linear-gradient(90deg, grey, #b5b5b5);
     position: absolute;
-    display: flex;
     flex-direction: column;
     justify-content: space-around;
     touch-action: none;

@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
-        <script src="../../sys/windowEvents.js"></script>
+        <script src="../windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             html { 
@@ -123,7 +123,6 @@
             <button onclick="applyPending()">Apply</button>
         </footer>
         <script>
-            parent.showWindow("./iframes/ExampleApp/icon.png", thisWindow.getAttribute("windowid"));
             useSmallTaskbar.checked = localStorage.useSmallTaskbar && localStorage.useSmallTaskbar == "true" ? true : false
             pinTaskbar.checked = localStorage.dontPinTaskbar && localStorage.dontPinTaskbar == "true" ? false : true
         </script>

@@ -5,14 +5,14 @@ if (window.parent){
     addEventListener("mousedown", e => {
         parent.setActive(frameElement.parentElement.parentElement.parentElement)
         if (!e.target.parentElement.classList.contains("menubar")) parent.contextMenuOff()
-        parent.startMenu(false)
+        //parent.startMenu(false)
         focus()
     })
     addEventListener("touchstart", e => {
         e.preventDefault()
         parent.setActive(frameElement.parentElement.parentElement.parentElement)
         if (!e.target.parentElement.classList.contains("menubar")) parent.contextMenuOff()
-        parent.startMenu(false)
+        // parent.startMenu(false)
         focus()
     })
 }

@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../../sys/windows.css">
         <link rel="stylesheet" href="../../fonts/fonts.css">
         <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
-        <script src="../../sys/windowEvents.js"></script>
+        <script src="../windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <style>
             html { 
@@ -88,7 +88,6 @@
                 if (charCode == 57548) charCode = 57426
             }, 35)
             let thisWindow = frameElement.parentElement.parentElement.parentElement // главное окно
-            parent.showWindow("./iframes/ExampleApp/icon.png", thisWindow.getAttribute("windowid")); // показывает окно
             // thisWindow.children[0].children[0].lastElementChild.innerHTML - название окна
             // thisWindow.style.left - позиция снизу
             // thisWindow.style.top - позиция сверху

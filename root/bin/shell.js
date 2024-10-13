@@ -1,5 +1,11 @@
 /// <reference path="../sys/windowManager.js"/>
 async function main(args){
+    for (let a of wm.windows) {
+        if (a.title === "Winda Shell Taskbar") {
+            a.focus()
+            return
+        }
+    }
     let shell = document.createElement("div")
     shell.className = "explorer taskbar-bottom"
     shell.id = "shell"
@@ -39,85 +45,6 @@ async function main(args){
         }
     }
     winda.shell.changeTaskbarDir(localStorage.taskbarDir)
-    shell.innerHTML = `
-        <div class="taskbar"
-            onmousedown="winda.shell.dragTaskbar()"
-            oncontextmenu="if (!event.target.classList.contains('startbutton')) contextMenu(event, [
-                ['', 'Task manager', () => loadApp('taskmgr')],
-                ['', 'Properties', () => loadApp('taskbarproperties')]
-            ], event.clientX, event.clientY)">
-            <div class="wrapper startbutton" onmousedown="if(event.which === 1) startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()"
-                oncontextmenu="contextMenu(event, [
-                    ['', 'Properties', () => loadApp('taskbarproperties')],
-                    ['', 'Open file explorer', () => loadApp('explorer-file-manager')]
-                ], event.clientX, event.clientY)"></div>
-            <div class="left-bar" id="leftBar"></div>
-            <div class="right-bar">
-                <div id="trayicons">
-                    <div class="trayicon n2">
-                        <div style="width: 24px;" onclick="showTray(getTray(2))">
-                            <div class="icn-wrp"></div>
-                        </div>
-                    </div>
-                    <div class="trayicon n1">
-                        <div style="width: 75px;" onclick="showTray(getTray(1))">
-                            <div class="w-cl-time">
-                                <div class="ttime"></div>
-                                <div class="tweekday"></div>
-                                <div class="tdate"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="show-desktop" onclick="minimiseAll()"></div>
-            </div>
-        </div>
-        <div class="start-menu aero">
-            <div class="left-start">
-                <div class="left-start-main">
-                    <div class="allprogramsbutton" onclick="winda.shell.showAllPrograms()">All programs</div>
-                </div>
-                <div class="allprograms">
-                    <div class="scrollable"></div>
-                    <div class="allprogramsbutton" onclick="winda.shell.hideAllPrograms()">Back</div>
-                </div>
-            </div>
-            <div class="right-start">
-                <div class="rstop">
-                    <div class="start-option-right">SYSTEM</div>
-                    <div class="start-option-right" onclick="loadApp('control');startMenu(false, document.querySelector('.taskbar').querySelector('.wrapper'))">Control Panel</div>
-                </div>
-                <div class="start-menu-action">
-                    <button class="action" onclick="shutdown()">Shutdown</button>
-                    <button class="dropdown" onclick="event.stopPropagation();"onmousedown="event.stopPropagation();const coords = this.getBoundingClientRect();contextMenu(event, [
-                        ['', 'Log off', () => logoff()]
-                    ], coords.x + coords.width, coords.y, undefined, true)"><div></div></button>
-                </div>
-            </div>
-        </div>`
-    // winda.shell.addStartMenuEntryLeft = (name, icon, action) => {
-    //     const e = document.querySelector(".left-start-main")
-    //     e.innerHTML = `<div class="start-option blue" onclick="${action}"><img src="${icon}"></img>${name}</div>` + e.innerHTML
-    // }
-    // winda.shell.addStartMenuEntryProgramLeft = (icon) => {
-    //     const e = document.querySelector(".allprograms").children[0]
-    //     e.innerHTML = `<div class="start-option blue" onclick="${icon.action}"><img src="${icon.image}"></img>${icon.title}</div>` + e.innerHTML
-    // }
-    // winda.shell.addStartMenuEntryRight = (name, action) => {
-    //     document.querySelector(".rstop").innerHTML += `<div class="start-option-right" onclick="${action}">${name}</div>`
-    // }
-    // winda.shell.padTo2Digits = (num) => {
-    //     return num.toString().padStart(2, '0');
-    // }
-    // winda.shell.formatDate = (date) => {
-    //     return [winda.shell.padTo2Digits(date.getDate()), winda.shell.padTo2Digits(date.getMonth() + 1), date.getFullYear(),].join('.');
-    // }
-    // winda.shell.formatTimeNoS = (date) => {
-    //     return [date.getHours(), winda.shell.padTo2Digits(date.getMinutes())].join(':');
-    // }
-    // winda.shell.formatWeekday = (date) =>{
-    //     return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][date.getDay()]
-    // }
     window.trays = document.createElement("div")
     trays.id = "trays"
     trays.innerHTML = `
@@ -192,6 +119,17 @@ async function main(args){
     await fileView.showContents("/usr/" + currentUser + "/desktop")
     fileView.elem.className = "icons winda-shell"
     fileView.elem.style.height = "100%"
+    fileView.elem.oncontextmenu = (e) => {
+        if (e.target !== fileView.elem) return
+        contextMenu(e, [
+            ['', 'Refresh', () => reloadIcons()], 
+            ['', 'Personalize', () => loadApp('control', '', 'personalize')], 
+            ['', 'New text document', async() => {
+                const input = await inputbox('New file', 'Enter a filename:'); 
+                if (input) fs.writeFile('usr/' + currentUser + '/desktop/' + input, '', true)
+            }]
+        ], e.clientX, e.clientY)
+    }
     shellContainer.append(fileView.elem)
     shellContainer.innerHTML += '<link rel="stylesheet" href="./shell/shell.css">'
     shellContainer.innerHTML += `<bottomright>Winda7<br>Version ${localStorage.ver}</bottomright>`
@@ -208,7 +146,7 @@ async function main(args){
     iconsWnd.show()
     const taskbar = document.createElement("div")
     taskbar.className = "taskbar"
-    taskbar.onmousedown = () => winda.shell.dragTaskbar()
+    // taskbar.onmousedown = () => winda.shell.dragTaskbar()
     taskbar.oncontextmenu = (event) => {
         if (!event.target.classList.contains('startbutton')) {
             contextMenu(event, [
@@ -218,7 +156,7 @@ async function main(args){
         }
     }
     taskbar.innerHTML = `
-<div class="wrapper startbutton" onmousedown="if(event.which === 1) startMenu(true)" ontouchstart="startMenu(true)" ontouchend="event.preventDefault()"
+<div class="wrapper startbutton" ontouchend="event.preventDefault()"
     oncontextmenu="contextMenu(event, [
         ['', 'Properties', () => loadApp('taskbarproperties')],
         ['', 'Open file explorer', () => loadApp('explorer-file-manager')]
@@ -343,31 +281,6 @@ async function main(args){
             addItem(e.window)
         }
     })
-    taskbar.querySelector(".startbutton").onclick = () => {
-        const layout = document.createElement("div")
-        JSON.parse(localStorage.appList).forEach((e) => {
-            const el = document.createElement("div")
-            el.innerText = e
-            el.onclick = () => loadApp(e)
-            layout.append(el)
-            //addStartMenuEntryProgramLeft(new Icon(appListLocale[e], "./iframes/" + e + "/icon.png", "parent.loadApp('" + e + "')"))
-        })
-        const wnd = new Winda7Window({
-            title: "Choose an app", 
-            icon: "icon.png", 
-            id: getId(), 
-            layout: {
-                titlebar: {
-                    buttons: {
-                        close: true
-                    }
-                },
-                cont: layout
-            },
-            aero: true
-        })
-        wnd.show()
-    }
     const taskbarWnd = new Winda7Window({
         bottom: 0,
         left: 0,
@@ -382,4 +295,143 @@ async function main(args){
         ignoreWorkingArea: true
     }, 0, 40)
     taskbarWnd.show()
+    function showAllPrograms(){
+        const leftStart = startMenuEl.querySelector(".left-start")
+        leftStart.style.height = leftStart.getBoundingClientRect().height + "px"
+        leftStart.querySelector(".left-start-main").style.display = "none"
+        leftStart.querySelector(".allprograms").style.display = "block"
+    }
+    function hideAllPrograms(){
+        const leftStart = startMenuEl.querySelector(".left-start")
+        leftStart.style.height = undefined
+        leftStart.querySelector(".left-start-main").style.display = "block"
+        leftStart.querySelector(".allprograms").style.display = "none"
+    }
+    function addStartMenuEntryLeft(name, icon, action){
+        const e = startMenuEl.querySelector(".left-start-main")
+        const el = document.createElement("div")
+        el.className = "start-option blue"
+        function a(){
+            eval(action)
+            winda.shell.startMenu(false)
+        }
+        el.onclick = a
+        el.innerHTML = `<img src="${icon}"></img>${name}`
+        e.prepend(el)
+    }
+    function addStartMenuEntryProgramLeft(icon){
+        const e = startMenuEl.querySelector(".allprograms").children[0]
+        const el = document.createElement("div")
+        el.className = "start-option blue"
+        function a(){
+            eval(icon.action)
+            winda.shell.startMenu(false)
+        }
+        el.onclick = a
+        el.innerHTML = `<img src="${icon.image}"></img>${icon.title}`
+        e.prepend(el)
+    }
+    function addStartMenuEntryRight(name, action){
+        startMenuEl.querySelector(".rstop").innerHTML += `<div class="start-option-right" onclick="${action}">${name}</div>`
+    }
+    let isStartMenuOpen = false
+    const startMenuEl = document.createElement("div")
+    startMenuEl.className = "start-menu aero"
+    startMenuEl.innerHTML = `
+        <div class="left-start">
+            <div class="left-start-main">
+                <div class="allprogramsbutton">All programs</div>
+            </div>
+            <div class="allprograms">
+                <div class="scrollable"></div>
+                <div class="allprogramsbutton">Back</div>
+            </div>
+        </div>
+        <div class="right-start">
+            <div class="rstop">
+                <div class="start-option-right">SYSTEM</div>
+                <div class="start-option-right">Control Panel</div>
+            </div>
+            <div class="start-menu-action">
+                <button class="action">Shutdown</button>
+                <button class="dropdown"><div></div></button>
+            </div>
+        </div>`
+    const allProgramsButton = startMenuEl.querySelector(".left-start-main").querySelector(".allprogramsbutton")
+    console.log(allProgramsButton)
+    allProgramsButton.onclick = () => showAllPrograms()
+    startMenuEl.querySelectorAll(".allprogramsbutton")[1].onclick = () => hideAllPrograms()
+    startMenuEl.querySelector(".action").onclick = () => shutdown()
+    const e = startMenuEl.querySelector(".dropdown")
+    e.addEventListener("onclick", (event) => event.stopPropagation())
+    e.addEventListener("onmousedown", (event) => {
+        event.stopPropagation();
+        const coords = this.getBoundingClientRect();contextMenu(event, [
+            ['', 'Log off', () => logoff()]
+        ], coords.x + coords.width, coords.y, undefined, true)
+    })
+    const startWnd = new Winda7Window({
+        bottom: 0,
+        left: 0,
+        title: "Winda Shell Start Menu", 
+        icon: "icon.png", 
+        id: getId(), 
+        layout: startMenuEl,
+        alwaysontop: true,
+        noResize: true
+    })
+    const startButton = taskbar.querySelector(".wrapper")
+    winda.shell.startMenu = function(open){
+        console.log("who")
+        if (open) contextMenuOff();
+        let elem = taskbar.querySelector(".wrapper")
+        const SMAction1 = "winda.shell.startMenu(false)"
+        const SMAction2 = "if(event.which === 1) winda.shell.startMenu(true)"
+        if(open){
+            startWnd.show()
+            elem.setAttribute("onmousedown", SMAction1);
+            elem.setAttribute("ontouchstart", SMAction1);
+            elem.className += " focus"
+        }
+        else{
+            startWnd.hide()
+            elem.setAttribute("onmousedown", SMAction2);
+            elem.setAttribute("ontouchstart", "winda.shell.startMenu(true)");
+            elem.className = elem.className.replace(" focus", "")
+        }
+        isStartMenuOpen = open
+    }
+    startMenuEl.querySelectorAll(".start-option-right")[1].onclick = () => {
+        loadApp('control');
+        winda.shell.startMenu(false)
+    }
+    startButton.onmousedown = (e) => {
+        if(e.which === 1) winda.shell.startMenu(true)
+    }
+    startButton.addEventListener("ontouchstart", () => winda.shell.startMenu(true))
+    function startMenuToggle(){
+        if (startWnd.shown) startWnd.hide()
+        else startWnd.show()
+    }
+    async function reloadIcons(){ 
+        fileList.showContents("usr/" + currentUser + "/desktop")
+    }
+    let iconReloadLoop = 0;
+    function initShellIcons(){
+        reloadIcons()
+        iconReloadLoop = setInterval(reloadIcons, 1000)
+    }
+    function stopShellIcons(){
+        clearInterval(iconReloadLoop)
+    }
+    const appListLocale = {"calc": "Calculator", "wmplayer": "Winda Media player", "clock": "Clock", "changelog": "Changelog", "control": "Control Panel", "ExampleApp": "Example app", "Okna8Mode": "Okna 8 Mode", "regedit": "Registry Editor", "run": "Run", "sfc": "System file checker", "taskmgr": "Task manager", "dvd": "DVD Logo", "bsod": "Blue screen of death", "iexplore": "Internet Explorer", "winver": "winver", "paint": "Paint", "explorer-file-manager": "Winda Explorer", "notepad": "Notepad"}
+    JSON.parse(localStorage.appList).forEach((e) => {
+        addStartMenuEntryProgramLeft({title: appListLocale[e], image: "./iframes/" + e + "/icon.png", action: "parent.loadApp('" + e + "')"})
+    })
+    addStartMenuEntryLeft("Version 0.0.1", "./res/icon.jpg", "window.location.href = '../Winda.old/0.0.1/simulator.html'")
+    addStartMenuEntryLeft("Version 0.0.2", "./res/icon.jpg", "window.location.href = '../Winda.old/0.0.2/simulator.html'")
+    addStartMenuEntryLeft("Version 0.0.3", "./res/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'")
+    addStartMenuEntryLeft("Version 0.1.0", "./res/icon.jpg", "window.location.href = '../Winda.old/b0.9.0/simulator.html'")
+    addStartMenuEntryLeft("Version 0.1.1", "./res/icon.jpg", "window.location.href = '../Winda.old/b0.9.2/simulator.html'")
+    addStartMenuEntryLeft("Welcome window", './res/icon.jpg', "msgbox('Welcome', 'Welcome to Windows Beta!')")
 }

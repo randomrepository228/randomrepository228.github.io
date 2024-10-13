@@ -1,5 +1,6 @@
 :root{
     --logonui-background: url(../res/login.jpg);
+    --iframe-ignore: none
 }
 body{
     margin: 0;
@@ -631,6 +632,9 @@ left{
 .window.show{
     display: flex;
 }
-.window:active ignore{
-    display: block;
+.window:active{
+    --iframe-ignore: block
+}
+ignore{
+    display: var(--iframe-ignore);
 }

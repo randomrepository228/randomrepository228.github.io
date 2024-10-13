@@ -2,7 +2,6 @@
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     position: absolute;
-    display: flex;
     flex-direction: column;
     justify-content: space-around;
     touch-action: none;
@@ -19,27 +18,12 @@
     background-repeat: no-repeat, repeat-x;
 }
 .focus.window{
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    touch-action: none;
-    resize: both;
-    z-index: 4;
-    padding: 7px;
-    padding-top: 0;
     box-shadow: -1px -1px rgba(0, 255, 255, 1) inset, 1px 1px white inset;
-    border: 1px solid black;
     background-image: linear-gradient(to bottom, #98B4D0, #B9D1EA), url("../basic-aero/window_side.png");
     background-color: #B9D1EA;
-    background-position: left 0 top 0, left 0 top 20%;
-    background-size: 100% 27px, 100% 30%;
-    background-repeat: no-repeat, repeat-x;
 }
 .taskbar{
-    background-color: #98B4D0;
+    background-color: #98B4D0 !important;
 }
 .maximised{
     border-radius: 0px;

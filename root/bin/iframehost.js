@@ -35,7 +35,8 @@ if (!window.winda.iframes) window.winda.iframes = {
         "icon": "icon.png",
         "window": true,
         "noGUI": true,
-        "titleBarHeight": 30
+        "titleBarHeight": 30,
+        "hideTitle": true
     },
     "dvd": {
         "width": 400,
