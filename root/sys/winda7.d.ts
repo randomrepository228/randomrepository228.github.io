@@ -19,7 +19,7 @@ declare module 'winda7' {
     }
 }
 // function sendMsg(windowid, message){
-//     for (a of windows.children){
+//     for (const a of windows.children){
 //         if (a.getAttribute("windowid") != windowid)
 //         try{
 //             a.lastElementChild.children[1].children[0].contentWindow.postMessage(message)
@@ -234,7 +234,7 @@ declare module 'winda7' {
 // function getAllWindows(){
 //     let openedwindows = [];
 //     let userids = []
-//     for (a of document.querySelectorAll("*[windowid]")){
+//     for (const a of document.querySelectorAll("*[windowid]")){
 //         if (a.className.includes("window ")){
 //             if (!userids.includes(a.getAttribute("windowid"))){
 //                 openedwindows.push({id: a.getAttribute("windowid"), title: a.children[0].children[0].children[a.children[0].children[0].children.length-1].innerText})
@@ -254,7 +254,7 @@ declare module 'winda7' {
 //     let window = getWnd(id)
 //     if (!window) window = getTray(id)
 //     function timeout(){
-//         for (a of document.querySelectorAll(".n" + id)) a.remove()
+//         for (const a of document.querySelectorAll(".n" + id)) a.remove()
 //         broadcast("processdied|" + id)
 //     }
 //     if (!window.className.includes("window")){

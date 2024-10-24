@@ -41,7 +41,7 @@
         <script>
             function urlbarEnter(event){
                 if(event.key === 'Enter'){
-                    for (a of document.querySelectorAll('.frame')){
+                    for (const a of document.querySelectorAll('.frame')){
                         if (a.style.display == 'block'){
                             if (!(urlbar.value.startsWith("http://") || urlbar.value.startsWith("https://"))){
                                 urlbar.value = "https://" + urlbar.value
@@ -55,9 +55,9 @@
             let tab;
             function ActivateTab(FrameID) {
                 let tabs = document.querySelectorAll('.tabs .tab')
-                for (a of tabs)
+                for (const a of tabs)
                     a.className = "tab"
-                for (a of document.querySelectorAll('.frames .frame'))
+                for (const a of document.querySelectorAll('.frames .frame'))
                     a.style.display = 'none'
                 document.querySelector('#Tab_' + FrameID).className = "tab active"
                 document.querySelector('#Frame_' + FrameID).style.display = 'block'
@@ -67,7 +67,7 @@
                 NewFrameID = FrameMaxID
                 FrameMaxID++
                 let tabs = document.querySelectorAll('.tabs .tab')
-                for (a of tabs)
+                for (const a of tabs)
                     a.className = "tab"
                 document.querySelector('.tabContainer').innerHTML += `
                     <div class="tab active" onclick="ActivateTab('${NewFrameID}')" id="Tab_${NewFrameID}"><div></div></div>
@@ -86,7 +86,7 @@
                         NewFrameID = FrameMaxID
                         FrameMaxID++
                         let tabs = document.querySelectorAll('.tabs .tab')
-                        for (a of tabs)
+                        for (const a of tabs)
                             a.className = "tab"
                         document.querySelector('.tabContainer').innerHTML += `
                             <div class="tab active" onclick="ActivateTab('${NewFrameID}')" id="Tab_${NewFrameID}"><div></div></div>

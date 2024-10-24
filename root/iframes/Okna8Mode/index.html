@@ -120,7 +120,7 @@
                 if (LOCALE_searchdata[i][0].startsWith("desktop:") || LOCALE_searchdata[i][0] == "DESKTOP") continue
                 const withspaces = LOCALE_searchdata[i][0].replace(/([A-Z])/g, " $1").trim()
                 let col = document.createElement("tr")
-                col.setAttribute("onclick", `parent.postMessage(\`eval|0|loadOkna8App('${LOCALE_searchdata[i][0]}', './iframes/Okna8Mode/apps/metro/', '${withspaces}')\`, \`*\`)`)
+                col.setAttribute("onclick", `parent.loadOkna8App('${LOCALE_searchdata[i][0]}', './iframes/Okna8Mode/apps/metro/', '${withspaces}')`)
                 let row = document.createElement("td")
                 row.innerHTML = withspaces;
                 col.appendChild(row);

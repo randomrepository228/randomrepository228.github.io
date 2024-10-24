@@ -84,7 +84,7 @@
             for(;;) {
                 let tinp = (await input(currentPath + "/>")).split(" ");
                 let inp = [];
-                for (a of tinp){
+                for (const a of tinp){
                     inp.push(a.toLowerCase().replace("\\", "/"))
                 }
                 if (inp[0].toLowerCase() === "help"){
@@ -96,7 +96,7 @@
                 }
                 else if (inp[0] === "dir"){
                     let results = await parent.fs.readdir(currentPath)
-                    for (a of results){
+                    for (const a of results){
                         if (a.endsWith("/.")){
                             a = "(DIR) " + a.replace("/.", "")
                         }

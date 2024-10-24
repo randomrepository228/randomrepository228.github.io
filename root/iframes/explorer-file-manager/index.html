@@ -88,7 +88,7 @@
             async function renderDir(files, fpath){
                 currentFolder = fpath
                 document.querySelector(".files").innerHTML = ""
-                for (a of files){
+                for (let a of files){
                     if (a == ".") continue
                     htmlPath = a
                     a = a.replace("<marked>", "").replace("</marked>", "")
@@ -149,7 +149,9 @@
                             ['./iframes/notepad/icon.png', 'Open with Notepad', () => parent.loadApp("notepad", "", newfpath)]
                         ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
                     }
-                    file.innerHTML += htmlPath
+                    const textElem = document.createElement("div")
+                    textElem.innerHTML = htmlPath
+                    file.append(textElem)
                     document.querySelector(".files").append(file)
                 }
             }
@@ -159,7 +161,7 @@
                 document.querySelector('.adressbar').innerHTML = ""
                 document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('')">/</div>`
                 let path = ""
-                for (a of folderPath.split("/")){
+                for (const a of folderPath.split("/")){
                     if(!a) continue
                     path += "/" + a
                     document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('${path}')">${a}/</div>`

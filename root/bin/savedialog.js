@@ -18,7 +18,7 @@ function main(args){ return new Promise((res, rej) => {
     async function renderDir(files, fpath){
         currentFolder = fpath
         el.querySelector(".files").innerHTML = ""
-        for (a of files){
+        for (const a of files){
             if (a == ".") continue
             htmlPath = a
             a = a.replace("<marked>", "").replace("</marked>", "")
@@ -99,7 +99,7 @@ function main(args){ return new Promise((res, rej) => {
         root.innerHTML = "/"
         el.querySelector('.adressbar').append(root)
         let path = ""
-        for (a of folderPath.split("/")){
+        for (const a of folderPath.split("/")){
             function xd(a){
                 if(!a) return
                 path += "/" + a

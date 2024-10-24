@@ -198,13 +198,13 @@
                     function openSection(sectionName, back){
                         let section = document.querySelector('.' + sectionName)
                         if (!section.style.display) return
-                        for (a of document.querySelector('.content').children) a.style.display = 'none';
+                        for (const a of document.querySelector('.content').children) a.style.display = 'none';
                         section.style.display = ''
                         if (back) document.querySelector('.adressbar').lastElementChild.remove()
                         else document.querySelector('.adressbar').innerHTML += `<div onclick="openSection('${sectionName}', true)">${section.id}</div>`;
                     }
                     function closeSection(){
-                        for (a of document.querySelector('.content').children)
+                        for (const a of document.querySelector('.content').children)
                             a.style.display = 'none'
                         document.querySelector('.icons').style.display = '';
                         document.querySelector('.adressbar').innerHTML = '<div onclick="closeSection()">Control Panel</div>'

@@ -10,7 +10,7 @@
     align-content: flex-start;
     flex-grow: 1;
 }
-.explorer-file-manager .file{
+/* .explorer-file-manager .file{
     height: 96px;
     position: relative;
     width: 76px;
@@ -33,7 +33,7 @@
     display: flex !important;
     flex-direction: column;
     justify-content: space-between;
-}
+} */
 .explorer-file-manager .main{
     height: 100%;
 }

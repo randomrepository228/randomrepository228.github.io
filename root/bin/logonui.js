@@ -5,7 +5,6 @@ function main(args){ return new Promise(async(res, rej) => {
 <div class="logonui-users-container">
     <div class="user" onclick="login()">
         <div class="user-profile-container">
-            <img src="res/profileimgs.png">
         </div>
         SYSTEM
     </div>
@@ -15,12 +14,9 @@ function main(args){ return new Promise(async(res, rej) => {
     <p class="logonui-status-text">Welcome</p>
 </div>
 <button style="position: absolute; bottom: 10px; right: 10px" onclick="bootloader.style.display = ''">bootlog</button>`
-    let file = await fs.readFile("res/login.jpg")
-    let logonui
-    if (file) logonui = URL.createObjectURL(file)
-    else logonui = "./res/login.jpg"
-    logonUIBody.style.setProperty("--logonui-background", `url(${logonui})`)
-    logonUIBody.style.display = ""
+    const profileImg = document.createElement("img")
+    profileImg.src = "./res/profileimgs.png"
+    logonUIBody.querySelector(".user-profile-container").append(profileImg)
     const wnd = new Winda7Window({
         inset: "0px", 
         title: "LogonUI", 

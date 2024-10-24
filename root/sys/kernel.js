@@ -1,4 +1,4 @@
-localStorage.ver = "Prerelease 2"
+localStorage.ver = "Prerelease 3"
 window.loop = {drag: false, top: false, left: false, right: false, bottom: false};
 window.activewindow = 0;
 window.activetray = 0;
@@ -187,7 +187,7 @@ async function desktopInit(){
         ".htm": {desc: "HTML document", program: "app:iexplore"},
     }))
     changeWallpaper(localStorage.wallpaper, true, true).then(() => {
-        findWindowBy("title", "LogonUI").context.hide();
+        findWindowBy("title", "LogonUI").hide();
         document.querySelector(".logonui-users-container").style.display = "";
         document.querySelector(".logonui-status").style.display = "none";
         loadScript("bin/shell.js")
@@ -206,10 +206,7 @@ async function desktopInit(){
             newChange.innerText = text
             changeList.append(newChange)
         }
-        addNew("Fixed many bugs")
-        addNew("New API")
-        addNew("File open and file save dialog")
-        addNew("Command prompt")
+        addNew("Full Filesystem Integration")
         msg.append(changeList)
         if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
             msgbox("New update", msg.innerHTML)
@@ -225,7 +222,7 @@ async function desktopInit(){
 async function login(user, password){
     if (!init) await desktopInit();
     else{
-        findWindowBy("title", "LogonUI").context.hide();
+        findWindowBy("title", "LogonUI").hide();
         document.querySelector(".explorer").style.display = "";
     }
     winda.playSound('./media/Windows Logon Sound.flac'); 
@@ -258,7 +255,7 @@ async function changeWallpaper(wallpaperpath, nochange, nosplash){
         return
     }
     // const formats = [".png", ".jpg", ".gif", ".bmp", ".webp"]
-    // for (a of formats)
+    // for (const a of formats)
     //     if (wallpaperpath.endswith(a)){
     //         if (wallpaperpath.startsWith(".")){
     //             wallpaperpath = wallpaperpath.substring(1, wallpaperpath.length)

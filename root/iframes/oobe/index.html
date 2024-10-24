@@ -71,7 +71,7 @@
             function openSection(sectionName, back){
                 let section = document.querySelector('.' + sectionName)
                 if (!section.style.display) return
-                for (a of document.querySelector('.content').children) a.style.display = 'none';
+                for (const a of document.querySelector('.content').children) a.style.display = 'none';
                 section.style.display = ''
             }
             let thisWindow = frameElement.parentElement.parentElement.parentElement

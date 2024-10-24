@@ -174,7 +174,7 @@ if (!window.winda.iframes) window.winda.iframes = {
     "winver": {
         "width": 500,
         "height": 500,
-        "title": "About \"Windows\"",
+        "title": 'About "Windows"',
         "icon": "icon.png",
         "window": true
     },
@@ -225,7 +225,7 @@ function main(args){ return new Promise(async (res, rej) => {
         iframe.src = path + "index.html"
         iframe.setAttribute("args", arg)
         iframe.frameBorder = 0
-        iframe.setAttribute("onload", "sendInfo(this)")
+        //iframe.setAttribute("onload", "sendInfo(this)")
         iframeCont.appendChild(iframe)
         iframeCont.appendChild(document.createElement("ignore"))
         if (info.window){
@@ -249,25 +249,37 @@ function main(args){ return new Promise(async (res, rej) => {
             wnd.show()
         }
     }
-    // else{
-    //     const name = args[2]
-    //     const arg = args[3]
-    //     const id = getId()
-    //     if (iframetype === "okna8"){
-    //         new Winda7Window({
-    //             title: name, 
-    //             icon: info.icon, 
-    //             id: id, 
-    //             layout: {
-    //                 titlebar: true,
-    //                 cont: `<iframe src="${path}index.html" args="${arg}" frameborder="0">`
-    //             },
-    //             aero: true
-    //         })
-    //         AddWindow(new Winda7Window( 0, 0, name, , '', true), undefined, {"window": true, "okna8": true, "title": packageName, "width": 800, "height": 600, "classes": " okna8 maximised", iframeignore: true}, id)
-    //     }
-    //     else{
-    //         AddWindow(new Winda7Window(window.innerWidth - 100, window.innerHeight - 100, name, `<iframe src="${path}index.html" args="${arg}" sandbox="allow-scripts allow-same-origin" frameborder="0">`, {"window": true, "noSelfOpen": true, "title": packageName}, ""), undefined, {"window": true, "noSelfOpen": true, "title": packageName, iframeignore: true}, id)
-    //     }
-    // }
+    else{
+        const name = args[2]
+        const arg = args[3]
+        const id = getId()
+        if (iframetype === "okna8"){
+            const iframe = document.createElement("iframe")
+            iframe.src = path + "index.html"
+            iframe.frameBorder = 0
+            iframe.setAttribute("args", arg)
+            const wnd = new Winda7Window({
+                title: name, 
+                icon: "./iframes/Okna8Mode/apps/metro/" + packageName + "/AppLogo.png", 
+                id: id, 
+                layout: {
+                    titlebar: {
+                        buttons: {
+                            min: true,
+                            max: true,
+                            close: true
+                        }
+                    },
+                    cont: iframe
+                },
+                height: 600,
+                width: 800,
+                aero: true
+            })
+            wnd.show()
+        }
+        else{
+            AddWindow(new Winda7Window(window.innerWidth - 100, window.innerHeight - 100, name, `<iframe src="${path}index.html" args="${arg}" sandbox="allow-scripts allow-same-origin" frameborder="0">`, {"window": true, "noSelfOpen": true, "title": packageName}, ""), undefined, {"window": true, "noSelfOpen": true, "title": packageName, iframeignore: true}, id)
+        }
+    }
 })}

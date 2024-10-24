@@ -113,7 +113,7 @@ async function main(args){
     //         timeElem.querySelector(".tdate").innerText = tDate
     // }
     // winda.shell.changeTime()
-    // setInterval(winda.shell.changeTime, 100)
+    setInterval(winda.shell.changeTime, 100)
     const shellContainer = document.createElement("div")
     let fileView = new ui.FileView()
     await fileView.showContents("/usr/" + currentUser + "/desktop")
@@ -141,7 +141,7 @@ async function main(args){
         layout: shellContainer,
         alwaysbehind: true,
         noResize: true,
-        //ignoreWorkingArea: true
+        noMinimise: true,
     })
     iconsWnd.show()
     const taskbar = document.createElement("div")
@@ -181,17 +181,23 @@ async function main(args){
     </div>
     <div class="show-desktop" onclick="minimiseAll()"></div>
 </div>`
+    winda.shell.hovereffect = (e, elem) => {
+        const pos = elem.getBoundingClientRect()
+        elem.style.setProperty('--tray-hover-left', (e.clientX - pos.x) + "px")
+        elem.style.setProperty('--tray-hover-top', (e.clientY - pos.y) + "px")
+    }
     const leftBar = taskbar.querySelector(".left-bar")
     function removeItem(item){
         leftBar.querySelector(".n" + item.id).remove()
     }
     function addItem(item){
-        leftBar.innerHTML += `
-        <div class="n${item.id} window-tray" onclick="windowSelectHandler(getWnd(${item.id}))" onmousemove="hovereffect(event,this)">
-            <img src="${item.icon}" onerror="this.src = './iframes/ExampleApp/icon.png'">
-            <p>${item.title}</p>
-        </div>`
-        const leftBarElem = leftBar.querySelector(`.n${item.id}`)
+        const leftBarElem = document.createElement("div")
+        leftBarElem.className = `window-tray n${item.id}`
+        leftBarElem.onclick = () => findWindowBy("id", item.id).focus();
+        leftBarElem.onmousemove = (event) => winda.shell.hovereffect(event,leftBarElem)
+        leftBarElem.innerHTML += `<img src="${item.icon}" onerror="this.src = './iframes/ExampleApp/icon.png'"><p>${item.title}</p>`
+        leftBarElem.id = item.id
+        leftBar.appendChild(leftBarElem)
         const imgEl = leftBarElem.querySelector("img")
         let blockSize = 1,
         defaultRGB = {r:0,g:0,b:0},
@@ -291,7 +297,8 @@ async function main(args){
         layout: taskbar,
         alwaysontop: true,
         noResize: true,
-        ignoreWorkingArea: true
+        ignoreWorkingArea: true,
+        noMinimise: true,
     }, 0, 40)
     taskbarWnd.show()
     function showAllPrograms(){

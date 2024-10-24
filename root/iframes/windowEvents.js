@@ -1,16 +1,16 @@
-// for (a of document.querySelector(".menubar").querySelector(".element")){
+// for (const a of document.querySelector(".menubar").querySelector(".element")){
 
 // }
 if (window.parent){
     addEventListener("mousedown", e => {
-        parent.setActive(frameElement.parentElement.parentElement.parentElement)
+        frameElement.parentElement.parentElement.parentElement.context.focus()
         if (!e.target.parentElement.classList.contains("menubar")) parent.contextMenuOff()
         //parent.startMenu(false)
         focus()
     })
     addEventListener("touchstart", e => {
         e.preventDefault()
-        parent.setActive(frameElement.parentElement.parentElement.parentElement)
+        frameElement.parentElement.parentElement.parentElement.context.focus()
         if (!e.target.parentElement.classList.contains("menubar")) parent.contextMenuOff()
         // parent.startMenu(false)
         focus()
@@ -37,24 +37,24 @@ function unfocus(){
     }
 }
 function tabHandler(elem){
-    for (a of elem.firstElementChild.children){
+    for (const a of elem.firstElementChild.children){
         if (!a.hasAttribute("disabled")){
             a.setAttribute('onmousedown', 
-               `for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
+               `for (const a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
                     a.style.display = "none"
                 };
                 this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
-                for (a of this.parentElement.parentElement.querySelectorAll(".button\[role=tab]")) {
+                for (const a of this.parentElement.parentElement.querySelectorAll(".button\[role=tab]")) {
                     a.setAttribute("aria-selected", "")
                 }
                 this.parentElement.parentElement.querySelector\(".button\[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)
             a.setAttribute('ontouchstart', 
                `event.preventDefault();
-                for (a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
+                for (const a of this.parentElement.parentElement.querySelectorAll("article[role=tabpanel]")){
                     a.style.display = "none"
                 };
                 this.parentElement.parentElement.querySelector("#"+this.getAttribute("aria-controls")).style.display = "block"
-                for (a of this.parentElement.parentElement.querySelectorAll(".button\[role=tab]")) {
+                for (const a of this.parentElement.parentElement.querySelectorAll(".button\[role=tab]")) {
                     a.setAttribute("aria-selected", "")
                 }
                 this.parentElement.parentElement.querySelector\(".button\[role=tab][aria-controls="+this.getAttribute("aria-controls")+"]").setAttribute("aria-selected", "true")`)

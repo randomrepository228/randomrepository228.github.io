@@ -10,7 +10,7 @@ async function cMain(print, input, consoleoutput, args){
     for(;;) {
         let tinp = (await input(currentPath + "/>")).split(" ");
         let inp = [];
-        for (a of tinp){
+        for (const a of tinp){
             inp.push(a.replace("\\", "/"))
         }
         inp[0] = inp[0].toLowerCase()
@@ -27,10 +27,10 @@ async function cMain(print, input, consoleoutput, args){
             let results = await fs.readdir(currentPath)
             let sizes = []
             let maxNumSize = 1
-            for (a of results){
+            for (const a of results){
                 sizes.push(numberWithSpaces((await fs.readFile(currentPath + "/" + a)).size))
             }
-            for (a of sizes){
+            for (const a of sizes){
                 if (a.length > maxNumSize) maxNumSize = a.length
             }
             print("(DIR)" + "".padStart(maxNumSize) + " .")

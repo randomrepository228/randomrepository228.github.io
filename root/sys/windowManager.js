@@ -41,7 +41,7 @@ window.Winda7Window = class{
             if (typeof options.inset === "number") newWindow.style.inset = options.inset
             if (options.noTray) newWindow.notray = true
         }
-        const openedwindows = getAllWindows().length
+        const openedwindows = wm.windows.length
         if (!(options.right || options.left))
             newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - options.width) + "px"
         if (!(options.bottom || options.top))
@@ -121,7 +121,7 @@ window.Winda7Window = class{
                         else close.onclick = () => this.close()
                         buttons.appendChild(close)
                     }
-                    for (a of buttons.children){
+                    for (const a of buttons.children){
                         let el = document.createElement("div")
                         el.className = "cbutton-glyph"
                         a.appendChild(el)
@@ -269,26 +269,25 @@ window.Winda7Window = class{
             activewindow.className = activewindow.className.replace(" focus", "")
             activewindow.style.zIndex = 0;
         }
-        for (let a of wm.windows){
-            if (!a.id) continue
-            a.windowElem.style.zIndex = 0;
-        }
         activewindow = this.windowElem;
         if (!activewindow.classList.contains("focus")) activewindow.className += " focus"
         try{
             if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.focus()
         }
-        catch(e){console.error(e)}
+        catch(e){}
         activewindow.style.zIndex = 1;
-        try{
-        for(element of leftBar.children)
-            element.className = element.className.replace(" focus", "")
-        let e = leftBar.querySelector(`.n${activewindow.id}`)
-        e.className = e.className + " focus"
-        } catch(e){}
+        // for(element of leftBar.children)
+        //     element.className = element.className.replace(" focus", "")
+        // let e = leftBar.querySelector(`.n${activewindow.id}`)
+        // e.className = e.className + " focus"
         const ev = new Event("windowfocus")
         ev.window = this
         dispatchEvent(ev)
+    }
+    unfocus(){
+        if (activewindow.classList.contains("focus")) activewindow.classList.toggle("focus")
+        activewindow.style.zIndex = 0
+        activewindow = undefined
     }
     set title(t){
         try{this.titleElem.innerText = t} catch(e){}
@@ -306,14 +305,9 @@ function getId(){
     window.winda.pidCounter++
     return window.winda.pidCounter
 }
-function findWindow(id){
-    for(let i = 0; i < windows.children.length; i++) {
-        if (windows.children[i].id === id.toString()) return windows.children[i]
-    }
-}
 function findWindowBy(type, val){
-    for(let i = 0; i < windows.children.length; i++) {
-        if (windows.children[i][type] === val) return windows.children[i]
+    for(let i = 0; i < wm.windows.length; i++) {
+        if (wm.windows[i][type] === val) return wm.windows[i]
     }
 }
 // if (!(localStorage.dontGroupIcons == "true"))
@@ -325,144 +319,14 @@ function findWindowBy(type, val){
 // else
 //     smalltaskbar.href = ''
 windows.style.backgroundSize = "100% 100%"
-function AddWindow(window, ispopup, options, id, elem, onclose){
-    let newWindow = document.createElement("div")
-    newWindow.id = id
-    newWindow.className = `window shadow aero`
-    if (typeof options.top == "number") options.top += "px"
-    if (typeof options.left == "number") options.left += "px"
-    if (typeof options.right == "number") options.right += "px"
-    if (typeof options.bottom == "number" && !options.overrideTaskbar) options.bottom = `calc(var(--taskbar-height) + ${options.bottom}px)`
-    else if (typeof options.bottom == "number") options.bottom += "px"
-    if (options.okna8) window.icon = "./iframes/Okna8Mode/apps/metro/" + options.title + "/AppLogo.png"
-    if (options.NoGUI) newWindow.className += " nogui"
-    if (!this.move) newWindow.className += " maximised"
-    if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.className += " maximised"
-    if (options.noTray) newWindow.notray = true
-    if (options.left) newWindow.style.left = options.left
-    if (options.top) newWindow.style.top = options.top
-    if (options.right) newWindow.style.right = options.right
-    if (options.bottom) newWindow.style.bottom = options.bottom
-    if (ispopup){
-        newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
-        newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
-    }
-    else{
-        const openedwindows = getAllWindows().length
-        if (!(options.right || options.left))
-            newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - options.width) + "px"
-        if (!(options.bottom || options.top))
-            newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - options.height) + "px"
-    }
-    if (!newWindow.style.left && !options.right) newWindow.style.left = "0px";
-    if (!newWindow.style.top && !options.bottom) newWindow.style.top = "0px";
-    if (newWindow.style.left.startsWith("-")) newWindow.style.setProperty("--aero-left", newWindow.style.left.slice(1))
-    else if (newWindow.style.left) newWindow.style.setProperty("--aero-left", "-" + newWindow.style.left)
-    if (newWindow.style.top.startsWith("-")) newWindow.style.setProperty("--aero-top", newWindow.style.top.slice(1))
-    else if (newWindow.style.top) newWindow.style.setProperty("--aero-top", "-" + newWindow.style.top)
-    newWindow.style.display = "none"
-    if(options.alwaysontop) newWindow.className += " alwaysontop"
-    if(options.alwaysbehind) newWindow.className += " alwaysbehind"
-    if(!options.noResize) newWindow.className += " resize"
-    newWindow.innerHTML =
-    `
-    <div style="${options.fullscreen ? 'display: none;' : ''}--titlebar-ext-height: ${options.titleBarHeight ? options.titleBarHeight : 0}px"class="topbar ${options.noGUI ? 'noncont' : ''}" ${options.noResize ? '' : 'ondblclick="maximise(this.parentElement)"'} onmousedown="windowMouseDown(event, this, 'drag', ${options.noResize})" ontouchstart="windowMouseDown(event, this, 'drag', ${options.noResize})">
-        <left>
-            <img src="${window.icon}" onerror="this.remove()" ${options.noGUI ? 'style="display: none;"' : ''}>
-            <p ${options.noGUI ? 'style="display: none;"' : ''}>${window.title ? window.title : options.title}</p>
-        </left>
-        <div class="buttons">
-            ${options.xOnly ? `` : `<div class="dash"></div>
-            <div class="square"></div>`}
-            ${options.noX ? `` : `<div class="x"></div>`}
-        </div>
-    </div>
-    `
-    if (!options.noResize){
-        const directions = [
-            ["bottom"], ["left"], ["top"], ["right"], 
-            ["top", "left"], ["bottom", "left"], ["top", "right"], ["bottom", "right"]
-        ]
-        for (let a of directions){
-            let el = document.createElement("div")
-            const action = (e) => {
-                e.preventDefault();
-                windowResize(e, el, a[0], a[1])
-            }
-            el.ontouchstart = el.onmousedown = action
-            el.className = a.join("")
-            newWindow.appendChild(el)
-        }
-    }
-    if (!options.noX) newWindow.querySelector(".x").onclick = () => closeWindow(id, onclose)
-    if (!options.xOnly){
-        if (!options.noResize) newWindow.querySelector(".square").onclick = () => maximiseWindow(newWindow)
-        else newWindow.querySelector(".square").setAttribute('disabled', '')
-        if (!options.noTray) newWindow.querySelector(".dash").onclick = () => minimiseWindow(newWindow)
-        else newWindow.querySelector(".dash").setAttribute('disabled', '')
-    }
-    for (a of newWindow.querySelector(".buttons").children){
-        let el = document.createElement("div")
-        el.className = "cbutton-glyph"
-        a.appendChild(el)
-    }
-    newWindow.onmousedown = () => setActive(newWindow)
-    newWindow.ontouchstart = () => setActive(newWindow)
-    let content = document.createElement("div")
-    let text = document.createElement("text")
-    content.className = "content" + (options.noGUI || options.noBorder ? 'nostyle' : '')
-    if (options.minWidth) text.style.minWidth = options.minWidth + 'px'
-    if (options.minHeight) text.style.minHeight = options.minHeight + `px`
-    if (options.maxWidth) text.style.maxWidth = options.maxWidth + 'px'
-    if (options.maxHeight) text.style.maxHeight = options.maxHeight + `px`
-    if (options.iframeignore) content.appendChild(document.createElement("ignore"))
-    text.style.width = options.width + "px"
-    text.style.height = options.height + "px"
-    if (typeof elem == "object") text.appendChild(elem)
-    else{
-        text.innerHTML = window.content
-        if (ispopup) text.innerHTML += `<footer><button onclick="closeWindow(${id})">OK</div></button>`
-    }
-    newWindow.title = options.title
-    content.appendChild(text)
-    newWindow.appendChild(content)
-    windows.append(newWindow)
-    if(ispopup || options.noSelfOpen || options.okna8){
-        this.show()
-    }
-    broadcast("newprocess|" + id)
-    return {id: id, elem: text, title: newWindow.querySelector("left").lastElementChild, window: newWindow}
-}
 function broadcast(message){
-    for (a of windows.children){
+    for (const a of windows.children){
         try{
             a.querySelector("iframe").contentWindow.postMessage(message, "*")
         }
         catch (e) {}
     }
 }
-function sendMsg(id, message){
-    for (a of windows.children){
-        if (a.id != id) return
-        try{
-            a.querySelector("iframe").contentWindow.postMessage(message)
-        }
-        catch (e) {}
-    }
-}
-function sendInfo(element){
-    const id = element.parentElement.parentElement.parentElement.id
-    if (element.parentElement.parentElement.parentElement.className.includes("okna8")){
-        element.contentWindow.postMessage("YourID-" + id, "*");
-        return
-    }
-    element.contentWindow.postMessage("id|" + id, "*")
-}
-function getTray(id){
-    return document.querySelector(".tray.n" + id)
-}
-window.idToWindow = findWindow
-window.getWnd = findWindow
 async function msgbox(title, content, buttons, type){
     if (!buttons) buttons = ['OK']
     return new Promise((resolve, reject) => {
@@ -548,65 +412,6 @@ async function inputbox(title, content, defaultValue){
         new Audio(sounds.msgbox).play()
     })
 }
-function resizeHandler(e){
-    broadcast("getscrwidth|" + innerWidth, "*")
-    broadcast("getscrheight|" + innerHeight, "*")
-}
-function setActive(window, noTray){
-    if (!window) return
-    if (activewindow) {
-        activewindow.className = activewindow.className.replace(" focus", "")
-        activewindow.style.zIndex = 0;
-    }
-    for (let a of windows.children){
-        if (!a.id) continue
-        a.style.zIndex = 0;
-    }
-    activewindow = window;
-    if (!activewindow.classList.contains("focus")) activewindow.className += " focus"
-    try{
-        if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.focus()
-    }
-    catch(e){console.error(e)}
-    activewindow.style.zIndex = 1;
-    if (noTray) return
-    try{
-    for(element of leftBar.children)
-        element.className = element.className.replace(" focus", "")
-    let e = leftBar.querySelector(`.n${activewindow.id}`)
-    e.className = e.className + " focus"
-    } catch(e){}
-}
-function setInactive(){
-    for(element of document.querySelectorAll(".window"))
-        element.style.zIndex = 0;
-    activewindow = undefined;
-    for(element of leftBar.children)
-        element.className = element.className.replace(" focus", "")
-}
-function hovereffect(e, elem){
-    const pos = elem.getBoundingClientRect()
-    elem.style.setProperty('--tray-hover-left', (e.clientX - pos.x) + "px")
-    elem.style.setProperty('--tray-hover-top', (e.clientY - pos.y) + "px")
-}
-function showWindow(icon, num, doNotShowTray){
-    num = +num
-    let wnd = getWnd(num)
-    wnd.style.display = ""
-    if (doNotShowTray) try{
-        setActive(wnd, true)
-        winda.shell.startMenu(false)
-        return;
-    }
-    catch(e){}
-    const event = new Event("newWindow")
-    event.tray = !doNotShowTray
-    event.window = wnd
-    event.icon = icon
-    setActive(wnd)
-    wnd.style.display = ""
-    winda.shell.startMenu(false)
-}
 onmessage = (e) => {
     const commands = e.data.split("|")
     if (commands.length > 1){
@@ -666,45 +471,14 @@ onmessage = (e) => {
             changeTheme(commands[1])
     }
 }
-function getAllWindows(){
-    return wm.windows
-}
-async function closeWindow(id){
-    let window = getWnd(id)
-    if (window.onclose) await window.onclose()
-    if (!window) window = getTray(id)
-    function timeout(){
-        window.remove()
-        broadcast("processdied|" + id)
-    }
-    if (!window.className.includes("window")){
-        timeout()
-        return
-    }
-    window.className += " closing"
-    // if (!window.notray){
-    //     try{
-    //         leftBar.querySelector(`.n${id}.window-tray`).style.opacity = 0
-    //         leftBar.querySelector(`.n${id}.window-tray`).animate(
-    //             [{opacity: 1}, {opacity: 0}],
-    //             {
-    //                 duration: 300,
-    //                 iterations: 1,
-    //                 easing: "ease-in-out"
-    //             }
-    //         )
-    //     }
-    //     catch(e){}
-    // }
-    setTimeout(timeout, 300);
-}
 function minimiseWindow(window){
+    if (window.context.options.noMinimise) return
     const animtime = {
         duration: 300,
         iterations: 1
     };
     if (window.className.includes("minimised")){
-        setActive(window)
+        window.context.focus()
         if (localStorage.theme == "aero") window.animate([
             {
                 transform: "perspective(400px) rotateY(2deg) rotateX(2deg)",
@@ -746,7 +520,7 @@ function restoreWindow(window){
         iterations: 1,
     };
     if (window.className.includes("minimised")){
-        setActive(window)
+        window.context.focus()
         window.className = window.className.replace(" minimised", "")
         if (localStorage.theme == "aero") window.animate([
             {
@@ -766,19 +540,16 @@ function restoreWindow(window){
 }
 function windowSelectHandler(window){
     if(activewindow !== window){
-        setActive(window, window.notray)
+        window.context.focus()
         restoreWindow(window)
         return
     }
     minimizeWindow(window)
 }
 function minimiseAll(){
-    setInactive()
-    for (const id of getAllWindows()){
-        if (id.id == 0) continue
-        for (const wnd of windows.querySelector(".n" + id.id)){
-            wnd.className += " minimised"
-        }
+    for (const wnd of wm.windows){
+        if (wnd.options.noMinimise) return
+        wnd.windowElem.className += " minimised"
     }
     setInactive()
 }
@@ -799,7 +570,7 @@ function snapRight(window){
     window.className = window.className.replace("", "snap-right ")
 }
 function windowMouseDown(event, elem, windowelem, type){
-    setActive(windowelem)
+    windowelem.context.focus()
     {
         const windowFrameDim = activewindow.frame.getBoundingClientRect()
         wm.last.windowWidth = windowFrameDim.width
@@ -878,7 +649,8 @@ function move(e){
     // if (activewindow.style.top.startsWith("-")) activewindow.style.setProperty("--aero-top", -top + "px")
     // else activewindow.style.setProperty("--aero-top", "-" + top + "px")
 }
-addEventListener("resize", resizeHandler)
+document.body.style.height = innerHeight + "px"
+addEventListener("resize", () => document.body.style.height = innerHeight + "px")
 function maximiseWindow(window){
     if (window.className.search("maximised") == -1){
         window.className += " maximised"

@@ -117,7 +117,7 @@
             }
             function refresh(){
                 let temptable = "";
-                const allWindows = parent.getAllWindows()
+                const allWindows = parent.wm.windows
                 for (let i = 0; i < allWindows.length; i++){
                     let col = document.createElement("tr")
                     entryInfo = [allWindows[i].title, allWindows[i].id]

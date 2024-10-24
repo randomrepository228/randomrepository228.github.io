@@ -5,12 +5,10 @@ import re
 with ZipFile("install.zip", 'w') as zip_object:
     for fn, _, file_names in os.walk("."):
         folder_name = fn.replace("\\", "/")
-        if ("iframes" in folder_name): continue
+        # if ("iframes" in folder_name): continue
         if ("Winda.old" in folder_name): continue
-        if ("fonts" in folder_name): continue
         for filename in file_names:
             if (filename.endswith(".py")): continue
-            if (filename.endswith(".html")): continue
             if (filename.endswith(".d.ts")): continue
             if ("install.zip" in filename): continue
             if ("install_web.js" in filename): continue

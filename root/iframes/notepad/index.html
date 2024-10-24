@@ -45,7 +45,7 @@
                 const rect = elem.getBoundingClientRect(); 
                 const frameRect = frameElement.getBoundingClientRect(); 
                 parent.contextMenu(event, arr, rect.x + frameRect.x, rect.y + rect.height + frameRect.y)
-                for (a of elem.parentElement.children){
+                for (const a of elem.parentElement.children){
                     a.className = a.className.replace(" active", "")
                 }
                 if (!elem.classList.contains("active")) elem.className += " active"
@@ -71,7 +71,7 @@
                     isMouseDown = false; 
                     if(!e.target.classList.contains('context-menu-part')) {
                         parent.contextMenuOff();
-                        for (a of document.querySelector(".menubar").children){
+                        for (const a of document.querySelector(".menubar").children){
                             a.className = a.className.replace(" active", "")
                         }
                     }
@@ -79,7 +79,7 @@
             }
             parent.contextMenuElement.addEventListener("click", (e) => {
                 isMouseDown = false;
-                for (a of document.querySelector(".menubar").children){
+                for (const a of document.querySelector(".menubar").children){
                     a.className = a.className.replace(" active", "")
                 }
             })

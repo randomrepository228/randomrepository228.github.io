@@ -263,7 +263,7 @@ fs.deleteDir = function(path){
                         filteredkeys.push(a)
                     }
                 }
-                for (a of filteredkeys){
+                for (const a of filteredkeys){
                     initialfs.delete(a)
                 }
                 resolve(0)

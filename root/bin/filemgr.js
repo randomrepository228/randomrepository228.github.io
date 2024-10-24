@@ -26,7 +26,7 @@ function main(args){ return new Promise((res, rej) => {
         el.querySelector('.adressbar').appendChild(breadcrumb)
         breadcrumb = undefined
         let path = ""
-        for (a of folderPath.split("/")){
+        for (const a of folderPath.split("/")){
             if(!a) continue
             path += "/" + a
             breadcrumb = document.createElement("div")

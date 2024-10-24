@@ -1,7 +1,7 @@
 const boot = {
     log: function(msg){
         console.log(msg)
-        verboseBoot.innerText += msg
+        verboseBoot.innerHTML += msg
         verboseBoot.scrollTo(0, verboseBoot.scrollHeight);
     },
     logHTML: function(msg){
@@ -31,49 +31,87 @@ const boot = {
     },
     installImage: function(imagePath){ return new Promise(async(res, rej) => {
         if (!imagePath) imagePath = "install.zip"
-        boot.logHTML("Downloading files: <span class=\"bootloader-download-progress\">0</span>%\n", true)
+        boot.logHTML("Downloading files: <span class=\"bootloader-download-progress\"></span>\n", true)
         let file = false;
         var req = new XMLHttpRequest();
         req.responseType = 'arraybuffer';
         req.onreadystatechange = async function() {
             if (this.readyState == 4 && this.status == 200) {
                 file = req.response;
-                boot.log("Loading JSZip...\n", true)
-                let jszip = await fs.exists("sys/jszip.js")
-                if (!jszip){
-                    boot.log("JSZip is not found, downloading JSZip...\n", true)
-                    jszip = await (await fetch("sys/jszip.js")).text()
-                    // await fs.writeFile("sys/jszip.js", jszip)
+                if (boot.params.decompress === "jszip" || true) {
+                    boot.log("Loading JSZip...\n", true)
+                    let jszip = await fs.exists("sys/jszip.js")
+                    if (!jszip){
+                        boot.log("JSZip is not found, downloading JSZip...\n", true)
+                        jszip = await (await fetch("sys/jszip.js")).text()
+                        // await fs.writeFile("sys/jszip.js", jszip)
+                    }
+                    else{
+                        jszip = await (await fs.readFile("sys/jszip.js")).text()
+                    }
+                    eval(jszip)
+                    const data = await JSZip.loadAsync(file)
+                    const entries = Object.entries(data.files)
+                    boot.logHTML(`Extracting files: <span class="nfiles-extracted">0</span>/${entries.length}\n`, true)
+                    let n = 0
+                    let folders = []
+                    for (let [key, value] of entries){
+                        let match = key.match(/(.+\/).*$/)
+                        if (match) if (match.length > 1) match = match[1] + "."
+                        if (!folders.includes(match)){
+                            if (match)
+                                folders.push(match)
+                        }
+                        const fileContents = new Blob([await value.async("arraybuffer")])
+                        await fs.writeFile(key, fileContents)
+                        n++
+                        document.querySelector(".nfiles-extracted").innerText = n
+                    }
+                    for (let a of folders){
+                        await fs.writeFile(a, "")
+                    }
                 }
                 else{
-                    jszip = await (await fs.readFile("sys/jszip.js")).text()
-                }
-                eval(jszip)
-                const data = await JSZip.loadAsync(file)
-                const entries = Object.entries(data.files)
-                boot.logHTML(`Extracting files: <span class="nfiles-extracted">0</span>/${entries.length}\n`, true)
-                let n = 0
-                let folders = []
-                for (let [key, value] of entries){
-                    let match = key.match(/(.+\/).*$/)
-                    if (match) if (match.length > 1) match = match[1] + "."
-                    if (!folders.includes(match)){
-                        if (match)
-                            folders.push(match)
+                    // i have no clue how to use this shit
+                    boot.log("Loading FFlate...\n", true)
+                    let jszip = await fs.exists("sys/fflate.js")
+                    if (!jszip){
+                        boot.log("FFlate is not found, downloading FFlate...\n", true)
+                        jszip = await (await fetch("sys/fflate.js")).text()
+                        // await fs.writeFile("sys/jszip.js", jszip)
                     }
-                    const fileContents = new Blob([await value.async("arraybuffer")])
-                    await fs.writeFile(key, fileContents)
-                    n++
-                    document.querySelector(".nfiles-extracted").innerText = n
-                }
-                for (let a of folders){
-                    await fs.writeFile(a, "")
+                    else{
+                        jszip = await (await fs.readFile("sys/fflate.js")).text()
+                    }
+                    eval(jszip)
+                    const data = await JSZip.loadAsync(file)
+                    const entries = Object.entries(data.files)
+                    boot.logHTML(`Extracting files: <span class="nfiles-extracted">0</span>/${entries.length}\n`, true)
+                    let n = 0
+                    let folders = []
+                    for (let [key, value] of entries){
+                        let match = key.match(/(.+\/).*$/)
+                        if (match) if (match.length > 1) match = match[1] + "."
+                        if (!folders.includes(match)){
+                            if (match)
+                                folders.push(match)
+                        }
+                        const fileContents = new Blob([await value.async("arraybuffer")])
+                        await fs.writeFile(key, fileContents)
+                        n++
+                        document.querySelector(".nfiles-extracted").innerText = n
+                    }
+                    for (let a of folders){
+                        await fs.writeFile(a, "")
+                    }
                 }
                 res()
             }
         };
         req.onprogress = function(e) {
-            document.querySelector(".bootloader-download-progress").innerText = Math.floor((e.loaded / e.total) * 1000) / 10
+            const loaded = Math.floor(e.loaded / 10000) / 100 + "MB"
+            const total = Math.floor(e.total / 10000) / 100 + "MB"
+            document.querySelector(".bootloader-download-progress").innerText = loaded + "/" + total
         };
         if (boot.params.cachekiller){
             req.open("GET", imagePath + "?" + Math.random().toString().replace(".", "e"), true);
@@ -99,14 +137,14 @@ const boot = {
                 }
             })
         }
-        if(localStorage.verboseBoot == "false") bootloader.innerHTML = `
-        <div style="text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50% + 100px); top: calc(50% - 100px); width: 100%;">
-            <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
-                <source src="boot.webm" type="video/webm">
-            </video>
-            <p style="font-size: 20px; color: white; margin: 0; margin-top: 50px;">Loading Winda</p><br>
-            <p style="font-size: 20px; color: gray; margin-left: 0; position: absolute; bottom: 20px; left: 50vw; transform: translateX(-50%);">By kitaes</p>
-        </div>`
+        // if(localStorage.verboseBoot == "false") bootloader.innerHTML = `
+        // <div style="text-align: center; font-family: sans-serif !important; position: absolute; height: calc(50% + 100px); top: calc(50% - 100px); width: 100%;">
+        //     <video muted autoplay width="200px" height="200px" id="bootAnimation" preload="metadata">
+        //         <source src="boot.webm" type="video/webm">
+        //     </video>
+        //     <p style="font-size: 20px; color: white; margin: 0; margin-top: 50px;">Loading Winda</p><br>
+        //     <p style="font-size: 20px; color: gray; margin-left: 0; position: absolute; bottom: 20px; left: 50vw; transform: translateX(-50%);">By kitaes</p>
+        // </div>`
         boot.log("Loading Filesystem\n")
         await loadScriptOnline("sys/fs.js")
         await fs.waitUntilInit()
@@ -115,6 +153,46 @@ const boot = {
         const bootFiles = ["sys/kernel.js", "sys/runscript.js", "sys/windowManager.js"]
         if (!isSystemInstalled){
             await boot.installImage()
+        }
+        if ('serviceWorker' in navigator && !boot.params.debug) {
+            let swUrl = "./serviceWorker.js"
+            // if (await fs.exists("sys/serviceWorker.js")) {
+            //     swUrl = URL.createObjectURL(await fs.readFile("sys/serviceWorker.js"))
+            // }
+            let reg;
+            for (const a of await navigator.serviceWorker.getRegistrations()){
+                if (a.scope === location.origin + location.pathname) {
+                    reg = a
+                    boot.log("Service worker found: " + reg.scope + "\n")
+                }
+            }
+            if (!reg) {
+                reg = await navigator.serviceWorker.register(swUrl);
+                boot.log("Service worker registered: " + reg.scope + "\n")
+            }
+            reg = await navigator.serviceWorker.ready;
+            console.log(reg)
+            const sw = reg.active
+            const channel = new BroadcastChannel('sw-log');
+            const fsRequests = new BroadcastChannel('sw-fs')
+            navigator.serviceWorker.onmessage = async(e) => {
+                const fullPath = e.data + ""
+                let path = fullPath.replace(reg.scope, "")
+                if (!path) path = "index.html"
+                if (await fs.exists(path)) {
+                    console.log(fullPath)
+                    sw.postMessage({url: fullPath, data: await fs.readFile(path)})
+                }
+                else{
+                    console.log(fullPath)
+                    sw.postMessage({url: fullPath, data: false})
+                }
+            }
+            channel.postMessage("hi!")
+            channel.onmessage = (e) => {
+                console.log("Message from service worker: ", e.data)
+            }
+            addEventListener("beforeunload", (e) => channel.postMessage("bye!"))
         }
         if (boot.params.debug) {
             boot.log("Debug mode is on, using online files\n")

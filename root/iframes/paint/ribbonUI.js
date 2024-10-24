@@ -25,6 +25,11 @@ window.ui.RibbonUI.section = class{
                 sButton.onclick = a.onclick
                 sContainer.append(sButton)
             }
+            if (a.type === "2row") {
+                for (let b of a.items){
+                    
+                }
+            }
             if (a.type === "color-button"){
                 let colorPicker = document.createElement("input")
                 colorPicker.type = "color"
