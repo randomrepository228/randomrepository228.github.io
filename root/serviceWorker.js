@@ -65,19 +65,13 @@ fs.waitUntilInit = async() => {}
 self.isFsLoaded = true
 dispatchEvent(new CustomEvent("fsloaded"))
 }
-// channel.addEventListener("message", (e) => {
-//     if (e.data === "hi!") isFsLoaded = true
-//     else if (e.data === "bye!") isFsLoaded = false
-// })
 self.addEventListener('fetch', async (event) => {
     if (event.request.method !== "GET") return;
-    //if ("iframes" in url.pathname) return
-    console.log(self.scope)
     async function d(){
         if (!self.isFsLoaded) await fs.waitUntilInit()
-        const url = new URL(event.request.url)
-        if (!await fs.exists(url.pathname.slice(1))) return fetch(event.request.url)
-        const data = await fs.readFile(url.pathname.slice(1))
+        const url = event.request.url.replace(self.registration.scope, "")
+        if (!await fs.exists(url)) return fetch(event.request.url)
+        const data = await fs.readFile(url)
         console.log(data)
         return new Response(data)
     }
