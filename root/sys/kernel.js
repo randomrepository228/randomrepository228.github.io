@@ -9,14 +9,8 @@ window.currentUser = "SYSTEM";
 window.allWindows = [];
 window.winda = {
     playSound: async (sound) => {
-        const file = await fs.readFile(sound)
-        if (!file) return
-        const url = URL.createObjectURL(file)
-        let audio = new Audio(url)
+        let audio = new Audio(sound)
         audio.volume = (+localStorage.volume) / 100
-        audio.addEventListener("ended", () => {
-            URL.revokeObjectURL(url)
-        })
         audio.play()
     },
     changeTheme: (a) => {
@@ -28,9 +22,13 @@ window.winda = {
     },
     pidCounter: 0
 };
+function sleep(milliseconds){
+    return new Promise(res => setTimeout(res, milliseconds))
+}
 window.processList = []
 window.lastPID = 0
 window.windowInfo = []
+window.keysPressed = {"shift": false, "ctrl": false, "alt": false}
 if (!localStorage.theme) localStorage.theme = "aero"
 theme.href = "./res/" + localStorage.theme + "/style.css"
 if (!localStorage.volume) localStorage.volume = 50
@@ -51,7 +49,14 @@ function contextMenu(e, content, x, y, pd){
         for (const a of content){
             let contextMenuOption = document.createElement("div")
             contextMenuOption.className = "context-menu-option context-menu-part"
-            contextMenuOption.onclick = (e) => {e.preventDefault(); contextMenuOff(); a[2]()}
+            function click(e){
+                e.preventDefault(); 
+                contextMenuOff(); 
+                a[2]()
+            }
+            contextMenuOption.onclick = click
+            contextMenuOption.onmouseup = click
+            contextMenuOption.ontouchend = click
             contextMenuOption.innerHTML += `<img src="${a[0]}" onerror="this.style.opacity = 0;" class="context-menu-part"><div class="context-menu-part">${a[1]}</div>`
             contextMenuElement.appendChild(contextMenuOption)
         }
@@ -82,7 +87,15 @@ async function showLogonUI(_){
     else{
         msgbox("Window manager", "Window manager not found ok?", undefined, "error")
     }
-    cmoffcmd = (e) => {if (!e.target.classList.contains('context-menu-part')) contextMenuOff()}
+    cmoffcmd = (e) => {
+        if (!e.target.classList.contains('context-menu-part')) contextMenuOff()
+        if (!wm.activeMenuBar) return
+        if (event.target.parentElement && event.target.parentElement === wm.activeMenuBar) return
+        wm.activeMenuBar.mouseDown = false;
+        const el = wm.activeMenuBar.querySelector(".active")
+        if (el) el.classList.remove("active")
+        wm.activeMenuBar = undefined
+    }
     window.addEventListener("mousedown", cmoffcmd); 
     window.addEventListener("touchstart", cmoffcmd);
     window.addEventListener("click", (e) => {if(!e.target.parentElement) return; if (e.target.classList.contains("context-menu-part")) contextMenuOff()})
@@ -105,55 +118,6 @@ function shutdown(a){
     document.body.innerHTML = '<div style="position: absolute; left: 50vw; top: 50vh; transform: translate(-50%, -50%); color: white">It is now safe to turn off your computer</div>'
     document.body.style.backgroundImage = "none"
 }
-function displayBSOD(reason){
-    if (!reason) reason = "NULL"
-    document.body.innerHTML = `
-A problem has been detected and windows has been shut down to prevent damage
-to your computer.
-
-${reason.replace(/\n/g, "")}
-
-If this is the first time you've seen this Stop error screen,
-restart your computer. If this screen appears again, follow
-these steps:
-
-Check to make sure any new hardware or software is properly installed.
-If this is a new installation, ask your hardware or software manufacturer
-for any windows updates you might need.
-
-If problems continue, disable or remove any newly installed hardware
-or software. Disable BIOS memory options such as caching or shadowing.
-If you need to use Safe Mode to remove or disable components, restart
-your computer, press F8 to select Advanced Startup options, and then
-select Safe Mode.
-
-Technical information:
-
-***&nbsp;STOP:&nbsp;0x00000000&nbsp;(0x0000000000000000,0x0000000000000000,0x0000000000000000,0x0000080000000000)
-
-
-
-Collecting data for crash dump ...
-Initializing disk for crash dump ...
-Beginning dump of physical memory. 
-Dumping physical memory to disk:  <span id="bsodCounter" style="font-family: 'bsod'; line-height: 100%">0</span>`
-    document.body.style.setProperty("--wallpaper", "none")
-    document.body.setAttribute("style", "background-color: navy; white-space: pre-wrap; line-height: 100%; font-size: min(3vh, 2.02vw); color: white; font-family: 'bsod'; word-break: break-word;")
-    removeEventListener("resize", resizeHandler)
-    bsodProgress = 0;
-    const magicVariable = setInterval(() => {
-        bsodProgress += 5
-        if (bsodProgress > 99) {
-            bsodCounter.innerText = "100\nPhysical memory dump complete.\nContact your system admin or technical support group for further assistance."
-            if (bsodProgress > 100) {
-                clearInterval(magicVariable)
-                window.location.reload()
-            }
-            return
-        }
-        bsodCounter.innerText = bsodProgress
-    }, 200)
-}
 function logoff(){
     shell.style.display = "none"
     findWindowBy("title", "LogonUI").style.display = ""
@@ -166,26 +130,9 @@ function logoff(){
     winda.playSound('./media/Windows Logoff Sound.flac'); 
 }
 async function desktopInit(){
-    if (!(await fs.exists("config/associations"))) await fs.writeFile("config/associations", JSON.stringify({
-        ".png": {desc: "PNG image", program: "app:paint"},
-        ".webp": {desc: "WEBP image", program: "app:paint"},
-        ".gif": {desc: "GIF image", program: "app:paint"},
-        ".bmp": {desc: "BMP image", program: "app:paint"},
-        ".jpg": {desc: "JPEG image", program: "app:paint"},
-        ".jpeg": {desc: "JPEG image", program: "app:paint"},
-        ".ca": {desc: "bcwd application", program: "command:loadScript"},
-        ".txt": {desc: "Text file", program: "app:notepad"},
-        ".md": {desc: "Markdown file", program: "app:notepad"},
-        ".mp4": {desc: "MP4 video", program: "app:wmplayer"},
-        ".avi": {desc: "AVI video", program: "app:wmplayer"},
-        ".webm": {desc: "WEBM video", program: "app:wmplayer"},
-        ".wav": {desc: "WAVE audio", program: "app:wmplayer"},
-        ".mp3": {desc: "MP3 audio", program: "app:wmplayer"},
-        ".ogg": {desc: "Vorbis audio", program: "app:wmplayer"},
-        ".flac": {desc: "FLAC audio", program: "app:wmplayer"},
-        ".html": {desc: "HTML document", program: "app:iexplore"},
-        ".htm": {desc: "HTML document", program: "app:iexplore"},
-    }))
+    if (!window.config){
+        window.config = JSON.parse(await fs.readFile("config/system", "utf-8"))
+    }
     changeWallpaper(localStorage.wallpaper, true, true).then(() => {
         findWindowBy("title", "LogonUI").hide();
         document.querySelector(".logonui-users-container").style.display = "";
@@ -220,6 +167,7 @@ async function desktopInit(){
     // initShellIcons()
 }
 async function login(user, password){
+    
     if (!init) await desktopInit();
     else{
         findWindowBy("title", "LogonUI").hide();
@@ -227,55 +175,15 @@ async function login(user, password){
     }
     winda.playSound('./media/Windows Logon Sound.flac'); 
 }
-function html2canvas(html, canvas){
-
-    const ctx = canvas.getContext( '2d' );
-
-    const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
-<foreignObject width="100%" height="100%">
-    <div xmlns="http://www.w3.org/1999/xhtml">${html}</div>
-</foreignObject>
-</svg>`;
-
-    const svgBlob = new Blob( [svg], { type: 'image/svg+xml;charset=utf-8' } );
-    const svgObjectUrl = URL.createObjectURL( svgBlob );
-
-    const tempImg = new Image();
-    tempImg.addEventListener( 'load', function() {
-        ctx.drawImage( tempImg, 0, 0 );
-        URL.revokeObjectURL( svgObjectUrl );
-    } );
-
-    tempImg.src = svgObjectUrl;
-}
 async function changeWallpaper(wallpaperpath, nochange, nosplash){
-    if (wallpaperpath.length > 4000000) {
-        msgbox("Storage", "Wallpaper is very big and may be causing problems with your saved data. Custom wallpapers are not ported to FS yet. Size: " + Math.round(wallpaperpath.length / 10000) / 100 * 2 + "MB")
-        return
-    }
-    // const formats = [".png", ".jpg", ".gif", ".bmp", ".webp"]
-    // for (const a of formats)
-    //     if (wallpaperpath.endswith(a)){
-    //         if (wallpaperpath.startsWith(".")){
-    //             wallpaperpath = wallpaperpath.substring(1, wallpaperpath.length)
-    //         }
-    //         try{
-    //             await fs.readFile(wallpaperpath)
-
-    //         }
-    //         catch(e){}
-    //     }
-    // }
     try{
         if (!nochange) localStorage.wallpaper = wallpaperpath
         if (wallpaperpath.startsWith("./") && !boot.params.debug){
             if (!nosplash){
                 changethemesplash.style.display = "block"
             }
-            let file = await fs.downloadFile(wallpaperpath)
-            const url = URL.createObjectURL(file)
-            wallpaperpath = url
+            const s = await fs.downloadFile(wallpaperpath.substring(2), "blob")
+            wallpaperpath = URL.createObjectURL(s)
             if (!nosplash){
                 let audio = new Audio('../media/Windows Logon Sound.flac')
                 audio.oncanplay = () => {
@@ -315,10 +223,14 @@ addEventListener("keydown", (e) => {
     if (e.altKey){
         e.preventDefault()
         if (e.key.toLowerCase() === "r") loadApp("run")
-        if (e.key.toLowerCase() === "e") loadApp("explorer-file-manager")
+        if (e.key.toLowerCase() === "e") loadScript("bin/filemgr.js")
         if (e.key.toLowerCase() === "z") zHold = true
         if (e.key.toLowerCase() === "tab") {}
+        keysPressed.alt = true
     }
+    if (e.ctrlKey) keysPressed.ctrl = true
+    if (e.shiftKey) keysPressed.shift = true
+    if (e.altKey) keysPressed.alt = true
 })
 class Icon {
     constructor(title, image, action) {
@@ -327,4 +239,4 @@ class Icon {
         this.title = title;
     }
 }
-boot.log("Welcome to Winda7\n(c) kitaes, 2024\n")
+boot.log("Welcome to Winda7\n(c) kitaes, 2025\n")

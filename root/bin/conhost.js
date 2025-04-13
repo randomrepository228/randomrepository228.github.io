@@ -44,7 +44,7 @@ async function main(args){ return new Promise(async (res, rej) => {
     consoleinput.innerText = ""
     function print(string, end){
         if (!end) end = "\n"
-        consoleoutput.innerText += string + end
+        consoleoutput.append(string + end)
         el.scrollTo(0, el.scrollHeight);
     }
     const enterpressed = new CustomEvent("enterpressed")
@@ -82,7 +82,7 @@ async function main(args){ return new Promise(async (res, rej) => {
     const id = getId()
     const wnd = new Winda7Window({
         title: "Command Prompt", 
-        icon: "",
+        icon: "./bin/conhost.png",
         id: id, 
         layout: {
             titlebar: {
@@ -94,10 +94,11 @@ async function main(args){ return new Promise(async (res, rej) => {
             },
             cont: el
         },
-        aero: true
+        aero: true,
+        height: 300,
+        width: 500,
     })
     wnd.show()
-    // AddWindow(new Winda7Window(0,0,"Command Prompt","",false),false,{noSelfOpen: true, width: 500, height: 500}, id, el)
     await args[0](print, input, consoleoutput)
     closeWindow(id, () => res(result))
 })}

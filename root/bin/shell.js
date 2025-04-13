@@ -115,10 +115,12 @@ async function main(args){
     // winda.shell.changeTime()
     setInterval(winda.shell.changeTime, 100)
     const shellContainer = document.createElement("div")
+    shellContainer.style.height = "100%"
     let fileView = new ui.FileView()
     await fileView.showContents("/usr/" + currentUser + "/desktop")
-    fileView.elem.className = "icons winda-shell"
+    fileView.elem.classList.toggle("desktop")
     fileView.elem.style.height = "100%"
+    fileView.elem.style.overflow = "hidden"
     fileView.elem.oncontextmenu = (e) => {
         if (e.target !== fileView.elem) return
         contextMenu(e, [
@@ -130,9 +132,8 @@ async function main(args){
             }]
         ], e.clientX, e.clientY)
     }
-    shellContainer.append(fileView.elem)
-    shellContainer.innerHTML += '<link rel="stylesheet" href="./shell/shell.css">'
-    shellContainer.innerHTML += `<bottomright>Winda7<br>Version ${localStorage.ver}</bottomright>`
+    shellContainer.innerHTML = `<link rel="stylesheet" href="./shell/shell.css"><bottomright>Winda7<br>Version ${localStorage.ver}</bottomright>`
+    shellContainer.prepend(fileView.elem)
     const iconsWnd = new Winda7Window({
         inset: "0", 
         title: "Winda Shell Icons", 
@@ -156,11 +157,11 @@ async function main(args){
         }
     }
     taskbar.innerHTML = `
-<div class="wrapper startbutton" ontouchend="event.preventDefault()"
+<button class="wrapper startbutton" ontouchend="event.preventDefault()"
     oncontextmenu="contextMenu(event, [
         ['', 'Properties', () => loadApp('taskbarproperties')],
         ['', 'Open file explorer', () => loadApp('explorer-file-manager')]
-    ], event.clientX, event.clientY)"></div>
+    ], event.clientX, event.clientY)">Start</button>
 <div class="left-bar"></div>
 <div class="right-bar">
     <div id="trayicons">
@@ -190,12 +191,27 @@ async function main(args){
     function removeItem(item){
         leftBar.querySelector(".n" + item.id).remove()
     }
+    let prevactivewindow
     function addItem(item){
         const leftBarElem = document.createElement("div")
         leftBarElem.className = `window-tray n${item.id}`
-        leftBarElem.onclick = () => findWindowBy("id", item.id).focus();
+        function setActiveWindow(e){
+            prevactivewindow = activewindow
+        }
+        leftBarElem.onmousedown = leftBarElem.ontouchstart = setActiveWindow
+        leftBarElem.onclick = () => {
+            if (prevactivewindow && prevactivewindow.context.id === item.id){
+                item.minimise()
+            }
+            else if (item.minimised){
+                item.unminimise()
+            }
+            else{
+                item.focus()
+            }
+        };
         leftBarElem.onmousemove = (event) => winda.shell.hovereffect(event,leftBarElem)
-        leftBarElem.innerHTML += `<img src="${item.icon}" onerror="this.src = './iframes/ExampleApp/icon.png'"><p>${item.title}</p>`
+        leftBarElem.innerHTML += `<img src="${item.icon}" onerror="this.src = './res/app.png'"><p>${item.title}</p>`
         leftBarElem.id = item.id
         leftBar.appendChild(leftBarElem)
         const imgEl = leftBarElem.querySelector("img")
@@ -299,7 +315,7 @@ async function main(args){
         noResize: true,
         ignoreWorkingArea: true,
         noMinimise: true,
-    }, 0, 40)
+    }, undefined, 40)
     taskbarWnd.show()
     function showAllPrograms(){
         const leftStart = startMenuEl.querySelector(".left-start")
@@ -348,10 +364,7 @@ async function main(args){
             <div class="left-start-main">
                 <div class="allprogramsbutton">All programs</div>
             </div>
-            <div class="allprograms">
-                <div class="scrollable"></div>
-                <div class="allprogramsbutton">Back</div>
-            </div>
+            <div class="allprograms"></div>
         </div>
         <div class="right-start">
             <div class="rstop">
@@ -363,9 +376,36 @@ async function main(args){
                 <button class="dropdown"><div></div></button>
             </div>
         </div>`
-    const allProgramsButton = startMenuEl.querySelector(".left-start-main").querySelector(".allprogramsbutton")
-    allProgramsButton.onclick = () => showAllPrograms()
-    startMenuEl.querySelectorAll(".allprogramsbutton")[1].onclick = () => hideAllPrograms()
+
+    const allPrograms = startMenuEl.querySelector(".allprograms")
+
+    const startFileView = new ui.FileView()
+    startFileView.type = "list"
+    startFileView.showParentDir = true
+    await startFileView.showContents("usr/public/start")
+    startFileView.onDirChange = (e) => {
+        if (e === "usr/public/start/iframes"){
+            const appListLocale = {"calc": "Calculator", "wmplayer": "Winda Media player", "control": "Control Panel", "regedit": "Registry Editor", "run": "Run", "taskmgr": "Task manager", "iexplore": "Internet Explorer", "winver": "winver", "paint": "Paint"}
+            const appList = ["calc", "control", "regedit", "run", "taskmgr", "iexplore", "winver", "wmplayer", "paint"]
+            appList.forEach((e) => {
+                let file = document.createElement("div")
+                file.className = "file"
+                file.innerHTML += `<img src="./iframes/${e}/icon.png">` + appListLocale[e]
+                file.ondblclick = () => {loadApp(e)}
+                startFileView.elem.append(file)
+            })
+        }
+    }
+    startFileView.elem.classList.toggle("scrollable")
+    allPrograms.append(startFileView.elem)
+
+    const allProgramsButton = document.createElement("div")
+    allProgramsButton.className = "allprogramsbutton"
+    allProgramsButton.innerText = "back"
+    allProgramsButton.onclick = () => hideAllPrograms()
+    allPrograms.append(allProgramsButton)
+
+    startMenuEl.querySelectorAll(".allprogramsbutton")[0].onclick = () => showAllPrograms()
     startMenuEl.querySelector(".action").onclick = () => shutdown()
     const e = startMenuEl.querySelector(".dropdown")
     e.addEventListener("onclick", (event) => event.stopPropagation())
@@ -433,15 +473,4 @@ async function main(args){
             if (isStartMenuOpen) winda.shell.startMenu(false)
         }
     })
-    localStorage.appList = JSON.stringify(["calc", "changelog", "control", "ExampleApp", "Okna8Mode", "regedit", "run", "sfc", "taskmgr", "dvd", "bsod", "iexplore", "winver", "notepad", "wmplayer", "paint", "explorer-file-manager"])
-    const appListLocale = {"calc": "Calculator", "wmplayer": "Winda Media player", "changelog": "Changelog", "control": "Control Panel", "ExampleApp": "Example app", "Okna8Mode": "Okna 8 Mode", "regedit": "Registry Editor", "run": "Run", "sfc": "System file checker", "taskmgr": "Task manager", "dvd": "DVD Logo", "bsod": "Blue screen of death", "iexplore": "Internet Explorer", "winver": "winver", "paint": "Paint", "explorer-file-manager": "Winda Explorer", "notepad": "Notepad"}
-    JSON.parse(localStorage.appList).forEach((e) => {
-        addStartMenuEntryProgramLeft({title: appListLocale[e], image: "./iframes/" + e + "/icon.png", action: "parent.loadApp('" + e + "')"})
-    })
-    addStartMenuEntryLeft("Version 0.0.1", "./res/icon.jpg", "window.location.href = '../Winda.old/0.0.1/simulator.html'")
-    addStartMenuEntryLeft("Version 0.0.2", "./res/icon.jpg", "window.location.href = '../Winda.old/0.0.2/simulator.html'")
-    addStartMenuEntryLeft("Version 0.0.3", "./res/icon.jpg", "window.location.href = '../Winda.old/0.1.0/simulator.html'")
-    addStartMenuEntryLeft("Version 0.1.0", "./res/icon.jpg", "window.location.href = '../Winda.old/b0.9.0/simulator.html'")
-    addStartMenuEntryLeft("Version 0.1.1", "./res/icon.jpg", "window.location.href = '../Winda.old/b0.9.2/simulator.html'")
-    addStartMenuEntryLeft("Welcome window", './res/icon.jpg', "msgbox('Welcome', 'Welcome to Windows Beta!')")
 }

@@ -17,25 +17,29 @@ maximise = maximiseWindow
 wm.last = {x: 0, y: 0, windowX: 0, windowY: 0, windowWidth: 0, windowHeight: 0}
 wm.dragType = 0
 wm.windows = []
+wm.activeMenuBar = undefined
 window.Winda7Window = class{
     constructor(options, width, height) {
-        this.height = height;
-        this.width = width;
-        this.options = options;
-        this.id = options.id;
-        this.icon = options.icon;
-        this.shown = false;
+        this.options = options
+        this.id = options.id
+        this.icon = options.icon
+        this.shown = false
+        this.minimised = false
+        this.maximised = false
         let newWindow = document.createElement("div")
+        this.windowElem = newWindow
+        if (typeof width === "number") this.width = width
+        if (typeof height === "number") this.height = height
         newWindow.id = options.id
         if (!options.layout) throw new Error("can't create a window without window info")
-        if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.classList.toggle("maximised")
+        if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.classList.add("maximised")
         if (options.ispopup){
-            newWindow.style.left = (innerWidth / 2 ) - (options.width) / 2 + "px"
-            newWindow.style.top = (innerHeight / 2 ) - (options.height) / 2 + "px"
+            this.x = (innerWidth / 2 ) - (options.width) / 2 + "px"
+            this.y = (innerHeight / 2 ) - (options.height) / 2 + "px"
         }
         else{
-            if (typeof options.top === "number") newWindow.style.top = options.top += "px"
-            if (typeof options.left === "number") newWindow.style.left = options.left += "px"
+            if (typeof options.top === "number") this.y = options.top
+            if (typeof options.left === "number") this.x = options.left
             if (typeof options.right === "number") newWindow.style.right = options.right += "px"
             if (typeof options.bottom === "number") newWindow.style.bottom = options.bottom += "px"
             if (typeof options.inset === "number") newWindow.style.inset = options.inset
@@ -43,9 +47,9 @@ window.Winda7Window = class{
         }
         const openedwindows = wm.windows.length
         if (!(options.right || options.left))
-            newWindow.style.left = (openedwindows * 25 + 50) % (innerWidth - options.width) + "px"
+            this.x = (openedwindows * 25 + 50) % (innerWidth - options.width ? options.width : 0)
         if (!(options.bottom || options.top))
-            newWindow.style.top = (openedwindows * 25 + 50) % (innerHeight - options.height) + "px"
+            this.y = (openedwindows * 25 + 50) % (innerHeight - options.height ? options.height : 0)
         if (newWindow.style.left.startsWith("-")) newWindow.style.setProperty("--aero-left", newWindow.style.left.slice(1))
         else if (newWindow.style.left) newWindow.style.setProperty("--aero-left", "-" + newWindow.style.left)
         if (newWindow.style.top.startsWith("-")) newWindow.style.setProperty("--aero-top", newWindow.style.top.slice(1))
@@ -59,7 +63,7 @@ window.Winda7Window = class{
         let cont = document.createElement("div")
         let text = document.createElement("text")
         if (options.layout instanceof HTMLElement) {
-            newWindow.classList.toggle("nogui")
+            newWindow.classList.add("nogui")
             text.append(options.layout)
         }
         else if (typeof options.layout === String) {
@@ -69,7 +73,7 @@ window.Winda7Window = class{
             if (options.layout.titlebar) {
                 let titleBar = document.createElement("div")
                 titleBar.className = "topbar"
-                const mouseDown = "windowMouseDown(event, this, this.parentElement, 1)"
+                const mouseDown = "windowMouseDown(event, this, this.parentElement, 16)"
                 titleBar.setAttribute("onmousedown", mouseDown)
                 titleBar.setAttribute("ontouchstart", mouseDown)
                 if (!options.layout.hideTitle){
@@ -106,12 +110,12 @@ window.Winda7Window = class{
                         const min = document.createElement("div")
                         min.className = "dash"
                         if (!btns.min) min.style.setAttribute("disabled", "")
-                        else min.onclick = () => minimiseWindow(newWindow)
+                        else min.onclick = () => this.minimiseToggle()
                         buttons.appendChild(min)
                         const max = document.createElement("div")
                         max.className = "square"
                         if (!btns.max) max.style.setAttribute("disabled", "")
-                        else max.onclick = () => maximiseWindow(newWindow)
+                        else max.onclick = () => this.maximiseToggle()
                         buttons.appendChild(max)
                     }
                     if (btns.close || btns.min || btns.max) {
@@ -149,22 +153,21 @@ window.Winda7Window = class{
         }
         if (!options.noResize){
             const directions = [
-                "bottom", "left", "top", "right", 
+                "top", "left", "right", "bottom", 
                 "topleft", "bottomleft", "topright", "bottomright"
             ]
-            let i = 2;
-            for (let a of directions){
-                (function(i){
+            const ids = [
+                1,2,4,8,3,10,5,12
+            ]
+            for (let i = 0; i < directions.length; i++){((i) => {
                 let el = document.createElement("div")
                 const action = (e) => {
-                    windowMouseDown(e, el, newWindow, i)
+                    windowMouseDown(e, el, newWindow, ids[i])
                 }
                 el.ontouchstart = el.onmousedown = action
-                el.className = a
+                el.className = directions[i]
                 newWindow.appendChild(el)
-                })(i)
-                i++
-            }
+            })(i)}
         }
         cont.className = options.aero && !options.noFrame ? 'content' : 'contentnostyle'
         if (options.minWidth) text.style.minWidth = options.minWidth + 'px'
@@ -176,18 +179,17 @@ window.Winda7Window = class{
         if (!height) height = options.height
         text.style.width = width + "px"
         text.style.height = height + "px"
-        newWindow.classList.toggle("window")
+        newWindow.classList.add("window")
         if (options.aero) {
-            newWindow.classList.toggle("aero")
+            newWindow.classList.add("aero")
         }
         if (options.aero || options.shadow) {
-            newWindow.classList.toggle("shadow")
+            newWindow.classList.add("shadow")
         }
         cont.appendChild(text)
         newWindow.appendChild(cont)
         windows.append(newWindow)
         broadcast("newprocess|" + options.id)
-        this.windowElem = newWindow
         this.windowElem.context = this
         this.frame = text
         this.windowElem.frame = text
@@ -195,8 +197,9 @@ window.Winda7Window = class{
         this.focus()
     }
     async close(){
+        if (this.closed) return
         let window = this.windowElem
-        if (this.onclose) await this.onclose()
+        if (this.onclose) if (await this.onclose()) return
         async function timeout(){
             if (this.closeCallback) await this.closeCallback()
             window.remove()
@@ -229,18 +232,43 @@ window.Winda7Window = class{
             ev.remove = true
             dispatchEvent(ev)
         }
+        this.closed = true
     }
     minimise(){
-
+        this.windowElem.style.display = "none"
+        this.minimised = true
+        activewindow = 0
     }
     unminimise(){
-
+        this.windowElem.style.display = ""
+        this.minimised = false
+        this.focus()
+    }
+    minimiseToggle(){
+        if (!this.minimised){
+            this.minimise()
+        }
+        else{
+            this.unminimise()
+        }
     }
     maximise(){
-    
+        this.windowElem.className += " maximised"
+        this.windowElem.className = this.windowElem.className.replace("snap-right ", "")
+        this.windowElem.className = this.windowElem.className.replace("snap-left ", "")
+        this.maximised = true
     }
     restore(){
-
+        this.windowElem.className = this.windowElem.className.replace(" maximised", "")
+        this.maximised = false
+    }
+    maximiseToggle(){
+        if (!this.maximised){
+            this.maximise()
+        }
+        else{
+            this.restore()
+        }
     }
     show(){
         if (!this.windowElem.classList.contains("show")){
@@ -271,10 +299,6 @@ window.Winda7Window = class{
         }
         activewindow = this.windowElem;
         if (!activewindow.classList.contains("focus")) activewindow.className += " focus"
-        try{
-            if (activewindow.querySelector("iframe")) activewindow.querySelector("iframe").contentWindow.focus()
-        }
-        catch(e){}
         activewindow.style.zIndex = 1;
         // for(element of leftBar.children)
         //     element.className = element.className.replace(" focus", "")
@@ -291,7 +315,6 @@ window.Winda7Window = class{
     }
     set title(t){
         try{this.titleElem.innerText = t} catch(e){}
-        this.windowElem.title = t
         this._title = t
         const titleChangeEvent = new Event("winda-title-change")
         titleChangeEvent.id = this.id
@@ -299,6 +322,34 @@ window.Winda7Window = class{
     }
     get title(){
         return this._title
+    }
+    set x(a){
+        this._x = a
+        this.windowElem.style.left = a + "px"
+    }
+    set y(a){
+        this._y = a
+        this.windowElem.style.top = a + "px"
+    }
+    get x(){
+        return this._x
+    }
+    get y(){
+        return this._y
+    }
+    set width(a){
+        this._width = a
+        this.windowElem.style.width = a + "px"
+    }
+    set height(a){
+        this._height = a
+        this.windowElem.style.height = a + "px"
+    }
+    get width(){
+        return this._width
+    }
+    get width(){
+        return this._height
     }
 }
 function getId(){
@@ -327,7 +378,7 @@ function broadcast(message){
         catch (e) {}
     }
 }
-async function msgbox(title, content, buttons, type){
+async function msgbox(title, content, buttons, type, p){
     if (!buttons) buttons = ['OK']
     return new Promise((resolve, reject) => {
         let msgboxContent = document.createElement("div")
@@ -358,16 +409,15 @@ async function msgbox(title, content, buttons, type){
         let footer = document.createElement("footer")
         let wnd = new Winda7Window({
             title: title, 
-            icon: "icon.png", 
             id: getId(), 
             layout: {
                 titlebar: true,
                 cont: msgboxContent
             },
             aero: true,
-            ispopup: true
+            ispopup: true,
+            noResize: true
         })
-        wnd.show()
         for (btn of buttons){
             let button = document.createElement("button")
             button.innerText = btn
@@ -378,6 +428,7 @@ async function msgbox(title, content, buttons, type){
         msgboxContent.appendChild(msgboxElem)
         msgboxContent.appendChild(footer)
         msgboxContent.style.height = "100%"
+        wnd.show()
         const dimensions = wnd.windowElem.getBoundingClientRect()
         const half = {width: dimensions.width / 2, height: dimensions.height / 2}
         wnd.windowElem.style.left = (window.innerWidth/2)-half.width + "px"
@@ -404,11 +455,22 @@ async function inputbox(title, content, defaultValue){
         footer.appendChild(okbutton)
         msgboxContent.appendChild(msgboxElem)
         msgboxContent.appendChild(footer)
-        let wnd = AddWindow(new Winda7Window(0, 0, title, undefined, ""), false, {left: (window.innerWidth/2)-50, top: (window.innerHeight/2)-50, noSelfOpen: true, xOnly: true, noResize: true}, id, msgboxContent, () => resolve("")).window
-        const dimensions = wnd.getBoundingClientRect()
+        let wnd = new Winda7Window({
+            title: title, 
+            icon: "icon.png", 
+            id: getId(), 
+            layout: {
+                titlebar: true,
+                cont: msgboxContent
+            },
+            aero: true,
+            ispopup: true
+        })
+        wnd.show()
+        const dimensions = wnd.windowElem.getBoundingClientRect()
         const half = {width: dimensions.width / 2, height: dimensions.height / 2}
-        wnd.style.left = (window.innerWidth/2)-half.width + "px"
-        wnd.style.top = (window.innerHeight/2)-half.height + "px"
+        wnd.windowElem.style.left = (window.innerWidth/2)-half.width + "px"
+        wnd.windowElem.style.top = (window.innerHeight/2)-half.height + "px"
         new Audio(sounds.msgbox).play()
     })
 }
@@ -593,61 +655,91 @@ function windowMouseDown(event, elem, windowelem, type){
     wm.dragType = type
     windows.style.setProperty("--iframe-ignore", "block")
 }
-function windowMouseUp(){
+function windowMouseUp(e){
     wm.dragType = 0
     windows.style.setProperty("--iframe-ignore", "none")
+    if (e.touches) e = e.touches[0]
+    if(!activewindow.context.options.noResize){
+        if(e.clientX > innerWidth - 25){
+            activewindow.classList.add("snap-right")
+        }
+        if(e.clientX < 25){
+            activewindow.classList.add("snap-left")
+        }
+        if(e.clientY < 25){
+            activewindow.context.maximise()
+        }
+    }
+    snapOutline.classList.remove("full")
+    snapOutline.classList.remove("right")
+    snapOutline.classList.remove("left")
+    if (!wm.activeMenuBar) return
+    if (e.target.parentElement && e.target.parentElement === wm.activeMenuBar) return
+    wm.activeMenuBar.mouseDown = false;
+    const el = wm.activeMenuBar.querySelector(".active")
+    if (el) el.classList.remove("active")
+    wm.activeMenuBar = undefined
+    contextMenuOff()
 }
 addEventListener("touchend", windowMouseUp)
 addEventListener("mouseup", windowMouseUp)
 function move(e){
+    if (e.touches) e = e.touches[0]
     windowsDim = windows.getBoundingClientRect()
     if (!activewindow) return
     if (localStorage.noContentMove) return
     if (!wm.dragType) return
-    else if (wm.dragType === 1){
-        activewindow.style.left = wm.last.windowX - wm.last.x + e.clientX - windowsDim.x + "px"
-        activewindow.style.top = wm.last.windowY - wm.last.y + e.clientY - windowsDim.y + "px"
+    if (activewindow.classList.contains("snap-left")) activewindow.classList.remove("snap-left")
+    if (activewindow.classList.contains("snap-right")) activewindow.classList.remove("snap-right")
+    if (activewindow.context.maximised) {
+        activewindow.context.restore()
+        const coords = activewindow.getBoundingClientRect()
+        wm.last.windowX = Math.round(e.clientX - (coords.width / 2))
     }
-    else if (wm.dragType === 2){
-        activewindow.frame.style.height = wm.last.windowHeight - wm.last.y + e.clientY + "px"
-    }
-    else if (wm.dragType === 3){
-        activewindow.frame.style.width = wm.last.windowWidth + wm.last.x - e.clientX + "px"
-        activewindow.style.left = wm.last.windowX - wm.last.x + e.clientX - windowsDim.x + "px"
-    }
-    else if (wm.dragType === 4){
+    if (wm.dragType & 1){
         activewindow.frame.style.height = wm.last.windowHeight + wm.last.y - e.clientY + "px"
         activewindow.style.top = wm.last.windowY - wm.last.y + e.clientY - windowsDim.y + "px"
     }
-    else if (wm.dragType === 5){
-        activewindow.frame.style.width = wm.last.windowWidth - wm.last.x + e.clientX + "px"
-    }
-    else if (wm.dragType === 6){
-        activewindow.frame.style.height = wm.last.windowHeight + wm.last.y - e.clientY + "px"
-        activewindow.style.top = wm.last.windowY - wm.last.y + e.clientY - windowsDim.y + "px"
+    if (wm.dragType & 2){
         activewindow.frame.style.width = wm.last.windowWidth + wm.last.x - e.clientX + "px"
         activewindow.style.left = wm.last.windowX - wm.last.x + e.clientX - windowsDim.x + "px"
     }
-    else if (wm.dragType === 7){
-        activewindow.frame.style.width = wm.last.windowWidth + wm.last.x - e.clientX + "px"
+    if (wm.dragType & 4){
+        activewindow.frame.style.width = wm.last.windowWidth - wm.last.x + e.clientX + "px"
+    }
+    if (wm.dragType & 8){
+        activewindow.frame.style.height = wm.last.windowHeight - wm.last.y + e.clientY + "px"
+    }
+    if (wm.dragType & 16){
         activewindow.style.left = wm.last.windowX - wm.last.x + e.clientX - windowsDim.x + "px"
-        activewindow.frame.style.height = wm.last.windowHeight - wm.last.y + e.clientY + "px"
-    }
-    else if (wm.dragType === 8){
-        activewindow.frame.style.height = wm.last.windowHeight + wm.last.y - e.clientY + "px"
         activewindow.style.top = wm.last.windowY - wm.last.y + e.clientY - windowsDim.y + "px"
-        activewindow.frame.style.width = wm.last.windowWidth - wm.last.x + e.clientX + "px"
+        activewindow.style.bottom = "unset"
+        activewindow.style.right = "unset"
     }
-    else if (wm.dragType === 9){
-        activewindow.frame.style.height = wm.last.windowHeight - wm.last.y + e.clientY + "px"
-        activewindow.frame.style.width = wm.last.windowWidth - wm.last.x + e.clientX + "px"
+    let top = activewindow.x
+    let left = activewindow.y
+    // activewindow.style.setProperty("--aero-left", -left + "px")
+    // activewindow.style.setProperty("--aero-top", -top + "px")
+    if(!activewindow.context.options.noResize){
+        if(e.clientX > innerWidth - 25){
+            snapOutline.classList.add("right")
+        }
+        else{
+            snapOutline.classList.remove("right")
+        }
+        if(e.clientX < 25){
+            snapOutline.classList.add("left")
+        }
+        else{
+            snapOutline.classList.remove("left")
+        }
+        if(e.clientY < 25){
+            snapOutline.classList.add("full")
+        }
+        else{
+            snapOutline.classList.remove("full")
+        }
     }
-    // let top = +(activewindow.style.top.slice(0, activewindow.style.top.length - 2))
-    // let left = +(activewindow.style.left.slice(0, activewindow.style.left.length - 2))
-    // if (activewindow.style.left.startsWith("-")) activewindow.style.setProperty("--aero-left", -left + "px")
-    // else activewindow.style.setProperty("--aero-left", "-" + left + "px")
-    // if (activewindow.style.top.startsWith("-")) activewindow.style.setProperty("--aero-top", -top + "px")
-    // else activewindow.style.setProperty("--aero-top", "-" + top + "px")
 }
 document.body.style.height = innerHeight + "px"
 addEventListener("resize", () => document.body.style.height = innerHeight + "px")
@@ -706,15 +798,10 @@ ui.SelectMenu = class{
         }
     }
 }
-ui.icons = {}
-// memory allocation
-{
-    async function a(){
-        ui.icons.file = URL.createObjectURL(await fs.readFile("res/icons/file.png"))
-        ui.icons.media = URL.createObjectURL(await fs.readFile("res/icons/media.png"))
-        ui.icons.folder = URL.createObjectURL(await fs.readFile("res/icons/folder.png"))
-    }
-    a()
+ui.icons = {
+    file: "res/icons/file.png",
+    media: "res/icons/media.png",
+    folder: "res/icons/folder.png"
 }
 async function assocFile(filepath){
     const data = (await fs.readFile("config/associations").json())
@@ -730,29 +817,49 @@ ui.FileView = class{
         if (options) if (options.search) {
 
         }
+        this.selected = []
         let elem = document.createElement("div")
         elem.className = "files"
+        // elem.onmousedown = (e) => {
+        //     const selection = document.createElement("div")
+        //     selection.className = "selection"
+        //     selection.style.left = e.clientX + "px"
+        //     selection.style.right = e.clientY + "px"
+        //     selection.x = e.clientX
+        //     selection.y = e.clientY
+        //     this.selection = selection
+        // }
         this.elem = elem
         this.currentFolder = ""
         this.innerHTML = ""
+        this.type = "grid"
+        this.showContents = this.showContents.bind(this);
+        this.onDirChange = () => {}
+        this.allowNavigation = true
+        this.showParentDir = false
     }
     clear(){
         this.elem.innerHTML = ""
     }
-    async showContents(fpath){
+    set type(a){
+        this.elem.setAttribute("type", a)
+    }
+    get type(){
+        return this.elem.getAttribute("type")
+    }
+    async showContents(fpath, s){
         let files = await fs.readdir(fpath)
         this.currentFolder = fpath
-        let that = this
+        if (!s) s = this
         if (!this.elem.ondrop) this.elem.ondrop = (e) => {
             function transferFile(file){
                 const reader = new FileReader()
-                reader.onload = () => fs.writeFile(that.currentFolder + "/" + file.name, new Blob([reader.result]))
+                reader.onload = () => fs.writeFile(s.currentFolder + "/" + file.name, new Blob([reader.result]))
                 reader.readAsArrayBuffer(file)
             }
             e.preventDefault()
             if (e.dataTransfer.items) {
                 [...e.dataTransfer.items].forEach((item) => {
-                    item.getAsString((e) => console.log(e))
                     if (item.kind !== "file") return
                     const file = item.getAsFile();
                     transferFile(file)
@@ -765,69 +872,109 @@ ui.FileView = class{
         }
         if (!this.elem.ondragover) this.elem.ondragover = (e) => e.preventDefault()
         let tempElement = document.createElement("div")
+        if (this.showParentDir){
+            let file = document.createElement("div")
+            file.className = "file"
+            file.innerHTML += `<img src="${ui.icons.folder}">..`
+            const path = this.currentFolder.split("/")
+            path.pop()
+            const newPath = path.join("/")
+            file.ondblclick = () => s.showContents(newPath)
+            tempElement.append(file)
+        }
         for (let a of files){
             if (a == ".") continue
-            let htmlPath = a
+            let fileName = a
             a = a.replace("<marked>", "").replace("</marked>", "")
             let file = document.createElement("div")
             file.className = "file"
             let isfile = true
-            if (a.startsWith("/")) {
-                a = a.replace("/", "")
-                htmlPath = htmlPath.replace("/", "")
+            function endsWithAny(a, string) {
+                for (let d of a) {
+                    if(string.endsWith(d))
+                        return true;
+                }
+                return false;
             }
+            const imgContainer = document.createElement("div")
+            imgContainer.className = "cont"
+            const img = document.createElement("img")
+            imgContainer.append(img)
+            const path = s.currentFolder + "/" + a
             if (a.endsWith("/.")){
                 a = a.replace("/.", "")
-                htmlPath = htmlPath.replace("/.", "")
+                fileName = fileName.replace("/.", "")
                 isfile = false
-                file.innerHTML += `<img src="${ui.icons.folder}">`
-                a = this.currentFolder + "/" + a
-                file.onclick = function(){this.showContents(a)}
+                img.src = ui.icons.folder
+                file.ondblclick = () => s.showContents(path.substring(0, path.length - 2))
             }
             else if (a.toLowerCase().endsWith(".png") || a.toLowerCase().endsWith(".jpg") || a.toLowerCase().endsWith(".gif") || a.toLowerCase().endsWith(".bmp") || a.toLowerCase().endsWith(".webp")){
-                let length = 3;
-                if (a.toLowerCase().endsWith(".webp")) length = 4
-                a = v + "/" + a
-                let b;
-                if(a.startsWith("/")) b = a.replace("/", "")
-                const contents = await parent.fs.readFile(b)
-                const url = URL.createObjectURL(new Blob([contents], {type: "image/" + a.substring(a.length - length, a.length)}))
-                file.innerHTML += `<img src="${url}">`
-                file.setAttribute("ondblclick", `loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
+                img.src = path
+                file.ondblclick = () => {loadApp('paint', undefined, path)}
             }
             else if (a.toLowerCase().endsWith(".flac") || a.toLowerCase().endsWith(".wav") || a.toLowerCase().endsWith(".mp3") || a.toLowerCase().endsWith(".mp4") || a.toLowerCase().endsWith(".avi") || a.toLowerCase().endsWith(".ogg") || a.toLowerCase().endsWith(".webm")){
-                a = this.currentFolder + "/" + a
-                file.innerHTML += `<img src="${ui.icons.media}">`
-                file.setAttribute("ondblclick", `loadApp('wmplayer', undefined, '${a.replace("\'", "\\\'")}')`)
+                img.src = ui.icons.media
+                file.ondblclick = () => {loadApp('wmplayer', undefined, path)}
             }
             else if (a.toLowerCase().endsWith(".html")){
-                a = this.currentFolder + "/" + a
-                file.innerHTML += `<img src="${ui.icons.file}">`
-                file.setAttribute("ondblclick", `loadApp('iexplore', undefined, '${a.replace("\'", "\\\'")}')`)
+                img.src = ui.icons.file
+                file.ondblclick = () => {loadApp('iexplore', undefined, path)}
+            }
+            else if (a.toLowerCase().endsWith(".md")){
+                img.src = ui.icons.file
+                file.ondblclick = () => {loadScript("bin/mdviewer.js", [path])}
             }
             else if (a.toLowerCase().endsWith(".ca") || a.toLowerCase().endsWith(".js")){
-                a = this.currentFolder + "/" + a
-                file.innerHTML += `<img src="${ui.icons.file}">`
-                file.setAttribute("ondblclick", `loadScript('${a.replace("\'", "\\\'")}')`)
+                img.src = ui.icons.file
+                file.ondblclick = () => {loadScript(path)}
+            }
+            else if (a.toLowerCase().endsWith(".wdl")){
+                if (this.type === "grid"){
+                    const shortcut = document.createElement("img")
+                    shortcut.src = "./res/shortcut.png"
+                    imgContainer.append(shortcut)
+                }
+                img.src = ui.icons.file
+                const f = await fs.readFile(path, "utf8")
+                let data
+                try{data = JSON.parse(f)}
+                catch(e){}
+                if (data) if (data.type === "file"){
+                    if (data.path.toLowerCase().endsWith(".js")){
+                        file.ondblclick = () => {loadScript(data.path)}
+                    }
+                    if (data.icon){
+                        img.src = data.icon
+                    }
+                }
+                fileName = fileName.substring(0, fileName.lastIndexOf("."))
             }
             else {
-                a = this.currentFolder + "/" + a
-                file.innerHTML += `<img src="${ui.icons.file}">`
-                file.setAttribute("ondblclick", `loadApp('notepad', undefined, '${a.replace("\'", "\\\'")}')`)
+                img.src = ui.icons.file
+                file.ondblclick = () => {loadScript("bin/notepad.js", [path])}
             }
+            file.append(imgContainer)
             const newfpath = (' ' + a).substring(1)
-            file.setAttribute("oncontextmenu", `
-                contextMenu(event, [
-                    ['', 'Delete', () => fs.deleteFile('${newfpath}')],
-                    ['./iframes/notepad/icon.png', 'Open with Notepad', () => loadApp("notepad", "", '${newfpath}')]
-                ], event.clientX, event.clientY)`)
-            file.innerHTML += htmlPath
+            file.ondragstart = async (e) => {
+                e.dataTransfer.setData('winda-file', path)
+            }
+            file.oncontextmenu = (e) =>
+                contextMenu(e, [
+                    ['', 'Delete', () => fs.deleteFile(newfpath)],
+                    ['./iframes/notepad/icon.png', 'Open with Notepad', () => loadScript("bin/notepad.js", [path])]
+                ], e.clientX, e.clientY)
+            file.onclick = (e) => {
+                // selected.push(e.target)
+                e.target.classList.add("selected")
+            }
+            file.innerHTML += fileName
             tempElement.append(file)
         }
         if (tempElement.innerHTML !== this.elem.innerHTML) {
             this.clear()
             this.elem.append(...tempElement.children)
         }
+        this.onDirChange(this.currentFolder)
     }
     get items(){
         let arr = []
@@ -837,33 +984,41 @@ ui.FileView = class{
         return arr
     }
 }
-function createMenuBar(elem, items){
-    if (!typeof elem === "object") return 1
-    if (!elem.innerHTML) return 1
+function createMenuBar(items){
     let menuBar = document.createElement("div")
     menuBar.className = "menubar"
     for (let a of Object.keys(items)){
         let menuBarElem = document.createElement("div")
         menuBarElem.className = "element"
+        menuBarElem.menu = items[a]
         menuBarElem.innerText = a
-        menuBarElem.onmousedown = (event) => {
-            isMouseDown = true;
-            fileTabContextMenu(event, this)
+        menuBar.append(menuBarElem)
+        function menuBarAction(e){
+            e.preventDefault()
+            e.stopPropagation()
+            menuBar.mouseDown = true;
+            wm.activeMenuBar = menuBar
+            menuBar.activeEl = e.target
+            const dim = e.target.getBoundingClientRect()
+            const el = menuBar.querySelector(".active")
+            if (el) el.classList.remove("active")
+            e.target.classList.add("active")
+            contextMenu(e, e.target.menu, dim.x, dim.y + dim.height)
         }
-        menuBarElem.ontouchstart = (event) => {
-            event.preventDefault()
-            isMouseDown = true;
-            fileTabContextMenu(event, this)
-        }
-        menuBarElem.onmouseover = (event) => {
-            if (isMouseDown) fileTabContextMenu(event, this)
+        menuBarElem.onmousedown = menuBarElem.ontouchstart = menuBarAction
+        menuBarElem.onmouseover = (e) => {
+            const dim = e.target.getBoundingClientRect()
+            if (menuBar.mouseDown) {
+                contextMenuOff()
+                menuBarAction(e)
+            }
         }
     }
     return menuBar
 }
-{/* <div class="menubar">
-    <div class="element" onmousedown="isMouseDown = true;fileTabContextMenu(event, this)"
-                         onmouseover="if (isMouseDown)   fileTabContextMenu(event, this)">File</div>
-    <div class="element" onmousedown="isMouseDown = true;formatTabContextMenu(event, this)"
-                         onmouseover="if (isMouseDown)   formatTabContextMenu(event, this)">Format</div>
-</div> */}
+function createElement(tagName, className, parentElem){
+    const el = document.createElement(tagName)
+    if (className) el.className = className
+    if (parentElem) parentElem.append(el)
+    return el
+}

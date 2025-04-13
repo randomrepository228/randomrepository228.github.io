@@ -1,0 +1,38 @@
+{
+    "colours": ["ff0000ff", "ffff00ff", "0000ffff", "01ff00ff"],
+    "provinces": 
+[
+    {
+        "development": 10,
+        "population": 474738,
+        "owner": null,
+        "name": "North Caucasus",
+        "id": 0,
+        "connections": [2,4]
+    },
+    {
+        "development": 6,
+        "population": 293761,
+        "owner": null,
+        "name": "Crimea",
+        "id": 1,
+        "connections": [1,4]
+    },
+    {
+        "development": 8,
+        "population": 494300,
+        "owner": null,
+        "name": "Volgograd",
+        "id": 2,
+        "connections": [1,4]
+    },
+    {
+        "development": 12,
+        "population": 726307,
+        "owner": null,
+        "name": "East Ukraine",
+        "id": 3,
+        "connections": [1,2]
+    }
+]
+}

@@ -36,15 +36,7 @@
                 <div class="menubar">
                     <div class="element">View</div>
                 </div>
-                <div class="files" oncontextmenu="(e) => { console.log('e')
-                    e.stopPropagation(); 
-                    parent.console.log('e')
-                    const elemoffset = frameElement.getBoundingClientRect();
-                    console.log(elemoffset)
-                    parent.contextMenu(e, [
-                        ['', 'Refresh', () => openFolder(currentFolder)]
-                    ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
-                }"></div>
+                <div id="files"></div>
                 <footer style="display: none">
                     <div>
                         <div style="display: flex; align-items: center;">
@@ -83,97 +75,27 @@
             }
         </script>
         <script>
+            const fileView = new parent.ui.FileView()
+            files.append(fileView.elem)
             let currentPath = ""
             let currentFolder = ""
-            async function renderDir(files, fpath){
-                currentFolder = fpath
-                document.querySelector(".files").innerHTML = ""
-                for (let a of files){
-                    if (a == ".") continue
-                    htmlPath = a
-                    a = a.replace("<marked>", "").replace("</marked>", "")
-                    let file = document.createElement("div")
-                    file.className = "file"
-                    let isfile = true
-                    if (a.startsWith("/")) {
-                        a = a.replace("/", "")
-                        htmlPath = htmlPath.replace("/", "")
-                    }
-                    if (a.endsWith("/.")){
-                        a = a.replace("/.", "")
-                        htmlPath = htmlPath.replace("/.", "")
-                        isfile = false
-                        file.innerHTML += `<img src="folder.png">`
-                        a = currentPath + "/" + a
-                        file.setAttribute("ondblclick", `openFolder("${a}")`)
-                    }
-                    else if (a.toLowerCase().endsWith(".png") || a.toLowerCase().endsWith(".jpg") || a.toLowerCase().endsWith(".gif") || a.toLowerCase().endsWith(".bmp") || a.toLowerCase().endsWith(".webp")){
-                        let length = 3;
-                        if (a.toLowerCase().endsWith(".webp")) length = 4
-                        a = currentPath + "/" + a
-                        let b;
-                        if(a.startsWith("/")) b = a.replace("/", "")
-                        const contents = await parent.fs.readFile(b)
-                        const url = URL.createObjectURL(new Blob([contents], {type: "image/" + a.substring(a.length - length, a.length)}))
-                        console.log(url)
-                        file.innerHTML += `<img src="${url}">`
-                        file.setAttribute("ondblclick", `parent.loadApp('paint', undefined, '${a.replace("\'", "\\\'")}')`)
-                    }
-                    else if (a.toLowerCase().endsWith(".flac") || a.toLowerCase().endsWith(".wav") || a.toLowerCase().endsWith(".mp3") || a.toLowerCase().endsWith(".mp4") || a.toLowerCase().endsWith(".avi") || a.toLowerCase().endsWith(".ogg") || a.toLowerCase().endsWith(".webm")){
-                        a = currentPath + "/" + a
-                        file.innerHTML += `<img src="media.png">`
-                        file.setAttribute("ondblclick", `parent.loadApp('wmplayer', undefined, '${a.replace("\'", "\\\'")}')`)
-                    }
-                    else if (a.toLowerCase().endsWith(".html")){
-                        a = currentPath + "/" + a
-                        file.innerHTML += `<img src="file.png">`
-                        file.setAttribute("ondblclick", `parent.loadApp('iexplore', undefined, '${a.replace("\'", "\\\'")}')`)
-                    }
-                    else if (a.toLowerCase().endsWith(".ca") || a.toLowerCase().endsWith(".js")){
-                        a = currentPath + "/" + a
-                        file.innerHTML += `<img src="file.png">`
-                        file.setAttribute("ondblclick", `parent.loadScript('${a.replace("\'", "\\\'")}')`)
-                    }
-                    else {
-                        a = currentPath + "/" + a
-                        file.innerHTML += `<img src="file.png">`
-                        file.setAttribute("ondblclick", `parent.loadApp('notepad', undefined, '${a.replace("\'", "\\\'")}')`)
-                    }
-                    const newfpath = (' ' + a).substring(1)
-                    file.oncontextmenu = (e) => {
-                        e.stopPropagation(); 
-                        const elemoffset = frameElement.getBoundingClientRect();
-                        console.log(newfpath)
-                        parent.contextMenu(e, [
-                            ['', 'Delete', () => parent.fs.deleteFile(newfpath).then(openFolder(currentPath))],
-                            ['./iframes/notepad/icon.png', 'Open with Notepad', () => parent.loadApp("notepad", "", newfpath)]
-                        ], e.clientX + elemoffset.x, e.clientY + elemoffset.y)
-                    }
-                    const textElem = document.createElement("div")
-                    textElem.innerHTML = htmlPath
-                    file.append(textElem)
-                    document.querySelector(".files").append(file)
-                }
-            }
-            async function openFolder(folderPath){
+            function changeNav(folderPath){
                 currentPath = folderPath
                 let folderNames = folderPath.split("/")
                 document.querySelector('.adressbar').innerHTML = ""
-                document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('')">/</div>`
+                document.querySelector('.adressbar').innerHTML += `<div onclick="fileView.showContents('')">/</div>`
                 let path = ""
                 for (const a of folderPath.split("/")){
                     if(!a) continue
                     path += "/" + a
-                    document.querySelector('.adressbar').innerHTML += `<div onclick="openFolder('${path}')">${a}/</div>`
+                    document.querySelector('.adressbar').innerHTML += `<div onclick="fileView.showContents('${path}')">${a}/</div>`
                 }
-                let files = await parent.fs.readdir(folderPath)
-                renderDir(files, folderPath)
             }
             function back(){
-                currentPath = ""
-                openFolder("")
+                fileView.showContents("")
             }
-            openFolder("")
+            fileView.onDirChange = (dir) => changeNav(dir)
+            fileView.showContents("")
         </script>
     </body>
 </html>

@@ -1,11 +1,4 @@
 if (!window.winda.iframes) window.winda.iframes = {
-    "bsod": {
-        "width": 600,
-        "height": 350,
-        "title": "Blue Screen of Death",
-        "icon": "icon.png",
-        "window": true
-    },
     "calc": {
         "width": 212,
         "height": 284,
@@ -21,13 +14,6 @@ if (!window.winda.iframes) window.winda.iframes = {
         "icon": "icon.png",
         "window": true
     },
-    "cmd": {
-        "width": 500,
-        "height": 500,
-        "title": "Command Prompt",
-        "icon": "icon.png",
-        "window": true
-    },
     "control": {
         "width": 500,
         "height": 500,
@@ -37,15 +23,6 @@ if (!window.winda.iframes) window.winda.iframes = {
         "noGUI": true,
         "titleBarHeight": 30,
         "hideTitle": true
-    },
-    "dvd": {
-        "width": 400,
-        "height": 200,
-        "title": "DVD",
-        "icon": "",
-        "window": true,
-        "xOnly": true,
-        "noResize": true
     },
     "ExampleApp": {
         "width": 500,
@@ -96,13 +73,6 @@ if (!window.winda.iframes) window.winda.iframes = {
         "xOnly": true,
         "noResize": true
     },
-    "notepad": {
-        "width": 500,
-        "height": 500,
-        "title": "Notepad",
-        "icon": "icon.png",
-        "window": true
-    },
     "Okna8Mode": {
         "width": 300,
         "height": 500,
@@ -144,15 +114,6 @@ if (!window.winda.iframes) window.winda.iframes = {
         "bottom": 10,
         "left": 10
     },
-    "sfc": {
-        "width": 380,
-        "height": 400,
-        "title": "System program checker",
-        "icon": "icon.png",
-        "window": true,
-        "xOnly": true,
-        "noResize": true
-    },
     "taskbarproperties": {
         "width": 410,
         "height": 423,
@@ -184,7 +145,7 @@ if (!window.winda.iframes) window.winda.iframes = {
         "minWidth": 236,
         "minHeight": 236,
         "title": "Winda Media Player",
-        "icon": "",
+        "icon": "icon.png",
         "window": true
     }
 }

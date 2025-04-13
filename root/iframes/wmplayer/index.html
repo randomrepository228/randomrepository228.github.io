@@ -43,7 +43,7 @@
             const match = args.match(/.*\.(.*)/)
             if (!args.length == 2) thisWindow.remove();
             (async () => {
-                const videoURL = URL.createObjectURL(await parent.fs.readFile(args))
+                const videoURL = "../.." + args
                 video.addEventListener("loadedmetadata", () => {
                     if (!video.videoHeight) return
                     document.body.style.backgroundImage = "url(bg.png)"

@@ -175,9 +175,6 @@ input[type="checkbox"][disabled]:active + label:before{
     padding: 0;
     padding-top: 1px;
 }
-.window:hover{
-    cursor: default;
-}
 @keyframes close {
     0% {transform: none; opacity: 1;}
     100% {transform: perspective(400px) rotateY(2deg) rotateX(2deg) scale(0.95);opacity: 0;}
@@ -200,12 +197,9 @@ input[type="checkbox"][disabled]:active + label:before{
     transition: ease;
 }
 footer{
+    background-color: rgb(224, 224, 224);
     height: 40px;
     max-height: 40px;
-    display: flex;
-    justify-content: end;
-    background-color: rgb(224, 224, 224);
-    box-sizing: border-box;
     padding: 8px;
 }
 selecticon{
@@ -312,6 +306,7 @@ left img{
     left: 0;
     bottom: var(--taskbar-height);
     width: 505px;
+    min-height: 300px;
     height: max-content;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
@@ -333,6 +328,7 @@ input, textarea{
 input:focus, textarea:focus{
     border: 1px solid rgb(183, 217, 237);
     border-top-color: rgb(61, 123, 173);
+    outline: none
 }
 article[role=tabpanel]{
     background-color: white;
@@ -370,8 +366,8 @@ left {
     opacity: 0;
     width: 1px;
     height: 1px;
-    left: var(--snap-left);
-    top: var(--snap-top);
+    top: 10px;
+    left: 10px;
     border: 1px solid black;
     background-image: url(reflection.png);
     background-color: transparent;
@@ -381,7 +377,7 @@ left {
     background-size: 100vw 100vh;
     background-attachment: fixed;
     border-radius: 8px;
-    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5);
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,0.5), 0px 0px 8px 5px rgba(0, 0, 0, 0.35);
     z-index: 1;
 }
 #snapOutline.right{
@@ -390,8 +386,17 @@ left {
 #snapOutline.left, #snapOutline.right, #snapOutline.full{
     opacity: 1;
     transition: 0.2s linear;
-    height: calc(100% - var(--taskbar-height) - 12px);
+    height: calc(100% - 10px);
     top: 5px;
+}
+#snapOutline.left, #snapOutline.right{
+    width: calc(50% - 20px);
+}
+#snapOutline.right{
+    left: calc(50% + 10px)
+}
+#snapOutline.full{
+    width: calc(100% - 20px);
 }
 @keyframes dissapear {
     0%{opacity: 1;}
@@ -451,8 +456,11 @@ left {
 }
 .wrapper{
     position: relative;
+    color: transparent;
+    user-select: none;
+    min-width: 54px;
 }
-.wrapper::after{
+button.wrapper::after{
     content: "";
     position: absolute;
     display: block;
@@ -463,6 +471,8 @@ left {
     background-image: url(../../res/taskbar-btn.png);
     background-position: center 0;
     background-repeat: no-repeat;
+    border-image: none !important;
+    margin-top: -6px;
 }
 .wrapper:hover::after{
     background-position: center -54px;
@@ -535,4 +545,10 @@ left {
 }
 .tray{
     background-size: auto, auto, 100% 30%,0px 30%, 100vw 100vh;
+}
+.taskbar{
+    box-shadow: inset 0px 1px 0px 0px black, inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+    background-color: hsla(209, 68%, 50%, 0.15);
+    backdrop-filter: blur(5px);
+    outline-offset: 0;
 }

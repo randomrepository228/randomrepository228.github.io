@@ -1,0 +1,14 @@
+{
+    "UKR": {
+        "name": "Ukraine",
+        "culture": "Ukrainian",
+        "flag": "ukr.png",
+        "colour": "#dbdb02"
+    },
+    "RUS": {
+        "name": "Russia",
+        "culture": "Russian",
+        "flag": "rus.png",
+        "colour": "#0211b8"
+    }
+}

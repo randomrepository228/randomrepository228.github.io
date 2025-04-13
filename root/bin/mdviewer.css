@@ -1,0 +1,14 @@
+.kitaes-markdown h1, .kitaes-markdown h2{
+    color: black
+}
+.kitaes-markdown{
+    padding: 20px;
+}
+.kitaes-markdown pre{
+    border-radius: 3px;
+    border: 1px solid rgb(30,30,30);
+    background-color: rgb(60,60,60);
+    color: white;
+    white-space: pre-wrap;
+    width: fit-content;
+}

@@ -32,10 +32,14 @@
         </div>
         <div class="tabs">
             <div class="tabContainer">
+                <div class="tab active" onclick="ActivateTab('1')" id="Tab_1"><div></div></div>
             </div>
             <div class="newtab" onclick="NewTab()"><div><img src="" alt=""></div></div>
         </div>
         <div class="frames">
+            <div class="frame content" style="display:block" id="Frame_1">
+                <iframe src="about:blank" frameborder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+            </div>
         </div>
         <div class="header topbar-ext" ondblclick="parent.maximise(thisWindow)"></div>
         <script>
@@ -43,6 +47,16 @@
                 if(event.key === 'Enter'){
                     for (const a of document.querySelectorAll('.frame')){
                         if (a.style.display == 'block'){
+                            if (urlbar.value.startsWith("file://")){
+                                const url = urlbar.value.replace("file://", "")
+                                a.children[0].src = "../.." + url
+                                return
+                            }
+                            if (urlbar.value.startsWith("/")){
+                                urlbar.value = "file://" + urlbar.value
+                                a.children[0].src = "../.." + urlbar.value
+                                return
+                            }
                             if (!(urlbar.value.startsWith("http://") || urlbar.value.startsWith("https://"))){
                                 urlbar.value = "https://" + urlbar.value
                             }
@@ -51,7 +65,7 @@
                     }
                 }
             }
-            var FrameMaxID = 1
+            var FrameMaxID = 2
             let tab;
             function ActivateTab(FrameID) {
                 let tabs = document.querySelectorAll('.tabs .tab')
@@ -63,7 +77,7 @@
                 document.querySelector('#Frame_' + FrameID).style.display = 'block'
             }
             
-            function NewTab() {
+            function NewTab(url) {
                 NewFrameID = FrameMaxID
                 FrameMaxID++
                 let tabs = document.querySelectorAll('.tabs .tab')
@@ -74,34 +88,21 @@
                 `
                 document.querySelector('.frames').innerHTML += `
                     <div class="frame content" style="display:block" id="Frame_${NewFrameID}">
-                        <iframe onload="console.log(event)" src="about:blank" frameborder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+                        <iframe onload="console.log(event)" src="${url ? url : 'about:blank'}" frameborder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
                     </div>
                 `
             }
             const args = frameElement.getAttribute("args")
             if(args != "undefined") (async () => {
-                if(args.startsWith("/")){
-                    parent.fs.readFile(args.substring(1, args.length)).then((e) => {
-                        const url = URL.createObjectURL(e)
-                        NewFrameID = FrameMaxID
-                        FrameMaxID++
-                        let tabs = document.querySelectorAll('.tabs .tab')
-                        for (const a of tabs)
-                            a.className = "tab"
-                        document.querySelector('.tabContainer').innerHTML += `
-                            <div class="tab active" onclick="ActivateTab('${NewFrameID}')" id="Tab_${NewFrameID}"><div></div></div>
-                        `
-                        document.querySelector('.frames').innerHTML += `
-                            <div class="frame" style="display:block" id="Frame_${NewFrameID}">
-                                <iframe onload="console.log(event)" src="${url}" frameborder="0"></iframe>
-                            </div>
-                        `
-                    })
+                if(args.startsWith("/") || args.startsWith("file://")){
+                    NewTab("../.." + args)
+                    urlbar.value = "file://" + args
+                }
+                else{
+                    NewTab(args)
+                    urlbar.value = args
                 }
             })()
-            else{
-                NewTab()
-            }
         </script>
     </body>
 </html>

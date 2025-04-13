@@ -1,0 +1,23 @@
+{
+    "associations": {
+        ".png":{"icon": "self", "desc":"PNG image","program":"ifrm:paint"},
+        ".webp":{"icon": "self", "desc":"WEBP image","program":"ifrm:paint"},
+        ".gif": {"icon": "self", "desc":"GIF image","program":"ifrm:paint"},
+        ".bmp": {"icon": "self", "desc":"BMP image","program":"ifrm:paint"},
+        ".jpg": {"icon": "self", "desc":"JPEG image","program":"ifrm:paint"},
+        ".jpeg":{"icon": "self", "desc":"JPEG image","program":"ifrm:paint"},
+        ".ca":  {"icon": "builtin:file", "desc":"bcwd application","program":"scriptfile"},
+        ".txt": {"icon": "builtin:file", "desc":"Text file","program":"ifrm:notepad"},
+        ".md":  {"icon": "builtin:file", "desc":"Markdown file","program":"ifrm:notepad"},
+        ".mp4": {"icon": "builtin:media", "desc":"MP4 video","program":"ifrm:wmplayer"},
+        ".avi": {"icon": "builtin:media", "desc":"AVI video","program":"ifrm:wmplayer"},
+        ".webm":{"icon": "builtin:media", "desc":"WEBM video","program":"ifrm:wmplayer"},
+        ".wav": {"icon": "builtin:media", "desc":"WAVE audio","program":"ifrm:wmplayer"},
+        ".mp3": {"icon": "builtin:media", "desc":"MP3 audio","program":"ifrm:wmplayer"},
+        ".ogg": {"icon": "builtin:media", "desc":"Vorbis audio","program":"ifrm:wmplayer"},
+        ".flac":{"icon": "builtin:media", "desc":"FLAC audio","program":"ifrm:wmplayer"},
+        ".html":{"icon": "builtin:file", "desc":"HTML document","program":"ifrm:iexplore"},
+        ".htm": {"icon": "builtin:file", "desc":"HTML document","program":"ifrm:iexplore"}
+    }
+    
+}
