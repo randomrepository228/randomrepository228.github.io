@@ -11,7 +11,7 @@
         <script>
             const supportedthemes = ["classic", "aero", "basic"]
             function changeTheme(a){
-                theme.href = "../../res/" + a + "/style.css"
+                theme.href = "../../res/themes/" + a + "/style.css"
                 if (!supportedthemes.includes(a)) a = supportedthemes[0]
                 controlTheme.href = "./" + a + "/style.css"
             }

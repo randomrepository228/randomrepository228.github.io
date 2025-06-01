@@ -14,7 +14,7 @@ window.winda = {
     },
     changeTheme: (a) => {
         localStorage.theme = a
-        theme.href = "./res/" + a + "/style.css"
+        theme.href = "./res/themes/" + a + "/style.css"
         for (let i = 0; i < frames.length; i++) {
             frames[i].postMessage("theme|" + a, "*")
         }

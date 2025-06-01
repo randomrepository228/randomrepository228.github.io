@@ -2,6 +2,9 @@
 
 ----------
 
+## 1.0.1.1
+- Fixed themes not working properly
+
 ## 2025-06-01 (1.0.1)
 - Removed bottom right watermark
 - Removed new version popup

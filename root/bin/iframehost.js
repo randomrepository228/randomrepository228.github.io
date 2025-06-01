@@ -186,6 +186,10 @@ function main(args){ return new Promise(async (res, rej) => {
         iframe.src = path + "index.html"
         iframe.setAttribute("args", arg)
         iframe.frameBorder = 0
+        iframe.onload = () => {
+            iframe.contentWindow.localStorage = localStorage
+            iframe.contentWindow.postMessage("theme|" + localStorage.theme)
+        }
         //iframe.setAttribute("onload", "sendInfo(this)")
         iframeCont.appendChild(iframe)
         iframeCont.appendChild(document.createElement("ignore"))
@@ -219,6 +223,10 @@ function main(args){ return new Promise(async (res, rej) => {
             iframe.src = path + "index.html"
             iframe.frameBorder = 0
             iframe.setAttribute("args", arg)
+            iframe.onload = () => {
+                iframe.contentWindow.localStorage = localStorage
+                iframe.contentWindow.postMessage("theme|" + localStorage.theme)
+            }
             const wnd = new Winda7Window({
                 title: name, 
                 icon: "./iframes/Okna8Mode/apps/metro/" + packageName + "/AppLogo.png", 
