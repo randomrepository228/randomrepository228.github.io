@@ -1,0 +1,24 @@
+.right-bar{
+    margin-left: auto; 
+    margin-right: 0;
+}
+.window-tray{
+    min-width: 34px;
+    box-sizing: border-box;
+}
+.window-tray img{
+    height: 16px;
+    width: 16px;
+}
+.taskbar-btn{
+    bottom: -3px;
+}
+:root{
+    --taskbar-height: 28px;
+}
+.w-cl-time .tdate{
+    display: none;
+}
+.w-cl-time{
+    left: 23px;
+}

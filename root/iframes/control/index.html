@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="../../sys/windows.css">
-        <link rel="stylesheet" href="../../fonts/fonts.css">
-        <link rel="stylesheet" href="../../res/aero/style.css" id="theme">
+        <link rel="stylesheet" href="../../res/fonts/fonts.css">
+        <link rel="stylesheet" href="../../res/themes/aero/style.css" id="theme">
         <script src="../windowEvents.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
         <link rel="stylesheet" href="./aero/style.css" id="controlTheme">
@@ -91,7 +91,7 @@
                                 <div class="themelist">
                                     <div class="theme" ondblclick="parent.winda.changeTheme('aero')">
                                         <div class="images">
-                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img0" src="../../res/img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="602.png" style="border-radius: 7px; background-color: rgba(136, 227, 255, 0.5);">
                                         </div>
                                         <p>Windows 7</p>
@@ -101,21 +101,21 @@
                                 <div class="themelist">
                                     <div class="theme" ondblclick="parent.winda.changeTheme('basic')">
                                         <div class="images">
-                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img0" src="../../res/img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="603.png">
                                         </div>
                                         <p>Windows 7 (Basic)</p>
                                     </div>
                                     <div class="theme" ondblclick="parent.winda.changeTheme('classic')">
                                         <div class="images">
-                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img0" src="../../res/img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="604.png">
                                         </div>
                                         <p>Classic</p>
                                     </div>
                                     <div class="theme" ondblclick="parent.winda.changeTheme('notheme')">
                                         <div class="images">
-                                            <img class="img0" src="../../img/img0.jpg" style="max-width: 95px; max-height: 60px;">
+                                            <img class="img0" src="../../res/img/img0.jpg" style="max-width: 95px; max-height: 60px;">
                                             <img class="img1" src="605.png">
                                         </div>
                                         <p>No theme</p>
@@ -125,7 +125,7 @@
                             <table style="width: 100%;" id="ControlContentPersonalization_Table">
                                 <tbody>
                                     <tr style="height: 70px">
-                                        <td onclick="openSection('wallpaper')"><img src="../../img/img0.jpg" alt="" id="wallpaperpreview" style="max-height: 56px; max-width: 100px;"></td>
+                                        <td onclick="openSection('wallpaper')"><img src="../../res/img/img0.jpg" alt="" id="wallpaperpreview" style="max-height: 56px; max-width: 100px;"></td>
                                         <td><img src="602.png" alt="" style="height: 48px; width: 48px; border-radius: 5px; background-color: rgb(190, 240, 255);"></td>
                                         <td><img src="nosounds.png" alt=""></td>
                                         <td><img src="noscreensaver.png" alt=""></td>
@@ -238,7 +238,7 @@
                                     images.innerHTML += "<p>" + a + '</p>'
                                     for(c of info[a]){
                                         b.innerHTML += `
-<div class="wallpaperitem" ondblclick="parent.changeWallpaper('./img/img${c}.jpg')">
+<div class="wallpaperitem" ondblclick="parent.changeWallpaper('./res/img/img${c}.jpg')">
     <div class="images">
         <img class="img2" src="img-thumbs/img${c}_thumb.png">
     </div>

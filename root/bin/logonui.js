@@ -1,7 +1,7 @@
 function main(args){ return new Promise(async(res, rej) => {
     let logonUIBody = document.createElement("div")
     logonUIBody.className = "logonui"
-    logonUIBody.innerHTML = `<link rel="stylesheet" href="./sys/logonui.css">
+    logonUIBody.innerHTML = `<link rel="stylesheet" href="./bin/logonui.css">
 <div class="logonui-users-container">
     <div class="user" onclick="login()">
         <div class="user-profile-container">

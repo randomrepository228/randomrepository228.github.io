@@ -171,10 +171,10 @@ select:focus{
     background-color: transparent;
 }
 .start-option:hover{
-    background-image: url("../res/basic-aero/startmenuitemleft/hover/left.png"), url("../res/basic-aero/startmenuitemleft/hover/right.png"), url("../res/basic-aero/startmenuitemleft/hover/center.png");
+    background-image: url("../res/themes/basic-aero/startmenuitemleft/hover/left.png"), url("../res/themes/basic-aero/startmenuitemleft/hover/right.png"), url("../res/themes/basic-aero/startmenuitemleft/hover/center.png");
 }
 .start-option-right:hover{
-    background-image: url("../res/basic-aero/startmenuitemright/hover/left.png"), url("../res/basic-aero/startmenuitemright/hover/right.png"), url("../res/basic-aero/startmenuitemright/hover/center.png");
+    background-image: url("../res/themes/basic-aero/startmenuitemright/hover/left.png"), url("../res/themes/basic-aero/startmenuitemright/hover/right.png"), url("../res/themes/basic-aero/startmenuitemright/hover/center.png");
 }
 select{
     appearance: none;
@@ -206,7 +206,7 @@ table{
     border-collapse: collapse;
 }
 th{
-    background-image: url(../res/table-top.png);
+    background-image: url(../res/themes/basic-aero/table-top.png);
     background-size: 100% 100%;
     border-bottom: 1px solid rgb(200,200,200);
     border-right: 1px solid rgb(200,200,200);
@@ -235,7 +235,7 @@ input:focus{
 .menubar {
     width: 100%;
     min-height: 19px;
-    background-image: url("../res/menubar.png");
+    background-image: url(../res/themes/basic-aero/menubar.png);
     background-size: 100% min(19px, 100%);
     background-color: #E1E6F6;
     background-repeat: no-repeat;
@@ -256,7 +256,7 @@ input:focus{
     left: 0;
     top: 0;
     border: 4px solid transparent;
-    border-image: url(../res/menubar_hover.png) 4 fill;
+    border-image: url(../res/themes/basic-aero/menubar_hover.png) 4 fill;
     content: "";
 }
 
@@ -268,7 +268,7 @@ input:focus{
     left: 0;
     top: 0;
     border: 4px solid transparent;
-    border-image: url(../res/menubar_pressed.png) 4 fill;
+    border-image: url(../res/themes/basic-aero/menubar_pressed.png) 4 fill;
     content: "";
 }
 .details{
@@ -464,69 +464,6 @@ fieldset{
 legend{
     margin-left: -5px;
 }
-.progress-bar{
-    height: calc(100% - 13px);
-    width: calc(100% - 18px);
-    border: 9px solid transparent;
-    border-image-source: url(../res/progressbar.png);
-    border-image-repeat: stretch;
-    border-image-width: 7px 9px 6px 9px;
-    border-image-slice: 7 9 6 9 fill;
-    border-width: 7px 9px 6px 9px;
-    position: relative;
-}
-@keyframes marquee{
-    0%{
-        left: -127px;
-    }
-    100%{
-        left: calc(100% + 100px);
-    }
-}
-.progress-bar-marquee::after, .progress-bar-filled::after{
-    background-image: url(../res/progressbar_marquee.png);
-    background-size: 127px 100%;
-    content: "";
-    display: block;
-    height: calc(100% + 13px);
-    width: 127px;
-    margin-top: -7px;
-    position: absolute;
-    background-repeat: no-repeat;
-    animation: marquee 2s linear infinite;
-}
-.progress-bar-filled::after{
-    margin-left: -25px;
-}
-.progress-bar-marquee::after{
-    margin-left: -9px;
-}
-.progress-bar-filled{
-    height: calc(100% - 13px);
-    width: calc(100% - 68px);
-    border: 25px solid transparent;
-    border-image-source: url(../res/progressbar_filled.png);
-    border-image-repeat: stretch;
-    border-image-width: 7px 25px 6px 25px;
-    border-image-slice: 7 25 6 25 fill;
-    border-width: 7px 25px 6px 25px;
-}
-.progress-bar-filled, .progress-bar-marquee{
-    position: relative;
-}
-.progress-bar-marquee::after{
-    background-image: url(../res/progressbar_marquee2.png);
-}
-.progress-bar-container{
-    overflow: hidden;
-    width: 100px;
-}
-.progress-bar-filled-container{
-    margin-left: -9px;
-    overflow: hidden;
-    margin-top: -7px;
-    height: calc(100% + 13px);
-}
 .select{
     display: flex;
     justify-content: space-between;
@@ -565,7 +502,7 @@ menu[role=tablist] {
     text-indent: 0
 }
 .button[role="tab"]{
-    background-image: url(../res/tabitem.png);
+    background-image: url(../res/themes/basic-aero/tabitem.png);
     background-size: 100% 100%;
     background-color: white;
     padding-left: 3px;
@@ -573,7 +510,7 @@ menu[role=tablist] {
 }
 .button[role="tab"]:hover{
     border-color: #3C7FB1;
-    background-image: url(../res/tabitem_hover.png);
+    background-image: url(../res/themes/basic-aero/tabitem_hover.png);
 }
 .button[role="tab"][aria-selected="true"]:hover{
     border: 1px solid rgb(137,140,149);

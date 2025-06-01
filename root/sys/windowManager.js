@@ -34,8 +34,8 @@ window.Winda7Window = class{
         if (!options.layout) throw new Error("can't create a window without window info")
         if (localStorage.maximiseWindows == "true" && !options.noResize) newWindow.classList.add("maximised")
         if (options.ispopup){
-            this.x = (innerWidth / 2 ) - (options.width) / 2 + "px"
-            this.y = (innerHeight / 2 ) - (options.height) / 2 + "px"
+            this.x = (innerWidth / 2 ) - (options.width) / 2
+            this.y = (innerHeight / 2 ) - (options.height) / 2
         }
         else{
             if (typeof options.top === "number") this.y = options.top
@@ -364,9 +364,9 @@ function findWindowBy(type, val){
 // if (!(localStorage.dontGroupIcons == "true"))
 //     groupicons.href = ""
 // else
-//     groupicons.href = './shell/dont_group_icons.css'
+//     groupicons.href = './bin/shell/dont_group_icons.css'
 // if (localStorage.useSmallTaskbar == "true")
-//     smalltaskbar.href = "./shell/small_taskbar_icons.css"
+//     smalltaskbar.href = "./bin/shell/small_taskbar_icons.css"
 // else
 //     smalltaskbar.href = ''
 windows.style.backgroundSize = "100% 100%"
@@ -392,13 +392,13 @@ async function msgbox(title, content, buttons, type, p){
             msgboxImage.style.height = "32px"
             msgboxElem.appendChild(msgboxImage)
             if (type == "error"){
-                new Audio("./media/Windows Critical Stop.flac").play()
+                new Audio("./res/media/Windows Critical Stop.flac").play()
             }
             if (type == "info"){
-                new Audio("./media/Windows Error.flac").play()
+                new Audio("./res/media/Windows Error.flac").play()
             }
             if (type == "warning"){
-                new Audio("./media/Windows Exclamation.flac").play()
+                new Audio("./res/media/Windows Exclamation.flac").play()
             }
         }
         const text = document.createElement("div")
@@ -406,7 +406,6 @@ async function msgbox(title, content, buttons, type, p){
         text.style.margin = "8px"
         text.style.marginBottom = "8px"
         msgboxElem.appendChild(text)
-        let footer = document.createElement("footer")
         let wnd = new Winda7Window({
             title: title, 
             id: getId(), 
@@ -418,6 +417,7 @@ async function msgbox(title, content, buttons, type, p){
             ispopup: true,
             noResize: true
         })
+        let footer = document.createElement("footer")
         for (btn of buttons){
             let button = document.createElement("button")
             button.innerText = btn
@@ -610,8 +610,8 @@ function windowSelectHandler(window){
 }
 function minimiseAll(){
     for (const wnd of wm.windows){
-        if (wnd.options.noMinimise) return
-        wnd.windowElem.className += " minimised"
+        if (!wnd.options.layout.titlebar.buttons.min) continue
+        wnd.minimise()
     }
     setInactive()
 }
@@ -982,6 +982,43 @@ ui.FileView = class{
             arr.push(a.children[1].innerText)
         }
         return arr
+    }
+}
+ui.ProgressBar = class{
+    constructor(type){
+        this.type = type
+        const container = document.createElement("div")
+        this.elem = container
+        container.className = "progress-bar-container"
+        container.style.width = "300px"
+        container.style.margin = "10px"
+        container.style.height = "20px"
+        if (type) {
+            const progress = document.createElement("div")
+            progress.className = "progress-bar"
+            const filledCont = document.createElement("div")
+            filledCont.className = "progress-bar-filled-container"
+            const filled = document.createElement("div")
+            this.filled = filledCont
+            filled.className = "progress-bar-filled"
+            filledCont.append(filled)
+            progress.append(filledCont)
+            container.append(progress)
+            this.percent = 0
+        }
+        else{
+            const marquee = document.createElement("div")
+            marquee.className = "progress-bar progress-bar-marquee"
+            container.append(marquee)
+        }
+    }
+    get percent(){
+        return this._p
+    }
+    set percent(val){
+        if (typeof val !== "number") throw new TypeError("Cannot assign a non-number value to a number parameter")
+        this.filled.style.width = `calc(${val}% + ${Math.round(val / 100 * 17)}px)`
+        this._p = val
     }
 }
 function createMenuBar(items){

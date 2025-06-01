@@ -1,0 +1,59 @@
+:root{
+    --titlebar-bg: gray;
+}
+text > iframe{
+    height: 100%;
+}
+.topbar{
+    height: 30px;
+    background-color: gray;
+    display: flex;
+    justify-content: space-between;
+}
+.topbar > .buttons{
+    height: 100%;
+    display: flex;
+}
+.topbar > .buttons > *{
+    height: 100%;
+    width: 30px;
+}
+.topbar > .buttons > .x{
+    background-color: red;
+}
+.topbar > .buttons > .dash{
+    background-color: green;
+}
+.topbar > .buttons > .square{
+    background-color: yellow;
+}
+.topbar > left{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.topbar > left > img{
+    max-height: 100%;
+}
+.topbar > left > p{
+    width: max-content;
+}
+.window.closing{
+    display: none;
+}
+.topbar-ext{
+    background: var(--titlebar-bg);
+}
+.content{
+    background-color: white;
+}
+.content, .contentnostyle {
+    flex-grow: 1
+}
+.taskbar{
+    background-color: gray;
+}
+.startbutton{
+    width: fit-content;
+    min-width: 40px;
+}

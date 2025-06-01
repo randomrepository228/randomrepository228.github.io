@@ -34,8 +34,8 @@ const boot = {
         catch(e){
             boot.log(`${a} Failed to load\n`)
             boot.log(e)
-            console.error(e)
-            return 1
+            boot.log("\n")
+            throw e
         }
         boot.log(a + " Loaded\n")
     },
@@ -46,7 +46,7 @@ const boot = {
         }
     },
     bootFiles: {"sys/kernel.js": undefined, "sys/runscript.js": undefined, "sys/windowManager.js": undefined, "sys/jszip.js": undefined},
-    installImage: async function(imagePath){
+    installImage: async function(imagePath, onprogress){
         boot.firstBoot = true
         if (!imagePath) imagePath = "install.zip" + (boot.params.cachekiller ? "?" + Math.random() : "")
         let file = false;
@@ -65,8 +65,7 @@ const boot = {
         tFiles = 0
         boot.log("Decompressed files: ", decompFiles, "/", totalFiles, "\n")
         unzip.onfile = (file) => {
-            tFiles++
-            totalFiles.innerText = tFiles
+            if (onprogress) onprogress({"type": "file", "data": dFiles})
             const pDir = file.name.substring(0, file.name.lastIndexOf("/") + 1) + "."
             if (!dirList.includes(pDir)){
                 dirList.push(pDir)
@@ -76,27 +75,43 @@ const boot = {
             file.ondata = (err, data, end) => {
                 fileData.push(data)
                 if (end){
+                    if (file.name === "fileAmount"){
+                        const amount = +(new TextDecoder().decode(data))
+                        if (onprogress) onprogress({"type": "fileAmount", "data": amount})
+                        tFiles = amount
+                        return
+                    }
                     fileQueue[file.name] = new Blob(fileData)
                     dFiles++
                     decompFiles.innerText = dFiles
                 }
             }
+            totalFiles.innerText = tFiles
+            tFiles++
             file.start()
         }
         const fileStream = await fetch(imagePath);
-        const progress = {total: +fileStream.headers.get("Content-Length"), loaded: 0}
+        const fileSize = +fileStream.headers.get("Content-Length")
+        if (onprogress) onprogress({"type": "size", "data": fileSize})
+        const progress = {total: fileSize, loaded: 0}
         const loaded = document.createElement("span")
         boot.log("Downloading system image: ", loaded, "/" + Math.floor(progress.total / 10000) / 100 + "MB\n")
-        for await (const chunk of fileStream.body) {
-            unzip.push(chunk)
-            progress.loaded += chunk.length
+        const reader = fileStream.body.getReader();
+        while (true) {
+            const { done, value } = await reader.read();
+            unzip.push(value ? value : new Uint8Array(), done)
+            progress.loaded += done ? 0 : value.length
+            if (onprogress) onprogress({"type": "download", "data": progress.loaded})
             loaded.innerText = Math.floor(progress.loaded / 10000) / 100
+            if (done) break
         }
-        unzip.push(new Uint8Array(0), true)
         for (const a of dirList){
             fileQueue[a] = ""
         }
         await fs.batchWrite(Object.entries(fileQueue))
+        if (onprogress) onprogress({"type": "end"})
+        const ver = await fs.readFile("ver", "utf-8")
+        boot.ver = ver
     },
     params: Object.fromEntries(new URLSearchParams(location.search)),
     init: async function(){
@@ -134,7 +149,11 @@ const boot = {
         }
         await fs.waitUntilInit()
         let isSystemInstalled = await fs.exists("ver")
-        if (isSystemInstalled) if (await fs.readFile("ver", "utf-8") != await (await fetch("./ver")).text()) isSystemInstalled = false
+        if (isSystemInstalled) {
+            const ver = await fs.readFile("ver", "utf-8")
+            if (ver.startsWith("v")) boot.ver = ver
+            else isSystemInstalled = false
+        }
         if (!isSystemInstalled){
             await boot.installImage()
         }

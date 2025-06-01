@@ -1,4 +1,3 @@
-localStorage.ver = "Prerelease 3"
 window.loop = {drag: false, top: false, left: false, right: false, bottom: false};
 window.activewindow = 0;
 window.activetray = 0;
@@ -30,12 +29,10 @@ window.lastPID = 0
 window.windowInfo = []
 window.keysPressed = {"shift": false, "ctrl": false, "alt": false}
 if (!localStorage.theme) localStorage.theme = "aero"
-theme.href = "./res/" + localStorage.theme + "/style.css"
+theme.href = "./res/themes/" + localStorage.theme + "/style.css"
 if (!localStorage.volume) localStorage.volume = 50
-if (!localStorage.wallpaper) localStorage.wallpaper = "./img/img0.jpg"
+if (!localStorage.wallpaper) localStorage.wallpaper = "./res/img/img0.jpg"
 if (!localStorage.wallpaperstretch) localStorage.wallpaperstretch = "stretch"
-if (!localStorage.sounds) localStorage.sounds = '{"msgbox": "./media/Windows Exclamation.flac"}'
-sounds = JSON.parse(localStorage.sounds)
 let ctmContainer = document.createElement("div")
 window.contextMenuElement = ctmContainer
 document.body.appendChild(ctmContainer)
@@ -127,53 +124,30 @@ function logoff(){
     }
     leftBar.innerHTML = ""
     winda.shell.startMenu(false)
-    winda.playSound('./media/Windows Logoff Sound.flac'); 
+    winda.playSound('./res/media/Windows Logoff Sound.flac'); 
 }
 async function desktopInit(){
     if (!window.config){
         window.config = JSON.parse(await fs.readFile("config/system", "utf-8"))
     }
-    changeWallpaper(localStorage.wallpaper, true, true).then(() => {
-        findWindowBy("title", "LogonUI").hide();
-        document.querySelector(".logonui-users-container").style.display = "";
-        document.querySelector(".logonui-status").style.display = "none";
-        loadScript("bin/shell.js")
-        if (init) return
-        if (!window.move){
-            msgbox("Window Manager", "Overlapping Window Manager is not found. Using fullscreen windows instead")
-        }
-        init = true
-        const msg = document.createElement("div")
-        const title = document.createElement("h1")
-        title.innerText = "Welcome to " + localStorage.ver + "!"
-        msg.append(title)
-        const changeList = document.createElement("ul")
-        function addNew(text){
-            const newChange = document.createElement("li") 
-            newChange.innerText = text
-            changeList.append(newChange)
-        }
-        addNew("Full Filesystem Integration")
-        msg.append(changeList)
-        if(!localStorage.prevver || localStorage.prevver != localStorage.ver){
-            msgbox("New update", msg.innerHTML)
-            localStorage.prevver = localStorage.ver
-            return;
-        }
-    })
     setWallpaperStretch(localStorage.wallpaperstretch)
     document.querySelector(".logonui-users-container").style.display = "none";
     document.querySelector(".logonui-status").style.display = "";
-    // initShellIcons()
+    await changeWallpaper(localStorage.wallpaper, true, true)
+    findWindowBy("title", "LogonUI").hide();
+    document.querySelector(".logonui-users-container").style.display = "";
+    document.querySelector(".logonui-status").style.display = "none";
+    loadScript("bin/shell.js")
+    loadScript("bin/update.js")
+    init = true
 }
 async function login(user, password){
-    
     if (!init) await desktopInit();
     else{
         findWindowBy("title", "LogonUI").hide();
         document.querySelector(".explorer").style.display = "";
     }
-    winda.playSound('./media/Windows Logon Sound.flac'); 
+    winda.playSound('./res/media/Windows Logon Sound.flac'); 
 }
 async function changeWallpaper(wallpaperpath, nochange, nosplash){
     try{
@@ -185,7 +159,7 @@ async function changeWallpaper(wallpaperpath, nochange, nosplash){
             const s = await fs.downloadFile(wallpaperpath.substring(2), "blob")
             wallpaperpath = URL.createObjectURL(s)
             if (!nosplash){
-                let audio = new Audio('../media/Windows Logon Sound.flac')
+                let audio = new Audio('../res/media/Windows Logon Sound.flac')
                 audio.oncanplay = () => {
                     audio.play()
                     changethemesplash.style.display = ""
@@ -239,4 +213,4 @@ class Icon {
         this.title = title;
     }
 }
-boot.log("Welcome to Winda7\n(c) kitaes, 2025\n")
+boot.log("Welcome to Winda7 [Version " + boot.ver + "]\n(c) kitaes, 2025\n")

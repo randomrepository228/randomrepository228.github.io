@@ -1,7 +1,0 @@
-.window-tray > p{
-    display: block;
-}
-.window-tray{
-    justify-content: flex-start;
-    width: 141px;
-}

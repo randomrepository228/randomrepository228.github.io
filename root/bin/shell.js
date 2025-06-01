@@ -84,7 +84,7 @@ async function main(args){
                     </div>
                     <div>
                         <div class="clockcontainer">
-                            <img src="shell/shellres.png" style="object-position: -134px 0;">
+                            <img src="./shellres.png" style="object-position: -134px 0;">
                             <time class="clock">
                                 <span class="h"></span>
                                 <span class="m"></span>
@@ -132,7 +132,7 @@ async function main(args){
             }]
         ], e.clientX, e.clientY)
     }
-    shellContainer.innerHTML = `<link rel="stylesheet" href="./shell/shell.css"><bottomright>Winda7<br>Version ${localStorage.ver}</bottomright>`
+    // shellContainer.innerHTML = `<link rel="stylesheet" href="./bin/shell/shell.css"><bottomright>Winda7<br>Version ${boot.ver}</bottomright>`
     shellContainer.prepend(fileView.elem)
     const iconsWnd = new Winda7Window({
         inset: "0", 
@@ -211,7 +211,7 @@ async function main(args){
             }
         };
         leftBarElem.onmousemove = (event) => winda.shell.hovereffect(event,leftBarElem)
-        leftBarElem.innerHTML += `<img src="${item.icon}" onerror="this.src = './res/app.png'"><p>${item.title}</p>`
+        leftBarElem.innerHTML += `<img src="${item.icon}" onerror="this.src = './res/icons/app.png'"><p>${item.title}</p>`
         leftBarElem.id = item.id
         leftBar.appendChild(leftBarElem)
         const imgEl = leftBarElem.querySelector("img")

@@ -94,7 +94,9 @@ self.addEventListener('fetch', async (event) => {
         if (!fs.isLoaded) await fs.waitUntilInit()
         const url = event.request.url.replace(self.registration.scope, "")
         if (fs.cache[url]) return new Response(fs.cache[url])
-        if (!await fs.exists(url)) return fetch(event.request.url)
+        if (event.request.destination === "document" && fs.cache[url + "/index.html"]) return new Response(fs.cache[url + "/index.html"])
+        if (event.request.destination === "document" && await fs.exists(url + "/index.html")) return new Response(await fs.readFile(url + "/index.html"))
+        if (url === "ver" || !await fs.exists(url)) return fetch(event.request.url)
         const data = await fs.readFile(url)
         return new Response(data)
     }

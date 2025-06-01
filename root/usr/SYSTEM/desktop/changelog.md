@@ -2,6 +2,15 @@
 
 ----------
 
+## 2025-06-01 (1.0.1)
+- Removed bottom right watermark
+- Removed new version popup
+- Fixed installation not working in some browsers
+- Fixed minimise all button
+- Added update service
+- Slightly changed file structure
+This update took 3 days to make
+
 ## 2025-04-13 (1.0)
 - Added Drag and Drop
 - Added Markdown viewer
@@ -59,7 +68,7 @@
 - Added control panel and Verbose boot
 - Added LocalStorage editor
 - Added Window minimize and uniminimize using taskbar, minimize all windows
-- Added Aero SNap
+- Added Aero Snap
 
 ## 2023-10-28
 - Fixed window restart bug when new windows are created

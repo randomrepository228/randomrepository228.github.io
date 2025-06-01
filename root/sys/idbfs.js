@@ -183,7 +183,7 @@ fs.writeFile = function(filePath, data, options){ return new Promise(async (reso
     const t = fs.req("readwrite")
     t.put({path: filePath, data: data, modifiedAt: modifiedAt})
     fs.cache[filePath] = data
-    fs.serviceWorker.postMessage({type: "fsCache", path: filePath, data: data})
+    if (fs.serviceWorker) fs.serviceWorker.postMessage({type: "fsCache", path: filePath, data: data})
     dispatchEvent(new CustomEvent("filechange", {detail: {filename: filePath}}))
     resolve(0)
     request.onerror = (e) => {resolve(3)}
@@ -384,7 +384,7 @@ request.onsuccess = async (e) => {
     //     await fs.writeFile("folderTable", {})
     // }
     if (!await fs.exists("config/localStorage")) {
-        await fs.writeFile("config/localStorage", {})
+        await fs.writeFile("config/localStorage", "{}")
         fs.localStorage = {}
     }
     else{
@@ -435,11 +435,9 @@ request.onsuccess = async (e) => {
             fs.localStorage[prop] = value
         },
         getItem(key) {
-            if (!key) throw new Error("0 arguments passed, 1 required")
             return fs.localStorage[key]
         },
         setItem(key, value) {
-            if (!key) throw new Error("0 arguments passed, 1 required")
             if (typeof value === "object") value = JSON.parse(value)
             else if (typeof value !== "string") value = value + ""
             fs.localStorage[key] = value

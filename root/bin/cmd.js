@@ -5,7 +5,7 @@ async function cMain(print, input, consoleoutput, args){
     function numberWithSpaces(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
-    print(`Winda7 [Build ${localStorage.ver}]`)
+    print(`Winda7 [Build ${boot.ver}]`)
     print("(c) kitaes, 2024. All rights reserved")
     for(;;) {
         let tinp = (await input(currentPath + "/>")).split(" ");
