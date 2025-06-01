@@ -667,7 +667,6 @@ input[type=submit]:disabled {
 }
 .window{
     position: absolute;
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     touch-action: none;
@@ -1420,7 +1419,7 @@ table>tbody>tr>* {
 .start-option-right:hover{
     color: white;
 }
-#contextMenuElement{
+.context-menu{
     background: silver;
     box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
     padding: 2px;
@@ -1497,4 +1496,13 @@ menu[role="tablist"]{
 }
 textarea, .sunken-panel{
     margin: 2px;
+}
+.startbutton{
+    font-size: 0px;
+}
+.startbutton::after{
+    font-size: 12px;
+}
+.start-menu-action .action {
+    color: black;
 }

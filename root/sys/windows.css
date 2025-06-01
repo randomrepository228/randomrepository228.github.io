@@ -439,7 +439,6 @@ text{
     box-shadow: none;
 }
 .context-menu-option{
-    width: calc(100% - 15px);
     height: 21px;
     margin: 1px;
     display: flex;

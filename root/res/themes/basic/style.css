@@ -364,8 +364,11 @@ input:focus, textarea:focus{
 }
 .wrapper{
     position: relative;
+    color: transparent;
+    user-select: none;
+    min-width: 54px;
 }
-.wrapper::after{
+button.wrapper::after{
     content: "";
     position: absolute;
     display: block;
@@ -376,6 +379,8 @@ input:focus, textarea:focus{
     background-image: url(../basic-aero/taskbar-btn.png);
     background-position: center 0;
     background-repeat: no-repeat;
+    border-image: none !important;
+    margin-top: -6px;
 }
 .wrapper:hover::after{
     background-position: center -54px;
@@ -457,4 +462,10 @@ input:focus, textarea:focus{
     height: calc(100% + 13px);
     width: min-content;
     margin-bottom: -6px;
+}
+.taskbar{
+    box-shadow: inset 0px 1px 0px 0px black, inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+    background-color: hsla(209, 68%, 50%, 0.15);
+    backdrop-filter: blur(5px);
+    outline-offset: 0;
 }
