@@ -1,0 +1,16 @@
+.winda-window > .titlebar > .buttons > .min{
+    background-color: rgb(0,100,255);
+}
+.winda-window > .titlebar > .buttons > .max{
+    background-color: rgb(0,100,255);
+}
+.winda-window > .titlebar > .buttons > .close{
+    background-color: rgb(255,0,0);
+}
+.winda-window > .titlebar > .buttons > *{
+    border: 1px solid black;
+}
+.winda-taskbar{
+    background-color: rgba(0,0,0,0.5) !important;
+    color: white !important;
+}

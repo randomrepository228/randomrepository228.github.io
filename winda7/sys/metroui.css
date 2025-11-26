@@ -1,0 +1,453 @@
+@keyframes fade-in {
+    0%{opacity: 0}
+    100%{opacity: 1}
+}
+@keyframes fade-out {
+    0%{opacity: 1}
+    100%{opacity: 0}
+}
+@keyframes fade-out-delayed {
+    0%{opacity: 1}
+    75%{opacity: 1}
+    100%{opacity: 0}
+}
+@keyframes expand{
+    0%{
+        scale: 0.95;
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100%{
+        scale: 1;
+        opacity: 1;
+    }
+}
+@keyframes shrink{
+    0%{
+        scale: 1;
+        opacity: 1;
+    }
+    100%{
+        scale: 0.7;
+        opacity: 0;
+    }
+}
+@keyframes StartOpenTilesContainerAnim {
+    0% {
+        scale: 0.9;
+        /* opacity: 0; */
+    }
+
+    100% {
+        scale: 1;
+        /* opacity: 1; */
+    }
+}
+@keyframes ColumnAppear {
+    0%{
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes startbutton{
+    0%{}
+    100%{background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);}
+}
+@keyframes previewshrink{
+    0%{
+        transform: translate(0) scale(1)
+    }
+    100%{
+        transform: translate(var(--pos), -25%) scale(0.4);
+    }
+}
+:root{
+    --metro-grey: rgb(17,17,17);
+    --metro-start-color: rgb(24, 0, 82);
+    --metro-accent-color: #543500;
+}
+.metroui-container{
+    position: absolute;
+    inset: 0;
+    background-color: var(--metro-start-color);
+    font-family: system-ui;
+}
+.metroui-start-menu{
+    position: absolute;
+    inset: 0;
+    user-select: none;
+    animation: fade-in 0.1s ease-in-out forwards;
+    background-color: var(--metro-start-color);
+    z-index: 2;
+}
+.metroui-start-menu > .title::after{
+    left: 119px;
+    top: 50px;
+    font-size: 55px;
+    line-height: 55px;
+    content: "Start";
+    font-weight: 100;
+    position: absolute;
+    animation: fade-in 0.25s ease-in-out forwards;
+}
+.metroui-start-menu > .tile-container{
+    position: absolute;
+    left: 119px;
+    top: 210px;
+    right: 119px;
+    animation: StartOpenTilesContainerAnim 1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    display: flex;
+}
+.metroui-start-menu > .tile-container > .column{
+    max-width: 256px;
+    height: 520px;
+    margin-right: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    animation: ColumnAppear 0.3s ease-out;
+}
+.metroui-start-menu > .tile-container > .column > .tile, .metroui-container > .decoy-tile{
+    height: 120px;
+    width: 120px;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    position: relative;
+    box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1);
+    background: linear-gradient(90deg, var(--col-1) 0%, var(--col-2) 100%);
+    z-index: 99999;
+}
+.metroui-start-menu > .tile-container > .column > .tile > .icon, .metroui-container > .decoy-tile > .icon{
+    position: absolute;
+    inset: 0;
+}
+.metroui-start-menu > .tile-container > .column > .tile:active{
+    scale: 0.97;
+    transition: 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+.metroui-start-menu > .tile-container > .column > .tile.wide, .metroui-container > .decoy-tile.wide{
+    width: 248px;
+}
+.metroui-start-menu > .tile-container > .column > .tile.large, .metroui-container > .decoy-tile.large{
+    width: 248px;
+    height: 248px;
+}
+.metroui-start-menu > .tile-container > .column > .tile.small, .metroui-container > .decoy-tile.small{
+    width: 52px;
+    height: 52px;
+}
+.metroui-start-menu > .tile-container > .column > .tile > .title, .metroui-container > .decoy-tile > .title{
+    position: absolute;
+    bottom: 5px;
+    left: 15px;
+    color: white;
+    z-index: 1;
+    font-size: 12px;
+}
+.metroui-start-menu > .tile-container > .column > .tile > .livecontent{
+    position: absolute;
+    inset: 0;
+}
+.metroui-start-menu > .tile-container > .column > .tile:hover{
+                       /*rgb(24, 0, 82)*/
+    outline: 3px solid rgb(43,6,128);
+}
+.metroui-container > .decoy-tile{
+    position: absolute;
+}
+.metroui-start-menu.fade{
+    animation: fade-out-delayed 0.15s ease-in-out forwards;
+}
+.metroui-start-menu.fade > .title{
+    animation: fade-out 0.1s ease-in-out forwards;
+}
+.metroui-start-menu.fade > .tile-container{
+    animation: shrink 0.1s ease-in-out forwards;
+}
+.metroui-windows > .metro-app{
+    position: absolute;
+    inset: 0;
+}
+.metroui-windows > .metro-app.drag{
+    transform: translate(var(--pos), -25%) scale(0.4);
+    animation: previewshrink 0.2s ease-in-out forwards;
+}
+.metroui-windows > .metro-app.drag > .titlebar-container{
+    display: none;
+}
+.metroui-windows > .metro-app > .titlebar-container{
+    position: relative;
+    z-index: 100000;
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar-hover-helper{
+    height: 10px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar{
+    height: 30px;
+    position: absolute;
+    left: 0;
+    top: -30px;
+    right: 0;
+    background-color: var(--metro-grey);
+    transition: 0.2s ease-in-out;
+    user-select: none;
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar.hover{
+    top: 0;
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar > .title{
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    text-align: center;
+    font-size: 16px;
+    pointer-events: none;
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar > .icon{
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar > .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-image: url(./metroui/close.png);
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar > .close:hover{
+    background-color: rgb(224,67,67);
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar > .minimize{
+    position: absolute;
+    top: 0;
+    right: 30px;
+    width: 30px;
+    height: 30px;
+    background-image: url(./metroui/minimize.png);
+}
+.metroui-windows > .metro-app > .titlebar-container > .titlebar > .minimize:hover{
+    background-color: rgb(54,101,179);
+}
+.metroui-windows > .metro-app > .splash{
+    position: absolute;
+    inset: 0;
+    background-image: var(--image);
+    background-color: var(--color);
+    z-index: 99999;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.start-button-cont > .start-button-text{
+    display: none;
+}
+.start-button-cont > .start-button{
+    width: 40px;
+    background: url(./metroui/startbtn-small.png) center no-repeat;
+}
+/* .start-button-cont > .start-button::before{
+    position: absolute;
+    inset: 0;
+    content: "";
+    background: url(./metroui/startbtn-small.png) center no-repeat;
+    opacity: 1;
+    transition: 0.2s ease-in-out;
+}
+.start-button-cont > .start-button:hover::before{
+    opacity: 0;
+}
+.start-button-cont > .start-button:hover{
+    background-color: rgb(70,23,128);
+}
+.start-button-cont > .start-button::after{
+    transition: 0.2s ease-in-out;
+    position: absolute;
+    inset: 0;
+    content: "";
+    mask: url(./metroui/startbtn-mask-small.png) center no-repeat;
+    mask-composite: exclude;
+    background-color: var(--metro-grey);
+    opacity: 0;
+}
+.start-button-cont > .start-button:hover::after{
+    opacity: 1;
+}
+.start-button-cont > .start-button:active:hover::after{
+    background-color: rgb(68,68,68);
+    transition: none;
+}
+.start-button-cont{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.start-button-cont.smo{
+    opacity: 0;
+}
+.start-button-cont.smo:hover{
+    opacity: 1;
+} */
+.metroui-windows{
+    position: fixed;
+    inset: 0;
+}
+.metroui-windows > .metro-app > .content{
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.175);
+    display: flex;
+}
+.metroui-sidebar{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+.metroui-sidebar > .top{
+    height: 100px;
+    margin-top: 20px;
+}
+.metroui-sidebar > .top > .title{
+    height: 100px;
+    margin-left: 60px;
+    line-height: 100px;
+    font-size: 28px;
+    font-weight: 100;
+}
+.metroui-sidebar > .option{
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    padding-left: 60px;
+    font-size: 16px;
+}
+.metroui-sidebar > .option:hover{
+    background-color: rgba(255, 255, 255, 0.13);
+}
+@media(max-width: 1000px){
+    .metroui-sidebar{
+        width: 100%;
+    }
+}
+.metroui-windows > .metro-app > .content > .main{
+    background-color: white;
+    flex-grow: 1;
+}
+.metroui-windows > *{
+    display: none;
+}
+.metroui-windows > *.show{
+    display: block;
+}
+.metroui-container > .window-separator{
+    position: fixed;
+    width: 22px;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    background-color: var(--metro-grey);
+    cursor: col-resize;
+    display: none;
+    z-index: 1;
+}
+.metroui-container > .window-separator::after{
+    position: absolute;
+    inset: 0;
+    width: 6px;
+    height: 26px;
+    margin: auto;
+    mask: url(./metroui/window-separator.png) center no-repeat;
+    background-color: rgb(103,103,103);
+    content: ""
+}
+.metroui-flyouts > .charms-bar{
+    position: absolute;
+    width: 86px;
+    height: 100%;
+    right: 0;
+    background-color: var(--metro-grey);
+    box-sizing: border-box;
+    padding-top: 140px;
+}
+.metroui-flyouts > .charms-bar > .item{
+    height: 100px;
+    color: rgb(160,160,160);
+    position: relative;
+}
+.metroui-flyouts > .charms-bar > .item:hover{
+    background-color: rgb(51,51,51);
+}
+.metroui-flyouts > .charms-bar > .item:active{
+    background-color: rgb(68,68,68);
+}
+.metroui-flyouts > .charms-bar > .item > .image{
+    position: absolute;
+    background-image: var(--url);
+    width: 48px;
+    height: 48px;
+    top: 14px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.metroui-flyouts > .charms-bar > .item > .text{
+    position: absolute;
+    top: 65px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+.metroui-flyouts > .charms-bar > .item.start > .image{
+    background-image: none;
+    mask: var(--url);
+    background-color: var(--metro-accent-color);
+}
+.metroui-container > .windows-list{
+    position: absolute;
+    width: 189px;
+    height: 100%;
+    background-color: var(--metro-grey);
+}
+.metroui-flyouts{
+    inset: 0;
+    font-family: system-ui;
+}
+.metroui-flyouts > *{
+    z-index: 99999;
+}
+.metroui-flyouts > .start-button{
+    background: linear-gradient(var(--metro-grey), var(--metro-grey));
+    height: 30px;
+    width: 40px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: 0.1s ease-in-out;
+}
+.metroui-flyouts > .start-button > *{
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 16px;
+    height: 16px;
+}
+.metroui-flyouts > .start-button > .accent-color{
+    background-color: var(--metro-accent-color);
+}
+.metroui-flyouts > .start-button > .mask{
+    mask: url(metroui/startbtn-mask-small.png);
+    background: inherit
+}
+.metroui-flyouts > .start-button:hover{
+    opacity: 1;
+}
+.metroui-flyouts > .start-button:active{
+    background: linear-gradient(rgb(68,68,68), rgb(68,68,68));
+}

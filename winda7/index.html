@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Winda7</title>
+        <meta name="title" content="Winda7">
+        <meta property="og:title" content="Winda7">
+        <meta property="og:description" content="Winda7 is lightweight OS running in browser, which is made in JS">
+        <link rel="icon" href="./res/favicon.png" type="image/png"> 
+        <script defer src="sys/bootloader.js"></script>
+        <style>
+            @media (max-aspect-ratio: 1/1) {
+                #verboseBoot{
+                    font-size: 13px !important;
+                }
+            }
+            html, body{
+                margin: 0;
+                background-color: black;
+                color: white;
+            }
+            #bootloader{
+                scrollbar-width: none;
+                overflow: auto;
+            }
+            #bootloader::-webkit-scrollbar { 
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="bootloader" style="position: absolute; pointer-events: none; height: 100%; width: 100%">
+            <div id="verboseBoot" style="color: white; font-family: monospace; font-size: 15px; white-space: pre-wrap;"><noscript>Turn on Javascript to boot Winda7</noscript></div>
+        </div>
+    </body>
+</html>

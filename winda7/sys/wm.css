@@ -1,0 +1,72 @@
+:root{
+    --window-border: 5px;
+    --close-button-width: 40px;
+    --max-button-width: 30px;
+    --min-button-width: 30px;
+    --window-buttons-height: 25px;
+    --titlebar-height: 30px;
+    --titlebar-font-size: 15px;
+    --working-area: 0 0 30px 0;
+    --window-background: white;
+    --window-text: black;
+}
+body{
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+}
+.winda-windows{
+    position: absolute;
+    inset: var(--working-area);
+    display: flex;
+    align-items: flex-end;
+    font-family: sans-serif;
+    user-select: none;
+}
+.winda-window{
+    max-height: var(--titlebar-height);
+}
+.winda-window.thickframe{
+    padding: var(--window-border);
+    background-color: rgba(255,255,255,0.6);
+}
+.winda-window > .content{
+    background-color: var(--window-background);
+    color: var(--window-text);
+    display: none;
+    position: relative;
+}
+.winda-window.unminimized{
+    position: absolute;
+    max-height: none;
+}
+.winda-window.unminimized > .content{
+    display: block;
+}
+.winda-window > .titlebar{
+    height: calc(var(--titlebar-height) - var(--window-border));
+    line-height: calc(var(--titlebar-height) - var(--window-border) * 2);
+    font-size: var(--titlebar-font-size);
+    position: relative;
+}
+.winda-window > .titlebar > .buttons{
+    position: absolute;
+    top: calc(var(--window-border) * -1);
+    right: 0;
+}
+.winda-window > .titlebar > .buttons > *{
+    height: var(--window-buttons-height);
+    display: inline-block;
+}
+.winda-window > .titlebar > .buttons > .min{
+    width: var(--min-button-width);
+}
+.winda-window > .titlebar > .buttons > .max{
+    width: var(--max-button-width);
+}
+.winda-window > .titlebar > .buttons > .close{
+    width: var(--close-button-width);
+}
+input{
+    user-select: text;
+}

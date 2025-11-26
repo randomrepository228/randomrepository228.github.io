@@ -1,0 +1,7 @@
+{
+    "shell": "shell",
+    "locales": ["en-US"],
+    "startup": [
+        "shell"
+    ]
+}

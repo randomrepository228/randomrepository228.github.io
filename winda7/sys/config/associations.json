@@ -1,0 +1,76 @@
+{
+    "associations": {
+        "dir": {
+            "description": "Directory",
+            "iconGenerator": false,
+            "icon": "res/icons/dir.png",
+            "run": "filemgr"
+        },
+        "file": {
+            "description": "File \"%1\"",
+            "iconGenerator": false,
+            "icon": "res/icons/file.png",
+            "run": "openwith"
+        },
+        ".js": {
+            "description": "Executable file",
+            "iconGenerator": false,
+            "icon": "res/icons/file.png",
+            "run": "exec"
+        },
+        ".webp": {
+            "description": "WEBP Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".png": {
+            "description": "PNG Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".jpg": {
+            "description": "JPEG Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".jpeg": {
+            "description": "JPEG Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".bmp": {
+            "description": "Bitmap Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".tiff": {
+            "description": "TIFF Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".avif": {
+            "description": "AVIF Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".gif": {
+            "description": "GIF Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+        ".apng": {
+            "description": "Animated PNG Image",
+            "iconGenerator": "imageThumbGenerator",
+            "icon": "res/icons/image.png",
+            "run": "imageviewer"
+        },
+    }
+}

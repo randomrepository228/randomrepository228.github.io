@@ -1,0 +1,31 @@
+:root{
+    --taskbar-height-horizontal: 30px;
+}
+.winda-msgbox > text{
+    display: block;
+    padding: 20px;
+}
+.winda-taskbar{
+    position: absolute !important;
+}
+.winda-taskbar.top, .winda-taskbar.bottom{
+    height: var(--taskbar-height-horizontal);
+    left: 0;
+    right: 0;
+}
+.winda-taskbar.top{
+    bottom: calc(var(--taskbar-height-horizontal) * -1);
+}
+.winda-taskbar.bottom{
+    bottom: calc(var(--taskbar-height-horizontal) * -1);
+}
+.winda-taskbar.top > *, .winda-taskbar.bottom > *{
+    height: 100%;
+}
+.winda-taskbar > *{
+    display: inline-block;
+    line-height: var(--taskbar-height-horizontal);
+}
+.start-button-cont > .start-button{
+    height: 30px;
+}

@@ -1,0 +1,22 @@
+{
+    "groupName": "Aero",
+    "styles": {
+        "Aero": {
+            "css": [
+                "aero-ui.css",
+                "aero-shell.css",
+                "dwmwindow.css"
+            ],
+            "settings": {
+                "--aero-bg": "Aero color"
+            }
+        },
+        "Basic": {
+            "css": [
+                "aero-ui.css",
+                "aero-shell.css",
+                "basicwindow.css"
+            ]
+        }
+    }
+}
