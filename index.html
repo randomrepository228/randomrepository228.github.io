@@ -1,116 +1,37 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Рандомный репозиторий</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        *{
-            box-sizing: border-box;
-        }
-        @keyframes fadein{
-            0% {transform: scale(0.90); opacity: 0;}
-            100% {}
-        }
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            background-color: rgb(30,30,30);
-        }
-        .menu{
-            animation: 0.7s cubic-bezier(0.1, 0.9, 0.2, 1) fadein forwards;
-            position: absolute;
-            top: 5%;
-            left: 5%;
-            width: 90%;
-            height: 90%;
-            box-shadow: inset 0px 0px 0px 1px rgb(190, 190, 190), 0px 0px 20px 20px rgb(0, 78, 83);
-            display: flex;
-            flex-direction: column;
-        }
-        .menuitem{
-            flex-grow: 1;
-            width: 100%;
-            height: 25%;
-            background: linear-gradient(180deg, rgba(30,30,30,1) 0%, rgba(50,50,50,1) 100%);
-            border: 2px solid black;
-            display: flex;
-            align-items: center;
-            padding-left: 5%;
-            position: relative;
-        }
-        .menuitem::after{
-            content: "";
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            background-color: rgba(0,255,255,0.1);
-            z-index: 0;
-            opacity: 0;
-            transition: 0.2s ease-in-out;
-        }
-        .menuitem:hover::after{
-            opacity: 1;
-        }
-        .menuitem img{
-            height: min(50%, 10vh);
-            padding-right: 5%;
-            z-index: 1;
-        }
-        p{
-            color: white;
-            text-decoration: none;
-            font-size: 20px;
-            z-index: 1;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="menu">
-        <a class="menuitem" href="./root/">
-            <img src="winda7.png">
-            <p>Winda7</p>
-        </a>
-        <a class="menuitem" href="./snake/">
-            <img src="losingtrail.png">
-            <p>Losing trail</p>
-        </a>
-        <a class="menuitem" href="./user-agent/">
-            <img src="useragent.png">
-        </a>
-        <a class="menuitem" href="./counter/">
-            <img src="cps.png">
-        </a>
-    </div>
-    <script>
-        document.body.style.height = innerHeight + "px"
-        addEventListener("resize", () => document.body.style.height = innerHeight + "px")
-        let visibleElem
-        let links = document.querySelectorAll("a")
-        function openSite(elem){
-            elem.style.position = "absolute"
-            const pos = elem.getBoundingClientRect()
-            console.log(pos)
-            elem.style.left = pos.x + "px"
-            elem.style.top = pos.y + "px"
-            elem.style.margin = 0
-            let elemtext = elem.querySelector("p")
-            if (elemtext) elemtext.style.display = "none"
-            document.body.style.visibility = "hidden"
-            visibleElem = elem
-            elem.style.visibility = "visible"
-            elem.classList.toggle("opening")
-        }
-        for (a of links){
-            a.setAttribute("onclick", "openSite(this)")
-        }
-    </script>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <title>Winda7</title>
+        <meta name="title" content="Winda7">
+        <meta property="og:title" content="Winda7">
+        <meta property="og:description" content="Winda7 is lightweight OS running in browser, which is made in JS">
+        <link rel="icon" href="./res/favicon.png" type="image/png"> 
+        <script defer src="sys/bootloader.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5">
+        <style>
+            @media (max-aspect-ratio: 1/1) {
+                #verboseBoot{
+                    font-size: 13px !important;
+                }
+            }
+            html, body{
+                margin: 0;
+                background-color: black;
+                color: white;
+            }
+            #bootloader{
+                scrollbar-width: none;
+                overflow: auto;
+            }
+            #bootloader::-webkit-scrollbar { 
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="bootloader" style="position: absolute; pointer-events: none; height: 100%; width: 100%">
+            <div id="verboseBoot" style="color: white; font-family: monospace; font-size: 15px; white-space: pre-wrap;"><noscript>Turn on Javascript to boot Winda7</noscript></div>
+        </div>
+    </body>
 </html>
