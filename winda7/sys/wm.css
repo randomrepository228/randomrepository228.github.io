@@ -10,6 +10,9 @@
     --window-background: white;
     --window-text: black;
 }
+*{
+    touch-action: manipulation;
+}
 body{
     height: 100vh;
     overflow: hidden;
