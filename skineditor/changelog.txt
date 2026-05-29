@@ -1,0 +1,10 @@
+Build 1 - initial build
+Build 2 - added handle for moving layers
+Build 3 - Fixed: 
+    - colors not changing when you input a color
+    - incorrect color picker position
+    - color picker moving out of bounds
+    - errors when there are 0 layers
+    - moving handle not appearing immediately after adding a layer
+Build 4 - you can now rotate and resize layers with that handle, also fixed the bug with input
+1.0 - added loading screen and offline functionality

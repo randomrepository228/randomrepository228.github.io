@@ -1,0 +1,21 @@
+1 - Go down a layer
+2 - Go up a layer
+W or Up - Move layer up
+A or Left - Move layer left
+S or Down - Move layer down
+D or Right - Move layer right
+E - Rotate layer 45 degrees clockwise
+Q - Rotate layer 45 degrees counterclockwise
+N - Open new layer dialog
+R - Flip layer on X axis
+T - Flip layer on Y axis
+- - Shrink Layer
++ - Grow Layer
+F - Pick layer color
+G - Change layer shape
+Ctrl+X - Cut
+Ctrl+C - Copy
+Ctrl+V - Paste
+Alt+Up or Alt+W - Move layer up (in editor)
+Alt+Down or Alt+S - Move layer down (in editor)
+Alt+D or Del - Delete layer
