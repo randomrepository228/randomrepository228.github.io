@@ -8,3 +8,4 @@ Build 3 - Fixed:
     - moving handle not appearing immediately after adding a layer
 Build 4 - you can now rotate and resize layers with that handle, also fixed the bug with input
 1.0 - added loading screen and offline functionality
+1.0.1 - added mobile and pinch zoom support
