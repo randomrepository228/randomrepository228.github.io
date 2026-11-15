@@ -4,80 +4,16 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>kitaes software Website</title>
-	<style>
-	html{
-		font-family: sans-serif, system-ui;
-	}
-	body, html{
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-	}
-	.hdr{
-		height: 40px;
-		font-size: 32px;
-		line-height: 40px;
-		background: linear-gradient( darkred, red);
-		padding: 5px;
-		color: white;
-	}
-	.rst{
-		height: calc(100vh - 50px);
-		height: calc(100svh - 50px);
-		display: flex;
-	}
-	.rst > *{
-		height: 100%;
-	}
-	#sdb{
-		width: 200px;
-		background-color: rgba(127,127,127,0.2);
-	}
-	#cnt{
-		flex: 1;
-		padding: 20px;
-	}
-	#sdb > *{
-		width: 100%;
-		height: 35px;
-		line-height: 35px;
-		margin-left: 15px;
-	}
-	@media (max-width: 600px){
-		.rst{
-			flex-direction: column;
-		}
-		#sdb{
-			height: auto;
-			width: 100%;
-		}
-	}
-	#sdb > *{
-		margin: 0;
-		margin-left: 15px;
-		white-space: nowrap;
-		display: inline;
-	}
-	.slp{
-		color: black;
-		text-decoration: none;
-		pointer-events: none;
-	}
-	.hd{
-		display: none;
-	}
-	.mp{
-		line-height: 27px;
-		max-width: 1000px;
-	}
-	</style>
+	<meta property="og:title" content="kitaes software Website">
+	<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="0">
 	<div class="hdr">kitaes software</div>
-	<div class="rst">
+	<div class="rst nojs" id="main">
 		<div id="sdb">
 			<a href="" class="mp slp">Main Page</a>
-			<!-- <a href="" class="op">Some other page</a> -->
+			<a href="" class="sp js">Settings</a>
+			<a href="changelog.html" class="ch">Changelog</a>
 		</div>
 		<div id="cnt">
 			<div class="mp">
@@ -85,14 +21,16 @@
 				This is the website of kitaes software, a developer who
 				<ul>
 					<li>Made a discord bot. Took me about 3 years of active development.</li>
+					<li>Made an almost 1-1 <a href="https://randomrepository228.github.io/root/">recreation</a> of Windows 7 UI</li>
 					<li>Made a <a href="https://github.com/Kitaes-software/bonk-deobfuscator">bonk.io deobfuscator</a></li>
 					<li>Made graphics engines in WebGL, OpenGL and Vulkan</li>
 					<li>
-						Made a fast LZ-String rewrite (5 times faster than zlib at decompression, 1.5 times faster than zlib at compression)<br>
+						Made a fast LZ-String rewrite (15 times faster than original)<br>
 						That was when i realized my immense potential that i didn't know i had
 					</li>
 					<li>Extracted at least 1010863 Bonk 1 (Flash version of bonk.io) maps and at least 160657 <a href="https://bonk.io">Bonk 2</a> maps</li>
-					<li>Made an almost 1-1 <a href="https://randomrepository228.github.io/root/">recreation</a> of Windows 7 UI</li>
+					<li>Made a <a href="https://randomrepository228.github.io/skineditor/">bonk.io Skin Editor</a>.<br>
+						It may not be as advanced as Bonk Leagues skin editor but it sure is way more advanced than bonk.io skin editor</li>
 					<li>Made this website</li>
 				</ul>
 				<h1>Why did i made this website</h1>
@@ -100,24 +38,18 @@
 				That's also why is it so simple. Not a vibe coded page that is boring and very ordinary and meant to bore you. Straight to the point.
 				This website might have more and more links as time passes on. Also there were 3 websites before this and they all kinda sucked
 			</div>
-			<!-- <div class="op"></div> -->
+			<div class="sp hd">
+				<div class="ent">
+					<div>Mode</div>
+					<select name="0" id="mode">
+						<option>Device</option>
+						<option>Light</option>
+						<option>Dark</option>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
-	<!-- <script>
-		const ch = sdb.children, p = cnt.children, pn = []
-		let selectedItem = ch[0], selectedPage = p[0]
-		for (const el of p) pn.push(el.classList[0])
-		for (const el of ch){
-			el.onclick = function(e){
-				e.preventDefault()
-				selectedPage.classList.add("hd")
-				selectedPage = p[pn.indexOf(this.classList[0])]
-				selectedPage.classList.remove("hd")
-				selectedItem.classList.remove("slp")
-				selectedItem = this
-				selectedItem.classList.add("slp")
-			}
-		}
-	</script> -->
+	<script src="script.js"></script>
 </body>
 </html>

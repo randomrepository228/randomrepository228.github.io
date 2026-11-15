@@ -1,0 +1,120 @@
+html{
+	font-family: sans-serif, system-ui;
+}
+body, html{
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+.hdr{
+	height: 40px;
+	font-size: 32px;
+	line-height: 40px;
+	background: linear-gradient( darkred, red);
+	padding: 5px;
+	color: white;
+}
+.rst{
+	height: calc(100vh - 50px);
+	height: calc(100svh - 50px);
+	display: flex;
+}
+.rst > *{
+	height: 100%;
+}
+#sdb{
+	width: 200px;
+	background-color: rgba(127,127,127,0.2);
+}
+#cnt{
+	flex: 1;
+	padding: 20px;
+}
+#sdb > *{
+	margin: 0;
+	margin-left: 15px;
+	white-space: nowrap;
+	display: block;
+	height: 35px;
+	line-height: 35px;
+}
+@media (max-width: 600px){
+	.rst{
+		flex-direction: column;
+	}
+	#sdb{
+		height: auto;
+		width: 100%;
+	}
+	#sdb > *{
+		display: inline;
+	}
+}
+@media (prefers-color-scheme: light){
+	.slp{
+		color: black;
+	}
+}
+@media (prefers-color-scheme: dark){
+	body{
+		background-color: rgb(10,10,10);
+		color: white;
+	}
+	a{
+		color: rgb(0,127,255);
+	}
+	a:visited{
+		color: rgb(150,50,150);
+	}
+	.slp{
+		color: white !important;
+	}
+}
+.dark{
+	background-color: rgb(10,10,10);
+	color: white
+}
+.dark a{
+	color: rgb(0,127,255);
+}
+.dark a:visited{
+	color: rgb(150,50,150);
+}
+.dark .slp{
+	color: white !important;
+}
+.light{
+	background-color: white;
+	color: black;
+}
+.light a{
+	color: rgb(0, 102, 204);
+}
+.light a:visited{
+	color: rgb(85, 26, 139);
+}
+.light .slp{
+	color: black !important;
+}
+.slp{
+	text-decoration: none;
+	pointer-events: none;
+}
+.hd{
+	display: none;
+}
+.mp{
+	line-height: 27px;
+	max-width: 1000px;
+}
+.nojs .js{
+	display: none !important;
+}
+.ent{
+	display: flex;
+	justify-content: space-between;
+}
+select{
+	height: 25px;
+	width: 100px;
+}
